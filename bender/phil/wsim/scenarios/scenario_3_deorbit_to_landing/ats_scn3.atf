@@ -17,7 +17,7 @@
 2015-354-17:55:50 /gdn_set_burn_parameters burn_type=GRAVITY_TURN, dv=1680, dur=0
 2015-354-17:55:50 /cmp_set_mode mode=BRAKING, submode=ACTIVE
 2015-354-17:56:49 /gdn_start_burn
-2015-354-18:00:00 /est_set_reference_frame frame=TOPOCENTRIC
+2015-354-18:00:35 /est_set_reference_frame frame=TOPOCENTRIC
 2015-354-18:00:35 /cnt_select_thruster_set thrusters=COARSE
-2015-354-18:00:40 /cmp_set_mode mode=LANDING, submode=LANDING_HOLD
+2015-354-18:00:35 /cmp_set_mode mode=LANDING, submode=LANDING_HOLD
 
