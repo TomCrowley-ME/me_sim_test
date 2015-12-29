@@ -1,0 +1,39 @@
+# make.SPARCgnu - GNU compilation tools definitions for Sparc
+#
+# modification history
+# --------------------
+# 01a,29jan04,dbt  written
+#
+# DESCRIPTION
+# This file contains Linux VxSim specific definitions and flags for the GNU
+# software generation tools (compiler, assembler, linker etc.).
+#*/
+
+CPU	= SPARC
+TOOL	= sfgnu
+
+include $(WIND_USR)/tool/gnu/defs.gnu
+include $(WIND_USR)/tool/gnu/defs.sparc
+
+CC_ARCH_SPEC    = $(SPARC_OPT_CC_FLAGS)
+
+CC_OPTIM_DRIVER = $(SPARC_OPT_CC_FLAGS) -fno-builtin -fvolatile -ffloat-int-mode -msoft-float -mv8
+CC_OPTIM_NORMAL = $(SPARC_OPT_CC_FLAGS) -O2 -fstrength-reduce -fno-builtin
+CC_OPTIM_TARGET = $(SPARC_OPT_CC_FLAGS) -O2 -fvolatile -fno-builtin
+
+TOOLENV         = sparc
+VX_CPU_FAMILY   = sparc
+ARCH_DIR        = sparc
+
+CFLAGS         += $(SPARC_OPT_CC_FLAGS) -gdwarf-2 -ffloat-int-mode -msoft-float -mv8
+CFLAGS_AS      += -msoft-float -mv8
+
+GNULIBROOT      = $(WIND_BASE)/host/$(WIND_HOST_TYPE)/lib/gcc-lib/
+
+# These go at the end of the link path.
+
+LD_LINK_PATH_ATEND = \
+    -L$(WIND_USR)/lib/$(VX_CPU_FAMILY)/$(CPU)/$(TOOL) \
+    -L$(WIND_USR)/lib/$(VX_CPU_FAMILY)/$(CPU)/$(TOOL_COMMON_DIR)
+
+# end of make.SPARCgnu

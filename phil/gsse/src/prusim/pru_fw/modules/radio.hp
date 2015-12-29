@@ -1,0 +1,23 @@
+// *****************************************************************************/
+// file:     radio.hp
+//
+// purpose:  Constants and definitions for Radio Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _radio_hp_
+#define _radio_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define RADIO_GPIO_BASE            GPIO2_BASE
+#define RADIO_GPIO_MASK            (1 << 9)
+
+// Device SPI Transfer Settings
+#define RADIO_UPLINK_CMD           (0x00)
+
+#define RADIO_DOWNLINK_CMD         (0x01)
+#define RADIO_DOWNLINK_LENGTH      (1119)
+
+#endif //_radio_hp_

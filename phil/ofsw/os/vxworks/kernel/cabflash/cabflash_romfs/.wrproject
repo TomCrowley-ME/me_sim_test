@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wrxml>
+    <properties platform="VxWorks" platform_name="vxworks-6.7" root="0" type="VxWorksFileSystemProject"/>
+    <attributes>
+        <mapAttribute>
+            <mapAttribute key="FileSystem">
+                <mapAttribute key="bootrom.bin">
+                    <stringAttribute key="hostpath" value="/cab_boot/moonex_cab/bootrom.bin"/>
+                </mapAttribute>
+                <mapAttribute key="bootrom_stage1.desc">
+                    <stringAttribute key="hostpath" value="/cab_boot/moonex_cab/bootrom_stage1.desc"/>
+                </mapAttribute>
+            </mapAttribute>
+        </mapAttribute>
+    </attributes>
+</wrxml>

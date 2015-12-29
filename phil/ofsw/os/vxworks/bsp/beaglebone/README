@@ -1,0 +1,35 @@
+
+   README: VxWorks BSP for BeagleBone
+
+This file contains board-specific information for the TI
+AM335X platform which uses an ARM Cortex-A8 CPU on a Texas
+Instruments AM335X processor. This file documents BSP interface
+changes from previous software or hardware versions, and notifies the
+user of serious caveats that must be noted before using this
+BSP. Additionally, the target board's reference entry
+(i.e. beaglebone/target.ref) provides board-specific information
+necessary to run VxWorks and should be read fully before this BSP is
+used.
+
+------------------------------------------------------------------------
+RELEASE 6.9/2
+
+    Released from Wind River for General Purpose Platform 6.9, VxWorks 6.9.2
+
+    Add memory map for LCDC. (WIND00382478)
+
+    Add workround for am335x errata advisory 1.0.9 (WIND00384090)
+
+RELEASE 6.9/1
+
+    Released from Wind River for General Purpose Platform 6.9, VxWorks 6.9.2
+
+    Add RTC support
+    Add SPI flash support
+    Add delay timer support
+
+RELEASE 6.9/0
+
+    Released from Wind River for General Purpose Platform 6.9, VxWorks 6.9.2
+
+    Initial Release.

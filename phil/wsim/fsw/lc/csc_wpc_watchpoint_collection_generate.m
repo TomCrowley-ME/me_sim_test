@@ -1,0 +1,239 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2010 - 2015 Moon Express, Inc.
+% All Rights Reserved.
+%
+% PROPRIETARY DATA NOTICE:
+% The data herein include Proprietary Data and are restricted under the
+% Data Rights provisions of Lunar CATALYST Space Act Agreement
+% No. SAAM ID# 18251 and Reimbursable Space Act Agreement No.SAA2-402930.
+% All information contained herein is and remains proprietary to and the
+% property of Moon Express, Inc. Dissemination of this information or
+% reproduction of this material is strictly forbidden unless prior
+% written permission is obtained from Moon Express, Inc.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%-------------------------------------------------------------------------%
+% csc_wpc_watchpoint_collection_generate.m                                %
+%                                                                         %
+% Generator for csc_wpc_watchpoint_collection_lib. Creates a watchpoint   %
+% collection subsystem by reading lc_def_wdt.c                            %
+%                                                                         %
+% 08/22/13                                                                %
+% mikestewart@moonexpress.com                                             %
+%-------------------------------------------------------------------------%
+function csc_wpc_watchpoint_collection_generate(wdt_filename)
+
+nimbus_root = getenv('NIMBUS_ROOT');
+if isempty(nimbus_root)
+    error('NIMBUS_ROOT is not set -- first run nimbus_set_path');
+end
+
+sys = 'csc_wpc_watchpoint_collection_lib';
+subsys = [sys '/csc_wpc_watchpoint_collection'];
+
+% Get info about the WDT file. We need to check if it's been modified
+% since we last regenerated
+wdt_fileinfo = dir(wdt_filename);
+
+try
+    % Try loading the system first. If this fails, we'll just create a new
+    % one
+    load_system(sys);
+
+    % Grab the last modified date from the existing block
+    wpc_last_modified = get_param(subsys, 'UserData');
+
+    % Check is commented out for now to always force update
+    %if isempty(wpc_last_modified)
+        % No date info stored -- an error happened somewhere. Force update.
+        wpc_last_modified = 0;
+    %end
+
+    if wdt_fileinfo.datenum == wpc_last_modified
+        % The dates modified match, so we don't have any work to do
+        close_system(sys);
+        return;
+    else
+        % The WDT file has been updated since we last generated. Unlock the
+        % system for editing, and kill our old subsystem block
+        set_param(sys, 'Lock', 'off');
+        delete_block(subsys);
+    end
+catch
+    % System doesn't exist, make a new one
+    new_system(sys, 'Library');
+    load_system(sys);
+end
+
+%fprintf(1, 'Detected new LC Watchpoint Definition Table, regenerating csc_wpc_watchpoint_collection...\n');
+fprintf(1, 'Updating LC watchpoints...\n');
+
+% Start by building up the necessary data structures. First, we need to be
+% able to translate LC's operator macros to the real thing in MATLAB
+operator_map = containers.Map({'EQUAL_TO' 'NOT_EQUAL_TO' 'LESS_THAN' 'LESS_THAN_OR_EQUAL_TO' 'GREATER_THAN_OR_EQUAL_TO' 'GREATER_THAN'}, ...
+                              {    '='         '~='          '<'              '<='                    '>='                    '>'     }  ...
+                             );
+
+% Read in the WDT source file for processing
+wdt_source = fileread(wdt_filename);
+
+% Strip out the comments -- since they can appear anywhere, they can cause
+% some serious problems
+wdt_source = regexprep(wdt_source, '/\*.*?\*/','');
+
+% Kill all whitespace to make things easier
+wdt_source = regexprep(wdt_source, '\s', '');
+
+% Extract out only rows of the table so we don't get confused by anything
+% else
+wdt_source = regexp(wdt_source, 'LC_WatchpointDefinitionTable_t\w+=\{\{(.*?)\}\};', 'tokens', 'once');
+if isempty(wdt_source)
+    error('csc_wpc_watchpoint_collection_generate: couldn''t extract watchpoint definition table from source file!');
+end
+wdt_source = wdt_source{1};
+
+watchpoint_list = regexp(wdt_source, '\{([^{}]*)\}', 'tokens');
+num_watchpoints = length(watchpoint_list);
+
+% Define the regex that will pull out most of the information -- the result
+% will be an array of structures containing information about each
+% watchpoint
+wp_regex =  ...
+[ ...
+    '\.data_type=(?<data_type>\w+),' ...
+    '\.operator_id=(?<operator_id>\w+),' ...
+    '\.message_id=(?<message_id>[\w\d]+),' ...
+    '\.offset=BUS_OFFSET\((?<bus_name>\w+),(?<signal>[\w\d\[\].]+)\),' ...
+    '\.bitmask=(?<bitmask>[\w\d]+),' ...
+    '\.value\.[fiu]\d+=(?<value>[+\-*/\w\d\.]+),?' ...
+];
+
+wpc_mask_display = ...
+[ ...
+    'color(''blue'');' ...
+    'text(0.05, 0.02, ''MoonEx'', ''HorizontalAlignment'', ''Left'', ''VerticalAlignment'', ''Bottom'');' ...
+    'color(''red'');' ...
+    'text(0.95, 0.02, ''Autogenerated'', ''HorizontalAlignment'', ''Right'', ''VerticalAlignment'', ''Bottom'');' ...
+];
+
+% Add in the subsystem itself and its input port
+add_block('built-in/Subsystem', subsys, 'BackgroundColor', 'yellow', 'UserData', wdt_fileinfo.datenum, 'UserDataPersistent', 'on', 'MaskDisplay', wpc_mask_display, 'MaskIconOpaque', 'off', 'Position', [200 200 415 270]);
+add_block('built-in/Note', [subsys '/AUTOGENERATED BY ' mfilename ' FROM' char(10) strrep(wdt_filename,'/','//') char(10) 'DO NOT EDIT'], 'FontWeight', 'bold', 'FontSize', '14', 'Position', [400 0 1200 80]);
+
+add_block('built-in/Inport', [subsys '/telemetry_bus'], 'BackgroundColor', 'green', 'Port', '1', 'Position', [65 92 95 109]);
+
+% Add the information block to the subsystem
+add_block('util_info_lib/Library Information', [subsys '/Library Information'], 'MaskValues', {'''escrane'''}, 'Position', [0 -300 430 -100]);
+
+% Add in the output port
+add_block('built-in/BusCreator', [subsys '/watchpoint_bus_creator'], 'ShowName', 'off', 'Inputs', int2str(num_watchpoints), 'Position', [600 60 605 (80+60*num_watchpoints)]);
+add_block('built-in/Outport', [subsys '/watchpoint_bus'], 'BackgroundColor', 'red', 'Port', '1', 'Position', [700 92 735 109]);
+add_line(subsys, 'watchpoint_bus_creator/1', 'watchpoint_bus/1', 'autorouting', 'on');
+
+for wp_num=1:num_watchpoints
+    wp_num_str = int2str(wp_num);
+
+    empty_watchpoint = isempty(watchpoint_list{wp_num}{1});
+
+    if ~empty_watchpoint
+        watchpoint_data = regexp(watchpoint_list{wp_num}{1}, wp_regex, 'names', 'once');
+
+        if isempty(watchpoint_data)
+            % TODO: Check for explicitly defined empty watchpoints
+            warning('Failed to match WP #%s defined as: \n%s', wp_num_str, watchpoint_list{wp_num}{1});
+            empty_watchpoint = true;
+        end
+    end
+
+    if empty_watchpoint
+        % Add in a constant 0 so we properly fill in the space in the
+        % watchpoint bus this will leave
+        constant_block_name = ['empty_wp' wp_num_str];
+        add_block('built-in/Constant', [subsys '/' constant_block_name], 'Value', '0', 'OutDataTypeStr', 'boolean', 'Position', [340 (20+60*wp_num) 380 (60+60*wp_num)]);
+        add_line(subsys, [constant_block_name '/1'], ['watchpoint_bus_creator/' wp_num_str], 'autorouting', 'on');
+
+        continue;
+    end
+
+    % Extract the signal name and indices from the 'signal' field of the
+    % watchpoint data
+    signal_components = regexp(watchpoint_data.signal, '^([\w\d.]+)(\[\d+\])*', 'tokens', 'once');
+    signal_name = signal_components{1};
+
+    if ~isempty(signal_components{2})
+        % Indices component is not empty, so we need to transform it to an
+        % array of numbers that Simulink will understand (proper format and
+        % one-based indices)
+        signal_indices = regexp(signal_components{2}(2:end-1), '\]\[', 'split');
+        corrected_signal_indices = cellfun(@(index) {num2str(str2double(index)+1)}, signal_indices);
+
+        % Build an array if there's more than one dimension, otherwise just
+        % feed through the index number
+        if length(corrected_signal_indices) > 1
+            signal_index_str = [ '[' strjoin(corrected_signal_indices) ']' ];
+        else
+            signal_index_str = corrected_signal_indices{1};
+        end
+    else
+        % No index detected, so we're taking the first and only element
+        signal_index_str = '1';
+    end
+
+    % Patch together the bus and signal names to get an overall name
+    combined_signal_name = [watchpoint_data.bus_name '.' signal_name];
+
+    % Check to make sure the limit value is either numeric or an
+    % enumeration
+    limit_value = '';
+    [~, status] = str2num(watchpoint_data.value);
+    if status == 0
+        % Not a number (or inf or nan), so check for enumerated values.
+        % Enumeration names and values are separated by double underscores.
+        split_wp_data = strsplit(watchpoint_data.value, '__');
+        if length(split_wp_data) ~= 2
+            error(['Got unexpected value "' watchpoint_data.value '" for WP #' wp_num_str '; expected numeric or enumerated type']);
+        end
+        
+        enum_name = ['enum_' lower(split_wp_data{1})];
+        enum_value = lower(split_wp_data{2});
+
+        [~, possible_enum_values] = enumeration(enum_name);
+        if isempty(possible_enum_values)
+            error(['Unknown enumeration ' enum_name 'specified for WP #' wp_num_str]);
+        end
+        
+        if any(strcmpi(possible_enum_values, enum_value))
+            % Determine the underlying enum type
+            enum_parents = superclasses(enum_name);
+            enum_bus_type = enum_parents{1};
+
+            % Build up the limit value string
+            limit_value = [enum_bus_type '(' enum_name '.' enum_value ')'];
+        end
+    else
+        % We've got a number, so just pass that through.
+        limit_value = watchpoint_data.value;
+    end
+
+    % Build up the MaskValues structure for the block
+    wp_mask_values = { ...
+        wp_num_str ... % number of the watchpoint
+        combined_signal_name ... % the combined bus+signal name
+        signal_index_str ... % vector representing the index of the signal
+        limit_value ... % value to be compared against
+        operator_map(watchpoint_data.operator_id) ... % operator to use
+        watchpoint_data.bitmask; % bitmask to be applied
+        };
+
+    % Finally, add the block and wire it in
+    wp_block_name = ['csu_ewp_evaluate_wp' wp_num_str];
+    add_block('csu_ewp_evaluate_wp_lib/csu_ewp_evaluate_wp', [subsys '/' wp_block_name], 'MaskValues', wp_mask_values, 'Position', [190 (20+60*wp_num) 530 (60+60*wp_num)]);
+    add_line(subsys, 'telemetry_bus/1', [wp_block_name '/1'], 'autorouting', 'on');
+    add_line(subsys, [wp_block_name '/1'], ['watchpoint_bus_creator/' wp_num_str], 'autorouting', 'on');
+end
+
+% Our work is done, so let's save and get out of here
+save_system(sys, fullfile(nimbus_root, 'fsw', 'lc', 'csc_wpc_watchpoint_collection_lib.slx'));
+close_system(sys);
+
+end

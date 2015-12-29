@@ -1,0 +1,17 @@
+; File ttscript1.in
+; Created on 10/5/05
+; Revised 1/20/06 Labels added for information.
+* Input file lc_script_2_cmd.in is being read.
+*
+*
+; LC_EVAL_WPAP_MID: 
+18 9e c0 00 00 01 01 00
+*
+* 0 Simulate Empty Pipe
+!
+*
+; LC_SEND_HK_MID: 
+18 9d c0 00 00 01 00 00 
+*
+* 0 Simulate Empty Pipe
+!

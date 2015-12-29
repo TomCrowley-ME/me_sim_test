@@ -1,0 +1,34 @@
+00:00:00 /gdn_hover_enable
+00:00:00 /lc_set_actionpoint_state ap=5, state=PASSIVE
+00:00:01 /cmp_set_mode mode=LANDING, submode=LANDING_TERMINAL
+00:00:01 /egc_controller_disable duration=17500
+00:00:00 /cnt_select_thruster_set thrusters=COARSE
+00:00:13 /act_mtv_set_htp_main_engine_feed_valve_state state=OPEN
+00:00:00 /egc_set_throttle_position throttle=13107
+00:00:00 /egc_set_throttle_position throttle=13107
+00:00:00 /egc_set_throttle_position throttle=13107
+00:00:00 /egc_set_throttle_position throttle=13107
+00:00:00 /egc_set_throttle_position throttle=0
+00:00:02 /egc_set_throttle_position throttle=13107
+00:00:00 /egc_set_throttle_position throttle=13107
+00:00:00 /egc_set_throttle_position throttle=13107
+00:00:00 /egc_set_throttle_position throttle=13107
+00:00:00 /egc_set_throttle_position throttle=0
+00:00:02 /est_force_active_integration duration=30000
+00:00:00 /egc_controller_disable duration=600
+00:00:00 /egc_set_throttle_position throttle=25049
+00:00:00 /egc_set_throttle_position throttle=25049
+00:00:00 /egc_set_throttle_position throttle=25049
+00:00:00 /egc_set_throttle_position throttle=25049
+00:00:00 /egc_set_throttle_position throttle=25049
+00:00:00 /egc_start_thrust_output
+00:00:01 /gdn_takeoff_enable
+00:00:00 /egc_enable_velocity_correction
+00:00:00 /est_set_vehicle_off_launchpad
+00:00:00 /lc_set_actionpoint_state ap=5, state=ACTIVE
+00:00:00 /gdn_hover_disable
+00:00:16 /cmp_set_mode mode=SURFACE, submode=NONE
+00:00:00 /egc_terminate_thrust_output
+00:00:00 /act_mtv_set_htp_main_engine_feed_valve_state state=CLOSE
+00:00:00 /act_mtv_set_htp_tank_pressurant_valve_state state=CLOSE
+00:00:00 /egc_disable_velocity_correction

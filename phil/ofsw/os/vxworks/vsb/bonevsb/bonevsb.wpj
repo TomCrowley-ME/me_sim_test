@@ -1,0 +1,51 @@
+Document file - DO NOT EDIT
+
+<BEGIN> CORE_INFO_TYPE
+::prj_vsb
+<END>
+
+<BEGIN> CORE_INFO_VERSION
+4.2
+<END>
+
+<BEGIN> VSB_ARCH
+arm
+<END>
+
+<BEGIN> VSB_Bsp
+$(TGT_DIR)/config/beaglebone
+<END>
+
+<BEGIN> VSB_BspDir
+$(TGT_DIR)/config/beaglebone
+<END>
+
+<BEGIN> VSB_Cpu
+
+<END>
+
+<BEGIN> VSB_DEFAULTFlag
+0
+<END>
+
+<BEGIN> VSB_GPPFlag
+0
+<END>
+
+<BEGIN> VSB_INETFlag
+0
+<END>
+
+<BEGIN> VSB_SITNBFlag
+0
+<END>
+
+<BEGIN> VSB_SMPFlag
+0
+<END>
+
+<BEGIN> VSB_lp64Flag
+0
+<END>
+
+

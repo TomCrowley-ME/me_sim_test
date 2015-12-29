@@ -1,0 +1,24 @@
+proc scn3_mos
+
+; ;  GUIDANCE PARAMETER TABLE UPDATES ; ;
+
+; for approach and landing
+
+; Set for approach
+; transition altitude to terminal
+Parameters_csc_gdn_guidance.csc_gdn_pwpf_terminal_vertical_vel_zero_mean_bias = 0.5
+Parameters_csc_gdn_guidance.csc_gdn_pwpf_off_vertical_limit_altitude_enable = 100
+
+; ;  ESTIMATOR PARAMETER TABLE UPDATES ; ;
+Parameters_csc_est_state_est.emp_initial_fuel_used = 227.9
+
+Parameters_csc_est_state_est.kfl_topocentric_latitude =  -60
+Parameters_csc_est_state_est.kfl_topocentric_longitude = 0.0
+Parameters_csc_est_state_est.kfl_alt_wrt_meanrad = -483
+
+Parameters_csc_cnt_attitude_control.cac_alpha_gain_coarse_only = 0.0001
+Parameters_csc_cnt_attitude_control.cac_acs_time_gain_x = 50.0;
+Parameters_csc_cnt_attitude_control.cac_acs_time_gain_y = 50.0;
+Parameters_csc_cnt_attitude_control.cac_acs_time_gain_z = 50.0;
+
+

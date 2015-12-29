@@ -1,0 +1,21 @@
+// *****************************************************************************/
+// file:     payloads.hp
+//
+// purpose:  Constants and definitions for Payloads Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _payloads_hp_
+#define _payloads_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define PAYLOADS_GPIO_BASE    GPIO1_BASE
+#define PAYLOADS_GPIO_MASK    (1 << 15)
+
+// Device SPI Transfer Settings
+#define PAYLOADS_WRITE_CMD     (0x00)
+#define PAYLOADS_WRITE_LENGTH  (0x50)
+
+#endif //_payloads_hp_

@@ -1,0 +1,4 @@
+console=ttyO0,115200n8
+
+bootcmd=mmc rescan; fatload mmc 1 0x81000000 bootloader.bin; go 0x81000000
+uenvcmd=boot

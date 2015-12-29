@@ -1,0 +1,21 @@
+// *****************************************************************************/
+// file:     egc.hp
+//
+// purpose:  Constants and definitions for EGC Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _egc_hp_
+#define _egc_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define EGC_GPIO_BASE    GPIO1_BASE
+#define EGC_GPIO_MASK    (1 << 29)
+
+// Device SPI Transfer Settings
+#define EGC_READ_CMD     (0x01)
+#define EGC_READ_LENGTH  (2)
+
+#endif //_egc_hp_

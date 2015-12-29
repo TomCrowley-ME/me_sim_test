@@ -1,0 +1,12 @@
+syntax: glob
+build*
+*.so
+*.o
+*.gc*
+android
+apps
+doc
+exclude
+ios
+samples
+data

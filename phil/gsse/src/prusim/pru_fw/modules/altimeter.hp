@@ -1,0 +1,21 @@
+// *****************************************************************************/
+// file:     altimeter.hp
+//
+// purpose:  Constants and definitions for Altimeter Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _altimeter_hp_
+#define _altimeter_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define ALTIMETER_GPIO_BASE    GPIO2_BASE
+#define ALTIMETER_GPIO_MASK    (1 << 25)
+
+// Device SPI Transfer Settings
+#define ALTIMETER_WRITE_CMD     (0x00)
+#define ALTIMETER_WRITE_LENGTH  (0x50)
+
+#endif //_altimeter_hp_

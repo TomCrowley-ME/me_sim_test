@@ -1,0 +1,379 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Abstract:
+%%   This TLC file creates wrapper code to interface RTW-EC code to the CFE
+%%   simulation framework.
+%%
+%% Copyright 2007-2009 The MathWorks, Inc.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Copyright 2010 - 2015 Moon Express, Inc.
+%% All Rights Reserved.
+%%
+%% PROPRIETARY DATA NOTICE:
+%% The data herein include Proprietary Data and are restricted under the
+%% Data Rights provisions of Lunar CATALYST Space Act Agreement
+%% No. SAAM ID# 18251 and Reimbursable Space Act Agreement No.SAA2-402930.
+%% All information contained herein is and remains proprietary to and the
+%% property of Moon Express, Inc. Dissemination of this information or
+%% reproduction of this material is strictly forbidden unless prior
+%% written permission is obtained from Moon Express, Inc.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Revision History
+%%
+%%  date       name   Geck         description
+%% ------------------------------------------------------------------------------
+%%  08 Jul 08   MDM            Initial version
+%%  13 Sep 08   MDM   491647   Added #define for message length and remove
+%%                             _x suffix from MID macro. Port to 7b.
+%%  03 Apr 09   MDM   535697   Add message comments. Change name of msg variable.
+%%  28 Jan 13   mstewart       Updated for MoonEx SIL
+%%  29 Jan 13   mstewart       Lots of cleanup and reduced code duplication
+%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  add_table_entry
+%%  Abstract:  This function takes in information about an input or output message
+%%             and generates an appropriate table entry for it as well as an in
+%%
+%%             The BIG assumption is that all buses that will be output to the
+%%             CFE message tables have a prefix of "_msg" for their bus data object.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%addincludepath "../../common/codegen"
+%addincludepath "../../../common/codegen"
+
+%include "utillib.tlc"
+%include "csl_events.tlc"
+
+%function add_table_entry(cscNameUpper, sigName, sigAddress, dataType, isOutput, tableStream, bufferStream) Output
+    %assign isCmd = FEVAL("regexpi",dataType,"cmd_msg$")
+    %assign isCICmd = FEVAL("regexpi", dataType, "^ci_cmd_msg$")
+    %assign isTimeMsg = FEVAL("regexpi", dataType, "^cfe_time_msg$")
+    %assign dataTypeUpper = FEVAL("upper", dataType)
+
+    %if !ISEMPTY(isCICmd)
+        %if !isOutput
+            %assign appName = FEVAL("regexprep", cscNameUpper, "^CSC_", "")
+            %assign MsgID = FEVAL("strcat", appName, "_SL_CMD_MID")
+        %else
+            %assign MsgID = "SL_CI_CMD_MID"
+        %endif
+    %else
+        %assign MsgID = FEVAL("regexprep",dataTypeUpper,"_MSG", "_MID")
+    %endif
+
+    %if isOutput > 0
+        %if !ISEMPTY(isCmd)
+            %selectfile tableStream
+    {%<MsgID>, %<sigAddress>, sizeof(%<dataType>), 0, 0},
+        %else
+            %selectfile tableStream
+    {%<MsgID>, ((uint8*)%<sigAddress>)+4, sizeof(%<dataType>)-4, 0, 0},
+        %endif
+    %else
+        %if !ISEMPTY(isCmd)
+            %selectfile bufferStream
+static %<dataType> %<sigName>_queue[CSL_QUEUE_LEN];
+            %selectfile tableStream
+    {%<MsgID>, %<sigAddress>, sizeof(%<dataType>), CSL_SL_CMD_PIPE_LIM, (uint8*)%<sigName>_queue},
+        %else
+            %if !ISEMPTY(isTimeMsg)
+    {%<MsgID>, %<sigAddress>, sizeof(%<dataType>), 0, 0},
+            %else
+    {%<MsgID>, ((uint8*)%<sigAddress>)+4, sizeof(%<dataType>)-4, CSL_SL_BUS_PIPE_LIM, 0},
+            %endif
+        %endif
+    %endif
+%endfunction
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  process_struct
+%%  Abstract:  This is a recursive function that will recurse through the elements
+%%             of a bus/structure to find nested structs.  If nested structs are
+%%             found, it will output each of these into the Send or Trans cfe tables.
+%%             The BIG assumption is that all buses that will be output to the
+%%             CFE message tables have a prefix of "_msg" for their bus data object.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%function process_struct(cg_idx, struct_name, isOutput, csc_name_upper, tableStream, bufferStream) Output
+    %%
+    %% for each element in this struct, print out a statement if the struct
+    %% represents a CFE message or recurse if the element itself is a struct.
+    %%
+    %foreach cg_cnt = cg_idx.Members.NumMembers
+        %assign cg_mem = CGTypes.CGType[cg_idx.Members.Member[cg_cnt].CGTypeIdx]
+        %assign sigName = cg_idx.Members.Member[cg_cnt].Name
+        %%
+        %% Look to see if the datatype for this element has a "_msg" suffix.
+        %% If it does, we don't want to recurse, but rather simply output to the
+        %% message table.
+        %%
+        %if EXISTS(cg_mem.Name)
+            %assign dataType = cg_mem.Name
+        %else
+            %assign dataType = "NULL"
+        %endif
+        %assign dataTypeUpper = FEVAL("upper",dataType)
+        %assign isMsg = FEVAL("strfind",dataTypeUpper,"_MSG")
+        %%
+        %% If this element is a structure, and it isn't a CFE message,
+        %% then recursively call this function to see if the elements of this
+        %% element are themselves data objects of type "_msg".
+        %%
+        %if ISEMPTY(isMsg) && ISEQUAL(cg_mem.Constructor,"struct")
+            %assign new_struct_name = "%<struct_name>%<sigName>."
+            %<process_struct(cg_mem, new_struct_name, isOutput, csc_name_upper,  tableStream, bufferStream)>
+        %%
+        %% Else, if the element is a struct and its type has the "_msg" suffix...
+        %%
+        %elseif !ISEMPTY(isMsg) && ISEQUAL(cg_mem.Constructor,"struct")
+            %assign sigAddress = "&%<struct_name>%<sigName>"
+            %<add_table_entry(csc_name_upper, sigName, sigAddress, dataType, isOutput, tableStream, bufferStream)>
+        %else
+            %if ISEQUAL(cg_mem.Constructor,"struct")
+                %warning  %<struct_name>%<sigName>, type=%<dataType> isn't of type struct.  Not placed in CFE Msg Table. (csl_interface.tlc).
+            %else
+                %warning  %<struct_name>%<sigName>, type=%<dataType> doesn't have "_msg" suffix.  Not placed in CFE Msg Table. (csl_interface.tlc).
+            %endif
+        %endif
+    %endforeach
+%endfunction
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  create_csc_sl_interface
+%%  Abstract:  Creates the csc_sl_interface.h file, which defines the interface to the
+%%             generated code.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%function create_csc_sl_interface() Output
+
+    %assign parent = ::CompiledModel.SubsystemPathForRightClickBuild
+    %assign ::hFile = LibCreateSourceFile("Header","Custom","csc_sl_interface")
+    %assign csc_name = FEVAL("regexp", CompiledModel.Name, "^csc_[a-zA-Z]+", "match", "once")
+    %assign csc_name = FEVAL("lower", csc_name)
+    %assign csc_name_upper = FEVAL("upper", csc_name)
+
+    %% comment block
+
+    %openfile tmpFcnBuf
+    %selectfile tmpFcnBuf
+/*
+ * Auto generated csc_sl_interface.h for model: %<FcnMdlName()>
+ *
+ * Description:
+ *
+ */
+    %closefile tmpFcnBuf
+
+    %<SLibSetModelFileAttribute(::hFile, "Definitions", tmpFcnBuf)>
+
+    %% include files
+    %openfile tmpFcnBuf
+#include "%<FcnGetPublicModelHeaderFile()>" /* Model's header file */
+#include "rtwtypes.h" /* MathWorks types */
+#include "app_msgids.h"
+#include "cfe_sb.h"
+#include "cfe_tbl_filedef.h"
+#include "csl_app.h" /* CSL header */
+#include "csc_model_hz.h"
+    %closefile tmpFcnBuf
+
+    %<SLibSetModelFileAttribute(::hFile, "Includes", tmpFcnBuf)>
+
+    %% declare global variables ( inputs, outputs, states, etc. )
+    %openfile tmpFcnBuf
+%<SLibDeclareFcnProtoCtlGlobalVariables()>\
+%<SLibDeclareGlobalVariablesForCPPClass()>\
+%<SLibDeclareModelFcnArgs(TLC_TRUE)>\
+    %closefile tmpFcnBuf
+    %<SLibSetModelFileAttribute(::hFile, "Definitions", tmpFcnBuf)>
+
+    %openfile tmpFcnBuf
+
+    %assign codegen_revision = FEVAL("get_current_revision")
+#define CSL_CODEGEN_REVISION "%<codegen_revision>"
+#define CSL_NAME "%<csc_name_upper>"
+#define CSL_MAIN %<csc_name>_main
+    %if !ISEMPTY(FEVAL("regexpi", parent, "gsse", "once"))
+#define CSL_GSSE_APP
+    %endif
+
+#define MY_CMD_MID     %<csc_name_upper>_CMD_MID
+#define MY_HK_TLM_MID  %<csc_name_upper>_HK_TLM_MID
+#define MY_SEND_HK_MID %<csc_name_upper>_SEND_HK_MID
+
+#define MY_TICK_MID %<csc_name_upper>_TICK_MID
+
+#ifdef %<csc_name_upper>_RT_MID
+#define MY_RT_MID %<csc_name_upper>_RT_MID
+#endif
+
+#define MY_PERF_ID %<csc_name_upper>_PERF_ID
+
+#define CSL_PARAM_TABLE %<LibGetParametersStruct()>
+#define CSL_DEFAULT_PARAM_FILE "/cf/%<csc_name>_params.tbl"
+
+#define CSL_STATE_TABLE %<LibGetDWorkStruct()>
+
+static const char CSL_PipeName[] = CSL_NAME "_PIPE";
+
+    %closefile tmpFcnBuf
+    %<SLibSetModelFileAttribute(::hFile, "Defines", tmpFcnBuf)>
+    %openfile tmpFcnBuf
+
+/* Begin output_msg_tbl */
+/* Place each output signal that is a bus in %<tOutput> into the Send Table */
+static SL_Msg_t output_msg_tbl[] = {
+    %selectfile tmpFcnBuf
+
+    %foreach loopId = ExternalOutputs.NumExternalOutputs
+        %assign extOut       = ExternalOutputs.ExternalOutput[loopId]
+        %assign sysIdx       = extOut.Block[0]
+        %assign blkIdx       = extOut.Block[1]
+        %assign dataType = SLibGetRecordDataTypeName(extOut, "")
+        %assign outportBlock = System[sysIdx].Block[blkIdx]
+        %if MultiInstanceERTCode && !RootIOStructures
+            %assign localYQualifier = "_"
+        %else
+            %assign localYQualifier = "."
+        %endif
+        %with System[sysIdx]
+            %with outportBlock
+                %if SLibExternalOutputIsVirtual(outportBlock)
+                    %assign sigName = LibBlockInputSignal(0, "", "", 0)
+                %else
+                    %assign sigName = Identifier
+                %endif
+            %endwith
+        %endwith
+
+        %assign isMsg = FEVAL("regexpi",dataType,"_msg$")
+        %%
+        %% check to see if the element is a struct.  If yes, process it.
+        %%
+        %assign cg = CGTypes.CGType[extOut.CGTypeIdx]
+        %if !ISEMPTY(isMsg) && ISEQUAL(cg.Constructor,"struct")
+            %assign sigAddress = "&%<tOutput>%<localYQualifier>%<sigName>"
+            %<add_table_entry(csc_name_upper, sigName, sigAddress, dataType, 1, tmpFcnBuf, 0)>
+        %elseif ISEQUAL(cg.Constructor,"struct")
+            %assign struct_name = "%<tOutput>%<localYQualifier>%<sigName>."
+            %<process_struct(cg, struct_name, 1, csc_name_upper, tmpFcnBuf, 0)>
+        %else
+            %if !ISEQUAL(cg.Constructor,"struct")
+                %warning  %<tOutput>%<localYQualifier>%<sigName>, type=%<dataType> isn't of type struct.  Not placed in CFE Msg Table. (csl_interface.tlc).
+            %else
+                %warning  %<tOutput>%<localYQualifier>%<sigName>, type=%<dataType> doesn't have "_msg" suffix.  Not placed in CFE Msg Table. (csl_interface.tlc).
+            %endif
+        %endif
+    %endforeach
+    {0,0,0,0,0}
+};
+/* End output_msg_tbl */
+
+#define SL_NUM_OUTPUTS (sizeof(output_msg_tbl)/sizeof(SL_Msg_t) - 1)
+
+/* Begin input_msg_tbl */
+/* Place each input signal that is a bus in %<tInput> into the Receive Table */
+static SL_Msg_t input_msg_tbl[] = {
+
+    %openfile tmpInputQueueBuf
+/* Input command queues */
+    %selectfile tmpFcnBuf
+    %%
+    %% loop through input signals.  For each one that is a bus, make an entry in the msg table
+    %%
+    %foreach loopId = ExternalInputs.NumExternalInputs
+        %assign extInp = ExternalInputs.ExternalInput[loopId]
+        %assign dataType = SLibGetRecordDataTypeName(extInp, "")
+        %assign sigName = extInp.Identifier
+        %assign isMsg = FEVAL("regexpi",dataType,"_msg$")
+        %assign isTimeMsg = FEVAL("regexpi", dataType, "^cfe_time_msg$")
+
+        %if MultiInstanceERTCode && !RootIOStructures
+            %assign localUQualifier = "_"
+        %else
+            %assign localUQualifier = "."
+        %endif
+        %%
+        %% If the bus type is cfe_time_msg, then it needs a bit of special handling
+        %%
+        %if !ISEMPTY(isTimeMsg)
+            %openfile tmpDefBuf
+#define NEED_TIME
+            %closefile tmpDefBuf
+            %<SLibSetModelFileAttribute(::hFile, "Defines", tmpDefBuf)>
+        %endif
+        %%
+        %% check to see if the element is a struct.  If yes, process it.
+        %%
+        %% use a very simple rule here.  If the input signal is a bus/struct and it's
+        %% type has the suffix "_msg", print it to the MsgTable.
+        %% If it is a bus/struct but doesn't have the suffix, recurse through the
+        %% bus to look for nested structs with type _msg and add those to the table.
+        %%
+        %assign cg = CGTypes.CGType[extInp.CGTypeIdx]
+
+        %if !ISEMPTY(isMsg) && ISEQUAL(cg.Constructor,"struct")
+            %assign sigAddress = "&%<tInput>%<localUQualifier>%<sigName>"
+            %<add_table_entry(csc_name_upper, sigName, sigAddress, dataType, 0, tmpFcnBuf, tmpInputQueueBuf)>
+        %elseif ISEQUAL(cg.Constructor,"struct")
+            %assign struct_name = "%<tInput>%<localUQualifier>%<sigName>."
+            %<process_struct(cg, struct_name, 0, csc_name_upper, tmpFcnBuf, tmpInputQueueBuf)>
+        %else
+            %if !ISEQUAL(cg.Constructor,"struct")
+                %warning  %<tInput>%<localUQualifier>%<sigName>, type=%<dataType> isn't of type struct.  Not placed in CFE Msg Table. (csl_interface.tlc).
+            %else
+                %warning  %<tInput>%<localUQualifier>%<sigName>, type=%<dataType> doesn't have "_msg" suffix.  Not placed in CFE Msg Table. (csl_interface.tlc).
+            %endif
+        %endif
+    %endforeach
+    {0,0,0,0,0}
+};
+/* End input_msg_tbl */
+
+#define SL_NUM_INPUTS (sizeof(input_msg_tbl)/sizeof(SL_Msg_t) - 1)
+
+
+    %closefile tmpInputQueueBuf
+    %<SLibSetModelFileAttribute(::hFile, "Definitions", tmpInputQueueBuf)>
+
+#ifdef NEED_PARAMETER_TBL
+CFE_TBL_FILEDEF(%<LibGetParametersStruct()>, %<csc_name_upper>.parameter_tbl, %<csc_name_upper> Default Parameters, %<csc_name>_params.tbl)
+#endif
+    %closefile tmpFcnBuf
+    %<SLibSetModelFileAttribute(::hFile, "Definitions", tmpFcnBuf)>
+    %openfile tmpFcnBuf
+
+static void sl_mdl_init(void) {
+    %<FcnPackModelDataIntoRTM()>
+
+    %<LibCallModelInitialize()>
+}
+
+static void sl_mdl_step(void) {
+    %<LibCallModelStep(0)>
+}
+
+static void sl_mdl_term(void) {
+    %<LibCallModelTerminate()>
+}
+
+    %closefile tmpFcnBuf
+    %<SLibSetModelFileAttribute(::hFile, "Functions", tmpFcnBuf)>
+%endfunction
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  main
+%%  Abstract:  Call various functions to generate cfe interface.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%<create_csc_sl_interface()>
+%<create_csc_sl_events()>

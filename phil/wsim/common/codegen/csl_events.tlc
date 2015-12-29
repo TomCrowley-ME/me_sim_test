@@ -1,0 +1,124 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  create_csc_sl_events
+%%  Abstract:  Creates the csc_sl_events.h file, which defines the events of the
+%%             generated code.
+%%
+%% Copyright 2010 - 2015 Moon Express, Inc.
+%% All Rights Reserved.
+%%
+%% PROPRIETARY DATA NOTICE:
+%% The data herein include Proprietary Data and are restricted under the
+%% Data Rights provisions of Lunar CATALYST Space Act Agreement
+%% No. SAAM ID# 18251 and Reimbursable Space Act Agreement No.SAA2-402930.
+%% All information contained herein is and remains proprietary to and the
+%% property of Moon Express, Inc. Dissemination of this information or
+%% reproduction of this material is strictly forbidden unless prior
+%% written permission is obtained from Moon Express, Inc.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%function create_csc_sl_events() Output
+    %assign ::eventFile = LibCreateSourceFile("Source","Custom","csc_sl_events")
+
+    %openfile tmpDefBuf
+    %openfile tmpFcnBuf
+    %openfile tmpFltrBuf
+    %selectfile tmpFltrBuf
+static CFE_EVS_BinFilter_t sl_event_filters[] = {
+    %selectfile tmpFcnBuf
+static void csl_event_signal(void) {
+    %assign used_enumerations = []
+    %% Start out by looking for systems that are from the util_event_lib library
+    %foreach sysIdx = CompiledModel.NumSystems
+    %with CompiledModel.System[sysIdx]
+        %if EXISTS(LibraryName) && LibraryName == "util_event_lib"
+            %% Found an event block. Begin by finding its corresponding subsystem,
+            %% from which we can get its RTWdata parameters. We need those to
+            %% know if we're dealing with any enumerated signals.
+            %assign graphicalSys = CompiledModel.System[CallSites[0][2]]
+            %assign subSys = graphicalSys.Block[CallSites[0][3]]
+
+            %assign enumerated_signals = FEVAL("strsplit", subSys.RTWdata.enum_types, "|", "CollapseDelimiters", 0)
+
+            %% Now that we have the index of an event system, we need to iterate
+            %% over the global block outputs looking for any signals that originated
+            %% in this system. As we do so, we'll try to identify the event flag
+            %% and build up a formatted argument list for CFE_EVS_SendEvent
+            %assign argument_string = ""
+            %assign argument_num = 0
+            %foreach boIdx = BlockOutputs.NumGlobalBlockOutputs
+                %assign bo = BlockOutputs.GlobalBlockOutput[boIdx]
+                %if EXISTS(bo.SysCsIdx) && bo.SysCsIdx[0] == sysIdx
+                    %% Got a system match, now we need to query for its identifier
+                    %% and see exactly what it is
+                    %assign identifier = LibGetRecordIdentifier(bo)
+                    %if !ISEMPTY(FEVAL("regexp",identifier,"^event_flag"))
+                        %assign event_flag = identifier
+                    %else
+                        %% Currently the only global signals that are not flags
+                        %% are pieces of data for the argument list, so we'll
+                        %% assume that and just tack them on. Note that we're
+                        %% also assuming that the arguments are given to us
+                        %% in order here -- so far that has always been the
+                        %% case but we'll see
+                        %if !ISEMPTY(enumerated_signals[argument_num])
+                            %% This is an enumeration, so call the decode function for it
+                            %assign argument_string = argument_string + ", get_%<enumerated_signals[argument_num]>_string(%<tBlockIO>.%<identifier>)"
+                            %assign used_enumerations = used_enumerations + enumerated_signals[argument_num]
+                        %else
+                            %% Regular numeric output, just give the value
+                            %assign argument_string = argument_string + ", %<tBlockIO>.%<identifier>"
+                        %endif
+                        %assign argument_num = argument_num + 1
+                    %endif
+                %endif
+            %endforeach
+
+            %assign event_id_name = FEVAL("upper",subSys.Identifier) + "_EID"
+            %selectfile tmpDefBuf
+#define %<event_id_name> %<subSys.RTWdata.id>
+            %selectfile tmpFltrBuf
+            %% If the current event is marked for filtering by EVS, add it to the filter list
+            %if subSys.RTWdata.filtered
+    { %<event_id_name>, %<subSys.RTWdata.mask> },
+            %endif
+            %selectfile tmpFcnBuf
+    if (%<tBlockIO>.%<event_flag>) {
+        CFE_EVS_SendEvent(%<event_id_name>, %<subSys.RTWdata.severity>, "%<subSys.RTWdata.message>"%<argument_string>);
+        CSL_AppData.EventCounter++;
+    }
+        %endif
+    %endwith
+    %endforeach
+}
+    %closefile  tmpFcnBuf
+    %closefile  tmpDefBuf
+    %selectfile tmpFltrBuf
+    {0, 0}
+};
+
+#define SL_NUM_FILTERED_EVENTS (sizeof(sl_event_filters)/sizeof(CFE_EVS_BinFilter_t) - 1)
+    %closefile  tmpFltrBuf
+
+    %openfile   tmpDecodeFcnBuf
+    %selectfile tmpDecodeFcnBuf
+    %% Build up a decoding function for each enumerated type
+    %assign used_enumerations = FEVAL("unique", used_enumerations, "rows")
+    %foreach enumIdx = SIZE(used_enumerations, 1)
+static const char* get_%<used_enumerations[enumIdx]>_string(uint8 raw_value) {
+    switch(raw_value) {
+        %assign enum_values = FEVAL("get_enum_values", used_enumerations[enumIdx])
+        %assign enum_strings = FEVAL("upper", FEVAL("get_enum_strings", used_enumerations[enumIdx]))
+        %foreach valueIdx = SIZE(enum_values, 1)
+        case %<enum_values[valueIdx]>: return "%<enum_strings[valueIdx]>";
+        %endforeach
+        default: return "ENUM_INVALID";
+    }
+}
+    %endforeach
+    %closefile tmpDecodeFcnBuf
+    %<SLibSetModelFileAttribute(::eventFile, "Defines", tmpDefBuf)>
+    %<SLibSetModelFileAttribute(::eventFile, "Declarations", tmpFltrBuf)>
+    %<SLibSetModelFileAttribute(::eventFile, "Functions", tmpDecodeFcnBuf)>
+    %<SLibSetModelFileAttribute(::eventFile, "Functions", tmpFcnBuf)>
+%endfunction

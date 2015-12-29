@@ -1,0 +1,50 @@
+
+/* ####################### COMMON ####################### */
+
+#define BOOTCFG_FREQ_HZ		(BOOTCFG_FREQ_KHZ*1000)
+
+/* Timer */
+#define BOOTCFG_TIMER1_SCALER	(BOOTCFG_FREQ_KHZ+500)/1000
+
+/* UART */
+#define BOOTCFG_UART_SCALER \
+	((((BOOTCFG_FREQ_HZ*10)/(BOOTCFG_UART_BAUDRATE*8))-5)/10)
+
+
+#if (BOOTCFG_UART_FLOWCTRL == TRUE)
+#define BOOTCFG_UART_CTRL	(0x3 | (1<<6))
+#else
+#define BOOTCFG_UART_CTRL	(0x3)
+#endif
+
+/* ####################### LEON3 ####################### */
+
+/* MCTRL MEMCFG 1 */
+/* MCTRL MEMCFG 2 */
+/* MCTRL MEMCFG 3 */
+
+/* GRLIB SDRAM controller */
+
+/* DDR2  - Settle time */
+#ifndef BOOTCFG_DDR2_DELAY_US
+#define BOOTCFG_DDR2_DELAY_US		1200	/* Wait 1.2ms for external DDR2 module to settle */
+#endif
+#define BOOTCFG_DDR2_DELAY_CLK_LOOP	5
+#define BOOTCFG_DDR2_DELAY_CLK		(BOOTCFG_FREQ_KHZ*BOOTCFG_DDR2_DELAY_US/1000)
+#define BOOTCFG_DDR2_DELAY_LOOPS	(BOOTCFG_DDR2_DELAY_CLK/BOOTCFG_DDR2_DELAY_CLK_LOOP+1)
+
+/* DDR  - Settle time */
+#ifndef BOOTCFG_DDR_DELAY_US
+#define BOOTCFG_DDR_DELAY_US		1200	/* Wait 1.2ms for external DDR module to settle */
+#endif
+#define BOOTCFG_DDR_DELAY_CLK_LOOP	5
+#define BOOTCFG_DDR_DELAY_CLK		(BOOTCFG_FREQ_KHZ*BOOTCFG_DDR_DELAY_US/1000)
+#define BOOTCFG_DDR_DELAY_LOOPS		(BOOTCFG_DDR_DELAY_CLK/BOOTCFG_DDR_DELAY_CLK_LOOP+1)
+
+/* FTMCTRL MEMCFG 1 */
+/* FTMCTRL MEMCFG 2 */
+/* FTMCTRL MEMCFG 3 */
+
+/* DSU */
+#define BOOTCFG_DSU3_ADDRESS 0x90000000
+

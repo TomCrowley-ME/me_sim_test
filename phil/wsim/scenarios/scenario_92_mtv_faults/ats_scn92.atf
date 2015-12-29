@@ -1,0 +1,8 @@
+2014-121-12:00:00 /est_set_reference_frame frame=TOPOCENTRIC
+2014-121-12:00:10 /cmp_set_mode mode=SAFE, submode=NONE
+2014-121-12:00:10 /cmp_set_mode mode=SURFACE, submode=NONE
+2014-121-12:00:11 /cmp_disable_active_controller duration=60000
+2014-121-12:00:12 /act_enable_thruster_set thrusters=COARSE, duration=15000
+2014-121-12:00:12 /est_mtv_zero_topocentric_position
+2014-121-12:00:12 /est_force_active_integration duration=120000
+2014-121-12:00:13 /act_fire_single_thruster thruster=COARSE1, duration=30

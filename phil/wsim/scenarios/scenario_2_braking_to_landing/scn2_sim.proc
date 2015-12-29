@@ -1,0 +1,39 @@
+proc scn2_sim
+
+; ; ----Scenario Time: December 20, 2015 17:56:05 1 min prior to start of Braking burn from wsim Deorbit to Landing Scenario 3 
+Parameters_csc_sim.ini_year = 2015                                           
+Parameters_csc_sim.ini_doy = 354
+Parameters_csc_sim.ini_hour = 17
+Parameters_csc_sim.ini_minute = 56
+Parameters_csc_sim.ini_seconds = 05
+
+; Initial Position Moon Centered J2000 (m)
+Parameters_csc_sim.ini_position_v[0] = -85126.6294270481
+Parameters_csc_sim.ini_position_v[1] = -437053.082981264
+Parameters_csc_sim.ini_position_v[2] = -1690582.42808393
+
+; Initial Velocity Moon Centered J2000 (m/s)
+		
+Parameters_csc_sim.ini_velocity_v[0] = 170.10785201462
+Parameters_csc_sim.ini_velocity_v[1] = 1663.41125618171 
+Parameters_csc_sim.ini_velocity_v[2] = -434.212492567611
+
+; define landing site lat/long/alt
+Parameters_csc_sim.ini_topocentric_latitude =  -60
+Parameters_csc_sim.ini_topocentric_longitude =  60
+Parameters_csc_sim.ini_alt_wrt_meanrad = 9.093
+
+; Approach from -Xtopo in flight
+Parameters_csc_sim.ini_rotx = -60*pi/180
+Parameters_csc_sim.ini_roty = -60.0*pi/180
+Parameters_csc_sim.ini_rotz = 150*pi/180
+
+; Initial spacecraft body rate (rad/sec)
+Parameters_csc_sim.ini_rate_v[0] = 0.0
+Parameters_csc_sim.ini_rate_v[1] = 0.0
+Parameters_csc_sim.ini_rate_v[2] = 0.0
+
+; lander initial mass (kg)
+Parameters_csc_sim.mpl_initial_mass = 347.7
+
+endproc

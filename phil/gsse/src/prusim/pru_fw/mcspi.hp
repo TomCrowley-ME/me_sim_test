@@ -1,0 +1,84 @@
+// *****************************************************************************/
+// file:     mcspi.hp
+//
+// purpose:  Constants and definitions for SPI interface
+//
+// *****************************************************************************/
+
+#ifndef _mcspi_hp_
+#define _mcspi_hp_
+
+#define CONST_MCSPI1 c16
+
+#define MCSPI_READ  (0x00)
+#define MCSPI_WRITE (0x01)
+
+#define MCSPI_SYSCONFIG (0x0110)
+#define MCSPI_SYSSTATUS (0x0114)
+#define MCSPI_IRQSTATUS (0x0118)
+#define MCSPI_IRQENABLE (0x011C)
+#define MCSPI_MODULCTRL (0x0128)
+
+#define MCSPI_CH0CONF   (0x012C)
+#define MCSPI_CH0STAT   (0x0130)
+#define MCSPI_CH0CTRL   (0x0134)
+#define MCSPI_TX0       (0x0138)
+#define MCSPI_RX0       (0x013C)
+
+// System Config Register Bits
+#define MCSPI_SYSCFG_SOFTRESET (0x02)
+
+// System Status Register Bit Numbers
+#define MCSPI_SYSSTAT_RESETDONE (0)
+
+// Module Control Register Bits
+#define MCSPI_MODUL_SINGLE (0x01)
+#define MCSPI_MODUL_3PIN   (0x02)
+
+// Channel Config Register Bits
+#define MCSPI_CHCONF_PHA          (0x00000001)
+#define MCSPI_CHCONF_POL          (0x00000002)
+#define MCSPI_CHCONF_EPOL         (0x00000040)
+#define MCSPI_CHCONF_DPE0         (0x00010000)
+#define MCSPI_CHCONF_TURBO        (0x00080000)
+#define MCSPI_CHCONF_CLKG         (0x20000000)
+
+// Channel Config Register Bit Numbers
+#define MCSPI_CHCONF_FORCE_SPIEN  (20)
+
+// Channel Config Clock Divisor Settings
+#define MCSPI_CHCONF_CLKD_2 (2 << 2)
+
+// Channel Config Word Length Settings
+#define MCSPI_CHCONF_WL_8   (7 << 7)
+
+// Channel Control Register Bits
+#define MCSPI_CHCTRL_EN     (0x01)
+#define MCSPI_CHCTRL_DIS    (0x00)
+
+// Channel Status Register Bit Numbers
+#define MCSPI_CHSTAT_RXS    (0)
+#define MCSPI_CHSTAT_TXS    (1)
+#define MCSPI_CHSTAT_EOT    (2)
+
+// Structure Definitions
+.struct SpiBuffer
+    .u32 address
+    .u16 length
+    .u8  cmd
+    .u8  mode
+.ends
+
+.assign SpiBuffer, r26, r27, spi_buffer
+
+.struct SpiRegisters
+    .u16 ch0conf
+    .u16 ch0stat
+    .u16 ch0ctrl
+    .u16 tx0
+    .u16 rx0
+.ends
+
+.assign SpiRegisters, r23, r25.w0, spi_regs
+
+#endif //_mcspi_hp_

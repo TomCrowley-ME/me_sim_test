@@ -1,0 +1,20 @@
+2014-121-12:00:00 /est_set_reference_frame frame=TOPOCENTRIC
+2014-121-12:00:10 /cmp_set_mode mode=SAFE, submode=NONE
+2014-121-12:00:10 /cmp_set_mode mode=SURFACE, submode=NONE
+2014-121-12:00:11 /act_mtv_pressurant_valve_enable
+2014-121-12:00:11 /act_mtv_set_htp_tank_pressurant_valve_state state=OPEN
+2014-121-12:00:11 /act_mtv_set_htp_tank_pressurant_vent_valve_state state=CLOSE
+2014-121-12:00:11 /act_mtv_set_htp_tank_pressurant_valve_state state=OPEN
+2014-121-12:00:11 /act_mtv_set_htp_main_engine_feed_valve_state state=OPEN
+2014-121-12:00:15 /cmp_disable_active_controller duration=60000
+2014-121-12:00:15 /sc_startrts rts_id=rts_50_coarse_manual_pulse
+2014-121-12:00:30 /sc_startrts rts_id=rts_52_coarse_thruster_cmd_checkout
+2014-121-12:01:01 /act_mtv_set_htp_tank_pressurant_vent_valve_state state=OPEN
+2014-121-12:01:01 /act_mtv_set_htp_main_engine_purge_valve_state state=OPEN
+2014-121-12:01:10 /act_mtv_set_htp_main_engine_purge_valve_state state=CLOSE
+2014-121-12:01:11 /act_mtv_pressurant_valve_disable
+2014-121-12:01:12 /act_mtv_set_htp_main_engine_purge_valve_state state=OPEN
+2014-121-12:01:15 /act_mtv_pressurant_valve_enable
+2014-121-12:01:15 /act_mtv_set_htp_tank_pressurant_valve_state state=OPEN
+2014-121-12:01:15 /act_mtv_set_htp_tank_pressurant_vent_valve_state state=CLOSE
+

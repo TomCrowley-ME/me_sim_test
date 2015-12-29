@@ -1,0 +1,2 @@
+cd("/srv/nfs/thehighseas")
+taskSpawn("startCfe", 10, 0x01000000, 16384, startCfeCore, "cfe-core.o", 0, "")

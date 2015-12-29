@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wrxml>
+    <properties platform="VxWorks" platform_name="vxworks-6.9" root="1" type="VxWorksSourceBuildProject"/>
+    <attributes>
+        <mapAttribute>
+            <intAttribute key="BuildSupportEnabled" value="2"/>
+            <stringAttribute key="BLD::Info|cmd" value="make"/>
+            <intAttribute key="BLD::Info|refreshType" value="3"/>
+            <listAttribute key="BLD::Info|GlobalMacros">
+                <stringAttribute value="VSB_DIR"/>
+                <stringAttribute value="CPU"/>
+                <stringAttribute value="TOOL"/>
+                <stringAttribute value="ADDED_CFLAGS"/>
+            </listAttribute>
+            <stringAttribute key="BLD::Info|GlobalMacro|VSB_DIR" value="$(PRJ_ROOT_DIR)"/>
+            <stringAttribute key="BLD::Info|GlobalMacro|CPU" value=""/>
+            <stringAttribute key="BLD::Info|GlobalMacro|TOOL" value=""/>
+            <stringAttribute key="BLD::Info|GlobalMacro|ADDED_CFLAGS" value=""/>
+        </mapAttribute>
+    </attributes>
+</wrxml>

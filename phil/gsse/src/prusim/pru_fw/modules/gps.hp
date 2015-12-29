@@ -1,0 +1,22 @@
+// *****************************************************************************/
+// file:     gps.hp
+//
+// purpose:  Constants and definitions for the GPS module
+//
+// *****************************************************************************/
+
+#ifndef _gps_hp_
+#define _gps_hp_
+
+#include "../gpio.hp"
+#include "radio.hp"
+
+// Device Slave Select Pin Settings
+#define GPS_GPIO_BASE    (RADIO_GPIO_BASE)
+#define GPS_GPIO_MASK    (RADIO_GPIO_MASK)
+
+// Device SPI Transfer Settings
+#define GPS_WRITE_CMD    (0x9A)
+#define GPS_WRITE_LENGTH (82)
+
+#endif //_gps_hp_

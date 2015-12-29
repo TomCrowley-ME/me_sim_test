@@ -1,0 +1,6 @@
+2015-119-14:09:05 /est_set_reference_frame frame=TOPOCENTRIC
+2015-119-14:09:05 /cmp_set_mode mode=SURFACE, submode=NONE
+2015-119-14:09:05 /lc_set_actionpoint_state ap=5, state=PASSIVE
+2015-119-14:09:06 /cmp_set_mode mode=LANDING, submode=LANDING_TERMINAL
+2015-119-14:09:06 /cnt_select_thruster_set thrusters=COARSE
+2015-119-14:09:20 /sc_startrts rts_id=rts_40_takeoff_hover_land

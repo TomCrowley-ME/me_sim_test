@@ -1,0 +1,8 @@
+CXXFLAGS += -D_VXWORKS_OS_ -g -O0 -Iinclude -D_WRS_KERNEL -DCPU=PPC440 -mcpu=440 -mstrict-align -fno-builtin -fvolatile -D_PPC -D__PPC__ -D_EMBED_
+CXX = c++ppc
+
+libminopencv.o: algorithm.o orb.o fast.o fast_score.o detectors.o descriptors.o matchers.o keypoint.o imgwarp.o convert.o fundam.o matrix.o undistort.o calibration.o matop.o matmul.o copy.o histogram.o smooth.o alloc.o drawing.o arithm.o datastructs.o lapack.o array.o mathfuncs.o system.o filter.o parallel.o modelest.o stat.o pyramids.o utils.o color.o thresh.o
+	ldppc -r $^ -o $@
+
+clean:
+	rm -f *.o

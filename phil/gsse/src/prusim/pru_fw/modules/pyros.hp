@@ -1,0 +1,21 @@
+// *****************************************************************************/
+// file:     pyros.hp
+//
+// purpose:  Constants and definitions for Pyros Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _pyros_hp_
+#define _pyros_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define PYROS_GPIO_BASE    GPIO2_BASE
+#define PYROS_GPIO_MASK    (1 << 11)
+
+// Device SPI Transfer Settings
+#define PYROS_WRITE_CMD     (0x00)
+#define PYROS_WRITE_LENGTH  (0x50)
+
+#endif //_pyros_hp_

@@ -1,0 +1,15 @@
+2015-119-14:09:35.100 (30.10)  CSC_CMP   20  INFO       Mode changed from STARTUP:NONE to SURFACE:NONE                                                                            
+2015-119-14:09:35.300 (30.30)  CSC_LC    21  INFO       AP 5 set to PASSIVE                                                                                                       
+2015-119-14:09:36.000 (31.00)  CSC_CMP   20  INFO       Mode changed from SURFACE:NONE to LANDING:LANDING_TERMINAL                                                                
+2015-119-14:09:36.001 (31.00)  CSC_ACT   26  INFO       Coarse thrusters enabled                                                                                                  
+2015-119-14:09:36.001 (31.00)  CSC_ACT   26  INFO       Fine thrusters enabled                                                                                                    
+2015-119-14:09:40.000 (35.00)  CSC_SC    20  INFO       Starting RTS #40                                                                                                          
+2015-119-14:09:47.200 (42.20)  CSC_LC    21  INFO       AP 5 set to ACTIVE                                                                                                        
+2015-119-14:10:05.000 (60.00)  CSC_SC    21  INFO       Completed RTS #40                                                                                                         
+2015-119-14:10:18.700 (73.70)  CSC_LC    25  INFO       Transitioning to surface mode!                                                                                            
+2015-119-14:10:18.700 (73.70)  CSC_LC    21  INFO       AP 5 set to PASSIVE                                                                                                       
+2015-119-14:10:18.700 (73.70)  CSC_SC    20  INFO       Starting RTS #13                                                                                                          
+2015-119-14:10:18.700 (73.70)  CSC_SC    21  INFO       Completed RTS #13                                                                                                         
+2015-119-14:10:18.700 (73.70)  CSC_CMP   20  INFO       Mode changed from LANDING:LANDING_TERMINAL to SURFACE:NONE                                                                
+2015-119-14:10:18.701 (73.70)  CSC_ACT   26  INFO       Coarse thrusters disabled                                                                                                 
+2015-119-14:10:18.701 (73.70)  CSC_ACT   26  INFO       Fine thrusters disabled                                                                                                   

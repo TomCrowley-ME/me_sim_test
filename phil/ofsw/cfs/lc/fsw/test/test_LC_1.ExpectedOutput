@@ -1,0 +1,60 @@
+test_LC_1: TEST START
+UTF Info: Task <LC_APP> added to Task Tbl.
+SysLog:2135-313-01:49:36.99999 ES Startup: LC_APP loaded and created
+UTF Info: App <LC_APP> added to App Tbl.
+INFO EVENT ID=5 LC: RESET command
+UTF INFO: CFE_TBL_Register called for new table LC_APP.WDT.
+Call to CFE_TBL_ValidateAccess returned 0
+Call to CFE_TBL_LoadFromFile returned 0
+INFO EVENT ID=36 LC_APP validation successful for Inactive 'LC_APP.WDT'
+INFO EVENT ID=37 LC_APP Successfully Updated 'LC_APP.WDT'
+UTF INFO: CFE_TBL_Register called for new table LC_APP.ADT.
+Call to CFE_TBL_ValidateAccess returned 0
+Call to CFE_TBL_LoadFromFile returned 0
+INFO EVENT ID=36 LC_APP validation successful for Inactive 'LC_APP.ADT'
+INFO EVENT ID=37 LC_APP Successfully Updated 'LC_APP.ADT'
+INFO EVENT ID=1 LC App Initialized. Version 1.0.0.0
+ Input file lc_script1.in is being read.
+
+ 0 Simulate Empty Pipe
+
+ Sending LC_NOOP
+< CMD: APID:008d SEQ:0 LEN:8 FC:0 PKT:8d18 00c0 0100 0000 
+INFO EVENT ID=4 LC: NOOP command
+
+ 0 Simulate Empty Pipe
+
+
+ Sending LC_NOOP
+< CMD: APID:008d SEQ:0 LEN:8 FC:0 PKT:8d18 00c0 0100 0000 
+INFO EVENT ID=4 LC: NOOP command
+
+ 0 Simulate Empty Pipe
+
+ Sending HK Request
+< CMD: APID:009d SEQ:0 LEN:8 FC:0 PKT:9d18 00c0 0100 0000 
+LC HOUSEKEEPING DATA:
+CurrentLcState = 1
+CmdCount = 2
+ErrCount = 0
+WpAllEvalTrueCount = 0
+WpAllEvalFalseCount = 0
+ApAllPassCount = 0
+ApAllFailCount = 0
+AllRTSExecCount = 0
+WpLastEvalResult: 
+WpEvalCount: 
+WpFalseToTrueCount: 
+WpConsecutiveTrueCount: 
+WpCumulativeTrueCount: 
+ApLastEvalResult: 
+ApCurrentState: 
+ApPassiveCount: 
+ApFailToPassCount: 
+ApPassToFailCount: 
+ApConsecutiveFailCount: 
+ApCumulativeFailCount: 
+ApCumulativeRTSExecCount: 
+
+ 0 Simulate Empty Pipe
+

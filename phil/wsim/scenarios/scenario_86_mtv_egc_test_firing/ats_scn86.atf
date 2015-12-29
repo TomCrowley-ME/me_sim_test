@@ -1,0 +1,22 @@
+2014-121-12:00:00 /est_set_reference_frame frame=TOPOCENTRIC
+2014-121-12:00:10 /cmp_set_mode mode=SAFE, submode=NONE
+2014-121-12:00:10 /cmp_set_mode mode=SURFACE, submode=NONE
+2014-121-12:00:10 /est_mtv_set_propellant_mass prop_mass=100
+2014-121-12:00:12 /act_mtv_pressurant_valve_enable
+2014-121-12:00:12 /act_mtv_set_htp_tank_pressurant_vent_valve_state state=CLOSE
+2014-121-12:00:12 /act_mtv_set_htp_tank_pressurant_valve_state state=OPEN
+2014-121-12:00:12 /act_mtv_set_htp_main_engine_feed_valve_state state=OPEN
+2014-121-12:00:14 /egc_set_weight_offset percent=83.333333
+2014-121-12:00:15 /egc_start_thrust_output
+2014-121-12:00:20 /egc_controller_disable duration=30000
+2014-121-12:00:25 /egc_set_throttle_position throttle=60000
+2014-121-12:00:30 /egc_set_throttle_position throttle=5
+2014-121-12:00:35 /egc_set_throttle_position throttle=65535
+2014-121-12:00:40 /egc_set_throttle_position throttle=0
+2014-121-12:00:45 /egc_set_throttle_position throttle=40000
+2014-121-12:01:00 /egc_set_weight_offset percent=1.0
+2014-121-12:01:05 /egc_set_weight_offset percent=0.0
+2014-121-12:01:06 /egc_set_weight_offset percent=60.0
+2014-121-12:01:10 /egc_terminate_thrust_output
+2014-121-12:01:10 /act_mtv_set_htp_tank_pressurant_vent_valve_state state=OPEN
+2014-121-12:01:10 /act_mtv_set_htp_main_engine_purge_valve_state state=OPEN

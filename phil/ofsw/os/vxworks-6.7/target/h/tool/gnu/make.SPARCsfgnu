@@ -1,0 +1,30 @@
+
+CPU	        = SPARC
+TOOL	        = sfgnu
+
+include $(TGT_DIR)/h/tool/gnu/defs.sparc
+
+#LD_COLLAPSE_SECTIONS =
+
+CPU	        = SPARC
+TOOL	        = sfgnu
+
+MAKETAIL	=
+CLEANTAIL	=
+
+CC_ARCH_SPEC   += $(SPARC_OPT_CC_FLAGS) -ffloat-int-mode -msoft-float -mv8
+
+CC_OPTIM_DRIVER = $(SPARC_OPT_CC_FLAGS) -fno-builtin -fvolatile
+CC_OPTIM_NORMAL = $(SPARC_OPT_CC_FLAGS) -O2 -fstrength-reduce -fno-builtin
+CC_OPTIM_TARGET = $(SPARC_OPT_CC_FLAGS) -O2 -fvolatile -fno-builtin
+
+CFLAGS         += $(SPARC_OPT_CC_FLAGS) -gdwarf-2 -msoft-float -mv8
+
+TOOLENV         = sparc
+VX_CPU_FAMILY   = sparc
+ARCH_DIR        = sparc
+ABI_SPEC        = sparc
+
+CF		=
+
+# end of make.SPARCgnu

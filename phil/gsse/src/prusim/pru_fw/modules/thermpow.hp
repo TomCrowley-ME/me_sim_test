@@ -1,0 +1,21 @@
+// *****************************************************************************/
+// file:     thermpow.hp
+//
+// purpose:  Constants and definitions for Thermal/Power Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _thermpow_hp_
+#define _thermpow_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define THERMPOW_GPIO_BASE    GPIO0_BASE
+#define THERMPOW_GPIO_MASK    (1 << 26)
+
+// Device SPI Transfer Settings
+#define THERMPOW_AD_WRITE_CMD     (0xC7)
+#define THERMPOW_AD_WRITE_LENGTH  (250)
+
+#endif //_thermpow_hp_

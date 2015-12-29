@@ -1,0 +1,15 @@
+2014-352-15:00:00 /est_set_reference_frame frame=TOPOCENTRIC
+2014-352-15:00:00 /est_mtv_zero_topocentric_position
+2014-352-15:00:00 /est_compute_static_bias duration=12000
+2014-352-15:00:01 /lc_set_actionpoint_state ap=5, state=ACTIVE
+2014-352-15:00:01 /lc_set_actionpoint_state ap=17, state=ACTIVE
+2014-352-15:00:01 /lc_set_actionpoint_state ap=18, state=ACTIVE
+2014-352-15:00:05 /cmp_set_mode mode=SAFE, submode=NONE
+2014-352-15:00:05 /cmp_set_mode mode=SURFACE, submode=NONE
+2014-352-15:00:05 /est_mtv_set_propellant_mass prop_mass=38.72
+2014-352-15:00:06 /act_mtv_pressurant_valve_enable
+2014-352-15:00:06 /act_mtv_set_htp_tank_pressurant_vent_valve_state state=CLOSE
+2014-352-15:00:06 /act_mtv_set_htp_tank_pressurant_valve_state state=OPEN
+2014-352-15:00:06 /gdn_set_inertial_secondary_pointing_cmd  x=0.297188929, y=0.372805286, z=0.879030693
+2014-352-15:00:07 /egc_set_weight_offset percent=100.
+2014-352-15:00:13 /sc_startrts rts_id=rts_41_mtv_liftoff_hover

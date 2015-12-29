@@ -1,0 +1,37 @@
+%-------------------------------------------------------------------------%
+% wsim_prefs.m.example                                                    %
+%                                                                         %
+% Example wsim prefs file. Used to set personal preferences for things    %
+% (eg, colors). Scripts that use variables set in this file should first  %
+% check for this file's existence and if it does, run it. Otherwise the   %
+% script should set the default values for those variables.               %
+%                                                                         %
+% TO USE: Customize to your liking and save as wsim_prefs.m               %
+%                                                                         %
+% 11/4/13                                                                 %
+% mikestewart@moonexpress.com                                             %
+%-------------------------------------------------------------------------%
+
+% Sets the background fill color for topocentric parts of parts.
+% Acceptable values: any valid MATLAB ColorSpec
+pref_topo_plot_bg_color = 'g';
+
+% Sets the background transparency for topocentric parts of parts.
+% Acceptable values: 0.0-1.0
+pref_topo_plot_bg_alpha = 0.05;
+
+% Global test plot enable
+pref_plot_test_data = 1;
+
+% Sets which plots you want to see as defaults
+% Acceptable values: 0 || 1
+pref_plot_traj_values = 1;
+pref_plot_pos_vel_errors = 1;
+pref_plot_attitude_errors = 1;
+pref_plot_phase_plane = 1;
+pref_plot_lla = 1;
+pref_plot_prop_data = 1;
+
+% Enables exporting figures to powerpoint
+pref_export_to_ppt = 1;
+

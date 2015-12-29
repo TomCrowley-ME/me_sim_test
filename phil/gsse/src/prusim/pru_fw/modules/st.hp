@@ -1,0 +1,21 @@
+// *****************************************************************************/
+// file:     st.hp
+//
+// purpose:  Constants and definitions for Star Tracker Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _st_hp_
+#define _st_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define ST_GPIO_BASE    GPIO1_BASE
+#define ST_GPIO_MASK    (1 << 29)
+
+// Device SPI Transfer Settings
+#define ST_WRITE_CMD     (0x00)
+#define ST_WRITE_LENGTH  (0x54)
+
+#endif //_st_hp_

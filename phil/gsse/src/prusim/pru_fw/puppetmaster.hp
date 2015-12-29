@@ -1,0 +1,100 @@
+// *****************************************************************************/
+// file:     puppetmaster.hp
+//
+// purpose:  Common constants and definitions for puppetmaster firmware
+//
+// *****************************************************************************/
+
+#ifndef _puppetmaster_hp_
+#define _puppetmaster_hp_
+
+// PRU Constant Table Names
+#define CONST_PRU_INTC c0
+#define CONST_PRU_CFG  c4
+#define CONST_PRU_DRAM c24
+
+// PRU Config Register Offsets
+#define PRU_SYSCFG (0x0004)
+
+// PRU SYSCFG Bit Numbers
+#define PRU_SYSCFG_STANDBY_INIT (4)
+
+// PRU INTC Register Offsets
+#define PRU_INTC_GER    (0x010)
+#define PRU_INTC_SISR   (0x020)
+#define PRU_INTC_SICR   (0x024)
+#define PRU_INTC_EISR   (0x028)
+#define PRU_INTC_EICR   (0x02C)
+#define PRU_INTC_HIEISR (0x034)
+#define PRU_INTC_HIDISR (0x038)
+#define PRU_INTC_SRSR0  (0x200)
+#define PRU_INTC_SRSR1  (0x204)
+#define PRU_INTC_CMR0   (0x400)
+#define PRU_INTC_CMR1   (0x404)
+#define PRU_INTC_CMR2   (0x408)
+#define PRU_INTC_CMR3   (0x40C)
+#define PRU_INTC_CMR4   (0x410)
+#define PRU_INTC_CMR5   (0x414)
+#define PRU_INTC_CMR6   (0x418)
+#define PRU_INTC_CMR7   (0x41C)
+#define PRU_INTC_CMR8   (0x420)
+#define PRU_INTC_CMR9   (0x424)
+#define PRU_INTC_CMR10  (0x428)
+#define PRU_INTC_CMR11  (0x42C)
+#define PRU_INTC_CMR12  (0x430)
+#define PRU_INTC_CMR13  (0x434)
+#define PRU_INTC_CMR14  (0x438)
+#define PRU_INTC_CMR15  (0x43C)
+#define PRU_INTC_HMR0   (0x800)
+#define PRU_INTC_HMR1   (0x804)
+#define PRU_INTC_HMR2   (0x808)
+
+// PRU Useful Constants
+#define R31_EVENT_SET      (16)
+
+// Macro Definitions
+
+//******************************************************************************
+//*
+//* wmbs REG1, Rn2, OP(255), OP(255)
+//*
+//* Wait for Memory Bit Set - spins until a bit at a memory location to become
+//* set, much like the WBS instruction for registers. Format is like LBBO, but
+//* with a bit number rather than a length (which is assumed to be 4 bytes)
+//*
+//* Inputs:
+//*          value_reg(REG1) - Register into which to load the stored value
+//*          addr_reg(Rn2)   - Register holding base 32-bit address
+//*          offset(OP(255)) - Optional offset to be applied to address
+//*          bit(OP(255))    - Bit to be waited on
+//*
+.macro wmbs
+.mparam value_reg, addr_reg, offset, bit
+bit_not_set:
+    lbbo value_reg, addr_reg, offset, 4
+    qbbc bit_not_set, value_reg, bit
+.endm
+
+//******************************************************************************
+//*
+//* wcbs REG1, Rn2, OP(255), OP(255)
+//*
+//* Wait for Constant offset memory Bit Set - spins until a bit at a memory
+//* location to become set, much like the WBS instruction for registers. Format
+//* is like LBBO, but with a bit number rather than a length (which is assumed
+//* to be 4 bytes)
+//*
+//* Inputs:
+//*          value_reg(REG1) - Register into which to load the stored value
+//*          addr_reg(Rn2)   - Register holding base 32-bit address
+//*          offset(OP(255)) - Optional offset to be applied to address
+//*          bit(OP(255))    - Bit to be waited on
+//*
+.macro wcbs
+.mparam value_reg, addr_reg, offset, bit
+bit_not_set:
+    lbco value_reg, addr_reg, offset, 4
+    qbbc bit_not_set, value_reg, bit
+.endm
+
+#endif //_puppetmaster_hp_

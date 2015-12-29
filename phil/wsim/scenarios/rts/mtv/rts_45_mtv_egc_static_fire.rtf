@@ -1,0 +1,27 @@
+00:00:00 /lc_set_actionpoint_state ap=15, state=PASSIVE
+00:00:00 /egc_controller_disable duration=30000
+00:00:00 /act_mtv_set_htp_main_engine_feed_valve_state state=OPEN
+00:00:01 /egc_set_throttle_position throttle=26214
+00:00:01 /egc_set_throttle_position throttle=0
+00:00:05 /egc_set_throttle_position throttle=26214
+00:00:01 /egc_set_throttle_position throttle=0
+00:00:05 /egc_set_throttle_position throttle=65535
+00:00:01 /egc_set_throttle_position throttle=58982
+00:00:01 /egc_set_throttle_position throttle=52428
+00:00:01 /egc_set_throttle_position throttle=45875
+00:00:01 /egc_set_throttle_position throttle=39321
+00:00:01 /egc_set_throttle_position throttle=32768
+00:00:01 /egc_set_throttle_position throttle=26214
+00:00:01 /egc_set_throttle_position throttle=19661
+00:00:01 /egc_set_throttle_position throttle=13107
+00:00:01 /egc_set_throttle_position throttle=0
+00:00:05 /egc_controller_disable duration=0
+00:00:00 /egc_activate_closed_loop_pressure_control
+00:00:00 /egc_set_weight_offset percent=91.5
+00:00:00 /est_mtv_set_propellant_mass prop_mass=51.0
+00:00:01 /egc_start_thrust_output
+00:00:03 /act_mtv_set_htp_main_engine_feed_valve_state state=CLOSE
+00:00:05 /act_mtv_set_htp_main_engine_feed_valve_state state=OPEN
+00:00:10 /egc_terminate_thrust_output
+00:00:00 /act_mtv_set_htp_main_engine_feed_valve_state state=CLOSE
+00:00:00 /act_mtv_set_htp_tank_pressurant_valve_state state=CLOSE

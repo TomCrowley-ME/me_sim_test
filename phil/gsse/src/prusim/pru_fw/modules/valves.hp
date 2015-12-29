@@ -1,0 +1,24 @@
+// *****************************************************************************/
+// file:     valves.hp
+//
+// purpose:  Constants and definitions for Valves Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _valves_hp_
+#define _valves_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define VALVES_GPIO_BASE    GPIO1_BASE
+#define VALVES_GPIO_MASK    (1 << 12)
+
+#define SOLENOIDS_GPIO_BASE GPIO1_BASE
+#define SOLENOIDS_GPIO_MASK (1 << 13)
+
+// Device SPI Transfer Settings
+#define VALVES_READ_CMD     (0x5a)
+#define VALVES_READ_LENGTH  (4*22)
+
+#endif //_valves_hp_

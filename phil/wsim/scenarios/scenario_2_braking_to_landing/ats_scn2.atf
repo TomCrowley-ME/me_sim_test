@@ -1,0 +1,11 @@
+2015-354-17:56:05 /est_set_reference_frame frame=INERTIAL
+2015-354-17:56:05 /gdn_set_inertial_primary_pointing_cmd x=-0.101044456644947, y=-0.975702651919072, z=0.194407697428415
+2015-354-17:56:05 /gdn_set_inertial_secondary_pointing_cmd x=0.9774,  y=-0.2057, z=-0.0482
+2015-354-17:56:05 /gdn_set_body_primary_pointing_vector x=0, y=0, z=1
+2015-354-17:56:05 /gdn_set_body_secondary_pointing_vector x=-0.5, y=-0.866025403784439, z=0
+2015-354-17:56:05 /cmp_set_mode mode=POINTING, submode=NONE
+2015-354-17:57:03 /gdn_set_burn_parameters burn_type=GRAVITY_TURN, dv=1700, dur=0
+2015-354-17:57:03 /cmp_set_mode mode=BRAKING, submode=ACTIVE
+2015-354-17:57:05 /gdn_start_burn
+2015-354-18:00:26 /est_set_reference_frame frame=TOPOCENTRIC
+2015-354-18:00:26 /cmp_set_mode mode=LANDING, submode=LANDING_HOLD

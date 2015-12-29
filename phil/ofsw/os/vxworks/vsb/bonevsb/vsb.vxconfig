@@ -1,0 +1,3959 @@
+
+# /home/mstewart/bender/phil/ofsw/os/vxworks/vsb/bonevsb/vsb_bs.vxconfig
+# Automatically generated file: do not edit
+
+menu "VxWorks Global Configuration Options for BSP beaglebone"
+
+config ADVANCED_OPT
+    bool "Set advanced options"
+    default n
+    help
+        Advanced options allow the setting of ADDED CFlags for the compilers
+
+comment "beaglebone_CPU = ARMARCH7"
+
+config CPU_ARMARCH7
+      bool
+      default y
+
+choice
+      prompt "Select the Floating Point configuration" 
+      default FP_vector
+      help 
+          The Floating Point Option (FP) needs to be selected for the library.
+
+config FP_vector
+      bool "vector"
+
+endchoice
+
+config beaglebone_FP
+      string
+      default "vector" if FP_vector
+
+choice
+      prompt "Select the ENDIAN configuration" 
+      default ENDIAN_little
+      help 
+          The ENDIAN Option needs to be selected for the library.
+
+config ENDIAN_little
+      bool "little"
+
+endchoice
+
+config beaglebone_ENDIAN
+      string
+      default "little" if ENDIAN_little
+
+config DEFAULT_IPV4
+    bool
+    default y
+
+
+config  LP64
+        bool
+        prompt "Enable building LP64 libraries for VxWorks 64-bit" if !LP64_ONLY
+        depends on (SUPPORTS_LP64 && !DEFAULT_SIT_NB) || DEFAULT_LP64_Y || LP64_ONLY
+        default y if DEFAULT_LP64_Y || LP64_ONLY
+        help
+          This option enables the 64-bit mode support (LP64 data model) in VxWorks. When this option is not selected the 32-bit mode (ILP32 data model) is supported.
+
+comment "LP64 enabled for this VSB"
+        depends on LP64_ONLY
+
+config ILP32
+    bool
+    default y
+    depends on !LP64
+
+
+config ARCH_arm
+      default y
+      bool
+
+comment "NO PRIMARY TOOL AVAILBLE, CHECK INSTALLED TOOLS"
+    depends on LP64
+
+choice
+      prompt "Select the Primary Tool" 
+      depends on ILP32
+      default PRI_TOOL_ILP32_diab 
+      help 
+          The Primary Tool is used to compile the core source.
+
+config PRI_TOOL_ILP32_diab
+      bool "diab"
+
+endchoice
+
+config beaglebone_TOOL
+      string
+      default "diab" if PRI_TOOL_LP64_diab
+      default "diab" if PRI_TOOL_ILP32_diab
+
+config  ADDEDCFLAGS
+    depends on ADVANCED_OPT
+    string "optional compiler flags for beaglebone_TOOL [?]"
+    default ""
+    help 
+          These optional flags will be passed to the beaglebone_TOOL compiler.
+          Sometimes it is inconvenient to modify config.h to control a VSB  configuration. ADDEDCFLAGS is useful for defining additional macros  without modifying any source code.
+          Consider the hypothetical Acme XYZ-75 BSP that supports two hardware  configurations. The XYZ-75 has a daughter board interface, and in this  interface either a Galaxy-A or a Galaxy-B module is installed. The  drivers for the modules are found in the directory src/drv/multi.
+          The macro GALAXY_C_FILE determines which driver to include at compile-time.  The file named by GALAXY_C_FILE is #included by sysLib.c.
+          The default configuration (Galaxy-A module installed) is established in config.h:
+          #ifndef GALAXY_C_FILE
+          #define GALAXY_C_FILE "multi/acmeGalaxyA.c"
+          #endif /* GALAXY_C_FILE */ 
+          When make is called normally, the VSB supports the XYZ-75 with the Galaxy-A  module installed. 
+          To override the default and build the VSB for the  XYZ-75/Galaxy-B configuration, add -DGALAXY_C_FILE=multi/acmeGalaxy02.c to ADDEDCFLAGS .
+          For ease of use, you can encapsulate a lengthy command within a shell script.
+
+
+config ENABLE_TOOL2_ILP32
+   bool
+   prompt "Enable use of Secondary TOOL to build kernel libraries." if !REQUIRES_SEC_TOOL
+     default y
+   depends on ILP32 && !DISABLE_TOOL2
+      help
+         If disabled the Secondary TOOL will be ignored during the build process. This will disable the compilation of any kernel libraries with this tool, this in turn will require any VIPs, DKMs, or RTPs to be built with the Primary TOOL if this VSB is used. Disable this option if only one compiler has been installed.
+
+
+choice
+      prompt "Select the Secondary Tool" 
+      depends on ILP32 && ENABLE_TOOL2_ILP32
+      help 
+          The Secondary Tool is used to compile the intrinsic libraries.
+
+config SEC_TOOL_ILP32_gnu
+      depends on !PRI_TOOL_ILP32_gnu 
+      bool "gnu"
+
+config SEC_TOOL_ILP32_diab
+      depends on !PRI_TOOL_ILP32_diab 
+      bool "diab"
+
+endchoice
+
+
+config ENABLE_TOOL2_LP64
+   bool
+   prompt "Enable use of Secondary TOOL to build kernel libraries." if !REQUIRES_SEC_TOOL
+     default y
+   depends on LP64 && !DISABLE_TOOL2
+      help
+         If disabled the Secondary TOOL will be ignored during the build process. This will disable the compilation of any kernel libraries with this tool, this in turn will require any VIPs, DKMs, or RTPs to be built with the Primary TOOL if this VSB is used. Disable this option if only one compiler has been installed.
+
+
+choice
+      prompt "Select the Secondary Tool" 
+      depends on LP64 && ENABLE_TOOL2_LP64
+      help 
+          The Secondary Tool is used to compile the intrinsic libraries.
+
+config SEC_TOOL_LP64_gnu
+      depends on !PRI_TOOL_LP64_gnu 
+      bool "gnu"
+
+endchoice
+
+
+config ENABLE_TOOL2
+      bool
+      depends on ENABLE_TOOL2_ILP32 || ENABLE_TOOL2_LP64
+      default y
+
+config gnu_SUPPORTED
+      bool
+      depends on !LP64 && (PRI_TOOL_ILP32_gnu || SEC_TOOL_ILP32_gnu || DEFAULT_VSB)
+      default y
+
+config diab_SUPPORTED
+      bool
+      depends on !LP64 && (PRI_TOOL_ILP32_diab || SEC_TOOL_ILP32_diab || DEFAULT_VSB)
+      default y
+
+config gnu_SUPPORTED
+      bool
+      depends on LP64 && (PRI_TOOL_LP64_gnu || SEC_TOOL_LP64_gnu || DEFAULT_VSB)
+      default y
+
+config SECTOOLS
+    string
+    default "gnu diab" if ILP32 && ENABLE_TOOL2_ILP32
+    default "gnu" if LP64 && ENABLE_TOOL2_LP64
+    default "" if !ENABLE_TOOL2
+
+
+config beaglebone_TOOL2
+      string
+      default "gnu" if SEC_TOOL_ILP32_gnu
+      default "diab" if SEC_TOOL_ILP32_diab
+      default "gnu" if SEC_TOOL_LP64_gnu
+
+
+config  ADDEDCFLAGS2
+    depends on ADVANCED_OPT
+    string "optional compiler flags for beaglebone_TOOL2 [?]"
+    default ""
+    help 
+          These optional flags will be passed to the beaglebone_TOOL2 compiler.
+          Sometimes it is inconvenient to modify config.h to control a VSB  configuration. ADDEDCFLAGS2 is useful for defining additional macros  without modifying any source code.
+          Consider the hypothetical Acme XYZ-75 BSP that supports two hardware  configurations. The XYZ-75 has a daughter board interface, and in this  interface either a Galaxy-A or a Galaxy-B module is installed. The  drivers for the modules are found in the directory src/drv/multi.
+          The macro GALAXY_C_FILE determines which driver to include at compile-time.  The file named by GALAXY_C_FILE is #included by sysLib.c.
+          The default configuration (Galaxy-A module installed) is established in config.h:
+          #ifndef GALAXY_C_FILE
+          #define GALAXY_C_FILE "multi/acmeGalaxyA.c"
+          #endif /* GALAXY_C_FILE */ 
+          When make is called normally, the VSB supports the XYZ-75 with the Galaxy-A  module installed. 
+          To override the default and build the VSB for the  XYZ-75/Galaxy-B configuration, add -DGALAXY_C_FILE=multi/acmeGalaxy02.c to ADDEDCFLAGS2 .
+          For ease of use, you can encapsulate a lengthy command within a shell script.
+
+
+choice
+      prompt "Select the Applications Tool" 
+      default APP_TOOL_ILP32_diab
+      depends on ILP32
+      help 
+          The Applications Tool is used to compile Networking source and any Market Specific Platform (MSP) components, if installed.
+
+config APP_TOOL_ILP32_gnu
+      depends on PRI_TOOL_ILP32_gnu || SEC_TOOL_ILP32_gnu
+      bool "gnu"
+
+config APP_TOOL_ILP32_diab
+      depends on PRI_TOOL_ILP32_diab || SEC_TOOL_ILP32_diab
+      bool "diab"
+
+endchoice
+
+
+choice
+      prompt "Select the Applications Tool" 
+      default APP_TOOL_LP64_
+      depends on LP64
+      help 
+          The Applications Tool is used to compile Networking source and any Market Specific Platform (MSP) components, if installed.
+
+config APP_TOOL_LP64_gnu
+      depends on PRI_TOOL_LP64_gnu || SEC_TOOL_LP64_gnu
+      bool "gnu"
+
+endchoice
+
+config beaglebone_APP_TOOL
+      string
+      default "gnu" if APP_TOOL_LP64_gnu
+      default "gnu" if APP_TOOL_ILP32_gnu
+      default "diab" if APP_TOOL_ILP32_diab
+
+config  ADDEDCFLAGS_APP
+    depends on ADVANCED_OPT
+    string "optional compiler flags for beaglebone_APP_TOOL [?]"
+    default ""
+    help 
+          These optional flags will be passed to the beaglebone_APP_TOOL compiler.
+          Sometimes it is inconvenient to modify config.h to control a VSB  configuration. ADDEDCFLAGS_APP is useful for defining additional macros  without modifying any source code.
+          Consider the hypothetical Acme XYZ-75 BSP that supports two hardware  configurations. The XYZ-75 has a daughter board interface, and in this  interface either a Galaxy-A or a Galaxy-B module is installed. The  drivers for the modules are found in the directory src/drv/multi.
+          The macro GALAXY_C_FILE determines which driver to include at compile-time.  The file named by GALAXY_C_FILE is #included by sysLib.c.
+          The default configuration (Galaxy-A module installed) is established in config.h:
+          #ifndef GALAXY_C_FILE
+          #define GALAXY_C_FILE "multi/acmeGalaxyA.c"
+          #endif /* GALAXY_C_FILE */ 
+          When make is called normally, the VSB supports the XYZ-75 with the Galaxy-A  module installed. 
+          To override the default and build the VSB for the  XYZ-75/Galaxy-B configuration, add -DGALAXY_C_FILE=multi/acmeGalaxy02.c to ADDEDCFLAGS_APP .
+          For ease of use, you can encapsulate a lengthy command within a shell script.
+
+
+
+
+menu "arm Architecture Options"
+    depends on ARCH_arm
+# /opt/WindRiver/vxworks-6.9/target/src/arch/arm/common.vxconfig
+# Copyright (c) 2008-2013 Wind River Systems, Inc.
+#
+# The right to copy, distribute, modify or otherwise make use
+# of this software may be licensed only pursuant to the terms
+# of an applicable Wind River license agreement.
+
+#
+# Modification History
+# --------------------
+# 01v,19aug13,zgl  LPAE support (WIND00357632)
+# 01u,25jul13,mpc  Add Cortex-M
+# 01t,22feb13,cfm  removed a duplicated DISABLE_VFP_ROUND_TO_ZERO (WIND00404322)
+# 01s,28sep12,jdw  Make _WRS_CONFIG_FAST_MATH default for ARMARCH7
+# 01r,06aug12,jdw  Update VFP features description & add A15 core type
+# 01q,19jul12,j_b  default VFP to D32 for Cortex-A15
+# 01p,28jun12,j_b  add Cortex-A15 support
+# 01o,06jan12,jdw  Add support for bcopy() PLD optimization
+# 01n,10aug11,jdw  Add ARMv7 core optimization VSB options
+# 01m,25jul11,jdw  Add support for VFPv3-D32 for ARMARCH7
+# 01l,15jul11,jdw  Do not support cached page tables for XSCALE
+#                  per WIND00288079
+# 01k,20apr11,jdw  Add support for cached page tables
+# 01j,11feb11,j_b  hide UNIFIED_FIQ_IRQ and create WRHV_GUEST
+#                  and REQUIRES_UNIFIED_FIQ_IRQ dependencies
+# 01i,21dec10,mze  tweak
+# 01h,20dec10,mze  add DISABLE_SMP logic
+# 01g,22nov10,j_b  add UNIFIED_FIQ_IRQ option
+# 01f,21sep10,my_  remove ARCH_ARM_VEC_TABLE_BASE (WIND00231420)
+# 01e,24may10,m_h  Thumb-2 Support
+# 01d,31aug09,mze  adding small FootPrint
+# 01c,01jul09,m_h  Add FAST_MATH for vector floating point
+# 01b,13apr09,x_s  Added ARCH_ARM_VEC_TABLE_BASE
+# 01a,16oct08,hfc  Created, for defect WIND00139230
+#
+
+#
+# DESCRIPTION
+#
+# This file defines the VxWorks configuration options that apply only
+# to the ARM architecture.
+#
+##########################################################################
+
+#
+# enable unified FIQ and IRQ exception handling
+# (currently only supported for GuestOS)
+#
+config  UNIFIED_FIQ_IRQ
+	bool
+	prompt "Use indirect interrupts (via Hypervisor)" if !REQUIRES_UNIFIED_FIQ_IRQ
+	depends on WRHV_GUEST
+	default y if REQUIRES_UNIFIED_FIQ_IRQ
+	default n if !REQUIRES_UNIFIED_FIQ_IRQ
+        help
+            This option allows FIQ exceptions to be handled in the same manner as IRQs.
+
+#
+# cache is handled by Hypervisor for a GuestOS configuration
+#
+config  WRHV_CACHE_CTRL
+	bool
+	depends on WRHV_GUEST
+	default n if REQUIRES_GUEST_CACHE_CTRL
+	default y if !REQUIRES_GUEST_CACHE_CTRL
+        help
+            This option disables GuestOS cache functionality that would be handled by the Hypervisor
+
+#
+# interrupts are handled by Hypervisor for a GuestOS configuration
+#
+config  WRHV_INTERRUPT_CTRL
+	bool
+	depends on WRHV_GUEST
+	default n if REQUIRES_GUEST_INTERRUPT_CTRL
+	default y if !REQUIRES_GUEST_INTERRUPT_CTRL
+        help
+            This option configures interrupt handling for a GuestOS that uses a virtual interrupt controller
+
+#
+# Disable coprocessor access for a GuestOS configuration
+#
+config  WRHV_COPROCESSOR_CTRL
+	bool
+	depends on WRHV_GUEST
+	default n if REQUIRES_GUEST_COPROCESSOR_CTRL
+	default y if !REQUIRES_GUEST_COPROCESSOR_CTRL
+        help
+            This option ensures that a GuestOS will never make a coprocessor call
+
+#
+# disable power management functionality that is not supported by a GuestOS configuration
+#
+config  WRHV_POWERMANAGEMENT_CTRL
+	bool
+	depends on WRHV_GUEST
+	default n if REQUIRES_GUEST_POWERMANAGEMENT_CTRL
+	default y if !REQUIRES_GUEST_POWERMANAGEMENT_CTRL
+        help
+            This option disables power management in the GuestOS
+
+config WLAN_ATH
+        bool
+        default y
+        help
+           This is a hidden component and is used to turn on/off the build for Atheros wireless driver for this arch
+
+config WLAN_BCM
+        bool
+        default n
+        help
+           This is a hidden component and is used to turn on/off the build for Broadcom wireless driver for this arch
+
+#
+# Hidden option to enable faster math via vector floating point 
+# for ARMARCH7 and ARMARCH7_T2 builds which support VFP.
+#
+# NOTE: arm.h will override this default VSB config based on the selected
+#       toolchain.
+#
+config  FAST_MATH
+        bool
+        default y
+	depends on (CPU_ARMARCH7_T2 || CPU_ARMARCH7)
+
+config SUPPORTS_PROFILE_SMALL_FOOTPRINT
+	bool
+	default y
+	help
+	    This is a hidden option to enable the PROFILE_SMALL_FOOTPRINT
+
+# this is a hidden option to disable gnu
+# which is not supported by Thumb-2 in this release
+ config DISABLE_TOOL2
+     bool
+     default y
+     depends on (CPU_ARMARCH7_T2 || CPU_ARMARCH7M)
+
+# this is a hidden option to disable the shared memeory
+# which is not supported by Thumb-2 in this release
+
+config DISABLE_SM_OBJ
+    bool
+    default y
+    depends on (CPU_ARMARCH7_T2 || CPU_ARMARCH7M)
+
+# this is a hidden option to disable RTP
+# which is not supported by Thumb-2 in this release
+config UNSUPPORTS_RTP
+    bool
+    default y
+    depends on (CPU_ARMARCH7_T2 || CPU_ARMARCH7M)
+# this is a hidden option to disable SMP
+# which is not supported by ARMARCH6 be in this release
+config DISABLE_SMP
+    bool
+    default y
+    depends on (CPU_ARMARCH6 && ENDIAN_big)
+
+# Config to enable cached page tables optimization
+config ENABLE_CACHED_PAGE_TBL
+    bool
+    prompt "Enable cached page tables optimization?"
+	depends on !(UNSUPPORTS_CACHED_PAGE_TBL || CPU_ARMARCH4 || CPU_ARMARCH5 || CPU_XSCALE || WRHV_GUEST)
+    default y if (CPU_ARMARCH6 || CPU_ARMARCH7 || CPU_ARMARCH7_T2)
+    help
+        This option enables or disables the optimization for cached page table entries.
+
+# Config to add LPAE support for Cortex A15
+config ARM_LPAE
+    bool
+    prompt "Add LPAE support for Cortex A15"
+    depends on ARMV7_CORE_CTX_A15
+    default y if REQUIRES_ARM_LPAE
+    default n if !REQUIRES_ARM_LPAE
+    help
+        This option add LPAE support for Cortex A15.
+
+# A hidden option to configure what type of TTBR format to use. By
+# default we support MPCore TTBRs because they are compatible with UP
+# TTBRs. Using the MPCore TTBR register format will clear all the bits
+# for both UP and MPCore implementations.
+config USE_MC_TTBR_FMT
+    bool
+    default y
+    depends on ENABLE_CACHED_PAGE_TBL
+
+# A hidden flag to indicate a project build which we can use in
+# headers to control default behavior. This allows is to detect when a
+# default VSB is built and to enable a VSB feature which wouldn't get
+# enabled otherwise.
+config ARM_PRJ_BUILD
+    bool
+    default y
+
+# Config to enable saving 32x 64-bit VFP registers instead of 16x 64-bit VFP registers
+config ENABLE_VFPV3_D32
+    bool
+    prompt "Enable VFPv3-D32/VFPv4-D32/NEON register context switch support?"
+    depends on (CPU_ARMARCH7 || CPU_ARMARCH7_T2)
+    default y if (ARMV7_CORE_CTX_A15_BSP)
+    default n if !(ARMV7_CORE_CTX_A15_BSP)
+    help
+        By default the VxWorks kernel supports VFPv2/VFPv3-D16/VFPv4-D16 vector coprocessors. This feature extends support on context switches for VFPv3-D32/VFPv4-D32/NEON vector coprocessors.
+
+# Config to control VFP / Rount To Zero mode
+config DISABLE_VFP_ROUND_TO_ZERO
+       bool
+       prompt "Disable VFP Rount To Zero mode?"
+       depends on (CPU_ARMARCH6 || CPU_ARMARCH7 || CPU_ARMARCH7_T2)
+       default n
+       help
+           By default the VxWorks kernel supports enabling Round To Zero mode in the VFP coprocessor. Using Round to Zero allows VFP calculations to execute faster, but will not always return IEEE-754 compliant results. See the ARM Architecture Reference Manual v7A/R for more information.
+
+# Config to select the PLD optimizations for bcopy()
+config USE_PLD_BALIB
+    bool
+    prompt "Optimize bcopy() for buffer sizes > 128 bytes?"
+    depends on (CPU_ARMARCH7 || CPU_ARMARCH7_T2)
+    default n
+    help
+        Enabling the optimized bcopy() algorithm can improve performance when copying buffers larger than 128 bytes. Optimization may cause performance for small copies to drop up to ~10%.
+
+#################################
+# ARM Core Selection
+#
+# The ARM core selection mechanism has two layers. The VSB can
+# provide the user a menu to select which ARM core to optimize
+# for. Alternatively, the BSP used to configure the VSB can specify
+# the core directly and bypass the core selection menu.
+#
+# Three sets of VSB options are used to select the macro used in code
+# to conditionally compile core specific optimizations.
+#
+# For ARMARCH7 and ARMRCH7_T2:
+#  Top level options set by the VSB Menu:
+#     ARMV7_CORE_GENERIC_VSB
+#     ARMV7_CORE_CTX_A8_VSB
+#     ARMV7_CORE_CTX_A9_VSB
+#     ARMV7_CORE_CTX_A15_VSB
+#
+#  Top level options set by the BSP to bypass the Menu:
+#     ARMV7_CORE_CTX_A8_BSP
+#     ARMV7_CORE_CTX_A9_BSP
+#     ARMV7_CORE_CTX_A15_BSP
+#
+#  Options enabled based on the above, used to configure code:
+#     ARMV7_CORE_GENERIC
+#     ARMV7_CORE_CTX_A8
+#     ARMV7_CORE_CTX_A9
+#     ARMV7_CORE_CTX_A15
+#
+
+# A menu selection to select the ARM v7 core type for ARM builds
+choice
+    depends on ((CPU_ARMARCH7 || CPU_ARMARCH7_T2) && !(ARMV7_CORE_CTX_A8_BSP || ARMV7_CORE_CTX_A9_BSP || ARMV7_CORE_CTX_A15_BSP))
+    prompt "Select ARM v7 core specific optimization type:"
+    default ARMV7_CORE_GENERIC_VSB
+    config ARMV7_CORE_GENERIC_VSB
+        bool "ARM v7 Generic Core"
+    config ARMV7_CORE_CTX_A8_VSB
+        bool "ARM v7 Cortex-A8 Core"
+    config ARMV7_CORE_CTX_A9_VSB
+        depends on !CPU_ARMARCH7_T2
+        bool "ARM v7 Cortex-A9 Core"
+    config ARMV7_CORE_CTX_A15_VSB
+        bool "ARM v7 Cortex-A15 Core"
+endchoice
+
+
+# The define to select an ARM Cortex-A8
+config ARMV7_CORE_CTX_A8
+    depends on (ARMV7_CORE_CTX_A8_VSB || ARMV7_CORE_CTX_A8_BSP)
+    bool
+    default y
+
+# The define to select an ARM Cortex-A9 core
+config ARMV7_CORE_CTX_A9
+    depends on (ARMV7_CORE_CTX_A9_VSB || ARMV7_CORE_CTX_A9_BSP)
+    bool
+    default y
+
+# The define to select an Cortex-A15 core
+config ARMV7_CORE_CTX_A15
+    depends on (ARMV7_CORE_CTX_A15_VSB || ARMV7_CORE_CTX_A15_BSP)
+    bool
+    default y
+
+# The default define to select a generic ARMv7 core, used if
+# Cortex-A8/Cortex-A9/Cortex-A15 is not specified
+config ARMV7_CORE_GENERIC
+    depends on ((CPU_ARMARCH7 || CPU_ARMARCH7_T2) && !(ARMV7_CORE_CTX_A8 || ARMV7_CORE_CTX_A9 || ARMV7_CORE_CTX_A15))
+    bool
+    default y
+
+
+endmenu
+
+
+
+
+comment "No Kernel Source - Nothing to configure or build for kernel libraries"
+    depends on !KSOURCE
+
+
+# /opt/WindRiver/vxworks-6.9/target/src/common.vxglobalconfig
+# This file contains the VxWorks library configuration flags and options
+
+# Copyright (c) 2008-2014 Wind River Systems, Inc.
+#
+# The right to copy, distribute, modify or otherwise make use
+# of this software may be licensed only pursuant to the terms
+# of an applicable Wind River license agreement.
+
+#
+# Modification History
+# --------------------
+# 11jun14,d_l  add DYNA_HCF_DEVICE. (VXW6-4795)
+# 01s,21mar13,pfl  exclude hypervisor options for MILS
+# 01r,25oct12,jpb  Fixed removal of RTPs for all cpus.
+# 01q,30aug12,jpb  Renamed _WRS_CONFIG_MILS_VDK_1_1 to _WRS_CONFIG_MILS_VBI.
+# 01s,24aug12,c_t  change prompt for HV2.0 options.
+# 01r,10aug12,c_t  add hv1.3 compatibility option
+# 01q,21sep11,c_t  adding CERT debug options
+# 01p,10jun11,mze  add global debug flag
+# 01o,10feb11,jlv  Remove Hypervisor version from GuestOs option
+# 01n,20dec10,mze  add SMP restriction
+# 01m,15dec10,mze  add PPC_CACHE_MODE_IS_CONSISTENT after SMP question
+# 01l,16nov10,mze  move LP64 to VSB controlled code, must preceed everything.
+# 01k,27oct10,rlp  Removed LP64 restrictions for SIMLINUX and SIMNT.
+# 01j,13oct10,mze  add LP64 restrictions for CPU_SIMLINUX & CPU_SIMNT
+# 01i,20sep10,tcr  Enable SV_INSTRUMENTATION by default on LP64 (previously
+#                  only 32bit)
+# 01i,10sep10,jl   Update Hypervisor version for GuestOS
+# 01h,28jul10,jl   add RTPs for wrhv_guest BSPs that support them
+# 01g,19jul10,mze  add be8 support for ARMARCH7
+# 01f,05jun10,mze  change to RTP
+# 01g,14jun10,rab  allow SMP for GuestOS builds
+# 01h,05may10,jl   Allow for SMP and GuestOS
+# 01g,18feb10,mze  mods to LP64 and SMP
+# 01g,27jan10,mze  make SV_INSTRUMENTATION visible for LP64
+# 01f,27oct09,mze  lp64 merge
+# 01f,11nov09,jl   allow RTPs for IA GuestOS builds
+# 01e,12oct09,kk   remove unnecessary verb from title of VSB option based on
+#                  review from docs (WIND00182433)
+# 01e,09oct09,jl   remove VBI 1_0 option for GuestOS
+# 01d,24sep09,mze  changes to RTP setting
+# 01c,12sep09,mze  adjusting WRHV_GUEST
+# 01b,11sep09,mze  mod to WHRV_GUEST
+# 01a,03sep09,mze  created
+#
+
+#
+# DESCRIPTION
+#
+# This file contains the set of VxWorks VSB GLOBAL configuration options. 
+# The order of the configuration options in this file is important, please 
+# do not rearrange the order of the options or add additional options
+# to this file without consulting the VxWorks principle technologists.
+#
+
+#
+# VxWorks 64-bit (LP64 data model)
+#
+#config  LP64 Moved to prj_vsb.tcl very special case must preceed all other configs.
+
+#
+# VxWorks Symmetric Multiprocessiong (SMP)
+#
+config  SMP
+        bool 
+	prompt "Symmetric Multiprocessing (SMP)" if !SMP_ONLY
+        depends on !DISABLE_SMP && ((SUPPORTS_SMP && !DEFAULT_SIT_NB) || (DEFAULT_SIT_NB && DEFAULT_SMP_Y))
+        default y if DEFAULT_SMP_Y || SMP_ONLY
+        help
+            This option enables SMP support in the VxWorks kernel.
+
+comment "SMP enabled for this VSB"
+	depends on SMP_ONLY
+
+#
+# VxWorks Guest OS for WR Hypervisor
+#
+config  WRHV_GUEST
+        bool 
+	prompt "Build VxWorks Guest OS for WR Hypervisor" if !REQUIRES_WRHV_GUEST
+	depends on SUPPORTS_WRHV_GUEST && (!DEFAULT_SIT_NB || (DEFAULT_SIT_NB && REQUIRES_WRHV_GUEST))
+	default y if REQUIRES_WRHV_GUEST
+	default n if !REQUIRES_WRHV_GUEST
+	help
+	    This option is for building VxWorks Guest OS for WR Hypervisor
+
+choice
+        prompt "Select WR Hypervisor version to use"
+	depends on WRHV_GUEST && !MILS_VBI
+	default HV_VER_2_0
+
+config  HV_VER_2_0
+	bool "Build GuestOS for WR Hypervisor 2.0"
+
+config  HV_VER_1_3
+	bool "Build GuestOS compatible for WR Hypervisor 1.3"
+
+endchoice
+
+choice
+	prompt "Select Standard/Safety/Safety Debug GuestOS"
+	depends on  WRHV_GUEST && !MILS_VBI
+	default WRHV_GUEST_DEFAULT
+	help
+	    This choice allows the selection of which Guest OS profile to build.
+
+config  WRHV_GUEST_DEFAULT
+	bool "Build GuestOS run on Standard WR Hypervisor"
+
+config  WRHV_GUEST_CERT
+	depends on SUPPORTS_WRHV_CERT_GUEST && !SMP && !HV_VER_1_3
+	bool "Build Safety GuestOS"
+
+config  WRHV_GUEST_CERT_DEBUG
+	depends on SUPPORTS_WRHV_CERT_GUEST && !SMP && !HV_VER_1_3
+	bool "Build Safety GuestOS in debug mode"
+
+endchoice
+
+choice
+        prompt "Select the VBI version to use"
+	depends on WRHV_GUEST && !MILS_VBI
+	default VBI_VER_2_0
+
+config  VBI_VER_2_0
+	bool "Build GuestOS for VBI 2.0 (WR Hypervisor)"
+
+endchoice
+
+
+#
+# VxWorks PowerPC Cache Mode Selection
+#
+config  PPC_CACHE_MODE_IS_CONSISTENT
+        bool 
+	prompt "Low-level arch code need not support inconsistent cache modes" if !SMP
+	default y if SMP
+	depends on PPC_CACHE_MODE_IS_CONSISTENT_SUPPORTED
+        help
+           Enabling this option removes cache management around enabling
+           and disabling the MMU, thereby reducing overhead and improving
+           performance.  It is always defined in SMP builds, where the cache
+           is required to always be enabled, coherent, and in copyback mode
+           (matching the default 60x no-MMU WIMG of 0011).  It can potentially
+           also be defined in source builds for UP systems, but only if the
+           accompanying constraints on cache configuration are met; this
+           cannot safely be assumed for UP systems in general due to legacy
+           considerations.
+	   											   
+           If this option is enabled for PPC60x/7xx/74xx, the BSP must either
+           - configure system RAM as cached and copyback, or
+           - entirely disable the data cache, the MMU, or both.
+           
+           If this option is enabled for PPC44x/85xx, the BSP must ensure
+           that the cache mode of system RAM does not change when MSR[DS]
+           changes.
+																									    
+
+
+#
+# Profile: Small Footprint (PROFILE_SMALL_FOOTPRINT)
+#
+# Setting this option changes the default value of many other VSB
+# config options.  Most options default to "N" if this is selected.
+#
+# This feature is enabled by placing a hidden VSB option in the 
+# file common.vxconfig in target/src/arch for each arch that is
+# supporting this feature. The hidden VSB option is called
+# SUPPORTS_PROFILE_SMALL_FOOTPRINT.
+
+config 	PROFILE_SMALL_FOOTPRINT
+	bool "Set VSB defaults to a small footprint configuration"
+	default n
+	depends on !DEFAULT_SIT_NB && !SMP && !WRHV_GUEST && SUPPORTS_PROFILE_SMALL_FOOTPRINT
+	help
+	    This item sets up a small footprint profile.  It adjusts various VSB defaults to a configuration that is tuned toward producing a VxWorks image that has a small RAM size.
+
+
+#
+# Tell compiler/linker to remove unreferenced functions and data
+#
+# HIDDEN: This option is only exposed for a small footprint configuration
+#
+config REMOVE_UNUSED_FUNCTIONS
+	bool "Remove unreferenced functions and data"
+	default y
+	depends on PROFILE_SMALL_FOOTPRINT
+	help
+            Tell compiler/linker to remove unreferenced functions and data
+            
+#
+# VxWorks Determinism versus Performance (SMP only)
+#
+# This option allows the user to select between determinism and performance.
+# When selected, the option will ensure that VxWorks will always
+# run deterministically, although in some areas, the performance may 
+# not be its optimal performance. When this is not selected, the areas 
+# where performance may be gained by using a non-deterministic algorithm,
+# such as using non-deterministic spinlocks, will select the non-deterministic 
+# implementation.
+#
+# This DETERMINISTIC option has 2 parts: DETERMINISTIC_SMP and DETERMINISTIC.
+#
+
+config  DETERMINISTIC_SMP
+ 	bool "Ensure Determinism in VxWorks SMP"
+	depends on SMP
+	default y 
+	help
+	    This option allows users to tune VxWorks SMP for determinism or
+	    performance. By default, this option is selected and ensures that 
+	    VxWorks SMP is deterministic. When this option is not selected, 
+	    i.e. n is specified, the user has chosen to forgo deterministic 
+	    behavior in parts of VxWorks SMP for performance gains. 
+	    For example, selecting this option means that deterministic 
+	    spinlocks are used instead of non-determinstic spinlocks in SMP
+	    implementations of the network stack and System Viewer. 
+
+#
+# HIDDEN: 2nd part of the DETERMINISTIC option. This is not exposed but used
+# by VxWorks source code.
+#
+config  DETERMINISTIC
+ 	bool
+	default y 
+	depends on !SMP || DETERMINISTIC_SMP
+	help
+	    This option is turned on if in UP and is set to the state of
+	    the DETERMINISTIC_SMP option if SMP is enabled.
+
+#
+# System Viewer Instrumentation
+#
+config  SV_INSTRUMENTATION
+        bool "System Viewer Instrumentation"
+        default y
+	depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	    This option enables the System Viewer instrumentation support. When selected, specific points in the VxWorks kernel source will be instrumented for debugging with System Viewer, e.g. semaphore give and take operations. Once a system has been debugged, this option may be de-selected, which removes instrumentation in performance critical APIs that will reduce footprint and improve performance for these critical APIs. When this option is de-selected, the INCLUDE_WINDVIEW component in a VxWorks Image Project (VIP) will not work and may not be configured.
+
+# Debug Flag (DEBUG_FLAG)
+#
+# This option enables the -g option for all source being built, it also by 
+# default disables the -O options that the compilers used for optimizations
+# this setting can however be overwritten if desired.
+config DEBUG_FLAG
+	bool "Global Debug Flag"
+	default n
+	depends on !DEFAULT_SIT_NB
+	help
+	Enabling this flag will allow the building of all source with the -g flag set. Optimization compiler flags such as  -O3 are are disabled by default.
+
+config DEBUG_FLAG_ALLOW_OPTIMIZATION
+	bool "Allow Debug -g and Optimization to co-exist"
+	default n
+	depends on DEBUG_FLAG
+	help
+	This flag will allow the normal -O flags to be used with the -g (Debug) flag. This may result in images that can not be debugged properly and is not a recommended option.
+
+#
+# Real Time Process (RTP)
+#
+# This option has a dependency on OBJECT_CLASS_LIST and OBJECT_OWNERSHIP.
+# This dependency relationship is described in the OBJECT_CLASS_LIST and
+# OBJECT_OWNERSHIP options.
+#
+config  RTP
+	bool "Real-Time Process (RTP)"
+	default y 
+	depends on !ENDIAN_be8 && !PROFILE_SMALL_FOOTPRINT && !UNSUPPORTS_RTP
+	help
+	    This feature includes the Real-Time Process (RTP) support in the VxWorks kernel. For systems that do not utilize RTPs, this option may be de-selected to remove the RTP handling code from the VxWorks kernel APIs, which will improve performance for these kernel APIs. De-selecting this option implies that the INCLUDE_RTP (and it's dependent components) will not work and may not be configured in a VxWorks Image Project (VIP).
+
+#
+# Dynamically add hcf devices.
+#
+
+config DYNA_HCF_DEVICE
+    bool "Register VxBus device dynamically"
+    prompt "Register VxBus device dynamically"
+    default n
+    depends on !DEFAULT_SIT_NB 
+    help
+        This option only removes the const attribute of hcfDeviceList and hcfDeviceNum.
+
+
+endmenu
+
+
+menu "VxWorks Kernel Configuration Options"
+# /opt/WindRiver/vxworks-6.9/target/src/common.vxconfig
+# This file contains the VxWorks library configuration flags and options
+
+# Copyright (c) 2008-2012 Wind River Systems, Inc.
+#
+# The right to copy, distribute, modify or otherwise make use
+# of this software may be licensed only pursuant to the terms
+# of an applicable Wind River license agreement.
+
+#
+# Modification History
+# -------------------
+# 02y,22aug12,mze  add INTRINSICS WIND00371707
+# 02x,30apr12,jpb  Reverted to previous change.
+# 02w,05apr12,jpb  Defect WIND00247188.  Task hooks must be built in by
+#                  default.
+# 02v,04oct11,rbc  WIND00308927 - Further limit power management VSB.
+# 02u,28sep11,sem  WIND00308332 - Add SMP restriction for pwr mgt
+# 02t,22sep11,j_b  restrict system pwr mgt to supported CPUs
+# 02s,12aug11,rbc  WIND00238999 - Change VSB for PWR _MGMT delivery.
+# 02r,28jul11,rbc  WIND00238999 - Add VSB _WRS_CONFIG_PWR_MGMT
+# 02q,22apr11,jxu  Add PERTASK_CWD for kernel per-task CWD feature(WIND00131452)
+# 02p,11oct10,kk   remove SM_OBJ VSB option, no longer necessary for
+#                  performance improvements
+# 02o,29sep10,gls  removed EDR_POLICY_HOOKS VSB option (WIND00234560)
+# 02o,21sep10,sem  Add new IA cpus
+# 02n,08jul10,pch  move some MIPS options here, w/a for default builds having
+#		   to support all arch w/ a single config
+# 02m,16jun10,pch  add CUSTOM_SEMAPHORE_TYPES
+# 02l,10jun10,mze  add division between Multi OS and what ever follows
+# 02k,10jun10,als  Update rules for MIPC and WRLOAD to allow use on CORE2
+# 02j,05jun10,mze  add method for disabling SM_OBJ
+# 02i,28may10,mze  only build MIPC/WRLOAD for PPC SIMulators Pentium4 and
+#                  MIPSI32R2/I64/I64R2
+# 02h,28may10,mze  disable MIPC and WRLOAD for LP64
+# 02g,04may10,pad  Added hidden VSB option RTP_NO_RELOCATION.
+# 02f,23nov09,mze  fix to SM_OBJ
+# 02e,23oct09,mze  properly add the LP64 option into the multi core menu. Also 
+#                  changed USE_MEMDESC and DELAYED_HW_INIT to depend on LP64 
+# 02d,12oct09,kk   remove unnecessary verb from title of VSB option based on
+#                  review from docs (WIND00182433)
+# 02c,25sep09,mze  add more comments to last change
+# 02b,24sep09,mze  changes for profile small footprint
+# 02a,09sep09,mze  for the moment hiding BUILD_KERNEL option - to be exposed
+#                  in 6.9
+# 01z,04sep09,mze  adjusting text
+# 01y,04sep09,mze  fix text
+# 01x,03sep09,mze  adding a new macro to indicate that source has been
+#                  installed.
+# 01w,31aug09,mze  relocating the WRHV_GUEST to the Global section maintained
+#                  by prj_vsb.tcl
+# 01v,28aug09,mze  moving SMP into the prj_vsb.tcl file to get it into the
+#                  hardware Config.
+# 01u,19aug09,kk   don't prompt if UP for DETERMINISTIC (CQ:WIND00177657)
+# 01t,19aug09,d_c  Disable RTP support when guest OS enabled
+# 01s,12aug09,mze  changes for the VSB options
+# 01r,10jul09,to   change the VBI version's default to 2.0
+# 01q,02jul09,to   added VBI version selection
+# 01p,24jul09,kk   rename DETERMINISM to DETERMINISTIC
+# 01o,22jul09,mze  remove redundant code for determinism
+# 01n,22jul09,x_s  hide _WRS_CONFIG_VXBUS_BASIC for small footprint
+# 01m,16jun09,m_h  small footprint support
+# 01l,09jun09,kk   added _WRS_CONFIG_DETERMINISM
+# 01k,18dec08,to   WRHV_GUEST depends on SUPPORTS_WRHV_GUEST
+# 01j,30oct08,to   added WRHV_GUEST support
+# 01o,08sep09,jpb  Added hidden options (USE_MEMDESC and DELAYED_HW_INIT) that 
+#                  depend on LP64 being defined.
+# 01n,16jul09,pee  enabling LP64 for MSP.
+# 01m,12may09,pad  Turning off SV_INSTRUMENTATION for 64-bit builds until
+#                  adaptation of the related code to LP64.
+# 01l,04mar09,mze  turning off LP64 for MSP builds
+# 01k,24feb09,mze  changes to LP64 options
+# 01j,17oct08,gls  disabled FORMATTED_OUT and FULL_EDR_STUBS (Defect#136485)
+#                  documentation clean up (Defect #136534)
+# 01i,15oct08,mze  adding multicore menu
+# 01h,14oct08,pad  Added support for 64-bit OS libraries build.
+# 01g,30sep08,mze  moving ADDEDCFLAGS to prj_vsb.tcl control.
+# 01f,15sep08,gls  made TASK_SWITCH_HOOKS hidden for 6.7
+# 01e,27aug08,gls  enabled _WRS_CONFIG_TASK_HOOKS
+#                  enabled _WRS_CONFIG_FULL_EDR_STUBS
+#                  enabled _WRS_CONFIG_FORMATTED_OUT
+# 01d,25aug08,mze  moving the main menu to prj_vsb.tcl
+# 01c,30jul08,kk   enable _WRS_CONFIG_SM_OBJ
+# 01b,16jul08,kk   remove dependencies for OBJECT_LIB for now
+# 01a,08jul08,jpb  Added _WRS_CONFIG_EDR_POLICY_HOOKS.
+# 01a,28may08,kk   updated to add CoreOS configuration options.
+#
+
+#
+# DESCRIPTION
+#
+# This file contains the set of VxWorks VSB configuration options. The order
+# of the configuration options in this file is important, please do not
+# rearrange the order of the options or add additional options
+# to this file without consulting the VxWorks principal technologists.
+#
+# Instruction for adding configuration options:
+#
+# - Get authorization from the VxWorks PT, email ENG-VAT@windriver.com
+# - Create the config option, based on the following format:
+#
+#   #
+#   # <describe the option, provide any internal information here >
+#   #
+#   config <option>
+#          bool <"string">
+# 	   prompt <"string">
+#          default <y/n>
+#          ...
+#          help
+#               <Help text here>
+#
+#   The syntax and expressions on configuration options can be found
+#   in the appendix section of the following HLD:
+#   http://twiki.wrs.com/pub/ETBUdb/SourceBuild/VxWorks_Source_Build_Project_HLD.doc
+# - To make an option hidden, i.e. not prompted from the user,
+#   don't specify a string after the "bool" attribute and not have
+#   specify the "prompt" attribute.  Also, mark the option with
+#   the "HIDDEN" tag in the comment description of the option.
+# - "help" text must provide the following information:
+#     * clear description of the option.
+#     * advantages and disadvantages of selecting/de-selecting the option.
+#     * Any caveats associate with the option.
+#     * any dependency on the option, e.g. removing this option implies that
+#       INCLUDE_XXX CDF component will not be available for the VIP if option
+#       XXX is not selected in the VSB project associated with VIP.
+#   
+#
+#   NOTE using a PROFILE_... to set a default on a visible macro is not allowed, as it does not work
+#   as expected. READ on... 
+#   If a macro such as OBJECT_CLASS_LIST is to be used in conjunction with a 
+#   PROFILE then the following has to happen:
+# (1) a default macro is created OBJECT_CLASS_LIST_D (D is for Default), this is dependent on the PROFILE
+#     not being set.
+# (2) a profile version of the macro is created OBJECT_CLASS_LIST_PSF (PSF stands for PROFILE_SMALL_FOOTPRINT)
+#     this macro is dependent on the PROFILE being active.
+# (3) the macro OBJECT_CLASS_LIST is then defaulted by the _D and _PSF macros and is also dependent on them.
+#   
+#   The reason for creating a macro _D and a macro _PSF is to have the ability to switch the current setting
+#   of the macro on and off. Just using logic with the "default y if ..." line is not enough as the defaults 
+#   are ignored as soon as a VSB is saved for the first time, (defaults work fine when configuring the VSB from 
+#   the commandline right after the "vxprj vsb create" command, but not when reconfiguring the VSB). So having 
+#   macros that are removed in one condition and restored in another condition allow for the defaults for these
+#   macros to be utilized.
+#
+##########################################################################
+
+#This menu is now set up and maintained in prj_vsb.tcl
+#This allows the grouping of Arch and src specific configuration into one menu
+
+# This macro is used to indicate that the Kernel source has been installed
+config KSOURCE
+	bool
+	default y
+
+# The following is an option to build the kernel libraries If no the 
+# Networking and USR libraries can still be built. 
+# This option is the groundwork for a 6.9 feature where the core Kernel 
+# can be disabled in the build of a VSB and A VIP can be built based on 
+# Networking or MSP only libraries being built, the core libraries would 
+# be obtained from the default libraries in target/lib... , 
+# in 6.8 this option will remain HIDDEN.
+
+config BUILD_KERNEL
+	bool
+#	bool "Build Kernel Libraries"
+	default y
+	help
+	    Use this configuration to diasble the kernel library build. The default for the VSB is to build the kernel libraries.
+
+menu "VxWorks Kernel Component Configuration"
+	depends on BUILD_KERNEL
+
+#
+# Less RAM for vxBus
+#
+# HIDDEN: This option is only exposed for a small footprint configuration
+#
+config VXBUS_BASIC
+	bool
+	depends on !SMP && PROFILE_SMALL_FOOTPRINT
+	default y
+	help
+	    This feature configures vxBus to use less memory for drivers.
+
+
+#
+# WIND Object Ownership Management
+#
+# HIDDEN: This option is not exposed, by not specifying a string
+# after the "bool" attribute, as an option for the user to select
+# because this is heavily dependent on by the RTP option only. It is listed
+# here as an option in anticipation of future enhancements.
+#
+config  OBJECT_OWNERSHIP
+        bool
+        default y if RTP
+	help
+	    This feature enables the object ownership that allows for a WIND object to be owned by another WIND object. This helps with resource reclamation, when the owning object gets deleted. With this option not selected, the configuration INCLUDE_OBJ_OWNERSHIP will not work and may not be configured in a VxWorks Image Project (VIP).
+
+#
+# Multiple Virtual Memory Context
+#
+# HIDDEN: This option is depended on by the RTP option. This option is
+# not exposed currently since only RTPs support multiple VM contexts. Having
+# this as a separate option from RTP is in anticipation of future enhancements.
+#
+config VM_MULTIPLE_CONTEXT
+	bool
+	default y if RTP
+	help
+            This feature enables the multiple VM context support.
+
+#
+# WIND Object Management
+#
+# This configuration option encompasses two other sub options:
+# OBJECT_VERIFICATION and OBJECT_CLASS_LIST management. The dependency
+# relationship is described by those two options.
+#
+# This option by itself, i.e. the _WRS_CONFIG_OBJECT_MANAGEMENT macro, is
+# currently not used in our source code.
+#
+# The behavior of this option is such that when OBJECT_MANAGEMENT is selected,
+# the user has the option of choosing whether OBJECT_VERIFICATION and/or
+# OBJECT_CLASS_LIST will be selected. If OBJECT_MANAGEMENT is not selected,
+# this implies that the user does not want any object management, hence
+# OBJECT_VERIFICATION and OBJECT_CLASS_LIST will not be prompted.
+#
+config OBJECT_MANAGEMENT
+        bool "WIND Object Management"
+        default y
+	help
+	    This feature enables the WIND object management support. When selected, this option enables the selection of WIND object ID verification (OBJECT_VERIFICATION) and/or the WIND object class list management (OBJECT_CLASS_LIST) options for the VxWorks kernel. With this option de-selected, neither object ID verification nor object class list management are selected. See OBJECT_VERIFICATION option and OBJECT_CLASS_LIST help text for more detail information on each of the options.
+
+
+#
+# WIND Object ID Verification
+#
+# This option is displayed as a sub-option of OBJECT_MANAGEMENT.
+#
+config  OBJECT_VERIFICATION
+	bool "WIND Object ID Validation"
+    default y
+	depends on OBJECT_MANAGEMENT
+	help
+	    This feature will include WIND object ID validation in the VxWorks kernel source. Without the selection of OBJECT_VERIFICATION, WIND objects passed to VxWorks kernel APIs, such as semTake() and semGive(), will not be validated. For a system where objects are not deleted, the overhead of the validation can be removed from the kernel APIs by de-selecting this option.  Some VxWorks features are indirectly affected by the removal of this feature.  For example, memory partitions are validated by verification of the partition semaphore.  Without WIND object verification operations on an invalid memory partition will yield undefined results.
+
+#
+# WIND Object Class List Management
+#
+# This option is displayed as a sub-option of OBJECT_MANAGEMENT. This
+# option is also dependent on by the REAL_TIME_PROCESS (RTP) option.
+#
+#
+
+# This is the default option.
+config  OBJECT_CLASS_LIST_D
+	bool
+	prompt "WIND Object Class List" if !RTP
+        default y
+        depends on !PROFILE_SMALL_FOOTPRINT && (OBJECT_MANAGEMENT || RTP)
+	help
+	    This option is used to link allocated WIND objects together for debugging by tools to display the objects.  De-selecting this option will improve the performance of certain kernel APIs, but will reduce the functionality of certain debug facilities and features, such as the searching of WIND objects by name or opening an object by name via the XXXOpen() APIs or the objEach() API. With this option de-selected, the following features will not work and must not be configured into VxWorks: INCLUDE_OBJ_OPEN, INCLUDE_CLASS_SHOW, and INCLUDE_OBJ_INFO. De-selecting this option does not remove list management for tasks, to preserve the task debugging capabilities with the VxWorks tools.  In addition this option is neccessary to support System Viewer trigger and both POSIX semaphores and POSIX message queues.
+
+# This is the option exposed when PROFILE_SMALL_FOOTPRINT is active
+config  OBJECT_CLASS_LIST_PSF
+	bool "WIND Object Class List"
+        default n
+        depends on OBJECT_MANAGEMENT && PROFILE_SMALL_FOOTPRINT
+	help
+	    This option is used to link allocated WIND objects together for debugging by tools to display the objects.  De-selecting this option will improve the performance of certain kernel APIs, but will reduce the functionality of certain debug facilities and features, such as the searching of WIND objects by name or opening an object by name via the XXXOpen() APIs or the objEach() API. With this option de-selected, the following options will not work and must not be configured into VxWorks: INCLUDE_OBJ_OPEN, INCLUDE_CLASS_SHOW, and INCLUDE_OBJ_INFO. De-selecting this option does not remove list management for tasks, to preserve the task debugging capabilities with the VxWorks tools.  In addition this option is neccessary to support System Viewer trigger and both POSIX semaphores and POSIX message queues.
+
+#
+# HIDDEN: This option is not exposed. 
+# This option is driven off of OBJECT_CLASS_LIST_D and  OBJECT_CLASS_LIST_PSF
+# This is the option that the source code and header files will use.
+#
+config  OBJECT_CLASS_LIST
+	bool
+        default y if OBJECT_CLASS_LIST_D || OBJECT_CLASS_LIST_PSF
+        depends on OBJECT_CLASS_LIST_D || OBJECT_CLASS_LIST_PSF
+
+
+#
+# WIND Object Library Management
+#
+# HIDDEN: This option provides the object library support. Calls
+# to objCoreInit() will be removed when this option is not selected.
+# This option is depended on by the following configuration options:
+# OBJECT_VERIFICATION, OBJECT_OWNERSHIP, and OBJECT_CLASS_LIST. Without
+# any of these options, the OBJECT_LIB option will not be necessary
+# and hence will be de-selected.
+#
+config  OBJECT_LIB
+	bool
+        default y
+#        depends on OBJECT_VERIFICATION || OBJECT_OWNERSHIP || OBJECT_CLASS_LIST
+	help
+	    This option provides the object library support. Without this option, objCoreInit() calls will be removed and no object management, such as class list management nor object verification will be provided.
+
+#
+# Full Error Detection and Reporting Information
+#
+# HIDDEN: This option is not exposed.
+#
+config FULL_EDR_STUBS
+	bool
+	default y
+	help
+	    This option enables verbose Error Detection and Reporting information to be captured within certain kernel libraries. Without this option selected, the kernel will not provide detail error messages on exceptions, such as "interrupt-level exception".
+
+#
+# Formatted Out Basic
+#
+# This option is mutually exclusive with respect to FORMATTED_OUT option.
+#
+config FORMATTED_OUT_BASIC
+	bool "Minimal Formatted Output"
+	default y
+	depends on PROFILE_SMALL_FOOTPRINT
+	help
+	    This option provides basic unbuffered formatted I/O for printf, kprintf, and similar functionality. This basic support does not provide formatting support for floating-point or coprocessor flags. This allows the system to pull out the full standard I/O package without impact on the printf similar utility function. Without this option selected, the full standard formatted I/O package will be enabled.
+
+#
+# Formatted Input/Output
+#
+# HIDDEN: This option is not exposed.
+#
+# This option is mutual exclusive with respect to FORMATTED_OUT_BASIC option.
+#
+config FORMATTED_OUT
+	bool
+	default y
+	depends on !FORMATTED_OUT_BASIC
+	help
+	    This option provides full buffered formatted I/O for all I/O routines. With this option selected, printf, kprintf, and other related functions can print all available types such as floating points and long long types.  When this option is not selected it is possible to remove the full standard I/O package without impact on the printf-class of utility functions.
+
+#
+# ISR Objects
+#
+# HIDDEN: This option is not exposed. With this option enabled, a WIND object
+# may be created to manage information related to an ISR.  ISR objects
+# provides the ability to create, delete and obtain information about an ISR.
+# Not configuring this option simply removes the ability to objectize and
+# query information related to an ISR.
+#
+config ISR_OBJECTS
+	bool
+	default y
+	help
+	    This option provides the ability to objectize and query information related to an Interrupt Service Routine. With this option enabled, a WIND object may be created to manage information related to an ISR.  ISR objects provides the ability to create, delete and obtain information about an ISR.  Not configuring this option simply removes the ability to query information on an ISR, it does not disable interrupts nor disable the ability to connect an ISR to a vector via intConnect().
+
+#
+# Object Module Loader
+#
+# HIDDEN: This option is not exposed. Currently, this is only used by the
+# TLS library in target/src/tool/common/tls/tls*.c.
+#
+config LOADER
+	bool
+	default y 
+	depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	    This option enables certain code in the thread local storage library to support object module loading. Without this option selected, object module loading in the kernel that references thread local variables will not be available.
+
+#
+# MMU Basic
+#
+# HIDDEN: This option is not exposed
+#
+config MMU_BASIC
+	bool
+	default y 
+	depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	    This option provides the basic MMU features which provides the VM APIs such as vmMap(). When RTP is configured, the FULL MMU feature is used and builds on top of the basic MMU.
+
+#
+# RTP feature
+#
+# HIDDEN: This option is not exposed
+#
+
+config RTP_NO_RELOCATION
+	bool
+	default y
+	depends on LP64
+	help
+	    This option removes the ability to relocate RTP executables. It
+	    is currently applied only for VxWorks 64-bit.
+
+#
+# Shell
+#
+# HIDDEN: This option is not exposed. Currently, this is used by certain parts
+# of the architecture code to provide additional information to the target
+# shell.
+#
+config SHELL
+	bool
+	default y 
+	depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	    This option enables an interactive c-expression interpreter target based shell for debugging. Without the selection of this option, certain shell features may not work properly such as register information.
+
+
+#
+# Task Create Hooks D
+#
+# HIDDEN: This option is not exposed unless the profile option 
+# PROFILE_SMALL_FOOTPRINT is selected.  Currently, task create hooks are needed 
+# for VxWorks source to build. 
+#
+
+config TASK_CREATE_HOOKS_D
+	bool
+	default y  
+        depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	    This option allows user installed call-outs when task is created or deleted.  The call-outs allow additional routines, or "hooks," to be invoked whenever these events occur.
+
+# This is the option exposed when PROFILE_SMALL_FOOTPRINT is active
+config TASK_CREATE_HOOKS_PSF
+	bool "Task Create Hooks"
+	default n
+        depends on PROFILE_SMALL_FOOTPRINT
+	help
+	    This option allows user installed call-outs when task is created or deleted.  The call-outs allow additional routines, or "hooks," to be invoked whenever these events occur.
+
+#
+# HIDDEN: This option is not exposed.
+# This option is driven off of TASK_CREATE_HOOKS_D and TASK_CREATE_HOOKS_PSF
+# This is the option that the source code and header files will use.
+#
+config TASK_CREATE_HOOKS
+	bool 
+	default y if TASK_CREATE_HOOKS_PSF || TASK_CREATE_HOOKS_D
+        depends on TASK_CREATE_HOOKS_PSF || TASK_CREATE_HOOKS_D 
+
+#
+# Task Swap Hooks
+#
+# HIDDEN: This option is not exposed
+#
+config TASK_SWAP_HOOKS
+	bool
+	default y
+	depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	    This option allows user installed call-outs when task is switched.  The call-outs allow additional routines, or "hooks," to be invoked whenever these events occur.
+
+#
+# Task Switch Hooks D
+#
+# HIDDEN: This option is not exposed unless the profile option 
+# PROFILE_SMALL_FOOTPRINT is selected.  Currently, task switch hooks are needed 
+# for VxWorks source to build. 
+#
+
+config TASK_SWITCH_HOOKS_D
+	bool
+	default y 
+        depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	    This option allows user installed call-outs when task is switched.  The call-outs allow additional routines, or "hooks," to be invoked whenever these events occur.
+
+# This is the option exposed when PROFILE_SMALL_FOOTPRINT is active
+config TASK_SWITCH_HOOKS_PSF
+	bool "Task Switch Hooks"
+	default n
+        depends on PROFILE_SMALL_FOOTPRINT
+	help
+	    This option allows user installed call-outs when task is switched.  The call-outs allow additional routines, or "hooks," to be invoked whenever these events occur.
+
+#
+# HIDDEN: This option is not exposed. 
+# This option is driven off of TASK_SWITCH_HOOKS_D and  TASK_SWITCH_HOOKS_PSF
+# This is the option that the source code and header files will use.
+#
+config TASK_SWITCH_HOOKS
+	bool 
+	default y if TASK_SWITCH_HOOKS_D || TASK_SWITCH_HOOKS_PSF 
+        depends on TASK_SWITCH_HOOKS_D || TASK_SWITCH_HOOKS_PSF
+
+#
+# TTY dev
+#
+# HIDDEN: This option is not exposed
+#
+config TTY_DEV
+	bool
+	default y
+	depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	    This option provides terminal device access use to serial channels.
+
+#
+# System Power Management
+#
+# This option is mutually exclusive to CPU power management, below.
+#
+
+# This is the default option.
+config SYS_PWR_MGMT_D
+        bool "System Power Management"
+	default n 
+        depends on (((CPU_NEHALEM || (CPU_CORE && WRHV_GUEST) || CPU_ARMARCH7) && SUPPORTS_SYS_PWR_MGMT) && !PROFILE_SMALL_FOOTPRINT && !SMP)
+	help
+           This option enables system power management to the extent supported by the architecture. Without this option selected, limited CPU-specific power management may be available for CPU variants that support it.
+
+# This is the option exposed when PROFILE_SMALL_FOOTPRINT is active
+config SYS_PWR_MGMT_PSF
+	bool "System Power Management - Small Footprint"
+	default n 
+        depends on (((CPU_NEHALEM || (CPU_CORE && WRHV_GUEST) || CPU_ARMARCH7) && SUPPORTS_SYS_PWR_MGMT) && PROFILE_SMALL_FOOTPRINT)
+	help
+           This option enables system power management to the extent supported by the architecture. Without this option selected, limited CPU-specific power management may be available for CPU variants that support it.
+
+#
+# HIDDEN: This option is not exposed.
+# This option is driven off of SYS_PWR_MGT_D and SYS_PWR_MGT_PSF
+# This option is mutually exclusive with CPU_PWR_MGT
+# This is the option that the source code and header files will use.
+#
+config PWR_MGMT
+	bool
+	default y if (SYS_PWR_MGMT_D || SYS_PWR_MGMT_PSF)
+        depends on (SYS_PWR_MGMT_D || SYS_PWR_MGMT_PSF)
+
+#
+# CPU Power Management
+#
+# This option is mutually exclusive to system power management, above.
+#
+
+# This is the default option.
+config CPU_PWR_MGMT_D
+	bool "CPU Power Management"
+	default y if !PWR_MGMT
+        depends on (!PROFILE_SMALL_FOOTPRINT && !PWR_MGMT)
+	help
+	   This option is for utilization-based CPU power management for a specific architecture. Without this option selected, no CPU power management will be performed.
+
+# This is the option exposed when PROFILE_SMALL_FOOTPRINT is active
+config CPU_PWR_MGMT_PSF
+	bool "CPU Power Management"
+	default n 
+        depends on (PROFILE_SMALL_FOOTPRINT && !PWR_MGMT)
+	help
+	   This option is for utilization-based CPU power management for a specific architecture. Without this option selected, no CPU power management will be performed.
+
+#
+# HIDDEN: This option is not exposed.
+# This option is driven off of CPU_PWR_MGT_D and  CPU_PWR_MGT_PSF
+# This is the option that the source code and header files will use.
+#
+config CPU_PWR_MGMT
+	bool
+	default y if (CPU_PWR_MGMT_D || CPU_PWR_MGMT_PSF)
+        depends on (CPU_PWR_MGMT_D || CPU_PWR_MGMT_PSF)
+
+#
+# Memory Allocation for minimal kernel
+#
+# HIDDEN: This option is not exposed
+#
+config MEM_ALLOT
+	bool
+	default y 
+	depends on PROFILE_SMALL_FOOTPRINT
+	help
+	    This option provides a very basic memory allocation management scheme. This minimal scheme allows for allocation memory, but does not manage it and hence freeing of memory is not supported. 
+
+#
+# Custom Semaphore Types
+#
+# Disabled in small footprint, else enabled
+#
+# When enabled, build support for up to 16 semaphore types.
+#
+# When disabled, build support for only Binary, Mutex, Counting, and Read/Write
+# semaphores, reducing the sizes of the tables used in semaphore management.
+#
+# HIDDEN: This option is not exposed
+#
+config CUSTOM_SEMAPHORE_TYPES
+	bool
+	default y
+	depends on !PROFILE_SMALL_FOOTPRINT
+
+#
+# Use BSP Memory Descriptors. 
+#
+# Always enabled by default for LP64.  This option is not utilized for 32bit.
+#
+# HIDDEN: This option is not exposed
+#
+config USE_MEMDESC
+        bool
+        default y
+		depends on LP64
+        help
+            This VSB provides the option to utilize new BSP APIs (such as semMemDescGet()) to get access to the physical memory information of the hardware.
+
+#
+# Delayed Hardware Initialization.  
+#
+# Always enabled by default for LP64.  This option is not utilized for 32bit.
+#
+# HIDDEN: This option is not exposed
+#
+config DELAYED_HW_INIT
+        bool
+        default y
+		depends on LP64
+        help
+            This feature delays the vxBus initialization routine until the memory subsystem is available.
+
+#
+# Multi-OS Support
+#
+# This menu is exposed if one or more associated components is installed.
+# The default setting for each component is Y if the component is officially
+# supported on the specified CPU; otherwise, the default setting is N.
+#
+
+menu "Multi-OS Support"
+    depends on (SUPPORTS_MIPC || SUPPORTS_WRLOAD) && !PROFILE_SMALL_FOOTPRINT
+
+config  COMPONENT_MIPC
+    bool "MIPC"
+    depends on SUPPORTS_MIPC
+    default y if (ARCH_ppc || CPU_CORE2 || CPU_PENTIUM4 || CPU_ATOM || CPU_CORE || CPU_NEHALEM || CPU_SIMLINUX || CPU_SIMNT || CPU_SIMSPARCSOLARIS || CPU_MIPSI32R2 || CPU_MIPSI64 || CPU_MIPSI64R2)
+    help
+        This option enables use of MIPC for inter-OS communication.
+
+config  COMPONENT_WRLOAD
+    bool "WRLOAD"
+    depends on SUPPORTS_WRLOAD
+    default y if (ARCH_ppc || CPU_CORE2 || CPU_PENTIUM4 || CPU_ATOM || CPU_CORE || CPU_NEHALEM || CPU_SIMLINUX || CPU_SIMNT || CPU_SIMSPARCSOLARIS || CPU_MIPSI32R2 || CPU_MIPSI64 || CPU_MIPSI64R2)
+    help
+        This option enables use of WRLOAD to load other CPUs.
+
+endmenu
+
+comment "Optional Kernel Features"
+
+#
+# Task Private Current Workding Directory
+#
+#
+# Kernel Per-Task Current Workding Directory
+#
+config PERTASK_CWD
+        bool "Enable Kernel Per-Task CWD"
+        default y 
+        depends on TASK_CREATE_HOOKS
+        help
+           This option enables task private current working directory feature in kernel space. A private CWD will be created for a kernel task only if this VSB option is enabled and the task option VX_PRIVATE_CWD is set for the task, otherwise the kernel's global CWD is used. 
+
+# the following 3 configs are hidden and are based on the TOOL CHAINS that have been built for the  VSB
+# some TOOLS have been added for future support
+
+config SUPPORTS_DIAB_INTRINSICS
+bool
+default y
+depends on PRI_TOOL_ILP32_diab || SEC_TOOL_ILP32_diab || PRI_TOOL_LP64_diab || SEC_TOOL_LP64_diab || (DEFAULT_VSB && !(LP64 && ARCH_i86))
+
+config SUPPORTS_GNU_INTRINSICS
+bool
+default y
+depends on PRI_TOOL_ILP32_gnu || SEC_TOOL_ILP32_gnu || PRI_TOOL_LP64_gnu || SEC_TOOL_LP64_gnu || DEFAULT_VSB
+
+config SUPPORTS_ICC_INTRINSICS
+bool
+default y
+depends on PRI_TOOL_ILP32_icc || SEC_TOOL_ILP32_icc || PRI_TOOL_LP64_icc || SEC_TOOL_LP64_icc || (DEFAULT_VSB && (ARCH_i86 || ARCH_simlinux ||ARCH_simpc))
+
+endmenu
+
+# The following are arch-specific, but need to be here so that
+# they can be processed when configuring the default VSBs.
+
+config NORMAL_MIPS_CACHE_SUPPORT
+	bool
+	default y 
+	depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	   This is a hidden component used to turn on/off _WRS_SUPPORT_CACHE_XLATE and _WRS_SUPPORT_CACHE_LOCK in archMips.h
+
+config NORMAL_MIPS_MMU_SUPPORT
+	bool
+	default y 
+	depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	   This is a hidden component used to disable INCLUDE_MAPPED_KERNEL and INCLUDE_MMU_BASIC when using a small-footprint VSB
+
+config CAVIUM_IPI_SUPPORT
+	bool
+	default y 
+	depends on !PROFILE_SMALL_FOOTPRINT
+	help
+	   This is a hidden component used to turn on/off the build for IPI and other IPC support in vxbMipsCavIntCtlr.c and Cavium sysLib.c
+
+# /opt/WindRiver/vxworks-6.9/target/src/fs/common.vxconfig
+# This file contains File System library configuration flags and options
+
+# Copyright (c) 2011-2012, 2014 Wind River Systems, Inc.
+#
+# The right to copy, distribute, modify or otherwise make use
+# of this software may be licensed only pursuant to the terms
+# of an applicable Wind River license agreement.
+
+#
+# Modification History
+# --------------------
+# 01b,09may14,yjl  Fix VXW6-1072
+# 01a,27sep12,yjl  Fix WIND00376255, dosFs to be compatible with Windows FAT32
+#                  naming rules for file/directory name length
+#01c, 19jun12,txu  Fix WIND00342061: set range of NFS3_BLKSIZE_FACTOR to suitable value
+#01b, 21jun11,sjz  Added VSB options for the requirement WIND00236547 
+#                  NFS performance improvement
+#01a, 14jun11,sjz  Created file system VSB options.
+
+menu "File System Configuration"
+
+# This is the default option.
+ config  MAX_DEVNAME
+     int "Set Maximum Device Name Length"
+     default 10
+     range 5 50
+     help
+        This option configures maximum device name length.
+
+ config NFS3_RWOPT
+     bool "Optimize NFS3 server read/write procedure"
+     default n
+     help
+        This option provides the ability to optimize read/write procedure in NFS3 server. It is cautious that some NFS3 client version on Linux or Unix may not work if it is turned on.   
+
+ config NFS3_BLKSIZE_FACTOR
+    int "Set factor for maximum block size transferred in NFS3 server"
+    default 1
+    range 1 7
+    help
+       This option provides a factor to configure maximum block size that can be tranfered by NFS3 server. The block size equals to the factor multiplied by 8192 bytes. A bigger factor will cost more memory.
+     
+config DOSFS_NAME_LENGTH_COMPAT
+   bool "set dosFS to be compatible with Windows FAT32 naming rules for file/directory name length"
+   default n
+   help
+      This option enable dosFs to be compatible with Windows FAT32 naming rules for file/directory name length.
+     
+config NFS_DBG
+    bool "Enable nfs debug feature"
+    default n
+    help
+       Enable nfs debug feature or disable.
+
+endmenu
+
+# /opt/WindRiver/vxworks-6.9/target/src/test/common.vxconfig
+# This file contains the VxWorks target src test configuration options
+ 
+# Copyright (c) 2008-2009 Wind River Systems, Inc.
+#
+# The right to copy, distribute, modify or otherwise make use
+# of this software may be licensed only pursuant to the terms
+# of an applicable Wind River license agreement.
+# resource file located in src-vxtest
+ 
+#
+# Modification History
+# --------------------
+# 01e,24sep09,mze  changes for small footprint
+# 01d,04sep09,mze  adjusting depends
+# 01c,06jul09,jc0  update the VSB option, make it depend on
+#                  PROFILE_SMALL_FOOTPRINT
+# 01b,04jun09,jc0  adding a new component for the small footprint image
+# 01a,18jul08,mze  adding VXTESTV2 component
+#
+ 
+
+config COMPONENT_VXTESTV2_D
+        bool "Enable VXTESTV2"
+        default y
+        depends on BUILD_KERNEL && !PROFILE_SMALL_FOOTPRINT
+        help
+            This component is required for BSP VTS  functionality as well as VxTestV2 testing
+ 
+
+config COMPONENT_VXTESTV2_PSF
+        bool "Enable VXTESTV2"
+        default n
+        depends on BUILD_KERNEL &&  PROFILE_SMALL_FOOTPRINT
+        help
+            This component is required for BSP VTS  functionality as well as VxTestV2 testing
+ 
+config COMPONENT_VXTESTV2
+        bool 
+        default y  if COMPONENT_VXTESTV2_D || COMPONENT_VXTESTV2_PSF 
+        depends on BUILD_KERNEL
+        
+ 
+config SFOOTPRINT_VXTESTV2
+        bool "Enable Small Footprint Test"
+        default n
+        depends on PROFILE_SMALL_FOOTPRINT && BUILD_KERNEL
+        help
+            This enables specialized VxTestV2 testing designed to validate a small footprint VxWorks configuration.
+
+
+endmenu
+
+
+menu "VxWorks Applications Configuration Options"
+    depends on !PROFILE_SMALL_FOOTPRINT
+# /opt/WindRiver/components/common.vxconfig
+
+# this file contents now moved under a versioned file
+
+
+# /opt/WindRiver/components/vxworks-6.9.vxconfig
+# These are the options that define how VxWorks interacts with IPNET
+# Each IPNET option will be available for use with a _WRS_CONFIG_ prefix
+# This file lives in /vobs/components/component_roots/comp_ip_net2/wr_meta
+
+# This is a versioned file and must be created new with each release
+# The old file should be removed from the resource file that it is defined in.
+
+
+# this macro is hidden from the user
+# this macro indicates that the networking GPP source has been installed
+config NETSOURCE
+       bool
+       default y
+
+# To use IPLITE follow the instructions below:
+# In a common.vxconfig file in either /target/src/arch/xxx  or in a bsp directory you would add the following:
+ 
+# hidden option to enable the IPLITE  stack
+#config SUPPORTS_IPLITE
+#    bool
+#    default y
+	  
+# hidden option to disable the IPNET stack 
+#config UNSUPPORTS_IPNET
+#    bool
+#    default y
+		   
+# hidden option to default the IP stack to IPLITE
+#config DEFAULT_IPLITE
+#    bool
+#    default y
+			    
+			     
+# SUPPORTS_IPLITE is always required if you want the IPLITE stack to be offered at all as a choice.
+# UNSUPPORTS_IPNET is required if you want to disable the IPNET option totally
+# DEFAULT_IPLITE is required if you use UNSUPPORTS_IPNET or if you just want the IPNET/IPLITE choice to default to IPLITE
+			     
+
+choice
+    prompt "Select networking code to be built"
+    default COMPONENT_IPNET if !DEFAULT_IPLITE
+    default COMPONENT_IPLITE if DEFAULT_IPLITE
+
+    config  COMPONENT_IPNET
+    	bool "Build Networking IPNET Libraries"
+    	depends on !PROFILE_SMALL_FOOTPRINT && !UNSUPPORTS_IPNET
+    	select WIND_IPNET
+    	help
+    		Select to build any of the Networking or MSP libraries
+
+    config  COMPONENT_IPLITE
+    	bool "Build Networking IPLITE Libraries"
+    	depends on SUPPORTS_IPLITE && !PROFILE_SMALL_FOOTPRINT
+    	select WIND_IPLITE
+    	help
+    		Select to build for a limited IPLite component set
+
+    config NO_IP
+            bool "No Networking Libraries"
+
+endchoice
+
+menu "Networking Build Options"
+depends on COMPONENT_IPNET
+
+# The MSP options need to be defined here in this GPP file otherwise the logic will not work
+
+choice
+	prompt "Set the IPNET build mode"
+	default BUILD_MODE_speed if !DEBUG_FLAG
+	default BUILD_MODE_debug_d if DEBUG_FLAG
+
+config BUILD_MODE_speed
+	bool "speed mode"
+	depends on !DEBUG_FLAG
+	
+config BUILD_MODE_debug
+	bool "debug mode"
+	depends on !DEBUG_FLAG
+
+config BUILD_MODE_speed_d
+	bool "speed mode"
+	depends on DEBUG_FLAG
+
+config BUILD_MODE_debug_d
+	 bool "debug mode"
+	 depends on DEBUG_FLAG
+	
+#config BUILD_MODE_debugspeed
+#	bool "debug and speed mode"
+	
+#config BUILD_MODE_size
+#	bool "size mode"
+	
+endchoice
+
+config  FEATURE_IPNET_BUILD
+        string
+	default "speed" if BUILD_MODE_speed || BUILD_MODE_speed_d
+	default "debug" if BUILD_MODE_debug || BUILD_MODE_debug_d
+#	default "debugspeed" if BUILD_MODE_debugspeed
+#	default "size" if BUILD_MODE_size
+
+config  FEATURE_IPNET_VERBOSE
+        bool "Enable VERBOSE mode"
+        default n
+
+config FEATURE_IPNET_GEN_DEPEND
+        bool "Generate IPNET Dependencies"
+        default y
+	
+config  BUILD_BASIC_IPNET
+        bool "Build basic IPNET support libraries"
+        default y
+	help
+	   The basic libraries are required to build vxWorks bootrom images.
+
+
+config  WIND_IPNET
+        bool
+
+	
+# the defaults maros DEFAULT_IPV4, DEFAULT_IPV6, DEFAULT_IPV6ONLY
+# are set in prj_vsb.tcl based on flags passed into "vxprj vsb create"
+# flags have the values -inet4 -inet6 -inet6only
+# if no flags are passed in the default is DEFAULT_IPV4
+
+choice
+       	prompt "Choose the Networking Libraries to be built"
+	default FEATURE_IPNET_INET4_ONLY if DEFAULT_IPV4
+	default FEATURE_IPNET_INET6 if DEFAULT_IPV6
+	default FEATURE_IPNET_INET6_ONLY if DEFAULT_IPV6ONLY
+
+config  FEATURE_IPNET_INET4_ONLY
+	bool "Build libraries with IPV4 support"
+	
+config  FEATURE_IPNET_INET6 
+        bool "Build libraries with IPV4 and IPV6 support"
+	
+config  FEATURE_IPNET_INET6_ONLY 
+        bool "Build libraries with IPV6 support"
+
+endchoice
+
+choice 
+        prompt "Select the default Build-time Syslog level for Networking Components"
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY_DEBUG if BUILD_MODE_debug
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY_WARNING
+		help
+          This is the default Syslog level used by the Networking Components (unless overriden by the Advanced Debugging Build Options).
+                
+        config IPCOM_DEFAULT_SYSLOG_PRIORITY_EMERG
+         bool "Emergency level"
+                
+        config IPCOM_DEFAULT_SYSLOG_PRIORITY_CRIT
+         bool "Critical level"
+                
+        config IPCOM_DEFAULT_SYSLOG_PRIORITY_ERR
+         bool "Error level"
+                
+        config IPCOM_DEFAULT_SYSLOG_PRIORITY_WARNING
+         bool "Warning level"
+                
+        config IPCOM_DEFAULT_SYSLOG_PRIORITY_NOTICE
+         bool "Notice level"
+                
+        config IPCOM_DEFAULT_SYSLOG_PRIORITY_INFO
+         bool "Informational level"
+                
+        config IPCOM_DEFAULT_SYSLOG_PRIORITY_DEBUG
+         bool "Debug level"
+                
+        config IPCOM_DEFAULT_SYSLOG_PRIORITY_DEBUG2
+         bool "Detailed debug level" 
+                
+endchoice
+
+config IPCOM_DEFAULT_SYSLOG_PRIORITY
+        int
+        default 0 if IPCOM_DEFAULT_SYSLOG_PRIORITY_EMERG
+        default 1 if IPCOM_DEFAULT_SYSLOG_PRIORITY_CRIT
+        default 2 if IPCOM_DEFAULT_SYSLOG_PRIORITY_ERR
+        default 3 if IPCOM_DEFAULT_SYSLOG_PRIORITY_WARNING
+        default 4 if IPCOM_DEFAULT_SYSLOG_PRIORITY_NOTICE
+        default 5 if IPCOM_DEFAULT_SYSLOG_PRIORITY_INFO
+        default 6 if IPCOM_DEFAULT_SYSLOG_PRIORITY_DEBUG
+        default 7 if IPCOM_DEFAULT_SYSLOG_PRIORITY_DEBUG2
+
+config IPCOM_DEBUG_ADVANCED
+		bool "Enable selection of Advanced Debugging Build Options for Networking Component "
+		default n
+		help
+		    This allows the selection of Advanced Debugging Build Options for Networking Components that support it.
+		
+choice 
+        prompt "Select the DEBUG Build-time Syslog level for Networking Components"
+        depends on IPCOM_DEBUG_ADVANCED
+        default IPCOM_DEBUG_SYSLOG_PRIORITY_DEBUG2 if BUILD_MODE_debug
+        default IPCOM_DEBUG_SYSLOG_PRIORITY_DEBUG
+                
+        config IPCOM_DEBUG_SYSLOG_PRIORITY_EMERG
+         bool "Emergency level"
+                
+        config IPCOM_DEBUG_SYSLOG_PRIORITY_CRIT
+         bool "Critical level"
+                
+        config IPCOM_DEBUG_SYSLOG_PRIORITY_ERR
+         bool "Error level"
+                
+        config IPCOM_DEBUG_SYSLOG_PRIORITY_WARNING
+         bool "Warning level"
+                
+        config IPCOM_DEBUG_SYSLOG_PRIORITY_NOTICE
+         bool "Notice level"
+                
+        config IPCOM_DEBUG_SYSLOG_PRIORITY_INFO
+         bool "Informational level"
+                
+        config IPCOM_DEBUG_SYSLOG_PRIORITY_DEBUG
+         bool "Debug level"
+                
+        config IPCOM_DEBUG_SYSLOG_PRIORITY_DEBUG2
+         bool "Detailed debug level"        
+         
+        help
+          This is the Syslog level used by components that have their advanced debug option selected.
+endchoice
+
+config IPCOM_DEBUG_SYSLOG_PRIORITY
+        int
+        default 0 if IPCOM_DEBUG_SYSLOG_PRIORITY_EMERG
+        default 1 if IPCOM_DEBUG_SYSLOG_PRIORITY_CRIT
+        default 2 if IPCOM_DEBUG_SYSLOG_PRIORITY_ERR
+        default 3 if IPCOM_DEBUG_SYSLOG_PRIORITY_WARNING
+        default 4 if IPCOM_DEBUG_SYSLOG_PRIORITY_NOTICE
+        default 5 if IPCOM_DEBUG_SYSLOG_PRIORITY_INFO
+        default 6 if IPCOM_DEBUG_SYSLOG_PRIORITY_DEBUG
+        default 7 if IPCOM_DEBUG_SYSLOG_PRIORITY_DEBUG2
+
+endmenu
+
+menu "Networking Build Options"
+depends on COMPONENT_IPLITE
+
+config FEATURE_IPLITE_GEN_DEPEND
+        bool "Generate IPLITE Dependencies"
+        default y
+
+config IPCOM_SIMPLE_MEM_SIZE
+       int "Simple Memory Size"
+       default 4194304
+       range 262144 67108864
+       depends on COMPONENT_IPLITE
+       help
+            This option specifies the size of simple memory for iplite stack. Allowed range 262144-67108864.
+
+choice
+       	prompt "Choose the Networking Libraries to be built"
+	default FEATURE_IPLITE_INET4_ONLY if DEFAULT_IPV4
+	default FEATURE_IPLITE_INET6 if DEFAULT_IPV6
+
+config  FEATURE_IPLITE_INET4_ONLY
+	bool "Build libraries with IPV4 support"
+	
+config  FEATURE_IPLITE_INET6 
+        bool "Build libraries with IPV4 and IPV6 support"
+
+endchoice
+
+config  WIND_IPLITE
+        bool	
+
+endmenu
+
+config  MSP_KERNEL
+	bool
+	depends on (MSP_FEATURE_PAD || MSP_FEATURE_PCD || MSP_FEATURE_PID || MSP_FEATURE_PNE)
+	default y
+
+config  FEATURE_IP_GPP_BUILD
+        bool
+        default y if !MSP_KERNEL
+
+config SPACE
+	string
+	default "kernel" 
+
+#config  FEATURE_IP_GPP_BUILD_BASIC
+#        bool "Build basic IPNet support"
+#        default n
+#        depends on  FEATURE_IP_GPP_BUILD
+
+config  COMPONENT_COREIP
+        bool
+
+config IPNET_OR_IPLITE
+        bool
+        default y
+        depends on COMPONENT_IPNET || COMPONENT_IPLITE
+
+
+
+comment "No Networking Source - Nothing to configure or build for networking libraries"
+    depends on !NETSOURCE
+
+
+menu "VxWorks Networking Component Configuration"
+    depends on IPNET_OR_IPLITE
+# /opt/WindRiver/components/ip_net2-6.9/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.43.10.10 $
+#   $Source: /home/interpeak/CVSRoot/ipcom/port/vxworks/ip_net2/common.vxconfig,v $
+#   $Author: hxu0 $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+# *********************************************
+# * VxWorks Networking Component Confguration *
+# * ========================================= *
+# *                                           *
+# *  Add components under appropriate menu    *
+# *                                           *
+# *********************************************
+comment "COMPONENT_WLAN ,COMPONENT_DOT1X,COMPONENT_IP8021X,COMPONENT_IPWPS are not available in 64bit mode"
+        depends on LP64
+
+#
+#
+menu "Layer 2 (Link) Components"
+
+#
+# *** START COMPONENT_BRIDGE/COMPONENT_IPFIREWALL_SUPPORT  ***
+#
+comment "Component BRIDGE preselected - required by  Component WLAN"
+        depends on COMPONENT_IPWLAN
+
+config  COMPONENT_BRIDGE
+        bool "Enable BRIDGE"
+        default y
+        depends on !FEATURE_IPNET_INET6_ONLY  && MSP_KERNEL && SUPPORTS_BRIDGE && !COMPONENT_IPLITE
+        help
+#            This option enables Wind River learning bridge support.
+         This option enables simple learning bridge.
+
+config  BRIDGE_DEBUG
+        bool "Enable Bridge Debug mode"
+        default n
+        depends on COMPONENT_BRIDGE && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the Bridge Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+
+config COMPONENT_IPFIREWALL_SUPPORT
+       bool "Enable firewall support"
+       default n
+       depends on COMPONENT_BRIDGE
+       select COMPONENT_IPFIREWALL
+       help
+            This option enables ipfirewall filtering support in the bridge.
+
+config COMPONENT_OPTION82_SUPPORT
+       bool "Enable DHCP relay agent support"
+       default n
+       depends on COMPONENT_BRIDGE
+       help
+            This option enables DHCP option82 insert/strip support in the bridge.
+
+#config COMPONENT_BRIDGE_VLAN_SUPPORT
+#       bool "Enable 802.1Q VLAN Bridge support"
+#       default n
+#       depends on COMPONENT_BRIDGE
+#       help
+#            "n" means that 802.1D VLAN-unaware bridge support is available, while "y" means that 802.1Q VLAN aware bridge support is available.
+
+#config  BRIDGE_STATS
+#        bool "Enable Bridge Statistics gathering"
+#        default y
+#        depends on COMPONENT_BRIDGE
+#        help
+#            This option enables the Bridge Statistics gathering.
+
+#config BRIDGE_FILTERING_DATABASE_SIZE
+#       int "Bridge Filtering Databse Size"
+#       default 4096
+#       range 4 4294967295
+#       depends on COMPONENT_BRIDGE
+#       help
+#            This option specifies the maximum number of MAC entries that can be added to the Filtering Database at any one point in time (including static and dynamic entries). Make sure you have enough memory available for the specified size. Allowed range 4-4294967295.
+
+#config BRIDGE_MAX_PORTS
+#       int "Maximum number of supported bridge ports"
+#       default 16
+#       range 8 4096
+#       depends on COMPONENT_BRIDGE
+#       help
+#       		This specifies the maximum number of physical ports that can be added to the bridge simultaneously. This applies to both 802.1D and 802.1Q bridges (for the latter the value is maximum number of ports for the whole bridge not per VLAN). Allowed range 2-4096.
+
+#config BRIDGE_AUDIT_CMD
+#       bool "Bridge Audit command support"
+#       default n
+#       depends on COMPONENT_BRIDGE
+#       help
+#       		This specifies whether support for the bridge audit command will be included in the image or not.
+
+#config BRIDGE_SYSLOG_PRIORITY
+#        int
+#        default IPCOM_DEBUG_SYSLOG_PRIORITY if BRIDGE_DEBUG
+#        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+#
+# *** END COMPONENT_BRIDGE/COMPONENT_IPFIREWALL_SUPPORT ***
+#
+
+#
+# *** START COMPONENT_IPL2TP ***
+#
+
+config  COMPONENT_IPL2TP
+        bool "Enable L2TP"
+	default n
+	depends on MSP_KERNEL && !COMPONENT_IPLITE && !COMPONENT_IPCRYPTO_USE_FIPS_140_2 && SUPPORTS_L2TP
+        help
+            This feature enables Wind River L2TP, which integrates directly with the Wind River Network Stack. If L2TP is enabled, the L2TP protocol is available for use.
+
+config  IPL2TP_DEBUG
+        bool "Enable L2TP Debug mode"
+        default n
+        depends on COMPONENT_IPL2TP && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables L2TP Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+
+config IPL2TP_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPL2TP
+        default IPCOM_DEBUG_SYSLOG_PRIORITY if IPL2TP_DEBUG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+#
+# *** END COMPONENT_IPL2TP ***
+#
+
+#
+# *** START COMPONENT_IPMACSEC ***
+#
+config  COMPONENT_IPMACSEC
+        bool "Enable MACsec"
+        default n
+        depends on MSP_KERNEL && !COMPONENT_IPLITE && !COMPONENT_IPFORWARDER && SUPPORTS_MACSEC
+        select COMPONENT_IPCRYPTO
+        help
+            This option enables the Media Access Control Security (MACsec) component.
+
+config  IPMACSEC_STATS
+        bool "Enable MACsec Statistics gathering"
+        default y
+        depends on COMPONENT_IPMACSEC
+        help
+            This option enables the MACsec Statistics gathering.
+
+config  IPMACSEC_DEBUG
+        bool "Enable MACsec Debug mode"
+        default n
+        depends on COMPONENT_IPMACSEC && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the MACsec Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+
+config IPMACSEC_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPMACSEC
+        default IPCOM_DEBUG_SYSLOG_PRIORITY if IPMACSEC_DEBUG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPMACSEC ***
+#
+
+#
+# *** START COMPONENT_IPPPP ***
+#
+config  COMPONENT_IPPPP
+        bool "Enable PPP"
+        depends on ((FEATURE_IP_GPP_BUILD && !FEATURE_IP_GPP_BUILD_BASIC) || MSP_KERNEL) && !FEATURE_IPNET_INET6_ONLY && SUPPORTS_PPP && !COMPONENT_IPLITE
+        default y if (!FEATURE_IP_GPP_BUILD_BASIC) || (MSP_FEATURE_PAD || MSP_FEATURE_PNE)
+        default n if (MSP_FEATURE_PID || MSP_FEATURE_PCD)
+        help
+            This feature enables Wind River PPP, which integrates directly with the Wind River Network Stack. If PPP is enabled, the PPP protocol is automatically attached to the serial interfaces when they are brought up.  This creates a PPP interface named pppN, where N is an assigned integer starting with 0.  This feature also enables Wind River PPPoE, which you can use to create a PPPoE interfaces named pppoeN, where N is an integer.  Wind River PPPoE can be both client and a server.
+
+config  IPPPP_MP
+        bool "Enable PPP with MP"
+        default n
+        depends on COMPONENT_IPPPP
+        help
+            Enable PPP with MP
+
+config  IPPPP_DEBUG
+        bool "Enable PPP Debug mode"
+        default n
+        depends on COMPONENT_IPPPP && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables PPP Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+
+config IPPPP_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPPPP
+        default IPCOM_DEBUG_SYSLOG_PRIORITY if IPPPP_DEBUG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+#
+# *** END COMPONENT_IPPPP ***
+#
+
+#
+# *** START COMPONENT_VLAN_STACKING ***
+#
+config  COMPONENT_VLAN_STACKING
+        bool "Enable 802.1ad VLAN stacking"
+        default n
+        depends on MSP_KERNEL && COMPONENT_IPNET && !COMPONENT_IPLITE
+        help
+            Enables 802.1ad VLAN stacking in the IPNET TCP/IP stack.
+
+#
+# *** END COMPONENT_VLAN_STACKING ***
+#
+
+#
+# *** START COMPONENT_WLAN ***
+#
+
+comment "WLAN requires COMPONENT_IPCRYPTO to be selected and COMPONENT_IPCRYPTO_USE_FIPS_140_2 to be deselected"
+        depends on !COMPONENT_WLAN && ( !COMPONENT_IPCRYPTO || COMPONENT_IPCRYPTO_USE_FIPS_140_2) &&  !LP64
+
+config  COMPONENT_WLAN
+        bool "Enable WLAN"
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && COMPONENT_IPCRYPTO && !COMPONENT_IPCRYPTO_USE_FIPS_140_2 && SUPPORTS_WLAN  && !LP64
+        help
+            This option enables IP WLAN.
+
+config  IPWLAN_ATHEROS
+        bool "Enable Atheros Wireless Driver Support"
+	default y if WLAN_ATH
+	depends on WLAN_ATH
+        depends on COMPONENT_WLAN
+        help
+            This option enables Atheros Wireless Driver.
+            For Atheros Driver supported BSPs are
+            								pcPentium4/pcPentium4 (SMP),
+                                            hpcNet8641 (SMP),
+                                            ixdp425,
+                                            malta4kc_mips,
+                                            wrSbc834x
+            Turning this on is only valid for the above BSPs. If you are not sure turn this off.
+
+config  IPWLAN_BROADCOM
+        bool "Enable Broadcom Wireless Driver Support"
+	default y if WLAN_BCM
+	depends on WLAN_BCM
+        depends on COMPONENT_WLAN
+        select COMPONENT_BRIDGE
+        help
+            This option enables Broadcom Wireless Driver.
+			For Broadcom Driver supported BSPs are
+											pcPentium4/pcPentium4(SMP)
+                                            hpcNet8641 (SMP)
+                                            Ocotea
+            Turning this on is only valid for the above BSPs. If you are not sure turn this off.
+
+config  IPWLAN_DEBUG
+        bool "WLAN Advanced Debug Selection"
+        default n
+        depends on COMPONENT_WLAN && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the Wireless Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+
+config IPWLAN_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_WLAN
+        default IPCOM_DEBUG_SYSLOG_PRIORITY if IPWLAN_DEBUG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_WLAN ***
+#
+
+endmenu
+# END MENU "Layer 2 (Link) Components"
+
+#
+#
+menu "Layer 3 (Network) Components"
+
+#
+# *** START COMPONENT_IPFIREWALL ***
+#
+config  COMPONENT_IPFIREWALL
+        bool "Enable FIREWALL"
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && SUPPORTS_FIREWALL && !COMPONENT_IPLITE
+        help
+            This option enables the Firewall component. The Firewall provides IP and MAC layer filtering. If this option is deselected INCLUDE_IPFIREWALL will not be available in a VxWorks Image Project (VIP).
+#
+# *** END COMPONENT_IPFIREWALL ***
+#
+
+#
+# *** START COMPONENT_IPFORWARDER ***
+#
+config  BSP_SUPPORTS_FORWARDER
+        bool
+        default y
+        depends on BSP_SUPPORTS_FORWARDER_AMP || BSP_SUPPORTS_FORWARDER_NAE || BSP_SUPPORTS_FORWARDER_SMP
+
+config  COMPONENT_IPFORWARDER
+        bool "Enable IPFORWARDER"
+        default n
+        depends on MSP_KERNEL && !COMPONENT_IPLITE && SUPPORTS_FORWARDER && BSP_SUPPORTS_FORWARDER
+	help
+	    This option enables the IPCOM forwarder component.
+
+choice
+        prompt "Select the forwarder type"
+        depends on COMPONENT_IPFORWARDER
+        default IPCOM_FORWARDER_SMP if BSP_SUPPORTS_FORWARDER_SMP
+        default IPCOM_FORWARDER_NAE if BSP_SUPPORTS_FORWARDER_NAE
+        default IPCOM_FORWARDER_AMP
+
+        config IPCOM_FORWARDER_NAE
+         bool "Build a Network Accereration Engine forwarder"
+         depends on BSP_SUPPORTS_FORWARDER_NAE
+
+        config IPCOM_FORWARDER_AMP
+         bool "Build an Asymmetric Multi-Processing forwarder"
+         depends on BSP_SUPPORTS_FORWARDER_AMP
+
+        config IPCOM_FORWARDER_SMP
+         bool "Build an Symmetric Multi-Processing forwarder"
+         depends on BSP_SUPPORTS_FORWARDER_SMP
+
+        help
+          Select the forwarder type
+endchoice
+
+#
+# *** END COMPONENT_IPFORWARDER ***
+#
+
+#
+# *** START OCTEON_NUM_FORWARDERS ***
+#
+config  BSP_NUM_FORWARDERS
+        int
+        depends on !BSP_HAS_NUM_FORWARDERS
+        default 4
+
+config  OCTEON_NUM_FORWARDERS
+        int
+        prompt "Enter the number of forwarder cores to enable for IP forwarding"
+        range 1 BSP_NUM_FORWARDERS
+        default 4
+        depends on COMPONENT_IPFORWARDER && BSP_HAS_NUM_FORWARDERS
+        help
+            The number of forwarder cores to use. On CN38xx boards,the maximum (imposed by the limit on the number of output queues per port) is 7, while for CN58xx and CN63xx boards, the limit is 15. When the OCTEON_BIND_INPUT_PORT_TO_FORWARDER VIP parameter is defined, this parameter is treated as an upper bound; there will be fewer forwarders if there are fewer available ports. Other constraints may limit the actual number of forwarders.
+
+#
+# *** END OCTEON_NUM_FORWARDERS ***
+#
+
+#
+# *** START MAX_NAES ***
+#
+
+config  MAX_NAES
+        int
+        prompt "The maximum number of NAEs allowed, including the control NAE."
+        range  1 31
+        default 8
+        depends on IPCOM_FORWARDER_NAE
+        help
+            The maximum number of network acceleration engines (NAEs) that the NAP system is built to support, including the control NAE.  The actual number of configured NAEs may be smaller, but may not be bigger.  Note that BSP or device-specific limits may be more stringent than this limit.
+
+#
+# *** END MAX_NAES ***
+#
+
+#
+# *** START COMPONENT_IPFORWARDER_IPSEC ***
+#
+config  COMPONENT_IPFORWARDER_IPSEC
+        bool "Enable IPFORWARDER IPSEC"
+        default n
+        depends on IPCOM_FORWARDER_NAE
+        select COMPONENT_IPIPSEC
+	    help
+	        This option enables the IPCOM forwarder ipsec component.
+
+#
+# *** END COMPONENT_IPFORWARDER_IPSEC ***
+#
+
+#
+# *** START COMPONENT_VLAN_STACKING_FORWARDER ***
+#
+config  COMPONENT_VLAN_STACKING_FORWARDER
+        bool "Enable 802.1ad VLAN stacking NAE forwarding"
+        default n
+        depends on COMPONENT_VLAN_STACKING && IPCOM_FORWARDER_NAE
+        help
+	    Enables 802.1ad VLAN stacking in MNT NAE forwarding.
+
+#
+# *** END COMPONENT_VLAN_STACKING_FORWARDER ***
+#
+
+#
+# *** START COMPONENT_OCTEON_PRIORITY_QUEUE ***
+#
+config COMPONENT_OCTEON_PRIORITY_QUEUE
+        bool "Enable priority queueing"
+        default n
+        depends on COMPONENT_VLAN_STACKING_FORWARDER && COMPONENT_IPCAVIUM_FLAG
+        help
+            This option enables priority queueing for VLAN Stacking (802.1ad).
+
+config  PRIORITY_TRAFFIC_CLASS
+          int
+          prompt "Enter the number of traffic classes for priority queueing"
+          range 1 8 if OCTEON_NUM_FORWARDERS = 1
+          range 1 7 if OCTEON_NUM_FORWARDERS = 2
+          range 1 5 if OCTEON_NUM_FORWARDERS = 3
+          range 1 3 if OCTEON_NUM_FORWARDERS = 4
+          range 1 3 if OCTEON_NUM_FORWARDERS = 5
+          range 1 2 if OCTEON_NUM_FORWARDERS = 6
+          range 1 2 if OCTEON_NUM_FORWARDERS = 7
+          range 1 1
+          default 8 if OCTEON_NUM_FORWARDERS = 1
+          default 7 if OCTEON_NUM_FORWARDERS = 2
+          default 5 if OCTEON_NUM_FORWARDERS = 3
+          default 3 if OCTEON_NUM_FORWARDERS = 4
+          default 3 if OCTEON_NUM_FORWARDERS = 5
+          default 2 if OCTEON_NUM_FORWARDERS = 6
+          default 2 if OCTEON_NUM_FORWARDERS = 7
+          default 1
+          depends on COMPONENT_OCTEON_PRIORITY_QUEUE
+          help
+              The number of traffic classes is number of the priority queues to use. With eight queues, each 802.1q priority code point is assigned a separate queue. When there are fewer then eight priority queues, priority code points share queues. For example, with four priority queues, priorities 0-3 are assigned to one queue; priorities 4-7 are assigned to a different higher-priority queue.
+                The user must enter a value such that (value * num forwarders + 1) <= 16
+
+
+#
+# *** END COMPONENT_OCTEON_PRIORITY_QUEUE ***
+#
+
+
+
+#
+# *** START COMPONENT_IPIPSEC ***
+#
+config  COMPONENT_IPIPSEC
+        bool "Enable IPSEC"
+        default n
+        depends on MSP_KERNEL && !COMPONENT_IPLITE && SUPPORTS_IPSEC
+        help
+            This option enables IP Security (IPsec). IPsec provides authentication and encryption of IP datagrams. If this option is deselected INCLUDE_IP_SECURITY will not be available in a VxWorks Image Project (VIP).
+#
+# *** END COMPONENT_IPIPSEC ***
+#
+
+#
+# *** START COMPONENT_IPMPLS ***
+#
+config  COMPONENT_IPMPLS
+        bool "Enable MPLS"
+        default n
+        depends on MSP_KERNEL && !COMPONENT_IPLITE && SUPPORTS_MPLS
+
+config IPMPLS_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPMPLS
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+#
+# *** END COMPONENT_IPMPLS ***
+#
+
+#
+# *** START COMPONENT_IPROHC ***
+#
+config  COMPONENT_IPROHC
+        bool "Enable ROHC"
+        default n
+        depends on MSP_KERNEL && SUPPORTS_ROHC && !COMPONENT_IPLITE
+	help
+            This option enables Robust Header Compression.
+
+config IPROHC_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPROHC
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPROHC ***
+#
+
+config COMPONENT_NAT
+        bool "Enable IPNET Network Address Translation (NAT)"
+        depends on MSP_KERNEL && COMPONENT_IPNET && !COMPONENT_IPLITE
+        default y
+        help
+            Enables Network Address Translation in the IPNET TCP/IP stack
+
+config COMPONENT_TUNNEL_SUPPORT
+        bool "Enable tunneling support"
+        depends on MSP_KERNEL && COMPONENT_IPNET && !COMPONENT_IPLITE
+        default y
+        help
+            Enables various tunneling mechanisms in IPNET TCP/IP stack, e.g. SIT, 6to4, 6over4, GRE
+
+config COMPONENT_DIFF_SERV
+        bool "Enable Quality of Service and Differentiated Services"
+        depends on MSP_KERNEL && COMPONENT_IPNET && !COMPONENT_IPLITE
+        default n
+        help
+            Enables Quality of Service and Differentiated Services in the IPNET TCP/IP stack
+
+config COMPONENT_VIRTUAL_ROUTER
+        bool "Enable virtual router support"
+        depends on MSP_KERNEL && COMPONENT_IPNET && !COMPONENT_IPLITE
+        default n
+        help
+            Enables virtual router support which is is a form of lightweight virtualization that applies only to networking.
+
+config COMPONENT_VRRP
+        bool "Enable vrrp support"
+        depends on MSP_KERNEL && COMPONENT_IPNET && !COMPONENT_IPLITE
+        default n
+        help
+            Enable vrrp protocol in the IPNET TCP/IP stack
+
+
+endmenu
+# END MENU "Layer 3 (Network) Components"
+
+#
+#
+menu "Layer 4 (Transport) Components"
+
+#
+# *** START COMPONENT_IPSCTP ***
+#
+config  COMPONENT_IPSCTP
+        bool "Enable SCTP"
+        default n
+        depends on MSP_KERNEL && SUPPORTS_SCTP && !COMPONENT_IPLITE
+        help
+            Enable this option for Stream Control Transmission Protocol (SCTP) support in the network stack.
+
+config  IPSCTP_DEBUG
+        bool "Enable SCTP Debug mode"
+        default n
+        depends on COMPONENT_IPSCTP && IPCOM_DEBUG_ADVANCED_FIXME
+        help
+            This option enables the Stream Control Transmission Protocol (SCTP) Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+
+config  IPSCTP_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPSCTP
+        default IPCOM_DEBUG_SYSLOG_PRIORITY if IPSCTP_DEBUG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPSCTP ***
+#
+
+#
+# *** START COMPONENT_IPTCP ***
+#
+config  COMPONENT_IPTCP
+        bool
+        default y
+        depends on (FEATURE_IP_GPP_BUILD || MSP_KERNEL) && SUPPORTS_TCP && !COMPONENT_IPLITE
+	help
+	  Enable this option for Transmission Control Protocol (TCP) support in the network stack.
+#
+# *** END COMPONENT_IPTCP ***
+#
+
+endmenu
+# END MENU "Layer 4 (Transport) Components"
+
+#
+#
+menu "Layer 5 (Applications) Components"
+
+#
+# *** START COMPONENT_DOT1X ***
+#
+#
+comment "DOT1X authenticator requires COMPONENT_IPCRYPTO to be selected"
+        depends on !COMPONENT_DOT1X && !COMPONENT_IPCRYPTO && !LP64
+
+config  COMPONENT_DOT1X
+bool "Enable 802.1X Authenticator"
+    default n
+    depends on !FEATURE_IPNET_INET6_ONLY && (MSP_KERNEL || MSP_RTP) && SUPPORTS_DOT1X && !COMPONENT_IPLITE && COMPONENT_IPCRYPTO && !LP64
+    select COMPONENT_IPRADIUS
+    help
+        This option enables the IEEE 802.1X Authenticator component.
+
+config  DOT1X_AUTH_DEBUG
+        bool "Enable DOT1X Authenticator Debug mode"
+        default n
+        depends on COMPONENT_DOT1X && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the DOT1X Authenticator Debug mode. "dot1xAuthDebug" needs to be set during runtime to enable debug output.
+            NOTE: Turning this on could negatively impact supplicant performance. Use for Debugging purposes ONLY.
+
+config  DOT1X_AS_DEBUG
+        bool "Enable DOT1X Authentication Server Interface Debug mode"
+        default n
+        depends on COMPONENT_DOT1X && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the DOT1X Authentication Server Interface Debug mode. "dot1xAsDebug" needs to be set during runtime to enable debug output.
+            NOTE: Turning this on could negatively impact supplicant performance. Use for Debugging purposes ONLY.
+
+config  DOT1X_AUTH_TIMER_DEBUG
+        bool "Enable DOT1X Authenticator Timer Management Debug mode"
+        default n
+        depends on COMPONENT_DOT1X && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the DOT1X Authenticator Timer Management Debug mode. "dot1xAuthTimerDebug" needs to be set during runtime to enable debug output.
+            NOTE: Turning this on could negatively impact supplicant performance. Use for Debugging purposes ONLY.
+
+config  DOT1X_KEY_DEBUG
+        bool "Enable DOT1X Authenticator Key Management Interface Debug mode"
+        default n
+        depends on COMPONENT_DOT1X && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the DOT1X Authenticator Key Management Interface Debug mode. "dot1xKeyDebug" needs to be set during runtime to enable debug output.
+            NOTE: Turning this on could negatively impact supplicant performance. Use for Debugging purposes ONLY.
+
+#
+# *** END COMPONENT_DOT1X ***
+#
+
+#
+# *** START COMPONENT_IP8021X ***
+#
+
+config  COMPONENT_IP8021X
+        bool "Enable 802.1X Supplicant"
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && SUPPORTS_IP8021X && !LP64
+        help
+            This option enables the IEEE 802.1X Supplicant component.
+
+config  IP8021X_DEBUG
+        bool "Enable 8021X Debug mode"
+        default n
+        depends on COMPONENT_IP8021X && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the 8021X Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+            NOTE: Turning this on could negatively impact supplicant performance. Use for Debugging purposes ONLY.
+
+config  IP8021X_USE_STATS
+        bool "Enable 8021X Statistics"
+        default y
+        depends on COMPONENT_IP8021X
+        help
+            This option enables the 8021X statistics counters as defined in IEEE 802.1x.
+
+config IP8021X_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IP8021X
+        default IPCOM_DEBUG_SYSLOG_PRIORITY if IP8021X_DEBUG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IP8021X ***
+#
+
+#
+# *** START COMPONENT_IPAPPL ***
+#
+config  COMPONENT_IPAPPL
+        bool "Enable APPL"
+        default y
+        depends on (FEATURE_IP_GPP_BUILD || MSP_KERNEL) && SUPPORTS_APPL
+        help
+            Enables the network applications FTP client and server, TFTP client and server, DNS client and DHCP client.
+
+config  IPFTP_USE_TLS
+        bool "Enable FTP with TLS"
+        default n
+        depends on COMPONENT_IPAPPL && MSP_KERNEL
+        select COMPONENT_IPSSL
+        help
+            Enable FTP with TLS
+
+config  IPFTPC_DEBUG
+        bool "Enable FTPC Debug mode"
+        default n
+        depends on COMPONENT_IPAPPL && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the FTP client Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+
+config  IPFTPC_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPAPPL && !COMPONENT_IPLITE
+        default IPCOM_DEBUG_SYSLOG_PRIORITY if IPFTPC_DEBUG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+config  IPDHCPC_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPAPPL && !COMPONENT_IPLITE
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+config  IPDNSC_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPAPPL && !COMPONENT_IPLITE
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+config  IPFTPS_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPAPPL && !COMPONENT_IPLITE
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+config  IPTFTP_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPAPPL && !COMPONENT_IPLITE
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPAPPL ***
+#
+
+#
+# *** START COMPONENT_IPDHCPC6 ***
+#
+config  COMPONENT_IPDHCPC6
+        bool "Enable DHCPC6"
+        default y if FEATURE_IP_GPP_BUILD
+        depends on ((FEATURE_IP_GPP_BUILD && !FEATURE_IP_GPP_BUILD_BASIC) || MSP_KERNEL) && (FEATURE_IPNET_INET6 || FEATURE_IPNET_INET6_ONLY || FEATURE_IPLITE_INET6) && SUPPORTS_DHCPC6
+        help
+            Enables IPv6 DHCP client.
+
+config  IPDHCPC6_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPDHCPC6
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPDHCPC6 ***
+#
+
+#
+# *** START COMPONENT_IPDHCPR ***
+#
+config  COMPONENT_IPDHCPR
+        bool "Enable DHCPR"
+        default y if FEATURE_IP_GPP_BUILD
+        depends on ((FEATURE_IP_GPP_BUILD && !FEATURE_IP_GPP_BUILD_BASIC) || MSP_KERNEL) && !FEATURE_IPNET_INET6_ONLY && SUPPORTS_DHCPR && !COMPONENT_IPLITE
+        help
+            Enables IPv4 DHCP relay
+
+config  IPDHCPR_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPDHCPR
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPDHCPR ***
+#
+
+#
+# *** START COMPONENT_IPDHCPS ***
+#
+config  COMPONENT_IPDHCPS
+        bool "Enable DHCPS"
+        default y if FEATURE_IP_GPP_BUILD
+        depends on ((FEATURE_IP_GPP_BUILD && !FEATURE_IP_GPP_BUILD_BASIC) || MSP_KERNEL) && !FEATURE_IPNET_INET6_ONLY && SUPPORTS_DHCPS && !COMPONENT_IPLITE
+        help
+            Enables the IPv4 DHCP server.
+
+config  IPDHCPS_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPDHCPS
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPDHCPS ***
+#
+
+#
+# *** START COMPONENT_IPDHCPS6 ***
+#
+config  COMPONENT_IPDHCPS6
+        bool "Enable DHCPS6"
+        default y if FEATURE_IP_GPP_BUILD
+        depends on ((FEATURE_IP_GPP_BUILD && !FEATURE_IP_GPP_BUILD_BASIC) || MSP_KERNEL) && (FEATURE_IPNET_INET6 || FEATURE_IPNET_INET6_ONLY) && SUPPORTS_DHCPS6 && !COMPONENT_IPLITE
+        help
+            Enables the IPv6 DHCP server.
+
+config  IPDHCPS6_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPDHCPS6
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPDHCPS6 ***
+#
+
+#
+# *** START COMPONENT_IPDIAMETERC/COMPONENT_IPDIAMETERP ***
+#
+menu    "Diameter Components"
+        depends on MSP_KERNEL && !COMPONENT_IPLITE && SUPPORTS_DIAMETER
+
+	config  COMPONENT_IPDIAMETERC
+        	bool "Enable DIAMETER Client"
+        	default n
+        	help
+            	 This option enables DIAMETER client.
+
+	config  COMPONENT_IPDIAMETERP
+        	bool "Enable DIAMETER Proxy"
+        	default n
+        	depends on  !COMPONENT_IPCRYPTO_USE_FIPS_140_2
+        	help
+            	 This option enables DIAMETER proxy agent, or relay agent if no filter policy is configured.
+
+	config  IPDIAMETER_SEC_KEY_DB
+        	bool "Enable DIAMETER Secure key DB "
+		depends on (COMPONENT_IPDIAMETERP || COMPONENT_IPDIAMETERC) && COMPONENT_IPSSL
+        	default n
+        	help
+            	 This option enables Secure Key database support for Diameter components.
+
+    config  IPDIAMETER_SYSLOG_PRIORITY
+        int
+        depends on (COMPONENT_IPDIAMETERP || COMPONENT_IPDIAMETERC)
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+endmenu
+#
+# *** END COMPONENT_IPDIAMETERC/COMPONENT_IPDIAMETERP ***
+#
+
+#
+# *** START COMPONENT_IPIKE ***
+#
+config COMPONENT_IPIKE
+        bool "Enable IKE"
+        select COMPONENT_IPCRYPTO
+        select COMPONENT_IPIPSEC
+        default n
+        depends on MSP_KERNEL && SUPPORTS_IKE && !COMPONENT_IPLITE
+        help
+            This option enables ipike, an implementation of version 1 and version 2 of the IKE protocol. If this option is deselected INCLUDE_INTERNET_KEY_EXCHANGE will not be available in a VxWorks Image Project (VIP).
+
+config IPIKE_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPIKE
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+config COMPONENT_IPIKE_USE_EVENT_LOG
+        bool "Enable IKE and IPsec Event Logging"
+        default n
+        depends on COMPONENT_IPIKE
+        help
+            This option enables event callback logging in ipike and ipipsec.
+
+#
+# *** END COMPONENT_IPIKE ***
+#
+
+#
+# *** START COMPONENT_IPMCP ***
+#
+
+config  COMPONENT_IPMCP
+        bool "Enable Multicast Proxy daemon"
+        default n
+        depends on MSP_KERNEL && !COMPONENT_IPLITE && SUPPORTS_MCP
+	help
+          This option controls whether the system should include a multicast proxy that operates according to RFC 4605. A multicast proxy is a simple variant of a multicast routing daemon. A multicast proxy will learn which groups that has at least one listener through the Internet Group Management Protocol (IGMP) and/or Multicast Listener Discovery (MLD) membership information. Multicast traffic sent to group G received on one link will be forwarded to all other links that has listener on group G. IGMP will be enabled if the system is configured for IPv4 and/or MLD if it is configured or IPv6.
+#
+# *** END COMPONENT_IPMCP ***
+#
+
+#
+# *** START COMPONENT_IPMIP ***
+#
+config  COMPONENT_IPMIP
+        bool "Enable MIP"
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && SUPPORTS_MIP
+        help
+            This option enables the base Mobility Library in VxWorks. If this is disabled, no mobility product will be available, neither will INCLUDE_IPMIP.
+#
+# *** END COMPONENT_IPMIP ***
+#
+
+#
+# *** START COMPONENT_IPMIP4 ***
+#
+config  COMPONENT_IPMIP4
+        bool "Enable MIP4"
+        select COMPONENT_IPMIP
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && !COMPONENT_IPCRYPTO_USE_FIPS_140_2 && SUPPORTS_MIP4
+        help
+            This option enables the base Mobility Library for IPv4 in VxWorks. If this is disabled, no IPv4 mobility product will be available, neither will INCLUDE_IPMIP4.
+#
+# *** END COMPONENT_IPMIP4 ***
+#
+
+#
+# *** START COMPONENT_IPMIP6 ***
+#
+config  COMPONENT_IPMIP6
+        bool "Enable MIP6"
+        select COMPONENT_IPMIP
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && FEATURE_IPNET_INET6 && SUPPORTS_MIP6
+        help
+            This option enables the base Mobility Library for IPv6 in VxWorks. If this is disabled, no IPv6 mobility product will be available, neither will INCLUDE_IPMIP6.
+#
+# *** END COMPONENT_IPMIP6 ***
+#
+
+#
+# *** START COMPONENT_IPMIP6HA ***
+#
+config  COMPONENT_IPMIP6HA
+        bool "Enable MIP6HA"
+        select COMPONENT_IPMIP6
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && FEATURE_IPNET_INET6 && SUPPORTS_MIP6HA
+        help
+            This option enables Mobility Home Agent for IPv6 in VxWorks. If this is disabled INCLUDE_IPMIP6HA will not be available.
+#
+# *** END COMPONENT_IPMIP6HA ***
+#
+
+#
+# *** START COMPONENT_IPMIP6MN ***
+#
+config  COMPONENT_IPMIP6MN
+        bool "Enable MIP6MN"
+        select COMPONENT_IPMIP6
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && FEATURE_IPNET_INET6 && SUPPORTS_MIP6MN
+        help
+            This option enables Mobility Mobile Node for IPv6 in VxWorks. If this is disabled INCLUDE_IPMIP6MN will not be available.
+
+#
+# *** END COMPONENT_IPMIP6MN ***
+#
+
+#
+# *** START COMPONENT_IPMIP6PM ***
+#
+config  COMPONENT_IPMIP6PM
+        bool "Enable MIP6PM"
+        select COMPONENT_IPMIP6
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && FEATURE_IPNET_INET6 && SUPPORTS_MIP6PM
+        help
+            This option enables Mobility Mobile Agent Gateway (Proxy Mobile Node) for IPv6 in VxWorks. If this is disabled INCLUDE_IPMIP6PM will not be available.
+#
+# *** END COMPONENT_IPMIP6PM ***
+#
+
+#
+# *** START COMPONENT_IPMIPFA ***
+#
+config  COMPONENT_IPMIPFA
+        bool "Enable MIPFA"
+        select COMPONENT_IPMIP4
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && SUPPORTS_MIPFA
+        help
+            This option enables Mobility Foreign Agent for IPv4 in VxWorks. If this is disabled INCLUDE_IPMIPFA will not be available.
+#
+# *** END COMPONENT_IPMIPFA ***
+#
+
+#
+# *** START COMPONENT_IPMIPHA ***
+#
+config  COMPONENT_IPMIPHA
+        bool "Enable MIPHA"
+        select COMPONENT_IPMIP4
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && SUPPORTS_MIPHA
+        help
+            This option enables Mobility Home Agent for IPv4 in VxWorks. If this is disabled INCLUDE_IPMIPHA will not be available.
+            This option enables Mobility Proxy Mobile Node for IPv4 in VxWorks. If this is disabled INCLUDE_IPMIPPM will not be available.
+#
+# *** END COMPONENT_IPMIPHA ***
+#
+
+#
+# *** START COMPONENT_IPMIPMN ***
+#
+
+config  COMPONENT_IPMIPMN
+        bool "Enable MIPMN"
+        select COMPONENT_IPMIP4
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && SUPPORTS_MIPMN
+        help
+            This option enables Mobility Mobile Node for IPv4 in VxWorks. If this is disabled INCLUDE_IPMIPMN will not be available.
+#
+# *** END COMPONENT_IPMIPMN ***
+#
+
+#
+# *** START COMPONENT_IPMIPPM ***
+#
+config  COMPONENT_IPMIPPM
+        bool "Enable MIPPM"
+        select COMPONENT_IPMIPMN
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && SUPPORTS_MIPPM
+        help
+#
+# *** END COMPONENT_IPMIPPM ***
+#
+
+#
+# *** START COMPONENT_IPRADIUS ***
+#
+config  COMPONENT_IPRADIUS
+        bool "Enable RADIUS"
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPCRYPTO_USE_FIPS_140_2 && !COMPONENT_IPLITE
+	help
+            This option enables Remote Authentication Dial In User Service.
+
+config  IPRADIUS_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPRADIUS
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPRADIUS ***
+#
+
+#
+# *** START COMPONENT_IPRIP ***
+#
+config  COMPONENT_IPRIP
+        bool "Enable RIP"
+        default y if FEATURE_IP_GPP_BUILD
+        depends on ((FEATURE_IP_GPP_BUILD && !FEATURE_IP_GPP_BUILD_BASIC) || MSP_KERNEL) && !FEATURE_IPNET_INET6_ONLY && SUPPORTS_RIP && !COMPONENT_IPLITE
+
+config IPRIP_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPRIP
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPRIP ***
+#
+
+#
+# *** START COMPONENT_IPRIPNG ***
+#
+config  COMPONENT_IPRIPNG
+        bool "Enable RIPNG"
+        default y if FEATURE_IP_GPP_BUILD
+        depends on ((FEATURE_IP_GPP_BUILD && !FEATURE_IP_GPP_BUILD_BASIC) || MSP_KERNEL) && (FEATURE_IPNET_INET6 || FEATURE_IPNET_INET6_ONLY) && SUPPORTS_RIPNG && !COMPONENT_IPLITE
+
+config IPRIPNG_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPRIPNG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPRIPNG ***
+#
+
+#
+# *** START COMPONENT_SNMP ***
+#
+config  COMPONENT_SNMP
+        bool "Enable SNMP"
+        depends on (MSP_KERNEL || MSP_RTP) && SUPPORTS_SNMP && !COMPONENT_IPLITE
+        default y
+        help
+          This option enables the wrsnmp Supplicant component.
+#
+# *** END COMPONENT_SNMP ***
+#
+
+#
+# *** START COMPONENT_IPSNTP ***
+#
+config  COMPONENT_IPSNTP
+        bool "Enable SNTP"
+        default y
+        depends on ((FEATURE_IP_GPP_BUILD && !FEATURE_IP_GPP_BUILD_BASIC) || MSP_KERNEL) && SUPPORTS_SNTP && !COMPONENT_IPLITE
+        help
+            This option enables Simple Network Time Protocol (SNTP). If this option is deselected INCLUDE_IPSNTPC and INCLUDE_IPSNTPS will not be available in a VxWorks Image Project (VIP).
+
+config  IPSNTP_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPSNTP
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPSNTP ***
+#
+
+#
+# *** START COMPONENT_IPNTP ***
+#
+config  COMPONENT_IPNTP
+        bool "Enable NTP"
+        default y
+        depends on !FEATURE_IPNET_INET6_ONLY && (MSP_KERNEL || MSP_RTP) && COMPONENT_IPSNTP && SUPPORTS_NTP
+        help
+            This option enables the Network Time protocol (NTP / RFC 1305) component.
+
+config  IPNTP_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPNTP
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPNTP ***
+#
+
+#
+# *** START COMPONENT_IPSSH ***
+#
+config COMPONENT_IPSSH
+        bool "Enable SSH"
+        default n
+        depends on MSP_KERNEL && COMPONENT_IPCRYPTO && SUPPORTS_SSH && !COMPONENT_IPLITE
+        help
+            This option enables Secure Shell, SSH. SSH is a secure replacement for telnet and ftp. If this option is deselected INCLUDE_SSH will not be available in a VxWorks Image Project (VIP).
+#
+# *** END COMPONENT_IPSSH ***
+#
+
+#
+# *** START COMPONENT_IPSSL ***
+#
+config  COMPONENT_IPSSL
+        bool "Enable SSL"
+        select COMPONENT_IPCRYPTO
+        default y
+        depends on MSP_KERNEL && SUPPORTS_SSL && !COMPONENT_IPLITE
+        help
+            This option enables ipssl2, a port of the openssl SSL library, excluding the encryption library part which is found in the ipcrypto component. If this option is deselected INCLUDE_IPSSL, INCLUDE_IPSSL_USE_CMDS and INCLUDE_IPSSL_USE_TEST_CMDS will not be available in a VxWorks Image Project (VIP).
+#
+# *** END COMPONENT_IPSSL ***
+#
+
+#
+# *** START COMPONENT_IPWPS ***
+#
+comment "WPS requires COMPONENT_WLAN and COMPONENT_IPEAP and COMPONENT_IP8021X to be selected and COMPONENT_IPCRYPTO_USE_FIPS_140_2 to be deselected"
+        depends on !COMPONENT_IPWPS && ( !COMPONENT_WLAN || !COMPONENT_IPEAP || !COMPONENT_IP8021X || COMPONENT_IPCRYPTO_USE_FIPS_140_2 ) && !LP64
+
+comment "IPWPS_USE_WPS_PROTOCOL requires COMPONENT_IPCRYPTO to be selected"
+        depends on COMPONENT_IPWPS && !IPWPS_USE_WPS_PROTOCOL &&  !COMPONENT_IPCRYPTO
+
+config  COMPONENT_IPWPS
+        bool "Enable WPS"
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY  && !COMPONENT_IPLITE && !COMPONENT_IPCRYPTO_USE_FIPS_140_2  && COMPONENT_WLAN && COMPONENT_IPEAP && COMPONENT_IP8021X && SUPPORTS_WPS && !LP64
+        help
+            This option enables the WiFi Protected Setup (WPS) component.
+
+config  IPWPS_USE_WPS_PROTOCOL
+        bool "Enable WPS Protocol Support"
+        default y
+        depends on COMPONENT_IPWPS && COMPONENT_IPCRYPTO
+        help
+            This option enables the WiFi Protected Setup (WPS) Protocol support.
+
+config  IPWPS_USE_WPS_DRV_IF
+        bool "Enable WPS wireless Driver Interface Support"
+        default y
+        depends on COMPONENT_IPWPS
+        select IPWLAN_BROADCOM
+        help
+            This option enables the WiFi Protected Setup (WPS) wireless Driver Interface support.
+
+config  IPWPS_USE_WPS_AP
+        bool "Enable WPS AP Support"
+        default y
+        depends on COMPONENT_IPWPS
+        help
+            This option enables the WiFi Protected Setup (WPS) AP support.
+
+config  IPWPS_USE_WPS_ENROLLEE
+        bool "Enable WPS Enrollee Support"
+        default y
+        depends on COMPONENT_IPWPS
+        select IPWPS_USE_WPS_PROTOCOL
+        select IPEAP_USE_EAP_WSC
+        help
+            This option enables the WiFi Protected Setup (WPS) Enrollee support.
+
+config  IPWPS_USE_WPS_REGISTRAR
+        bool "Enable WPS Registrar Support"
+        default y
+        depends on COMPONENT_IPWPS
+        select IPWPS_USE_WPS_PROTOCOL
+        select IPEAP_USE_EAP_WSC
+        select IPWPS_USE_WPS_DRV_IF
+        select IPWPS_USE_WPS_AP
+        help
+            This option enables the WiFi Protected Setup (WPS) Registrar support.
+
+config  IPWPS_DEBUG
+        bool "Enable WPS Debug mode"
+        default n
+        depends on COMPONENT_IPWPS && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the WiFi Protected Setup (WPS) Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+
+config IPWPS_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPWPS
+        default IPCOM_DEBUG_SYSLOG_PRIORITY if IPWPS_DEBUG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+#
+# *** END COMPONENT_IPWPS ***
+#
+
+#
+# *** START COMPONENT_IPNET_SOCK ***
+#
+config NET_SOCK_MAX
+       int "Maximum number of sockets"
+       default 1024
+       depends on COMPONENT_IPNET
+       help
+            Defines the maximum number of sockets that the can be used simultaneous in the system.
+#
+# *** END COMPONENT_IPNET_SOCK ***
+#
+
+endmenu
+# END MENU "Layer 5 (Applications) Components"
+
+#
+#
+menu "Cryptography Components"
+
+#
+# *** START COMPONENT_IPCAVIUM ***
+#
+config  COMPONENT_IPCAVIUM
+        bool "Enable CAVIUM"
+        depends on APP_TOOL_ILP32_gnu && COMPONENT_IPCAVIUM_FLAG && !FEATURE_IPNET_INET6_ONLY && MSP_KERNEL && !COMPONENT_IPLITE && SUPPORTS_CAVIUM
+#        select COMPONENT_IPHWCRYPTO
+        default n
+        help
+            This option enables hardware crypto offload for Cavium CN38XX/58XX boards. If this option is deselected INCLUDE_IPCAVIUM will not be available in a VxWorks Image Project (VIP).
+
+comment "COMPONENT_IPCAVIUM hardware crypto offload for Cavium CN38XX/58XX boards can only be enabled if Applicatation Tool compiler is set to gnu"
+        depends on !APP_TOOL_ILP32_gnu && COMPONENT_IPCAVIUM_FLAG
+#
+# *** END COMPONENT_IPCAVIUM ***
+#
+
+#
+# *** START COMPONENT_IPCRYPTO ***
+#
+comment "Component CRYPTO preselected - required by  Component SSL"
+        depends on COMPONENT_IPSSL
+
+config  COMPONENT_IPCRYPTO
+        bool "Enable CRYPTO"
+        depends on MSP_KERNEL && SUPPORTS_CRYPTO
+        default y if MSP_KERNEL
+        help
+            This option enables ipcrypto, a port of the openssl encryption library, excluding the SSL part which is found in the ipssl component. If this option is deselected INCLUDE_IPCRYPTO, INCLUDE_IPCRYPTO_USE_CMDS and INCLUDE_IPCRYPTO_USE_TEST_CMDS will not be available in a VxWorks Image Project (VIP).
+
+config  COMPONENT_IPCRYPTO_USE_FIPS_140_2
+        bool "Enable FIPS 140-2 validated crypto libraries"
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && COMPONENT_IPCRYPTO && !DEFAULT_SIT_NB
+        default n
+        help
+            This option builds ipcrypto in a special FIPS 140-2 configuration.
+
+config  COMPONENT_IPXINC
+        bool
+	depends on MSP_KERNEL && SUPPORTS_CRYPTO
+	default y if MSP_KERNEL
+#
+# *** END COMPONENT_IPCRYPTO ***
+#
+
+#
+# *** START COMPONENT_IPFREESCALE ***
+#
+config  COMPONENT_IPFREESCALE
+        bool "Enable FREESCALE"
+        depends on COMPONENT_IPFREESCALE_FLAG && !FEATURE_IPNET_INET6_ONLY && MSP_KERNEL && !COMPONENT_IPLITE && !COMPONENT_IPCRYPTO_USE_FIPS_140_2 && SUPPORTS_FREESCALE
+#        select COMPONENT_IPHWCRYPTO
+        default n
+        help
+            This option enables hardware crypto offload for Freescale security engines. If this option is deselected INCLUDE_IPFREESCALE will not be available in a VxWorks Image Project (VIP).
+#
+# *** END COMPONENT_IPFREESCALE ***
+#
+
+#
+# *** START COMPONENT_IPHWCRYPTO ***
+#
+config  COMPONENT_IPHWCRYPTO
+        bool "Enable HWCRYPTO"
+        default n
+        depends on MSP_KERNEL && !COMPONENT_IPLITE && SUPPORTS_HWCRYPTO && !COMPONENT_IPCRYPTO_USE_FIPS_140_2
+#        select COMPONENT_IPCRYPTO
+        help
+            This option enables the hardware crypto offload API. If this option is deselected INCLUDE_IPHWCRYPTO will not be available in a VxWorks Image Project (VIP).
+#
+# *** END COMPONENT_IPHWCRYPTO ***
+#
+
+#
+# *** START COMPONENT_IPMCRYPTO ***
+#
+config  COMPONENT_IPMCRYPTO
+        bool
+        depends on !COMPONENT_IPCRYPTO && SUPPORTS_MCRYPTO
+	default y
+#
+# *** END COMPONENT_IPMCRYPTO ***
+#
+
+endmenu
+# END MENU "Cryptography Components"
+
+#
+#
+menu "Networking Library Components"
+
+#
+# *** START COMPONENT_IPEAP ***
+#
+
+config  COMPONENT_IPEAP
+        bool "Enable EAP"
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && SUPPORTS_EAP
+	help
+	    This option enables the Extensible Authentication Protocol component.
+
+config  IPEAP_USE_EAP_AKA
+        bool "Enable EAP AKA"
+        default y
+        depends on COMPONENT_IPEAP
+	help
+	    This option enables EAP_AKA support.
+config  IPEAP_AKA_ENABLE_TEST
+		    depends on IPEAP_USE_EAP_AKA
+        	bool "Enable EAP AKA Test"
+        	default y
+			help
+	    	This option enables EAP AKA TEST support.
+
+config  IPEAP_USE_EAP_GTC
+        bool "Enable EAP GTC"
+        default y
+        depends on COMPONENT_IPEAP
+	help
+	    This option enables EAP_GTC support.
+
+
+comment "EAP LEAP requires COMPONENT_IPCRYPTO to be selected"
+        depends on COMPONENT_IPEAP && !IPEAP_USE_EAP_LEAP  && !COMPONENT_IPCRYPTO
+
+config  IPEAP_USE_EAP_LEAP
+        bool "Enable EAP LEAP"
+        default y
+        depends on COMPONENT_IPEAP && COMPONENT_IPCRYPTO
+        select IPEAP_USE_EAP_MSCHAPV2
+	help
+	    This option enables EAP_LEAP support.
+
+config  IPEAP_USE_EAP_MD5
+        bool "Enable EAP MD5"
+        default y
+        depends on COMPONENT_IPEAP
+	help
+	    This option enables EAP_MD5 support.
+
+comment "EAP MSCHAPV2 requires COMPONENT_IPCRYPTO to be selected"
+        depends on COMPONENT_IPEAP && !IPEAP_USE_EAP_MSCHAPV2  && !COMPONENT_IPCRYPTO
+
+config  IPEAP_USE_EAP_MSCHAPV2
+        bool "Enable EAP MSCHAPV2"
+        default y
+        depends on COMPONENT_IPEAP && COMPONENT_IPCRYPTO
+	help
+	    This option enables EAP_MSCHAPV2 support.
+
+config  IPEAP_USE_EAP_PEAP
+        bool "Enable EAP PEAP"
+        default y
+        depends on COMPONENT_IPEAP
+        select COMPONENT_IPSSL
+	help
+	    This option enables EAP_PEAP support.
+
+config  IPEAP_USE_EAP_SIM
+        bool "Enable EAP SIM"
+        default y
+        depends on COMPONENT_IPEAP
+	help
+	    This option enables EAP_SIM support.
+
+config  IPEAP_SIM_ENABLE_TEST
+		    depends on IPEAP_USE_EAP_SIM
+        	bool "Enable EAP SIM Test"
+        	default y
+			help
+	    	This option enables EAP SIM TEST support.
+
+config  IPEAP_USE_EAP_TLS
+        bool "Enable EAP TLS"
+        default y
+        depends on COMPONENT_IPEAP
+        select COMPONENT_IPSSL
+	help
+	    This option enables EAP_TLS support.
+
+
+comment "EAP TTLS requires COMPONENT_IPSSL to be selected"
+        depends on COMPONENT_IPEAP && !IPEAP_USE_EAP_TTLS  && !COMPONENT_IPSSL
+
+config  IPEAP_USE_EAP_TTLS
+        bool "Enable EAP TTLS"
+        default y
+        depends on COMPONENT_IPEAP && COMPONENT_IPSSL
+	help
+	    This option enables EAP_TTLS support.
+
+config  IPEAP_USE_EAP_WSC
+        bool "Enable EAP WSC"
+        default n
+        depends on COMPONENT_IPEAP && !COMPONENT_IPCRYPTO_USE_FIPS_140_2
+	help
+	    This option enables EAP_WSC support required by the WPS protocol component.
+
+config  IPEAP_DEBUG
+        bool "Enable EAP Debug mode"
+        default n
+        depends on COMPONENT_IPEAP && IPCOM_DEBUG_ADVANCED
+        help
+            This option enables the EAP Debug mode and uses the specified DEBUG Build-time Syslog level for this component.
+
+config IPEAP_SYSLOG_PRIORITY
+        int
+        depends on COMPONENT_IPEAP
+        default IPCOM_DEBUG_SYSLOG_PRIORITY if IPEAP_DEBUG
+        default IPCOM_DEFAULT_SYSLOG_PRIORITY
+
+config  IPEAP_USE_EAP_COMMON_TLS
+        bool
+        default y if IPEAP_USE_EAP_TLS  || IPEAP_USE_EAP_TTLS  || IPEAP_USE_EAP_PEAP
+	help
+	    This is a hidden component and will be selected if EAP TLS, EAP TTL and/or EAP PEAP will be selected.
+
+config  IPEAP_USE_EAP_COMMON_SIM
+        bool
+        default y if IPEAP_USE_EAP_SIM  || IPEAP_USE_EAP_AKA
+        select COMPONENT_IPSSL
+	help
+	    This is a hidden component and will be selected if EAP SIM, and/or EAP AKA will be selected.
+#
+# *** END COMPONENT_IPEAP ***
+#
+
+#
+# *** START COMPONENT_VXCOMPAT ***
+#
+config  COMPONENT_VXCOMPAT
+        bool "Enable VXCOMPAT"
+        default y
+        depends on (FEATURE_IP_GPP_BUILD || MSP_KERNEL) && SUPPORTS_VXCOMPAT && !COMPONENT_IPLITE
+        help
+            Enables wrapper routines for ifLib, oldRouteLib, m2Lib.
+#
+# *** END COMPONENT_VXCOMPAT ***
+#
+
+endmenu
+# END MENU "Networking Library Components"
+
+#
+#
+menu "Networking Acceleration Platform Components"
+
+#
+# *** START COMPONENT_IFPROXY ***
+#
+config  COMPONENT_IFPROXY
+        bool "Enable IFPROXY"
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && SUPPORTS_IFPROXY
+        help
+            This option enables the Ifproxy driver component.
+#
+# *** END COMPONENT_IFPROXY ***
+#
+
+#
+# *** START COMPONENT_WRNAD ***
+#
+config  COMPONENT_WRNAD
+        bool "Enable WRNAD"
+        default n
+        depends on MSP_KERNEL && !FEATURE_IPNET_INET6_ONLY && !COMPONENT_IPLITE && SUPPORTS_WRNAD
+        help
+            This option enables the Wind River Network Acceleration Daemon component.
+#
+# *** END COMPONENT_WRNAD ***
+#
+endmenu
+# END MENU "Networking Acceleration Platform Components"
+
+
+# /opt/WindRiver/components/ip_net2-6.9/ipappl/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.5 $
+#   $Source: /home/interpeak/CVSRoot/ipappl/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPAPPL
+config SUPPORTS_APPL
+	bool
+	default y
+
+
+# /opt/WindRiver/components/ip_net2-6.9/ipcom/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.4 $
+#   $Source: /home/interpeak/CVSRoot/ipcom/config/common.vxconfig,v $
+#   $Author: rboden $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPFORWARDER
+config SUPPORTS_FORWARDER
+	bool
+	default y
+
+
+# /opt/WindRiver/components/ip_net2-6.9/ipdhcpc6/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.9 $
+#   $Source: /home/interpeak/CVSRoot/ipdhcpc6/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPIPDHCPC6
+config SUPPORTS_DHCPC6
+	bool
+	default y
+
+# /opt/WindRiver/components/ip_net2-6.9/ipdhcpr/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.6 $
+#   $Source: /home/interpeak/CVSRoot/ipdhcpr/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPDHCPR
+config SUPPORTS_DHCPR
+	bool
+	default y
+
+
+# /opt/WindRiver/components/ip_net2-6.9/ipdhcps/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.7 $
+#   $Source: /home/interpeak/CVSRoot/ipdhcps/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPDHCPS
+config SUPPORTS_DHCPS
+	bool
+	default y
+
+
+# /opt/WindRiver/components/ip_net2-6.9/ipdhcps6/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.9 $
+#   $Source: /home/interpeak/CVSRoot/ipdhcps6/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPDHCPS6
+config SUPPORTS_DHCPS6
+	bool
+	default y
+
+# /opt/WindRiver/components/ip_net2-6.9/ipmcrypto/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.5 $
+#   $Source: /home/interpeak/CVSRoot/ipmcrypto/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPMCRYPTO
+config SUPPORTS_MCRYPTO
+	bool
+	default y
+
+
+
+# /opt/WindRiver/components/ip_net2-6.9/ipppp/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.5 $
+#   $Source: /home/interpeak/CVSRoot/ipppp/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPPPP
+config SUPPORTS_PPP
+	bool
+	default y
+
+
+
+# /opt/WindRiver/components/ip_net2-6.9/iprip/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.7 $
+#   $Source: /home/interpeak/CVSRoot/iprip/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPRIP
+config SUPPORTS_RIP
+	bool
+	default y
+
+        
+# /opt/WindRiver/components/ip_net2-6.9/ipripng/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.5 $
+#   $Source: /home/interpeak/CVSRoot/ipripng/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPRIPNG
+config SUPPORTS_RIPNG
+	bool
+	default y
+
+# /opt/WindRiver/components/ip_net2-6.9/ipsntp/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.5.12.1 $
+#   $Source: /home/interpeak/CVSRoot/ipsntp/config/common.vxconfig,v $
+#   $Author: zluo0 $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPSNTP
+config SUPPORTS_SNTP
+	bool
+	default y
+
+
+# /opt/WindRiver/components/ip_net2-6.9/iptcp/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.7 $
+#   $Source: /home/interpeak/CVSRoot/iptcp/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+
+#hidden option that enables IPTCP
+config SUPPORTS_TCP
+	bool
+	default y
+
+
+# /opt/WindRiver/components/ip_net2-6.9/vxcompat/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.6 $
+#   $Source: /home/interpeak/CVSRoot/vxcompat/config/common.vxconfig,v $
+#   $Author: myakan $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+       
+#hidden option that enables VXCOMPAT
+config SUPPORTS_VXCOMPAT
+	bool
+	default y
+       
+
+# /opt/WindRiver/components/ip_net2-6.9/vxcoreip/config/common.vxconfig
+config  COMPONENT_VXCOREIP
+        bool
+        default y
+        help
+            This configuration option is a placeholder and currently is invisible to the user, non-optional.
+
+# /opt/WindRiver/components/ip_net2-6.9/vxmux/config/common.vxconfig
+#   Document no: @(#) $Name: VXWORKS_ITER31_2014121001 $ $RCSfile: common.vxconfig,v $ $Revision: 1.3 $
+#   $Source: /home/interpeak/CVSRoot/vxmux/config/common.vxconfig,v $
+#   $Author: dlkrejsa $
+#   $State: Exp $ $Locker:  $
+#
+#   INTERPEAK_COPYRIGHT_STRING
+        
+config  COMPONENT_VXMUX
+        bool
+        default y
+        help
+            This configuration option is a placeholder and currently is invisible to the user, non-optional, and has no effect.
+
+endmenu
+
+
+# /opt/WindRiver/components/cafe-0.1/common.vxconfig
+# This is the configuration file for the cafe framework
+
+#
+#
+menu "Common Analysis Framework Components"
+
+comment "COMPONENT CAFE and COMPONENT_STACKTRACE are used by analysis tools"
+
+config  COMPONENT_CAFE
+    bool "Enable CAFE framework"
+    default y
+    depends on COMPONENT_TCF_AGENT
+    help
+        Enable this component to build the Cafe analysis framework into your VSB
+
+endmenu
+# END MENU "Common Analysis Framework Components"
+
+# /opt/WindRiver/components/stacktrace-1.0/common.vxconfig
+#This is the configuration file for the stacktrace libraries.
+
+menu "Stacktrace Debug Component"
+
+config COMPONENT_STACKTRACE_DEBUG
+#    depends on COMPONENT_STACKTRACE
+    bool "Enable stacktrace debugging output"
+    default n
+
+config COMPONENT_STACKTRACE_SESSION_LOGGER
+#    depends on COMPONENT_STACKTRACE_DEBUG
+    bool "Route stacktrace debugging output to a session logger"
+    default n
+
+endmenu
+
+# /opt/WindRiver/components/tcf_agent-0.3/common.vxconfig
+# configuration file for the TCF agent
+
+#
+#
+menu "Target Communication Framework (TCF) Agent Component"
+
+#config  SUPPORTS_TCF_AGENT
+#        bool  
+#	default y
+
+config  COMPONENT_TCF_AGENT
+    bool "Enable TCF_AGENT"
+    default y
+    help
+	Enable this component to provide Target Communication Framework (TCF) on your target system for debugging and analysis
+
+endmenu
+# END MENU "Target Communication Framework (TCF) Agent Component"
+
+
+
+
+# /opt/WindRiver/vxworks-6.9/vx_components/mipc-2.1/config/common.vxconfig
+# This is the configuration file for MIPC 
+# this file sets up a hidden flag for MIPC and the configuration option itself is
+# located in target/src/common.vxconfig
+
+config  SUPPORTS_MIPC
+        bool  
+	default y
+ 
+ 
+
+# /opt/WindRiver/vxworks-6.9/vx_components/wrload-1.0/config/common.vxconfig
+# This is the configuration file for WRLOAD
+# this file sets up a hidden flag for WRLOAD and the configuration option itself is
+# located in target/src/common.vxconfig
+
+config  SUPPORTS_WRLOAD
+        bool  
+	default y
+ 
+ 
+
+endmenu
+
+
+menu "VxWorks User Library Configuration"
+    depends on RTP
+# /opt/WindRiver/vxworks-6.9/target/usr/common.vxusrconfig
+# This file contains the VxWorks target src test configuration options
+
+# Copyright (c) 2009-2010, 2012 Wind River Systems, Inc.
+#
+# The right to copy, distribute, modify or otherwise make use
+# of this software may be licensed only pursuant to the terms
+# of an applicable Wind River license agreement.
+# resource file located in src-vxtest
+
+#
+# Modification History
+# --------------------
+# 01i,17jan12,mze  adding workaround for WIND00303932
+# 01h,15sep10,xhs  support IPLITE
+# 01g,27jan10,mze  remove the LP64 disabling flag
+# 01f,13jan10,mze  change user side default
+# 01e,06nov09,mze  disable for lp64 until rtp side ready
+# 01d,03sep09,mze  adding macros
+# 01c,27aug09,mze  moving components to proper locations
+# 01b,29jul09,mze  adding more usr logic
+# 01a,14apr09,mze  adding FEATURE_USR
+#
+
+
+#config USR_LIB_FORMAT_STATIC
+#	bool "Static USR Libraries"
+#	default y
+#	help
+#	    Enable building of static USR libraries
+#
+#config USR_LIB_FORMAT_SHARED
+#	bool "Shared USR Libraries"
+#	default y
+#	help
+#	    Enable building of shared USR libraries
+
+# This macro is used to indicate that the USER source has been installed
+config USRSOURCE
+	bool
+	default y
+
+config FEATURE_USR
+	bool "Build User-side libraries"
+#	default y if USR_LIB_FORMAT_STATIC || USR_LIB_FORMAT_SHARED
+	default y
+	depends !COMPONENT_IPLITE
+	help
+	    Enable to build the target/usr/src and MSP (if available) user libraries
+
+#the following option is hidden, but is based on the choices above
+#config USR_LIB_FORMAT
+#	string
+#	default "static" if USR_LIB_FORMAT_STATIC && !USR_LIB_FORMAT_SHARED
+#	default "shared" if USR_LIB_FORMAT_SHARED && !USR_LIB_FORMAT_STATIC
+#	default "both" if USR_LIB_FORMAT_STATIC && USR_LIB_FORMAT_SHARED
+
+
+# COMPONENT_USR_IPNET should have these attributes only when -lnet is not hard coded into rtp.conf
+#bool "Build User Networking Libraries"
+#default y if COMPONENT_IPNET
+
+config COMPONENT_USR_IPNET
+       bool 
+       default y 
+       depends on FEATURE_USR
+       help
+           This component will enable the build of the user IPNET libraries.
+
+choice
+	prompt "Choose the User Networking Libraries to be built"
+	depends on FEATURE_USR && COMPONENT_USR_IPNET
+	default USR_INET4_ONLY if FEATURE_IPNET_INET4_ONLY
+	default USR_INET6 if FEATURE_IPNET_INET6
+	default USR_INET6_ONLY if FEATURE_IPNET_INET6_ONLY
+
+config USR_INET4_ONLY
+	bool "Build libraries with IPV4 support"
+	
+config USR_INET6
+	bool "Build libraries with IPV4 and IPV6 support"
+
+config USR_INET6_ONLY
+	bool "Build libraries with IPV6 support"
+	
+endchoice
+
+comment "Warning Kernel and User Libraries built with different INET options"
+	depends on FEATURE_USR && COMPONENT_IPNET && ((USR_INET4_ONLY && !FEATURE_IPNET_INET4_ONLY) || (USR_INET6 && !FEATURE_IPNET_INET6) || (USR_INET6_ONLY && !FEATURE_IPNET_INET6_ONLY))
+
+
+
+# /opt/WindRiver/vxworks-6.9/target/usr/apps/common.vxusrconfig
+# This file contains the VxWorks target src test configuration options
+
+# Copyright (c) 2009 Wind River Systems, Inc.
+#
+# The right to copy, distribute, modify or otherwise make use
+# of this software may be licensed only pursuant to the terms
+# of an applicable Wind River license agreement.
+# resource file located in src-vxtest
+
+#
+# Modification History
+# --------------------
+# 01e,18aug10,mze  remove restriction on LP64
+# 01d,27jan10,mze  disable the applications from being build by default for
+#                  LP64
+# 01c,31jul09,mze  adding text for test
+# 01b,30jul09,mze  adding OPTION for USR tests
+# 01a,14apr09,mze  adding COMPONENT_USR_APPS
+#
+
+config COMPONENT_USR_APPS
+	bool "Build core USR APPS"
+	default y 
+	depends on FEATURE_USR
+	help
+	    This component is required for target/usr/apps to be built in the VSB. Build output will be found in the VSB_DIR/usr/root/(CPU)(TOOL)/bin directory.
+
+config COMPONENT_USR_TEST
+	bool "Build test USR APPS"
+	default y if COMPONENT_VXTESTV2
+	depends on COMPONENT_USR_APPS
+	help
+	    Enable this component to build the APPS tests directory.
+
+# /opt/WindRiver/vxworks-6.9/target/usr/src/common.vxusrconfig
+# This file contains the VxWorks target src test configuration options
+
+# Copyright (c) 2009 Wind River Systems, Inc.
+#
+# The right to copy, distribute, modify or otherwise make use
+# of this software may be licensed only pursuant to the terms
+# of an applicable Wind River license agreement.
+# resource file located in src-vxtest
+
+#
+# Modification History
+# --------------------
+# 01a,14apr09,mze  adding COMPONENT_USR_SRC
+#
+
+config COMPONENT_USR_SRC
+#	bool "Build USR Libraries for the core VxWorks "
+	bool
+	default y
+	depends on FEATURE_USR
+	help
+	This component is required for target/usr/src to be built in the VSB
+
+
+endmenu
+
+
+comment "No User Source - Nothing to configure or build for user-side libraries"
+    depends on !USRSOURCE && RTP
+
+comment "No RTP support in kernel - Nothing to configure or build for user-side libraries"
+    depends on !RTP
+

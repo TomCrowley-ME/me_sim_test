@@ -1,0 +1,54 @@
+proc scn3_sim
+
+; ; ----Scenario Time: December 20, 2015 1 minute before DOI
+
+Parameters_csc_sim.ini_year = 2015                                           
+Parameters_csc_sim.ini_doy = 354
+Parameters_csc_sim.ini_hour = 16
+Parameters_csc_sim.ini_minute = 54
+Parameters_csc_sim.ini_seconds = 9
+
+; Initial Position Moon Centered J2000 (m)
+Parameters_csc_sim.ini_position_v[0] = 109636.923		
+Parameters_csc_sim.ini_position_v[1] = 622540.313
+Parameters_csc_sim.ini_position_v[2] = 1885023.862		
+
+; Initial Velocity Moon Centered J2000 (m/s)
+Parameters_csc_sim.ini_velocity_v[0] = -149.663829		
+Parameters_csc_sim.ini_velocity_v[1] = -1481.734774
+Parameters_csc_sim.ini_velocity_v[2] =  497.395149	
+
+; lander initial mass (kg)
+Parameters_csc_sim.mpl_mass_dry         = 38.0
+Parameters_csc_sim.mpl_mass_fillfrac_0  = 38.0
+Parameters_csc_sim.mpl_gn2_mass_initial = 1.0
+; 1/9 rp1/htp ratio
+Parameters_csc_sim.mpl_htp_mass_initial = 9.9 ; assumes 11 kg total prop at DOI
+Parameters_csc_sim.mpl_rp1_mass_initial = 1.1
+Parameters_csc_sim.mpl_htp_mass_initial = 40.5 ; assumes 45 kg total prop at DOI for 1/9 ratio
+Parameters_csc_sim.mpl_rp1_mass_initial = 4.5
+; 1/8 rp1/htp ratio
+; Parameters_csc_sim.mpl_htp_mass_initial = 156.92
+; Parameters_csc_sim.mpl_rp1_mass_initial = 20.13
+; 1/7.5 rp1/htp ratio
+Parameters_csc_sim.mpl_htp_mass_initial = 39.7059 ; assumes 45 kg total prop at DOI for 1/7.5 ratio
+Parameters_csc_sim.mpl_rp1_mass_initial = 5.2941
+
+
+; define landing site lat/long/alt
+Parameters_csc_sim.ini_topocentric_latitude =  -60
+Parameters_csc_sim.ini_topocentric_longitude =  60
+Parameters_csc_sim.ini_alt_wrt_meanrad = 0
+
+; Approach from -Xtopo in flight
+Parameters_csc_sim.ini_rotx =-137*pi/180
+Parameters_csc_sim.ini_roty = -71*pi/180
+Parameters_csc_sim.ini_rotz =  40*pi/180
+
+; Initial spacecraft body rate (rad/sec)
+Parameters_csc_sim.ini_rate_v[0] = 0
+Parameters_csc_sim.ini_rate_v[1] = 0
+Parameters_csc_sim.ini_rate_v[2] = 0
+
+
+endproc

@@ -1,0 +1,33 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2010 - 2015 Moon Express, Inc.
+% All Rights Reserved.
+%
+% PROPRIETARY DATA NOTICE:
+% The data herein include Proprietary Data and are restricted under the
+% Data Rights provisions of Lunar CATALYST Space Act Agreement
+% No. SAAM ID# 18251 and Reimbursable Space Act Agreement No.SAA2-402930.
+% All information contained herein is and remains proprietary to and the
+% property of Moon Express, Inc. Dissemination of this information or
+% reproduction of this material is strictly forbidden unless prior
+% written permission is obtained from Moon Express, Inc.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Begin lnh test file
+%
+% Dependencies:
+%   csu_lns_ln200_software_init_a.m
+%   csu_lns_ln200_software_prep_a.m
+%
+% Sources:
+%   csu_lns_ln200_software_req.html
+%
+%% initialize
+% initialize libraries
+
+
+%%  test
+unit_test_record('fail',1,'lns test not populated');
+
+
+%% end test
+disp('Completed lns_ln200_software_test_a');

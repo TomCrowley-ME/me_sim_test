@@ -1,0 +1,42 @@
+proc scn2_sim
+
+; ; ----Scenario Time: April 29, 2015 14:09:05 landed time
+Parameters_csc_sim.ini_year = 2015                                           
+Parameters_csc_sim.ini_doy = 119
+Parameters_csc_sim.ini_hour = 14
+Parameters_csc_sim.ini_minute = 9
+Parameters_csc_sim.ini_seconds = 5
+
+; Moon Centered J2000 Initial Conditions
+;Propagation from time = 0.0
+Parameters_csc_sim.ini_position_v[0] =   842313.770561712
+Parameters_csc_sim.ini_position_v[1] =   467102.505246295
+Parameters_csc_sim.ini_position_v[2] = -1443529.7201473
+
+
+; Initial Velocity Moon Centered J2000 (m/s)
+Parameters_csc_sim.ini_velocity_v[0] = 0.495928413053695 
+Parameters_csc_sim.ini_velocity_v[1] = 2.04933904311803
+Parameters_csc_sim.ini_velocity_v[2] = 0.952511551010588
+
+              
+; define landing site lat/long/alt
+Parameters_csc_sim.ini_topocentric_latitude =  -60
+Parameters_csc_sim.ini_topocentric_longitude = 0.0
+Parameters_csc_sim.ini_alt_wrt_meanrad = -483
+
+; define euler angles for initial attitude (rad)
+Parameters_csc_sim.ini_rotx = 0
+Parameters_csc_sim.ini_roty = 0
+Parameters_csc_sim.ini_rotz = 3.662
+
+; Initial spacecraft body rate (rad/sec)
+Parameters_csc_sim.ini_rate_v[0] = 0
+Parameters_csc_sim.ini_rate_v[1] = 0
+Parameters_csc_sim.ini_rate_v[2] = 0
+
+; lander initial mass (kg)
+Parameters_csc_sim.mpl_initial_mass = 184
+
+
+endproc

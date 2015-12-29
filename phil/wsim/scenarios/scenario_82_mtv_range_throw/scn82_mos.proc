@@ -1,0 +1,40 @@
+proc scn82_mos
+
+; ;  ESTIMATOR PARAMETER TABLE UPDATES ; ;
+
+Parameters_csc_est_state_est.kfl_topocentric_latitude =  28.470556
+Parameters_csc_est_state_est.kfl_topocentric_longitude = -80.54
+Parameters_csc_est_state_est.kfl_alt_wrt_meanrad = 9.8
+
+Parameters_csc_est_state_est.kfl_use_range_meas = 1
+Parameters_csc_est_state_est.kfl_use_camera_meas = 0
+Parameters_csc_est_state_est.kfl_use_tracker_meas = 0
+
+Parameters_csc_est_state_est.esf_takeoff_accel_limit = 1.01;
+
+; Set for takeoff
+Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = 0.5
+
+Parameters_csc_gdn_guidance.arg_roll_inertial_target_vector[0] = -0.358685192122062;
+Parameters_csc_gdn_guidance.arg_roll_inertial_target_vector[1] =  0.313997724443385;
+Parameters_csc_gdn_guidance.arg_roll_inertial_target_vector[2] =  0.87906220598814;
+Parameters_csc_gdn_guidance.arg_roll_body_pointing_vector[0] = 0;
+Parameters_csc_gdn_guidance.arg_roll_body_pointing_vector[1] = 1;
+Parameters_csc_gdn_guidance.arg_roll_body_pointing_vector[2] = 0;
+
+; Force monoprop coarse thrusters for use at all altitudes for throw study
+Parameters_csc_gdn_guidance.lac_monoprop_coarse_transition_alt = 10e6;
+
+; open up angle limit for throw study
+Parameters_csc_gdn_guidance.tlt_off_vertical_limit = 360.0
+
+; reduce phase plane peak rates
+Parameters_csc_cnt_attitude_control.cac_acs_torque_gain = 0.1
+Parameters_csc_cnt_attitude_control.cac_alpha_gain_coarse_only = 0.05
+
+Parameters_csc_cnt_attitude_control.cac_acs_time_gain_x = 15.0;
+Parameters_csc_cnt_attitude_control.cac_acs_time_gain_y = 15.0;
+Parameters_csc_cnt_attitude_control.cac_acs_time_gain_z = 15.0;
+
+Parameters_csc_lc_wsim_limit_check.lc_wdt_filename = "lc_def_wdt";
+Parameters_csc_lc_wsim_limit_check.lc_adt_filename = "lc_def_adt";

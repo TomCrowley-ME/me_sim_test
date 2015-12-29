@@ -1,0 +1,27 @@
+; File ttscript1.in
+; Created on 10/5/05
+; Revised 1/20/06 Labels added for information.
+* Input file lc_script1.in is being read.
+*
+* 0 Simulate Empty Pipe
+!
+*
+* Sending LC_NOOP
+18 8d c0 00 00 01 00 00; LC_NOOP
+*
+* 0 Simulate Empty Pipe
+*
+!
+*
+* Sending LC_NOOP
+18 8d c0 00 00 01 00 00; LC_NOOP
+*
+* 0 Simulate Empty Pipe
+*
+!
+* Sending HK Request
+18 9d c0 00 00 01 00 00; HK request
+*
+* 0 Simulate Empty Pipe
+*
+!

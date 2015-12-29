@@ -1,0 +1,13 @@
+00:00:00 /lc_set_actionpoint_state ap=5, state=PASSIVE
+00:00:01 /cmp_set_mode mode=LANDING, submode=LANDING_TERMINAL
+00:00:00 /cnt_select_thruster_set thrusters=COARSE
+00:00:00 /gdn_hover_enable
+00:00:00 /act_mtv_set_htp_main_engine_feed_valve_state state=OPEN
+00:00:01 /egc_start_thrust_output
+00:00:03 /gdn_takeoff_enable
+00:00:03 /egc_terminate_thrust_output
+00:00:02 /gdn_takeoff_disable
+00:00:00 /est_set_vehicle_off_launchpad
+00:00:00 /lc_set_actionpoint_state ap=5, state=ACTIVE
+00:00:10 /gdn_hover_disable
+00:00:03 /egc_terminate_thrust_output

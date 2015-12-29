@@ -1,0 +1,17 @@
+2015-119-13:08:30 /est_set_reference_frame frame=INERTIAL
+2015-119-13:08:30 /gdn_set_inertial_primary_pointing_cmd x=0.213518523441346, y=0.896686156252623, z=0.387767684744777
+2015-119-13:08:30 /gdn_set_inertial_secondary_pointing_cmd x=0.9774,  y=-0.2057, z=-0.0482
+2015-119-13:08:30 /gdn_set_body_primary_pointing_vector x=0, y=0, z=1
+2015-119-13:08:30 /gdn_set_body_secondary_pointing_vector x=-0.5, y=-0.866025403784439, z=0
+2015-119-13:08:31 /cnt_select_thruster_set thrusters=COARSE
+2015-119-13:08:32 /cmp_set_mode mode=POINTING, submode=NONE
+2015-119-13:10:00 /cmp_disable_active_controller duration=60000
+2015-119-13:10:00 /act_reset_accumulated_ontime
+2015-119-13:10:10 /act_fire_single_thruster thruster=COARSE8, duration=168
+2015-119-13:10:30 /act_enable_thruster_set thrusters=COARSE, duration=250
+2015-119-13:10:30 /act_fire_single_thruster thruster=COARSE8, duration=168
+2015-119-13:10:35 /sc_startrts rts_id=rts_52_coarse_thruster_cmd_checkout
+2015-119-13:12:00 /cmp_disable_active_controller duration=60000
+2015-119-13:12:30 /sc_startrts rts_id=rts_50_coarse_manual_pulse
+2015-119-13:14:00 /cmp_disable_active_controller duration=60000
+2015-119-13:14:30 /sc_startrts rts_id=rts_51_fine_manual_pulse

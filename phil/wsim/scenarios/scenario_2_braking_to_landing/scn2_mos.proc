@@ -1,0 +1,22 @@
+proc scn2_mos
+
+
+; ;  ESTIMATOR PARAMETER TABLE UPDATES ; ;
+Parameters_csc_est_state_est.emp_initial_fuel_used = 225.2
+
+Parameters_csc_est_state_est.kfl_topocentric_latitude =  -60
+Parameters_csc_est_state_est.kfl_topocentric_longitude =  60
+Parameters_csc_est_state_est.kfl_alt_wrt_meanrad = 9.093
+
+
+; ;  GUIDANCE PARAMETER TABLE UPDATES ; ;
+Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = 0.0
+Parameters_csc_gdn_guidance.tlt_off_vertical_limit_altitude_enable = 15
+Parameters_csc_gdn_guidance.tlt_off_vertical_limit = 10
+Parameters_csc_gdn_guidance.lic_coast_complete_altitude = 5000
+Parameters_csc_gdn_guidance.lpc_pre_coast_time = 1;
+Parameters_csc_gdn_guidance.lac_monoprop_coarse_transition_alt = 1000;
+
+Parameters_csc_cnt_attitude_control.cac_alpha_gain_coarse_only = 0.05
+
+endproc

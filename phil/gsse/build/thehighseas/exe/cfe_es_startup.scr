@@ -1,0 +1,37 @@
+CFE_APP, /cf/simto.o,    SIMTO_TaskMain,   SIMTO,     180,  16384, 0x0, 0;
+CFE_APP, /cf/prusim.o,   PRUSIM_TaskMain,  PRUSIM,    54,   16384, 0x0, 0;
+CFE_APP, /cf/sch.o,      SCH_TaskMain,     SCH,       55,   16384, 0x0, 0;
+CFE_APP, /cf/simci.o,    SIMCI_TaskMain,   SIMCI,     70,   16384, 0x0, 0;
+CFE_APP, /cf/egcsim.o,   EGCSIM_TaskMain,  EGCSIM,    79,   16384, 0x0, 0;
+CFE_APP, /cf/thrsim.o,   THRSIM_TaskMain,  THRSIM,    80,   16384, 0x0, 0;
+CFE_APP, /cf/csc_sim.o,  csc_sim_main,     CSC_SIM,   81,   65536, 0x0, 0;
+!CFE_APP, /cf/stsim.o,   STSIM_TaskMain,   STSIM,     82,   16384, 0x0, 0;
+!CFE_APP, /cf/memssim.o,  MEMSSIM_TaskMain, MEMSSIM,   83,   16384, 0x0, 0;
+CFE_APP, /cf/imusim.o,   IMUSIM_TaskMain,  IMUSIM,    83,   16384, 0x0, 0;
+CFE_APP, /cf/gpssim.o,   GPSSIM_TaskMain,  GPSSIM,    84,   16384, 0x0, 0;
+CFE_APP, /cf/adsim.o,    ADSIM_TaskMain,   ADSIM,     85,   16384, 0x0, 0;
+!
+! Startup script fields:
+! 1. Object Type      -- CFE_APP for an Application, or CFE_LIB for a library.
+! 2. Path/Filename    -- This is a cFE Virtual filename, not a vxWorks device/pathname
+! 3. Entry Point      -- This is the "main" function for Apps.
+! 4. CFE Name         -- The cFE name for the the APP or Library
+! 5. Priority         -- This is the Priority of the App, not used for Library
+! 6. Stack Size       -- This is the Stack size for the App, not used for the Library
+! 7. Load Address     -- This is the Optional Load Address for the App or Library. Currently not implemented
+!                        so keep it at 0x0.
+! 8. Exception Action -- This is the Action the cFE should take if the App has an exception.
+!                        0        = Just restart the Application
+!                        Non-Zero = Do a cFE Processor Reset
+!
+! Other  Notes:
+! 1. The software will not parse anything on a line after a '!' marker.
+!
+! 2. Common Application file extensions:
+!    Linux = .so  ( ci.so )
+!    OS X  = .bundle  ( ci.bundle )
+!    Cygwin = .dll ( ci.dll )
+!    vxWorks = .o ( ci.o )
+!    RTEMS with S-record Loader = .s3r ( ci.s3r )
+!    RTEMS with CEXP Loader = .o ( ci.o )
+

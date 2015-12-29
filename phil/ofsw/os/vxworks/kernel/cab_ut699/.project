@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>cab_ut699</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.windriver.ide.osconfig.core.wrbuilder</name>
+			<triggers>clean,full,incremental,</triggers>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.windriver.ide.osconfig.core.wrnature</nature>
+		<nature>com.windriver.ide.core.wrcorenature</nature>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>cfeSupport.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/all/cfeSupport.c</locationURI>
+		</link>
+		<link>
+			<name>countfill.c</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/all/countfill.c</locationURI>
+		</link>
+		<link>
+			<name>moonex_cab</name>
+			<type>2</type>
+			<locationURI>WIND_HOME/vxworks-6.7/target/config/moonex_cab</locationURI>
+		</link>
+		<link>
+			<name>romStart.c</name>
+			<type>1</type>
+			<locationURI>WIND_HOME/vxworks-6.7/target/config/comps/src/romStart.c</locationURI>
+		</link>
+	</linkedResources>
+</projectDescription>

@@ -1,0 +1,21 @@
+// *****************************************************************************/
+// file:     heaters.hp
+//
+// purpose:  Constants and definitions for Heaters Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _heaters_hp_
+#define _heaters_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define HEATERS_GPIO_BASE    GPIO0_BASE
+#define HEATERS_GPIO_MASK    (1 << 27)
+
+// Device SPI Transfer Settings
+#define HEATERS_WRITE_CMD     (0x00)
+#define HEATERS_WRITE_LENGTH  (0x50)
+
+#endif //_heaters_hp_

@@ -1,0 +1,17 @@
+2014-328-18:00:00 /est_set_reference_frame frame=TOPOCENTRIC
+2014-328-18:00:05 /est_mtv_zero_topocentric_position
+2014-328-18:00:05 /est_compute_static_bias duration=9000
+2014-328-18:00:06 /lc_set_actionpoint_state ap=5, state=ACTIVE
+2014-328-18:00:06 /lc_set_actionpoint_state ap=17, state=ACTIVE
+2014-328-18:00:06 /lc_set_actionpoint_state ap=18, state=ACTIVE
+2014-328-18:00:10 /cmp_set_mode mode=SAFE, submode=NONE
+2014-328-18:00:10 /cmp_set_mode mode=SURFACE, submode=NONE
+2014-328-18:00:10 /est_mtv_set_propellant_mass prop_mass=38.72
+2014-328-18:00:11 /act_mtv_pressurant_valve_enable
+2014-328-18:00:11 /act_mtv_set_htp_tank_pressurant_vent_valve_state state=CLOSE
+2014-328-18:00:11 /act_mtv_set_htp_tank_pressurant_valve_state state=OPEN
+2014-328-18:00:11 /gdn_set_inertial_secondary_pointing_cmd x=-0.3591427523,y=0.3134742756,z=0.8790622060	
+2014-328-18:00:14 /egc_set_weight_offset percent=93.7
+2014-328-18:00:15 /est_mtv_set_accel_thrust_bias x=0.0020,y=0.0030,z=-3.0500
+2014-328-18:00:15 /est_force_active_integration duration=30000
+2014-328-18:00:15 /sc_startrts rts_id=rts_47_mtv_closed_loop_static_fire

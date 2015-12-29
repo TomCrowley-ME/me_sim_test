@@ -1,0 +1,6 @@
+void cv::pyrDown_<cv::FixPtCast<short, 8>, cv::NoVec<int, short> >(cv::Mat const&, cv::Mat&, int)
+void cv::pyrDown_<cv::FixPtCast<unsigned char, 8>, cv::PyrDownVec_32s8u>(cv::Mat const&, cv::Mat&, int)
+void cv::pyrDown_<cv::FixPtCast<unsigned short, 8>, cv::NoVec<int, unsigned short> >(cv::Mat const&, cv::Mat&, int)
+void cv::pyrUp_<cv::FixPtCast<short, 6>, cv::NoVec<int, short> >(cv::Mat const&, cv::Mat&, int)
+void cv::pyrUp_<cv::FixPtCast<unsigned char, 6>, cv::NoVec<int, unsigned char> >(cv::Mat const&, cv::Mat&, int)
+void cv::pyrUp_<cv::FixPtCast<unsigned short, 6>, cv::NoVec<int, unsigned short> >(cv::Mat const&, cv::Mat&, int)

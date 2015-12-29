@@ -1,0 +1,23 @@
+// *****************************************************************************/
+// file:     bmb.hp
+//
+// purpose:  Constants and definitions for Battery Monitor Board module
+//
+// *****************************************************************************/
+
+#ifndef _bmb_hp_
+#define _bmb_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define BMB_4V_12V_GPIO_BASE GPIO1_BASE
+#define BMB_4V_12V_GPIO_MASK (1 << 16)
+#define BMB_28V_GPIO_BASE    GPIO1_BASE
+#define BMB_28V_GPIO_MASK    (1 << 17)
+
+// Device SPI Transfer Settings
+#define BMB_WRITE_CMD        (0x00)
+#define BMB_READ_LENGTH      (0x50)
+
+#endif //_bmb_hp_

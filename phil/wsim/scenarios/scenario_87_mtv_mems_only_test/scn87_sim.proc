@@ -1,0 +1,57 @@
+proc scn87_sim
+
+;----Scenario Time: May 1, 2014 12:00:00 takeoff time
+Parameters_csc_sim.ini_year = 2014
+Parameters_csc_sim.ini_doy = 121
+Parameters_csc_sim.ini_hour = 12
+Parameters_csc_sim.ini_minute = 0
+Parameters_csc_sim.ini_seconds = 0
+
+; Earth Centered J2000 Initial Conditions
+;Propagation from time = 0.0
+Parameters_csc_sim.ini_position_v[0] =  4221886.5924671264
+Parameters_csc_sim.ini_position_v[1] = -3695894.9296172406
+Parameters_csc_sim.ini_position_v[2] =  3022453.3335852791
+
+; Initial Velocity Earth Centered J2000 (m/s)
+Parameters_csc_sim.ini_velocity_v[0] = 269.5089088164
+Parameters_csc_sim.ini_velocity_v[1] =  307.8648258001
+Parameters_csc_sim.ini_velocity_v[2] =  0.0
+
+; define landing site lat/long/alt
+Parameters_csc_sim.ini_topocentric_latitude =  28.470556;
+Parameters_csc_sim.ini_topocentric_longitude = -80.54;
+Parameters_csc_sim.ini_alt_wrt_meanrad = -4000
+
+; define euler angles for initial attitude (rad)
+Parameters_csc_sim.ini_rotx = 0
+Parameters_csc_sim.ini_roty = 0
+Parameters_csc_sim.ini_rotz = 0
+
+; Initial spacecraft body rate (rad/sec)
+Parameters_csc_sim.ini_rate_v[0] = 1*pi/180
+Parameters_csc_sim.ini_rate_v[1] = -2*pi/180
+Parameters_csc_sim.ini_rate_v[2] = 0.5*pi/180
+
+; lander initial mass (kg)
+Parameters_csc_sim.mpl_initial_mass    = 297
+Parameters_csc_sim.mpl_mass_fillfrac_0 = 197
+
+Parameters_csc_sim.tpl_coarse_acs_thrust_to_isp[0,1] = 140
+Parameters_csc_sim.tpl_coarse_acs_thrust_to_isp[1,1] = 140
+
+; EGC feedforward torque computation
+csc_gdn_prep_main_thruster_position = tfl_thruster_egc_position;
+csc_gdn_prep_main_thruster_orientation = tfl_thruster_egc_orientation;
+
+; don't use moon harmonics on the earth
+Parameters_csc_sim.gsh_sph_harm_order = 0;
+
+; turn off aero to keep thrust signal clean
+Parameters_csc_sim.afm_cg_enable      = 0;      
+Parameters_csc_sim.afm_forces_enable  = 0;      
+Parameters_csc_sim.afm_moments_enable = 0;     
+Parameters_csc_sim.afm_winds_enable   = 0;      
+
+
+endproc

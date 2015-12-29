@@ -1,0 +1,22 @@
+// *****************************************************************************/
+// file:     imu.hp
+//
+// purpose:  Constants and definitions for IMU Microcontroller module
+//
+// *****************************************************************************/
+
+#ifndef _imu_hp_
+#define _imu_hp_
+
+#include "../gpio.hp"
+#include "pyros.hp"
+
+// Device Slave Select Pin Settings
+#define IMU_GPIO_BASE     (PYROS_GPIO_BASE)
+#define IMU_GPIO_MASK     (PYROS_GPIO_MASK)
+
+// Device SPI Transfer Settings
+#define IMU_WRITE_CMD     (0xD6)
+#define IMU_WRITE_LENGTH  (36)
+
+#endif //_imu_hp_

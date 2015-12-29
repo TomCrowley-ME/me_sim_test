@@ -1,0 +1,19 @@
+2014-121-12:00:00 /est_set_reference_frame frame=TOPOCENTRIC
+2014-121-12:00:00 /lc_set_actionpoint_state ap=8, state=PASSIVE
+2014-121-12:00:00 /lc_set_actionpoint_state ap=9, state=PASSIVE
+2014-121-12:00:00 /lc_set_actionpoint_state ap=10, state=PASSIVE
+2014-121-12:00:00 /lc_set_actionpoint_state ap=11, state=PASSIVE
+2014-121-12:00:00 /lc_set_actionpoint_state ap=12, state=PASSIVE
+2014-121-12:00:00 /lc_set_actionpoint_state ap=13, state=PASSIVE
+2014-121-12:00:10 /cmp_set_mode mode=SAFE, submode=NONE
+2014-121-12:00:10 /cmp_set_mode mode=SURFACE, submode=NONE
+2014-121-12:00:10 /est_mtv_zero_topocentric_position
+2014-121-12:00:10 /est_force_active_integration duration=20000
+2014-121-12:00:30 /est_mtv_zero_topocentric_position
+2014-121-12:00:35 /est_force_active_integration duration=20000
+2014-121-12:00:55 /est_mtv_zero_topocentric_position
+2014-121-12:01:00 /est_force_active_integration duration=20000
+2014-121-12:01:20 /est_mtv_zero_topocentric_position
+2014-121-12:01:25 /est_force_active_integration duration=20000
+2014-121-12:01:45 /est_mtv_zero_topocentric_position
+

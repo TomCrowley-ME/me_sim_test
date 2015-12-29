@@ -1,0 +1,27 @@
+// *****************************************************************************/
+// file:     mems.hp
+//
+// purpose:  Constants and definitions for MEMS Microcontrollers module
+//
+// *****************************************************************************/
+
+#ifndef _mems_hp_
+#define _mems_hp_
+
+#include "../gpio.hp"
+
+// Device Slave Select Pin Settings
+#define MEMS1_GPIO_BASE    GPIO2_BASE
+#define MEMS1_GPIO_MASK    (1 << 1)
+
+#define MEMS2_GPIO_BASE    GPIO2_BASE
+#define MEMS2_GPIO_MASK    (1 << 13)
+
+#define MEMS3_GPIO_BASE    GPIO1_BASE
+#define MEMS3_GPIO_MASK    (1 << 14)
+
+// Device SPI Transfer Settings
+#define MEMS_WRITE_CMD     (0x00)
+#define MEMS_WRITE_LENGTH  (0x0E)
+
+#endif //_mems_hp_

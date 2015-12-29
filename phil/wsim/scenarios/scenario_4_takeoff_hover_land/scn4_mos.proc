@@ -1,0 +1,24 @@
+proc scn4_mos
+
+; ;  GUIDANCE PARAMETER TABLE UPDATES ; ;
+
+; for takeoff, hover, translate, landing
+Parameters_csc_gdn_guidance.tlt_off_vertical_limit = 10.0
+
+; Set for takeoff
+Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = 0.5
+Parameters_csc_gdn_guidance.arg_roll_inertial_target_vector[0] =  0.9774
+Parameters_csc_gdn_guidance.arg_roll_inertial_target_vector[1] = -0.2057
+Parameters_csc_gdn_guidance.arg_roll_inertial_target_vector[2] = -0.0482
+Parameters_csc_gdn_guidance.arg_roll_body_pointing_vector[0] = -0.5
+Parameters_csc_gdn_guidance.arg_roll_body_pointing_vector[1] = -0.866
+Parameters_csc_gdn_guidance.arg_roll_body_pointing_vector[2] =  0.0
+
+; ;  ESTIMATOR PARAMETER TABLE UPDATES ; ;
+Parameters_csc_est_state_est.emp_initial_fuel_used = 388.9
+
+Parameters_csc_est_state_est.kfl_topocentric_latitude =  -60
+Parameters_csc_est_state_est.kfl_topocentric_longitude = 0.0
+Parameters_csc_est_state_est.kfl_alt_wrt_meanrad = -483
+Parameters_csc_est_state_est.kfl_use_range_meas = 1
+Parameters_csc_est_state_est.kfl_use_camera_meas = 0

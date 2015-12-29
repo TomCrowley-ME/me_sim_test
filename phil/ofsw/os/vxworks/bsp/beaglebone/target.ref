@@ -1,0 +1,772 @@
+\" ti_am335x_evm/target.ref - TI AM335X board's target-specific documentation
+\"
+\" Copyright (c) 2012 Wind River Systems, Inc.
+\"
+\" The right to copy, distribute, modify or otherwise make use
+\" of this software may be licensed only pursuant to the terms
+\" of an applicable Wind River license agreement.
+\"
+\" modification history
+\" --------------------
+\" 01i,22nov12,y_c  add  LCDC&WindML description. (WIND00382478)
+\" 01h,24oct12,my_  add decription of timer5 and timer6
+\" 01g,13sep12,my_  fix a typo
+\" 01f,04sep12,my_  add delay time description 
+\" 01e,24aug12,my_  add spi section
+\" 01d,23aug12,my_  add rtc section
+\" 01c,12jul12,my_  add USB target mode description (WIND00362051)
+\" 01b,10jul12,my_  add more description about USB (WIND00361527).
+\" 01a,15may12,my_  created from ti_dm81xx_evm BSP.
+\"
+\TITLE ti_am335x_evm - TI AM335X
+
+NAME `TI AM335X'
+
+INTRODUCTION
+This reference entry provides board-specific information necessary to run
+VxWorks for the TI AM335X Evaluation Module. This board features the Texas
+Instruments AM335X processor with an ARM Cortex-A8 core. 
+
+Before using the board with VxWorks, verify that the board runs in the
+factory configuration using vendor-supplied ROMs and jumper settings
+and checking the RS-232 connection.
+
+VxWorks bootrom is supported by this BSP. The boot sequence is:
+bootrom --> VxWorks images.
+
+The instructions of how to burn and use bootrom are described in the following
+"Boot ROMs and Boot Process" section.
+
+\sh Switch Settings
+
+Before running VxWorks on target boards, you must set switch (jumpers) correctly.
+
+two switches(SW3 ,SW8) on board must be set correctly. 
+Their functions are described as following:
+
+\cs 
+ Switch SW3 Function (SYSBOOT[0,7], Boot mode select) (on - 1, off - 0)
+-----------------------------------------------------------------------
+     BOOT MODE      | Setting  [1  2  3  4  5  6  7
+--------------------|---------|----------------------------------------
+nand Flash boot     |         | 0  1  0  0  1  0  0
+-----------------------------------------------------------------------
+\ce
+
+\cs
+Switch SW8 Function (profile selection)(on - 1, off - 0, don't care - x)
+--------------------------------------------
+  profile selection |  Setting  [1  2  3  4]
+--------------------|--------- -------------
+    profile 0       |            0  0  0  0
+--------------------------------------------
+\ce
+
+\sh Boot ROMs and Boot Process
+
+The VxWorks ROM bootable image (bootrom.bin) can be burned to the
+NAND flash and is automatically copied to RAM
+location ROM_TEXT_ADRS (0x8FC00000, by default).
+
+This BSP uses U-boot to burn VxWorks bootrom into NAND flash. So before
+starting, you MUST get U-boot running on target board. Refer to 
+"AM335x U-Boot User's Guide" for instructions 
+of how to run U-boot on target (can be found in TI's Wiki page). 
+This section focuses on burning VxWorks bootrom via U-boot.
+
+Use the following steps to enable U-Boot to run bootrom and VxWorks:
+
+1) Use command line style to create a bootrom.bin (binary) image for
+   burning on the large flash device. "make bootrom.bin". The VxWorks
+   bootrom image will be burned into the first sector of NAND flash.
+
+   This BSP is released to support native bootrom (but not via U-boot)
+   by default, so you do not need to make any modifications for the use
+   of bootrom.
+
+2) Place the image on the TFTP server root directory on the host
+   computer (e.g. /tftpboot on a Linux host).  U-Boot will use the
+   network connection to retrieve this file.
+
+3) Power on the board. Stop the U-Boot countdown. (Hit any key).  Use
+   the U-Boot monitor to get the bootrom image and burn it to an
+   appropriate address.
+
+   (Note: factory settings on the board use 115200 baud so bootrom is
+   also set to default to 115200 baud.)
+
+   To do this, at the U-Boot prompt perform the following:
+
+   3.1) Configure the U-Boot network environment parameters, to be able to get
+        the bootrom image. See U-Boot User Manual (references section).
+
+   3.2) Programming the TI AM335X EVM NAND flash
+
+        The following U-Boot shell commands assume that the file 'bootrom.bin' has
+        been copied to the tftp directory on the host computer, which is typically /tftpboot.
+
+\cs
+        tftp 0x87C00000 bootrom.bin
+        nand erase 0x0 $(ROM_SIZE) 
+        nandecc hw 2
+        nand write.i 0x87C00000 0x0 $(ROM_SIZE) 
+
+        Note: $(ROM_SIZE) is the actuall size of your booloader, 
+              must be multiple of erase unit size (on this board, 
+              it is 0x20000)
+
+\ce
+
+4) Running the VxWorks bootrom
+
+   Reset target board, VxWorks bootrom will run automatically.
+
+5) Other types of VxWorks bootrom
+
+   This BSP only supports native boot (boot from u-boot is not suppported). 
+   Native boot requires a smaller first stage loader to be linked at 
+   the beginning of the normal VxWorks bootloaders (bootrom, vxWorks_rom, 
+   vxWorks_comCompress, vxWorks_romRes bootapp...). For command build under
+   BSP directory, this process is done automatically. For vxprj or Workbench
+   projects, this process needs to be done manually, instructions are listed 
+   below (take vxWorks_rom as an example):
+       
+       1. convert bootloader to binary format:
+
+          objcopyarm -O binary vxWorks_rom vxWorks_rom.bin
+
+       2. create first stage bootloader
+
+          cd $(WIND_BASE)/target/config/ti_am335x_evm
+          make bootrom.nand.bin
+          wtxtcl combine.tcl vxWorks_rom.bin $(ROM_TEXT_ADRS)
+
+       3. burn vxWorks_rom.bin to NAND flash (refer to previous sections)
+
+       Note: replace $(ROM_TEXT_ADRS) with the actual text address
+   
+FEATURES
+
+This section describes all features of the board, supported or not.
+It documents all configurations of the board and the interaction between
+features and configuration items.
+
+\sh List of Hardware Features
+
+\ts
+Hardware Interface  | Controller  | Driver/Component                           | Status
+------------------------------------------------------------------------------------------
+UART:0              | on-chip     | vxbNs16550Sio.c                            | SUPPORTED
+INTC                | on-chip     | vxbOmap35xxIntCtlr.c                       | SUPPORTED
+TIMER               | on-chip     | vxbOmap35xxTimer.c                         | SUPPORTED
+GPIO                | on-chip     | sysGpio.c                                  | SUPPORTED
+I2C                 | on-chip     | vxbAm38xxI2c.c                             | SUPPORTED
+EDMA                | on-chip     | vxbTiEdma3.c                               | SUPPORTED
+NAND FLASH          | on-chip     | sysNandFlash.c                             | SUPPORTED
+SD/MMC0             | on-chip     | vxbOmap35xxMmchs.c                         | SUPPORTED
+1000MB-ETHERNET     | on-chip     | vxbCpswEnd.c                               | SUPPORTED
+USB0-OTG            | on-chip     | MHDRC USB OTG Stack                        | SUPPORTED
+USB1-Host           | on-chip     | MHDRC USB Host Stack                       | SUPPORTED
+EEPROM              | on-chip     | vxbEeprom.c                                | SUPPORTED
+RTC                 | on-chip     | ti81xxRtc.c                                | SUPPORTED
+SPI                 | on-chip     | sysSpiFlash.c                              | SUPPORTED
+LCD                 | on-chip     | windML                                     | SUPPORTED
+MAILBOX             | on-chip     | n/a                                        | UNSUPPORTED
+SPINLOCK            | on-chip     | n/a                                        | UNSUPPORTED
+SGX                 | on-chip     | n/a                                        | UNSUPPORTED
+HDMI                | on-chip     | n/a                                        | UNSUPPORTED
+McBSP               | on-chip     | n/a                                        | UNSUPPORTED
+McASP               | on-chip     | n/a                                        | UNSUPPORTED
+\te
+
+Note: 
+SRP doesn't work on AM335x board. So for OTG module, the SRP is not supported.
+
+\sh Feature Interactions
+
+Refer to the board vendor's documentation.
+
+HARDWARE DETAILS
+
+This section documents the details of the device drivers and board
+hardware elements.
+
+\sh Verified Hardware
+
+This BSP has been verified on Texas Instruments AM335X Evaluation Module board.
+
+Verified board information are listed below:
+
+\cs
+AM335X 15 x 15 BASE BOARD REV 1.1A with AM335X GP DAUGHTERBOARD REV 1.1B
+\ce
+
+\sh Memory Maps
+
+The following table describes the default memory map of this BSP.
+
+\ts
+Start      | Size   | End        | Access to
+------------------- --------------------------
+0x00000000 |   1MB  | 0x000FFFFF | alise to DDR (0 - 1MB)
+0x40300000 |  64KB  | 0x4030FFFF | OCMC SRAM
+0x44E09000 |   4KB  | 0x44E09FFF | UART 1
+0x44E0B000 |   4KB  | 0x44E0BFFF | I2C 0
+0x44E00000 |   8KB  | 0x44E012FF | PRCM
+0x44E05000 |   4KB  | 0x44E05FFF | General Purpose Timer 1 
+0x44E07000 |   4KB  | 0x44E07FFF | GPIO 0
+0x44E10000 | 128KB  | 0x44E11FFF | Control module 
+0x47400000 |   4MB  | 0x477FFFFF | USB
+0x4802A000 |   4KB  | 0x4802AFFF | I2C 1
+0x48040000 |   4KB  | 0x48040FFF | General Purpose Timer 2 
+0x48042000 |   4KB  | 0x48042FFF | General Purpose Timer 3 
+0x48044000 |   4KB  | 0x48044FFF | General Purpose Timer 4 
+0x48046000 |   4KB  | 0x48046FFF | General Purpose Timer 5 
+0x48048000 |   4KB  | 0x48048FFF | General Purpose Timer 6 
+0x4804A000 |   4KB  | 0x4804AFFF | General Purpose Timer 7
+0x4804C000 |   4KB  | 0x4804CFFF | GPIO 1
+0x48060000 |   4KB  | 0x48060FFF | MMC/SD Peripheral 0
+0x4819C000 |   4KB  | 0x4819CFFF | I2C 2
+0x481AC000 |   4KB  | 0x481ACFFF | GPIO 2 
+0x481AE000 |   4KB  | 0x481AEFFF | GPIO 3
+0x48200000 |   4KB  | 0x48200FFF | Interrupt Controller
+0x49000000 |   1MB  | 0x490FFFFF | EDMA TPCC
+0x49800000 |   1MB  | 0x498FFFFF | EDMA TPTC1
+0x49900000 |   1MB  | 0x499FFFFF | EDMA TPTC2
+0x49A00000 |   1MB  | 0x49AFFFFF | EDMA TPTC3
+0x4A100000 |  36KB  | 0x4A108FFF | EMAC SW
+0x50000000 |  16MB  | 0x50FFFFFF | GPMC Memory Controller
+0x80000000 | 252MB  | 0x8FBFFFFF | DDR SDRAM (used by VxWorks)
+0x8FC00000 |   4MB  | 0x8FFFFFFF | DDR SDRAM (used by BOOTROM)
+\te
+
+\sh Serial Configuration (UART)
+
+The universal asynchronous receiver/transmitter serial interface is
+compatible with the industry standard TL16C550/15C750.
+
+UART 1 is used as serial console
+
+No special configuration needed.
+Default configuration is:
+    Baud Rate: 115200
+    Data: 8 bit
+    Parity: None
+    Stop: 1 bit
+    Flow Control: None
+
+The baud rate is set to 115200 by default.
+
+\sh Timers
+
+There are 8 full featured general 
+purpose timers with modes to free-run, count up and reload. 
+The timers can be read or written on-the-fly without stopping 
+the count.
+
+TIMER2 is used as system clock by default.
+TIMER4 is used as AUX clock by default.
+TIMER7 is used as delay timer by default. 
+TIMER5 is used for ethernet RX interrupts (See AM335x ARM Cortex-A8 Microprocessors
+(MPUs) Silicon Revision 1.0, Advisory 1.0.9) for details
+TIMER6 is used for ethernet TX interrupts (See AM335x ARM Cortex-A8 Microprocessors
+(MPUs) Silicon Revision 1.0, Advisory 1.0.9) for details
+
+\sh USB
+
+The AM335x controller have two instances of USB 
+(Mentor Graphic's USB2.0 OTG) controllers. 
+Each MUSB controller supports USB 1.1 and USB 2.0 standard.
+On this board, USB0 module is connected to a microUSB AB connector 
+and USB1 module is connected to a standard A connector. This means
+the USB0 module can work in "Pure Target", "Pure Host" or "OTG" mode.
+But the USB1 module can only work in "Pure Host" mode.
+
+By default, we configure the USB0 module as "Pure Target" and
+USB1 module as "Pure Host". We configure the default work mode in 
+usbInit2() routine in sysUsb.c. 
+
+If you want to change the default operation mode for USB0 module, 
+you should change hwconf.c in the BSP folder. File 
+sysUsb.c doesn't need to be changed, as we will re-configure the 
+working mode after the system boots up according to user's choice done
+in hwconf.c.
+
+There are two arrays in hwconf.c should be changed when you want to  
+change the two USB modules' working mode. One is the "hcfDeviceList" 
+array, which configures device instance list for the system. The other 
+is the "am335xIntCtlrInputs" array, which configures device instance 
+interrupt resources. The following lists the cases you can change to
+configure the two USB modules into different working modes than the 
+default working mode.
+
+Case 1: If you want to change the USB0 module into "Pure Host" mode. 
+This means these two USB module both work in "Pure Host" mode.
+
+In "hcfDeviceList" array, there are two elements
+related to USB module as following:
+
+\cs 
+#ifdef INCLUDE_USB_MHDRC_TCD
+    {"vxbPlbUsbMhdrcTcd", 0, VXB_BUSID_PLB, 0, 
+        vxbPlbUsbMhdrcDev0Num, vxbPlbUsbMhdrcDev0Resources},
+#endif
+ 
+#ifdef INCLUDE_USB_MHDRC_HCD
+    {"vxbPlbUsbMhdrcHcd", 0, VXB_BUSID_PLB, 0, 
+        vxbPlbUsbMhdrcDev1Num, vxbPlbUsbMhdrcDev1Resources},
+#endif
+\ce
+ 
+You should change the device name from "vxbPlbUsbMhdrcTcd" to
+"vxbPlbUsbMhdrcHcd" for USB0 module. Move this instance into
+the conditional compilation guarded by INCLUDE_USB_MHDRC_HCD.
+Then, change the second instance's device unit from "0" to "1"
+as the following:
+
+\cs 
+#ifdef INCLUDE_USB_MHDRC_HCD
+    {"vxbPlbUsbMhdrcHcd", 0, VXB_BUSID_PLB, 0,
+        vxbPlbUsbMhdrcDev0Num, vxbPlbUsbMhdrcDev0Resources},
+    {"vxbPlbUsbMhdrcHcd", 1, VXB_BUSID_PLB, 0, 
+        vxbPlbUsbMhdrcDev1Num, vxbPlbUsbMhdrcDev1Resources},
+#endif
+\ce
+ 
+In am335xIntCtlrInputs array, there are three
+interrupt resources related to USB module as following:
+
+\cs 
+#if defined (INCLUDE_USB_MHDRC_OCD) || \
+    defined (INCLUDE_USB_MHDRC_HCD) || \
+    defined (INCLUDE_USB_MHDRC_TCD)    
+    { AM335X_USBINT0,        "vxbPlbUsbMhdrcTcd",      0,      0},
+    { AM335X_USBSSINT,       "vxbPlbUsbMhdrcTcd",      0,      1},
+    { AM335X_USBINT1,        "vxbPlbUsbMhdrcHcd",      0,      0},
+#endif
+\ce
+ 
+You should change the device name from "vxbPlbUsbMhdrcTcd" to 
+"vxbPlbUsbMhdrcHcd", and change the USB1's interrupt unit from
+0 to 1. As there are two USB modules with the same name, 
+they must use the unit number to distinguish them.
+
+\cs 
+#if defined (INCLUDE_USB_MHDRC_OCD) || \
+    defined (INCLUDE_USB_MHDRC_HCD) || \
+    defined (INCLUDE_USB_MHDRC_TCD)    
+    { AM335X_USBINT0,        "vxbPlbUsbMhdrcHcd",      0,      0},
+    { AM335X_USBSSINT,       "vxbPlbUsbMhdrcHcd",      0,      1},
+    { AM335X_USBINT1,        "vxbPlbUsbMhdrcHcd",      1,      0},
+#endif
+\ce
+
+Case 2: If you want to enable the USB0 module's OTG mode.
+
+In "hcfDeviceList" array, there are two elements
+related to USB module as following:
+
+\cs 
+#ifdef INCLUDE_USB_MHDRC_TCD
+    {"vxbPlbUsbMhdrcTcd", 0, VXB_BUSID_PLB, 0, 
+        vxbPlbUsbMhdrcDev0Num, vxbPlbUsbMhdrcDev0Resources},
+#endif
+ 
+#ifdef INCLUDE_USB_MHDRC_HCD
+    {"vxbPlbUsbMhdrcHcd", 0, VXB_BUSID_PLB, 0, 
+        vxbPlbUsbMhdrcDev1Num, vxbPlbUsbMhdrcDev1Resources},
+#endif
+\ce
+
+You should change the device name from "vxbPlbUsbMhdrcTcd" to
+"vxbPlbUsbMhdrcOcd" for USB0 module. Move this instance into
+the conditional compilation guarded by INCLUDE_USB_MHDRC_OCD.
+
+\cs
+#ifdef INCLUDE_USB_MHDRC_OCD
+    {"vxbPlbUsbMhdrcOcd", 0, VXB_BUSID_PLB, 0, vxbPlbUsbMhdrcDev0Num, vxbPlbUsbMhdrcDev0Resources},
+#endif
+
+#ifdef INCLUDE_USB_MHDRC_HCD
+    {"vxbPlbUsbMhdrcHcd", 0, VXB_BUSID_PLB, 0, vxbPlbUsbMhdrcDev1Num, vxbPlbUsbMhdrcDev1Resources},
+#endif
+\ce
+
+In am335xIntCtlrInputs array, there are three
+interrupt resources related to USB module as following:
+
+\cs 
+#if defined (INCLUDE_USB_MHDRC_OCD) || \
+    defined (INCLUDE_USB_MHDRC_HCD) || \
+    defined (INCLUDE_USB_MHDRC_TCD)    
+    { AM335X_USBINT0,        "vxbPlbUsbMhdrcTcd",      0,      0},
+    { AM335X_USBSSINT,       "vxbPlbUsbMhdrcTcd",      0,      1},
+    { AM335X_USBINT1,        "vxbPlbUsbMhdrcHcd",      0,      0},
+#endif
+\ce
+
+You should change the device name from "vxbPlbUsbMhdrcTcd" to 
+"vxbPlbUsbMhdrcOcd".
+
+\cs
+#if defined (INCLUDE_USB_MHDRC_OCD) || \
+    defined (INCLUDE_USB_MHDRC_HCD) || \
+    defined (INCLUDE_USB_MHDRC_TCD)    
+    { AM335X_USBINT0,        "vxbPlbUsbMhdrcOcd",      0,      0},
+    { AM335X_USBSSINT,       "vxbPlbUsbMhdrcOcd",      0,      1},
+    { AM335X_USBINT1,        "vxbPlbUsbMhdrcHcd",      0,      0},
+#endif
+\ce
+
+To enable USB support, INCLUDE_AM335X_USB must be defined in config.h.
+This definition is undefined by default in config.h. Therefore, you should
+change
+
+\cs
+#undef  INCLUDE_AM335X_USB 
+\ce
+
+to
+
+\cs
+#define INCLUDE_AM335X_USB 
+\ce
+
+To use USB with DOSFS, include the following components:
+
+\cs
+#define INCLUDE_DOSFS
+#define INCLUDE_RAWFS
+#define INCLUDE_DOSFS_MAIN
+#define INCLUDE_DOSFS_CHKDSK
+#define INCLUDE_DOSFS_FMT
+#define INCLUDE_DOSFS_FAT
+#define INCLUDE_DOSFS_SHOW
+#define INCLUDE_DOSFS_DIR_VFAT
+#define INCLUDE_DOSFS_DIR_FIXED
+#define INCLUDE_HRFS
+#define INCLUDE_FS_MONITOR
+#define INCLUDE_FS_EVENT_UTIL
+#define INCLUDE_ERF
+#define INCLUDE_XBD
+#define INCLUDE_XBD_BLKDEV
+#define INCLUDE_XBD_TRANS
+#define INCLUDE_DEVICE_MANAGER
+#define INCLUDE_XBD_BLK_DEV
+#define INCLUDE_XBD_PART_LIB
+#define INCLUDE_DISK_UTIL
+\ce
+
+GEN2 Disk Emulation function (USB target mode), user should configure the 9 parameters rightly before use.
+Please refer "Wind River USB Programmer's Guide,2.7 section 2.7.2 Configuring USB GEN2 Disk Emulation"
+to make clear of the parameters.
+ 
+Note: Parameter "USBTGT_MSC_ATTACH_DEVICE_NAMEx" is the name list of the attached storage medium device 
+to be attached to the USB disk emulation driver. If the attached device doesn't exist in the VxWorks system,
+then user won't see avaliable USB disk on the host side. By default, we configure the parameter 
+"USBTGT_MSC_ATTACH_DEVICE_NAMEx" as "ram0", If user want to use the default configuration,
+they can create a ramdisk with this name by themselves or set "USBTGT_MSC_DEFAULT_RAMDISK" as "TRUE" 
+in config.h to make the system create a default one.
+
+\sh SD/MMC
+
+The AM335X applications processor contains three multimedia card
+high-speed/secure data/secure digital I/O (MMC/SD/SDIO) host controller.
+But the VxWorks driver only supports MMCHS1 and standard SD memory card
+compatible with SD memory card specification 2.0. MMC card and high speed SD
+memory card are not supported in this release.
+
+To enable SD support, DRV_STORAGE_OMAP35XX_MMCHS must be defined in config.h.
+This definition is undefined by default in config.h. Therefore, you should
+change
+
+\cs
+#undef DRV_STORAGE_OMAP35XX_MMCHS 
+\ce
+
+to
+
+\cs
+#define DRV_STORAGE_OMAP35XX_MMCHS 
+\ce
+
+If you use SD card with DOSFS, then include the following components:
+
+\cs
+
+#define INCLUDE_DOSFS
+#define INCLUDE_RAWFS
+#define INCLUDE_DOSFS_MAIN
+#define INCLUDE_DOSFS_CHKDSK
+#define INCLUDE_DOSFS_FMT
+#define INCLUDE_DOSFS_FAT
+#define INCLUDE_DOSFS_SHOW
+#define INCLUDE_DOSFS_DIR_VFAT
+#define INCLUDE_DOSFS_DIR_FIXED
+#define INCLUDE_HRFS
+#define INCLUDE_FS_MONITOR
+#define INCLUDE_FS_EVENT_UTIL
+#define INCLUDE_ERF
+#define INCLUDE_XBD
+#define INCLUDE_XBD_BLKDEV
+#define INCLUDE_XBD_TRANS
+#define INCLUDE_DEVICE_MANAGER
+#define INCLUDE_XBD_BLK_DEV
+#define INCLUDE_XBD_PART_LIB
+#define INCLUDE_DISK_UTIL
+\ce
+
+As per the codes in config.h of this BSP, the other definitions associated
+with DRV_STORAGE_OMAP35XX_MMCHS , such as DRV_TI_EDMA3, will be defined
+automatically for your convenience to use the SD memory card.
+
+When using a SD card for the first time, you should format it as a FAT file
+system (if you use DOSFS and define INCLUDE_DOSFS in config.h) by using:
+
+\cs
+    dosFsVolFormat ("/sd0:1", 0x20, 0);    /@ FAT32 format @/
+\ce
+
+or
+
+\cs
+    dosFsVolFormat ("/sd0:1", 0x10, 0);    /@ FAT16 format @/
+\ce
+
+Now, you can use VxWorks I/O and file system commands to access the SD card
+device as if it is a disk.  For example, you can copy a VxWorks image from
+your host to the SD card by using file system copy. Of course, you should
+define INCLUDE_DISK_UTIL in config.h first.
+
+\cs
+    copy ("VxWorks", "/sd0:1/vxWorks");
+\ce
+
+\sh L2 cache
+
+The AM335X processor integrates a on-chip L2 cache, which complies
+with the L2 cache convention of ARM Cortex A8 processor structure, and
+is supported in the release of this BSP and VxWorks kernel. L2 cache
+is detected automatically and then enabled if it does exist. There are
+no specific routines in the BSP to support L2 cache.
+
+\sh I2C 
+
+I2C is supported in this release of BSP. To use I2C, add:
+#define INCLUDE_I2C in config.h. There are 3 I2C modules on am335x.
+Only I2C module 0 is tested with EEPROM. The tested EEPROM is connected to I2C0
+with an offset 0x50.
+
+\sh RTC 
+
+RTC is supported in this release of BSP. To use RTC, add:
+#define INCLUDE_RTC in config.h. 
+
+\sh SPI 
+
+SPI is supported in this release of BSP. To use SPI, add:
+#define INCLUDE_SPI_FLASH in config.h. SPI is tested with
+flash (m25p80). m25p80 is connected to SPI0 channel 0.
+m25p80 SPI flash has a capacity of 8MB. The first erasable 
+sector (4096 bytes) is used for NVRAM (storing bootline and
+other system configurations):
+
+\cs
++--------------+
+|  bootline    | 256 bytes
+|--------------+
+|  other info  | (4096 - 256 bytes)
+|--------------+
+|              | 
+|              | 
+|              | 
+|  free space  | (8MB - 4096 bytes)
+|              | 
+|              | 
+|              | 
+|--------------+
+\ce
+
+SPI is only available in profile 2 configuration, so
+the following jumper must be set correctly to use SPI:
+
+\cs
+Switch SW8 Function (profile selection)(on - 1, off - 0, don't care - x)
+--------------------------------------------
+  profile selection |  Setting  [1  2  3  4]
+--------------------|--------- -------------
+    profile 2       |            0  1  0  0
+--------------------------------------------
+\ce
+
+Note: NAND flash is only available in profile 0 while SPI is
+only available in profile 2, so they can NOT be used at the 
+same time, including bootrom. That means if SW8 is set to
+profile 2 configuration, then native bootrom (boot from NAND)
+can NOT be used. In this case, the following steps must be
+followed in order to boot vxWorks from uboot (Refer to 
+"AM335x U-Boot User's Guide" for instructions 
+of how to run U-boot on target)
+
+\cs
+    1. building a vxWorks image:
+
+    cd $(WIND_BASE)/target/config/ti_am335x_evm
+    make vxWorks.st
+    objcopyarm -O binary vxWorks.st vxWorks.bin
+
+    2. loading and running vxWorks image using uboot
+
+    tftp 0x80100000 vxWorks.bin
+    go 0x80100000
+   
+    Note: here 0x80100000 is RAM_LOW_ADRS, this value here
+          should be kept the same with that defined in Makefile
+\ce
+
+\sh DMA 
+
+On-board DMA controller is supported in this release of BSP. To use DMA, add:
+#define DRV_TI_EDMA3 in config.h or configure it
+through Kernel Configuration Editor in Workbench. DMA functionality is tested
+with SD card.
+
+DMA channel usage on TI AM335X board:
+
+\ts
+channel  |  function
+-------------------------
+24       |  SD Tx channel 
+25       |  SD Rx channel 
+\te
+
+
+\sh GPIO
+
+General purpose input/output is supported. 
+
+GPIO pin usage on TI AM335X board:
+
+\ts
+module   |  pin         |  function
+------------------------------------
+GPIO 0   |  6           |  MMC0_WP
+GPIO 3   |  18          |  MMC0_CD
+\te
+
+\sh Ethernet Controller
+
+The TIAM335X board embeds with a 3-port gigabit switch (CPSW).
+
+The Ethernet Address (also known as the MAC address or Station
+address) of the on-chip ethernet is read from board specific 
+registers and can not be changed which means that the 'M' command
+is not supported on both boards.
+
+\sh Network Configuration
+The port allows 10/100/1000M connection. The driver will auto-negotiate
+and configure the port accordingly.
+
+\sh WindML Configuration
+The Wind River Multimedia Library is supported by the TI AM335X BSP.
+WindML devices for the AM335X are defined and enabled using the media
+library editor in Workbench. For details on how to configure the WindML library,
+see "Wind River Media Library SDK Programmer's Guide 5.3", Part 2,
+"Configuring and Building Media Library".
+
+\sh Boot Devices
+The supported boot devices are:
+
+\ts
+
+    `cpsw0'      | - AM335X Emac Ethernet (10baseT, 100baseTX,1000base)
+\te
+
+\sh Boot Methods
+
+The boot methods are affected by the boot parameters. If no password is
+specified, RSH (remote shell) protocol is used. If a password is specified,
+FTP protocol is used, or, if the flag is set to 0x80, TFTP protocol is used.
+
+SPECIAL CONSIDERATIONS
+
+\sh Preemptive Interrupts
+
+Preemptive interrupts are supported by the interrupt driver so
+INT_MODE can be defined as INT_NON_PREEMPT_MODEL or INT_PREEMPT_MODEL
+in config.h.
+
+\sh Make Targets
+
+The make targets are listed as the names of object-format files.
+Other images not listed here may not be tested.
+
+\ts
+`bootrom'
+`bootrom.bin'
+`VxWorks' (with `vxWorks.sym')
+`VxWorks.st'
+\te
+
+\sh BSP Bootloaders and Bootroms
+
+\ts
+Bootloader/Bootrom    | Status
+------------------------------
+Uboot                 | Pre-flashed 
+bootrom               | SUPPORTED
+bootrom_uncmp         | SUPPORTED
+vxWorks               | SUPPORTED
+vxWorks_rom           | SUPPORTED
+vxWorks_romCompress   | SUPPORTED
+vxWorks_romResident   | UNSUPPORTED
+bootrom_romResident   | UNSUPPORTED
+\te
+
+BOARD LAYOUT
+
+Note: Only base board is shown here
+ 
+
+\bs
+
+      +------+                                                     +--+   +--+ 
+ _____|SD/MMC|_____________________________________________________|  |___|  |_
+|     +------+                                                     +--+   +--+ | 
+|                                                              USB mini   USB  |
+|                                                                              | 
+|                                                                              |
+|                                       +-----------+                          |
+|                                       |           |                          |
+|                                       |           |                          |
+|                                       |  AM335x   |                sw4       |
+|                                       |           |                +--+      |
+|                                       +-----------+                |  |      |
+|                                                                    |  |      |
+|                                                                    |  |      | 
+|                                                                    |  |      |
+|                                                                    +--+      |
+|                                                                    sw3       |
+|                                                                    +--+      |
+|                                                                    |  |      |
+|                                                                    |  |      |
+|   Ethernet                                                         |  |      |
+|   +----+                 power                                     |  |      | 
+|   |    |    +-------+    switch                  +----------+      +--+      | 
+|___|    |____| AC/DC |_____+-+____________________| UART  1  |_________ ______|
+    +----+    +-------+     +-+                    |----------+
+
+\be
+SEE ALSO
+
+\tb VxWorks Programmer's Guide: Configuration
+
+\tb VxWorks Programmer's Guide: Architecture Appendix
+
+BIBLIOGRAPHY
+
+\tb ARMv7-A Architecture Reference Manual
+
+\tb AM335x ARM Cortex-A8 Microprocessors (MPUs) Technical Reference Manual
+
+\tb AM335x ARM Cortex-A8 Microprocessors (MPUs) Silicon Revision 1.0

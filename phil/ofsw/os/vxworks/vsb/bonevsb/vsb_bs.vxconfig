@@ -1,0 +1,264 @@
+# Automatically generated file: do not edit
+
+menu "VxWorks Global Configuration Options for BSP beaglebone"
+
+config ADVANCED_OPT
+    bool "Set advanced options"
+    default n
+    help
+        Advanced options allow the setting of ADDED CFlags for the compilers
+
+comment "beaglebone_CPU = ARMARCH7"
+
+config CPU_ARMARCH7
+      bool
+      default y
+
+choice
+      prompt "Select the Floating Point configuration" 
+      default FP_vector
+      help 
+          The Floating Point Option (FP) needs to be selected for the library.
+
+config FP_vector
+      bool "vector"
+
+endchoice
+
+config beaglebone_FP
+      string
+      default "vector" if FP_vector
+
+choice
+      prompt "Select the ENDIAN configuration" 
+      default ENDIAN_little
+      help 
+          The ENDIAN Option needs to be selected for the library.
+
+config ENDIAN_little
+      bool "little"
+
+endchoice
+
+config beaglebone_ENDIAN
+      string
+      default "little" if ENDIAN_little
+
+config DEFAULT_IPV4
+    bool
+    default y
+
+
+config  LP64
+        bool
+        prompt "Enable building LP64 libraries for VxWorks 64-bit" if !LP64_ONLY
+        depends on (SUPPORTS_LP64 && !DEFAULT_SIT_NB) || DEFAULT_LP64_Y || LP64_ONLY
+        default y if DEFAULT_LP64_Y || LP64_ONLY
+        help
+          This option enables the 64-bit mode support (LP64 data model) in VxWorks. When this option is not selected the 32-bit mode (ILP32 data model) is supported.
+
+comment "LP64 enabled for this VSB"
+        depends on LP64_ONLY
+
+config ILP32
+    bool
+    default y
+    depends on !LP64
+
+
+config ARCH_arm
+      default y
+      bool
+
+comment "NO PRIMARY TOOL AVAILBLE, CHECK INSTALLED TOOLS"
+    depends on LP64
+
+choice
+      prompt "Select the Primary Tool" 
+      depends on ILP32
+      default PRI_TOOL_ILP32_diab 
+      help 
+          The Primary Tool is used to compile the core source.
+
+config PRI_TOOL_ILP32_diab
+      bool "diab"
+
+endchoice
+
+config beaglebone_TOOL
+      string
+      default "diab" if PRI_TOOL_LP64_diab
+      default "diab" if PRI_TOOL_ILP32_diab
+
+config  ADDEDCFLAGS
+    depends on ADVANCED_OPT
+    string "optional compiler flags for beaglebone_TOOL [?]"
+    default ""
+    help 
+          These optional flags will be passed to the beaglebone_TOOL compiler.
+          Sometimes it is inconvenient to modify config.h to control a VSB  configuration. ADDEDCFLAGS is useful for defining additional macros  without modifying any source code.
+          Consider the hypothetical Acme XYZ-75 BSP that supports two hardware  configurations. The XYZ-75 has a daughter board interface, and in this  interface either a Galaxy-A or a Galaxy-B module is installed. The  drivers for the modules are found in the directory src/drv/multi.
+          The macro GALAXY_C_FILE determines which driver to include at compile-time.  The file named by GALAXY_C_FILE is #included by sysLib.c.
+          The default configuration (Galaxy-A module installed) is established in config.h:
+          #ifndef GALAXY_C_FILE
+          #define GALAXY_C_FILE "multi/acmeGalaxyA.c"
+          #endif /* GALAXY_C_FILE */ 
+          When make is called normally, the VSB supports the XYZ-75 with the Galaxy-A  module installed. 
+          To override the default and build the VSB for the  XYZ-75/Galaxy-B configuration, add -DGALAXY_C_FILE=multi/acmeGalaxy02.c to ADDEDCFLAGS .
+          For ease of use, you can encapsulate a lengthy command within a shell script.
+
+
+config ENABLE_TOOL2_ILP32
+   bool
+   prompt "Enable use of Secondary TOOL to build kernel libraries." if !REQUIRES_SEC_TOOL
+     default y
+   depends on ILP32 && !DISABLE_TOOL2
+      help
+         If disabled the Secondary TOOL will be ignored during the build process. This will disable the compilation of any kernel libraries with this tool, this in turn will require any VIPs, DKMs, or RTPs to be built with the Primary TOOL if this VSB is used. Disable this option if only one compiler has been installed.
+
+
+choice
+      prompt "Select the Secondary Tool" 
+      depends on ILP32 && ENABLE_TOOL2_ILP32
+      help 
+          The Secondary Tool is used to compile the intrinsic libraries.
+
+config SEC_TOOL_ILP32_gnu
+      depends on !PRI_TOOL_ILP32_gnu 
+      bool "gnu"
+
+config SEC_TOOL_ILP32_diab
+      depends on !PRI_TOOL_ILP32_diab 
+      bool "diab"
+
+endchoice
+
+
+config ENABLE_TOOL2_LP64
+   bool
+   prompt "Enable use of Secondary TOOL to build kernel libraries." if !REQUIRES_SEC_TOOL
+     default y
+   depends on LP64 && !DISABLE_TOOL2
+      help
+         If disabled the Secondary TOOL will be ignored during the build process. This will disable the compilation of any kernel libraries with this tool, this in turn will require any VIPs, DKMs, or RTPs to be built with the Primary TOOL if this VSB is used. Disable this option if only one compiler has been installed.
+
+
+choice
+      prompt "Select the Secondary Tool" 
+      depends on LP64 && ENABLE_TOOL2_LP64
+      help 
+          The Secondary Tool is used to compile the intrinsic libraries.
+
+config SEC_TOOL_LP64_gnu
+      depends on !PRI_TOOL_LP64_gnu 
+      bool "gnu"
+
+endchoice
+
+
+config ENABLE_TOOL2
+      bool
+      depends on ENABLE_TOOL2_ILP32 || ENABLE_TOOL2_LP64
+      default y
+
+config gnu_SUPPORTED
+      bool
+      depends on !LP64 && (PRI_TOOL_ILP32_gnu || SEC_TOOL_ILP32_gnu || DEFAULT_VSB)
+      default y
+
+config diab_SUPPORTED
+      bool
+      depends on !LP64 && (PRI_TOOL_ILP32_diab || SEC_TOOL_ILP32_diab || DEFAULT_VSB)
+      default y
+
+config gnu_SUPPORTED
+      bool
+      depends on LP64 && (PRI_TOOL_LP64_gnu || SEC_TOOL_LP64_gnu || DEFAULT_VSB)
+      default y
+
+config SECTOOLS
+    string
+    default "gnu diab" if ILP32 && ENABLE_TOOL2_ILP32
+    default "gnu" if LP64 && ENABLE_TOOL2_LP64
+    default "" if !ENABLE_TOOL2
+
+
+config beaglebone_TOOL2
+      string
+      default "gnu" if SEC_TOOL_ILP32_gnu
+      default "diab" if SEC_TOOL_ILP32_diab
+      default "gnu" if SEC_TOOL_LP64_gnu
+
+
+config  ADDEDCFLAGS2
+    depends on ADVANCED_OPT
+    string "optional compiler flags for beaglebone_TOOL2 [?]"
+    default ""
+    help 
+          These optional flags will be passed to the beaglebone_TOOL2 compiler.
+          Sometimes it is inconvenient to modify config.h to control a VSB  configuration. ADDEDCFLAGS2 is useful for defining additional macros  without modifying any source code.
+          Consider the hypothetical Acme XYZ-75 BSP that supports two hardware  configurations. The XYZ-75 has a daughter board interface, and in this  interface either a Galaxy-A or a Galaxy-B module is installed. The  drivers for the modules are found in the directory src/drv/multi.
+          The macro GALAXY_C_FILE determines which driver to include at compile-time.  The file named by GALAXY_C_FILE is #included by sysLib.c.
+          The default configuration (Galaxy-A module installed) is established in config.h:
+          #ifndef GALAXY_C_FILE
+          #define GALAXY_C_FILE "multi/acmeGalaxyA.c"
+          #endif /* GALAXY_C_FILE */ 
+          When make is called normally, the VSB supports the XYZ-75 with the Galaxy-A  module installed. 
+          To override the default and build the VSB for the  XYZ-75/Galaxy-B configuration, add -DGALAXY_C_FILE=multi/acmeGalaxy02.c to ADDEDCFLAGS2 .
+          For ease of use, you can encapsulate a lengthy command within a shell script.
+
+
+choice
+      prompt "Select the Applications Tool" 
+      default APP_TOOL_ILP32_diab
+      depends on ILP32
+      help 
+          The Applications Tool is used to compile Networking source and any Market Specific Platform (MSP) components, if installed.
+
+config APP_TOOL_ILP32_gnu
+      depends on PRI_TOOL_ILP32_gnu || SEC_TOOL_ILP32_gnu
+      bool "gnu"
+
+config APP_TOOL_ILP32_diab
+      depends on PRI_TOOL_ILP32_diab || SEC_TOOL_ILP32_diab
+      bool "diab"
+
+endchoice
+
+
+choice
+      prompt "Select the Applications Tool" 
+      default APP_TOOL_LP64_
+      depends on LP64
+      help 
+          The Applications Tool is used to compile Networking source and any Market Specific Platform (MSP) components, if installed.
+
+config APP_TOOL_LP64_gnu
+      depends on PRI_TOOL_LP64_gnu || SEC_TOOL_LP64_gnu
+      bool "gnu"
+
+endchoice
+
+config beaglebone_APP_TOOL
+      string
+      default "gnu" if APP_TOOL_LP64_gnu
+      default "gnu" if APP_TOOL_ILP32_gnu
+      default "diab" if APP_TOOL_ILP32_diab
+
+config  ADDEDCFLAGS_APP
+    depends on ADVANCED_OPT
+    string "optional compiler flags for beaglebone_APP_TOOL [?]"
+    default ""
+    help 
+          These optional flags will be passed to the beaglebone_APP_TOOL compiler.
+          Sometimes it is inconvenient to modify config.h to control a VSB  configuration. ADDEDCFLAGS_APP is useful for defining additional macros  without modifying any source code.
+          Consider the hypothetical Acme XYZ-75 BSP that supports two hardware  configurations. The XYZ-75 has a daughter board interface, and in this  interface either a Galaxy-A or a Galaxy-B module is installed. The  drivers for the modules are found in the directory src/drv/multi.
+          The macro GALAXY_C_FILE determines which driver to include at compile-time.  The file named by GALAXY_C_FILE is #included by sysLib.c.
+          The default configuration (Galaxy-A module installed) is established in config.h:
+          #ifndef GALAXY_C_FILE
+          #define GALAXY_C_FILE "multi/acmeGalaxyA.c"
+          #endif /* GALAXY_C_FILE */ 
+          When make is called normally, the VSB supports the XYZ-75 with the Galaxy-A  module installed. 
+          To override the default and build the VSB for the  XYZ-75/Galaxy-B configuration, add -DGALAXY_C_FILE=multi/acmeGalaxy02.c to ADDEDCFLAGS_APP .
+          For ease of use, you can encapsulate a lengthy command within a shell script.
+
