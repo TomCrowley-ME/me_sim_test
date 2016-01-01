@@ -41,20 +41,20 @@ snp_zero_meas = zeros(kfl_n_meas,1);
 
 % altitude-dependent measurements
 snp_meas_noise_alt = [0.2 1000 1000];
-snp_R_lower_limit_alt = [0.0001 10 10 ];
+snp_R_lower_limit_alt = [0.001 10 10 ];
 
 % nadir angular rate-dependent measurements
 snp_dtheta_filter_order    = 1;
 snp_dtheta_filter_freq     = 0.1;
 snp_dtheta_filter_coeffs   = fir1(snp_dtheta_filter_order,snp_dtheta_filter_freq);
 snp_meas_noise_dtheta      = 4.0;           % [deg/sec]
-snp_meas_noise_dtheta_gain = 1.0;
+snp_meas_noise_dtheta_gain = 0.0;
 snp_meas_noise_dtheta_exp  = 11;
 snp_R_lower_limit_dtheta   = 0.0001;
 
 % nadir angle-dependent measurements
-snp_meas_noise_angle      = 50.0;            % [deg]
-snp_meas_noise_angle_gain = 1.0;
+snp_meas_noise_angle      = 90.0;            % [deg]
+snp_meas_noise_angle_gain = 0.0;
 snp_meas_noise_angle_exp  = 10;
 snp_R_lower_limit_angle   = 0.0001;
 

@@ -12,6 +12,4 @@
 % written permission is obtained from Moon Express, Inc.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-csc_cac_coarse_acs_ctrl_prep
-csc_vac_vernier_acs_ctrl_prep
-csc_ppc_phase_plane_ctrl_prep
+csc_vac_gimbal_vernier_roll_acs_ctrl_prep

@@ -14,6 +14,7 @@
 
 vac_alpha_gain = 1/10;
 vac_alpha_gain = 0.2;
+% vac_alpha_gain = 20.0;
 vac_rotx_deadband_minus = 1*pi/180;
 vac_rotx_deadband = 1*pi/180;
 

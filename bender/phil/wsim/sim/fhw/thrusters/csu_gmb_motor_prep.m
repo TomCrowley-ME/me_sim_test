@@ -12,6 +12,21 @@
 % written permission is obtained from Moon Express, Inc.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-csc_cac_coarse_acs_ctrl_prep
-csc_vac_vernier_acs_ctrl_prep
-csc_ppc_phase_plane_ctrl_prep
+% Thruster geometry specification for baseline nimbus lander
+% Author: Jim Kaidy 12/28/2015
+% 
+% Gimbal motore actuator
+
+% 
+
+Km = gim_motor_Km;
+Jm = gim_motor_Jm;
+Bm = gim_motor_Bm;
+Ke = gim_motor_Ke;
+Kt = gim_motor_Kt;
+Lm = gim_motor_Lm;
+Rm = gim_motor_Rm;
+nb = gim_motor_nb;
+Kl = gim_motor_Kl;
+
+%%%%%%%%%%%%%% END SCRIPT %%%%%%%%%%%%%%%

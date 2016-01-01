@@ -27,7 +27,7 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .rpn_equation = { 4 },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 22,
-            .event_text = "Trans. to approach targeting.",
+            .event_text = "Transition to Approach Targeting",
         },{
             /****       AP # 3          ****/
             /* this AP number is available */
@@ -37,10 +37,10 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .default_state = ACTIVE,
             .rts_id = 12,
             .max_fail_before_rts = 1,
-            .rpn_equation = { 5 },
+            .rpn_equation = { 4, 5, AND },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 24,
-            .event_text = "Trans. to terminal descent.",
+            .event_text = "Transition to Terminal Descent",
         },{
             /****       AP # 5          ****/
             .default_state = ACTIVE,
@@ -49,16 +49,16 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .rpn_equation = { 2, 3, AND, 7, AND, 8, NOT, AND },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 25,
-            .event_text = "Transitioning to surface mode!",
+            .event_text = "Transition to surface mode!",
         },{
             /****       AP # 6          ****/
             .default_state = ACTIVE,
-            .rts_id = 14,
+            .rts_id = 16,
             .max_fail_before_rts = 1,
             .rpn_equation = { 9 },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 26,
-            .event_text = "Main Engine Fire! -> Coarse ACS",
+            .event_text = "Main Engine Fire! -> Gimbal Steer Biprop, Vernier Roll",
         },{
             /****       AP # 7          ****/
             .default_state = PASSIVE,
@@ -67,10 +67,19 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .rpn_equation = { 10, 3, NOT, AND, 11, NOT, AND, 6, NOT, AND },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 27,
-            .event_text = "Coast in Vernier ACS",        },
-    }
+            .event_text = "Coast in Vernier ACS",        
+        },{
+            /****       AP # 8          ****/
+            .default_state = ACTIVE,
+            .rts_id = 15,
+            .max_fail_before_rts = 1,
+            .rpn_equation = { 3, 9, NOT, AND },
+            .event_type = CFE_EVS_INFORMATION,
+            .event_id = 28,
+            .event_text = "Terminal, Vernier ACS",   
+        }
+    } 
 };
-
 /*
 ** The macro below identifies:
 **    1) the data structure type to use as the table image format

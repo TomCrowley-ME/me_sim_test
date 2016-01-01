@@ -25,8 +25,7 @@ LC_WatchpointDefinitionTable_t watchpoint_def_table =
             .offset = BUS_OFFSET(cmp_bus_msg, mode),
             .bitmask = 0,
             .value.u8 = MODE__STARTUP,
-        },
-        {
+        },{
             /****       WP # 2          ****/
             .data_type = LC_UINT8,
             .operator_id = EQUAL_TO,
@@ -34,8 +33,7 @@ LC_WatchpointDefinitionTable_t watchpoint_def_table =
             .offset = BUS_OFFSET(cmp_bus_msg, mode),
             .bitmask = 0,
             .value.u8 = MODE__LANDING,
-        },
-        {
+        },{
             /****       WP # 3          ****/
             .data_type = LC_UINT8,
             .operator_id = EQUAL_TO,
@@ -46,11 +44,11 @@ LC_WatchpointDefinitionTable_t watchpoint_def_table =
         },{
             /****       WP # 4          ****/
             .data_type = LC_UINT8,
-            .operator_id = NOT_EQUAL_TO,
+            .operator_id = EQUAL_TO,
             .message_id = GDN_BUS_MID,
             .offset = BUS_OFFSET(gdn_bus_msg, hold_complete),
             .bitmask = 0,
-            .value.u8 = 0,
+            .value.u8 = 1,
         },{
             /****       WP # 5          ****/
             .data_type = LC_UINT8,

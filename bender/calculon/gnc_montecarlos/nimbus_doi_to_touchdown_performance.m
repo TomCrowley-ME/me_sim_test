@@ -35,7 +35,7 @@ mc_prefix_workspace = 'doi_to_touchdown_workspace_mc';
 RandStream.setGlobalStream(RandStream.create('mt19937ar','seed',4))
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mc_n = 10;  % User set to total number of MC cases
+mc_n = 100;  % User set to total number of MC cases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % percent of range errors

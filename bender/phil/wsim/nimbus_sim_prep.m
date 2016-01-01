@@ -23,6 +23,8 @@ csu_ini_initial_conditions_prep;
 csu_gsh_gravity_spherical_harmonic_prep;
 csu_mpl_mass_properties_lander_prep;
 
+csu_gmb_motor_prep;
+
 csu_tdl_thruster_dynamics_lander_prep;
 csu_tpl_thruster_propellant_lander_prep;
 csu_tfl_thruster_forces_lander_prep;

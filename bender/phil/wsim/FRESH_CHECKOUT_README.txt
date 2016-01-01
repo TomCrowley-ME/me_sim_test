@@ -1,10 +1,6 @@
 %-------------------------------------------------------------------------%
 % FRESH_CHECKOUT_README.TXT                                               %
 %                                                                         %
-% 07/24/12 (eleanorcrane@moonexpress.com)                                 %
-% 01/15/13 (nileshkulkarni@moonexpress.com)                               %
-% 04/17/13 (mikestewart@moonexpress.com)                                  %
-% 07/15/14 (mikestewart@moonexpress.com)                                  %
 %-------------------------------------------------------------------------%
 
 If you've just done a fresh checkout of the code, you need to do the following steps to get up and running:
@@ -17,4 +13,3 @@ If you've just done a fresh checkout of the code, you need to do the following s
 
 4) Now you are ready to run the model by calling the run script of the desired scenario. These scripts have names in the form of run_scn#_....m.
 
-If this doesn't sort you out, see Eleanor.

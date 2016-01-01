@@ -35,7 +35,7 @@ set_central_body;
 
 %-------------------------------------------------------------------------%
 % set the stop time of the simulation
-sim_stop_time = 4200;
+sim_stop_time = 200;
 sim_stop_time = 4500;
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - %
@@ -102,10 +102,7 @@ imh_gyro_bias_noise_on  =1;  % 1 - ON, 0 - OFF
 
 %-------------------------------------------------------------------------%
 % run simulation
-tic;
 sim('nimbus');
-    
-fprintf('-- Elapsed time is %4.1f seconds\n',toc );
 
 %-------------------------------------------------------------------------%
 % construct event log from signal data
@@ -115,13 +112,3 @@ create_event_log(raw_event_logs, ini_epoch_seconds, fullfile(scenario_data_dir, 
 % plot data
 
 process_test_data(scenario_data_dir);
-
-%-------------------------------------------------------------------------%
-% save data
-eval(sprintf('cd %s',scenario_data_dir(max(strfind(scenario_data_dir,'\'))+1:end)))
-save ldr_data.mat truth telem ldr_flat_slant_range ldr_ellipsoid_slant_range rsp_slant_range_100 rsp_slant_range_2k ldr_alt rsp_alt ldr_azimuth ldr_nadir_angle rsp_nadir_angle ldr_sag rsp_sag
-save meas_R_data.mat nadir_dtheta meas_R1_alt meas_R1_angle meas_R1_dtheta meas_R1 meas_z_valid 
-%save WORKSPACE
-eval('cd ..')
-
-delete acc_mag_cmd.mat alpha_dot.mat alpha_integ.mat biprop_cmd_time.mat cmd_accel.mat meas_accel.mat trigger_inside.mat trigger_terminal.mat unlimited_cmd_accel.mat

@@ -14,3 +14,4 @@
 
 csc_cac_coarse_acs_ctrl_init
 csc_vac_vernier_acs_ctrl_init
+csc_vac_gimbal_vernier_roll_acs_ctrl_init

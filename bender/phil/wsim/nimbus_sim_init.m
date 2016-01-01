@@ -36,29 +36,31 @@ csu_tpl_thruster_propellant_lander_init;
 csu_tfl_thruster_forces_lander_init;
 csu_tdl_thruster_dynamics_lander_init;
 
-csc_pwr_power_system_sim_init
-csc_swm_switch_state_model_init
+csu_gmb_motor_init;
+
+csc_pwr_power_system_sim_init;
+csc_swm_switch_state_model_init;
 
 csu_grs_gravity_r_squared_init;
 csu_gsh_gravity_spherical_harmonic_init;
 
-csu_imk_imu_kinematics_init
+csu_imk_imu_kinematics_init;
 csu_mnm_mems_noise_model_init
-csc_mum_mems_unit_model_init
+csc_mum_mems_unit_model_init;
 
-csc_ldr_flir_lidar_init
-csu_flr_lidar_noise_model_init
+csc_ldr_flir_lidar_init;
+csu_flr_lidar_noise_model_init;
 
-csc_cam_camera_system_init
-csu_fpt_feature_point_init
+csc_cam_camera_system_init;
+csu_fpt_feature_point_init;
 
-csc_sta_star_tracker_init
-csu_lak_linear_accel_kinematics_init
-csu_gyk_gyro_kinematics_init
-csu_mhn_miru_hardware_noise_init
+csc_sta_star_tracker_init;
+csu_lak_linear_accel_kinematics_init;
+csu_gyk_gyro_kinematics_init;
+csu_mhn_miru_hardware_noise_init;
 
-csu_eph_spice_init
-csu_prb_orbit_perturbations_init
+csu_eph_spice_init;
+csu_prb_orbit_perturbations_init;
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Flight softwre
