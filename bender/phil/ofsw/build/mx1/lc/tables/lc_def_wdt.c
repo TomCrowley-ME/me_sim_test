@@ -84,11 +84,11 @@ LC_WatchpointDefinitionTable_t watchpoint_def_table =
         },{
             /****       WP # 9          ****/
             .data_type = LC_UINT8,
-            .operator_id = EQUAL_TO,
+            .operator_id = NOT_EQUAL_TO,
             .message_id = CNT_BUS_MID,
             .offset = BUS_OFFSET(cnt_bus_msg, main_thruster_cmd),
             .bitmask = 0,
-            .value.u8 = 100,
+            .value.u8 = 0,
         },{
             /****       WP # 10         ****/
             .data_type = LC_UINT8,
