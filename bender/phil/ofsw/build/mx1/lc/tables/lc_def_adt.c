@@ -64,7 +64,7 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .default_state = PASSIVE,
             .rts_id = 15,
             .max_fail_before_rts = 1,
-            .rpn_equation = { 10, 3, NOT, AND, 11, NOT, AND, 6, NOT, AND },
+            .rpn_equation = { 10, 11, NOT, AND, 3, NOT, AND, 6, NOT, AND },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 27,
             .event_text = "Coast in Vernier ACS",        
@@ -77,6 +77,15 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 28,
             .event_text = "Terminal, Vernier ACS",   
+        },{
+           /****       AP # 9          ****/
+            .default_state = ACTIVE,
+            .rts_id = 17,
+            .max_fail_before_rts = 1,
+            .rpn_equation = { 14, 10, AND, 12, AND, 13, NOT, AND, 11, NOT, AND, 3, NOT, AND, 6, NOT, AND },
+            .event_type = CFE_EVS_INFORMATION,
+            .event_id = 29,
+            .event_text = "Landing Hold",   
         }
     } 
 };

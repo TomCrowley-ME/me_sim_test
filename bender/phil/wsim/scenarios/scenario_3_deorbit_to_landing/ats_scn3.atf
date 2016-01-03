@@ -6,7 +6,7 @@
 2015-354-16:54:09 /cmp_set_mode mode=POINTING, submode=NONE
 2015-354-16:55:09 /gdn_set_burn_parameters burn_type=INERTIAL, dv=50.40, dur=0.0
 2015-354-16:55:19 /cmp_set_mode mode=DEORBIT, submode=ACTIVE
-2015-354-16:56:27 /gdn_start_burn
+2015-354-16:56:23 /gdn_start_burn
 2015-354-16:57:00 /cmp_set_mode mode=DEORBIT, submode=COAST
 2015-354-17:48:00 /gdn_set_inertial_primary_pointing_cmd x=-0.101044456644947, y=-0.975702651919072, z=0.194407697428415
 2015-354-17:48:00 /gdn_set_inertial_primary_pointing_cmd x=0.0312019964177742, y=0.081875151121279, z=0.99615405186568
@@ -17,7 +17,7 @@
 2015-354-17:48:00 /gdn_set_peg_velocity_target frame=INERTIAL, x=-0.079587138806545, y=1.019293517387268, z=4.197377078634361
 2015-354-17:55:50 /gdn_set_burn_parameters burn_type=GRAVITY_TURN, dv=1795, dur=0
 2015-354-17:55:50 /cmp_set_mode mode=BRAKING, submode=ACTIVE
-2015-354-17:56:49 /gdn_start_burn
-2015-354-17:56:49 /est_set_reference_frame frame=TOPOCENTRIC
-2015-354-18:00:55 /cmp_set_mode mode=LANDING, submode=LANDING_HOLD
+2015-354-17:56:45 /gdn_start_burn
+2015-354-17:56:45 /est_set_reference_frame frame=TOPOCENTRIC
+
 

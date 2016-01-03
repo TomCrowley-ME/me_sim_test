@@ -105,6 +105,30 @@ LC_WatchpointDefinitionTable_t watchpoint_def_table =
             .offset = BUS_OFFSET(cmp_bus_msg, submode),
             .bitmask = 0,
             .value.u8 = SUBMODE__LANDING_TARGETING,
+        },{
+            /****       WP # 12          ****/
+            .data_type = LC_UINT8,
+            .operator_id = EQUAL_TO,
+            .message_id = CMP_BUS_MID,
+            .offset = BUS_OFFSET(cmp_bus_msg, mode),
+            .bitmask = 0,
+            .value.u8 = MODE__BRAKING,
+        },{
+            /****       WP # 13          ****/
+            .data_type = LC_UINT8,
+            .operator_id = EQUAL_TO,
+            .message_id = GDN_BUS_MID,
+            .offset = BUS_OFFSET(cmp_bus_msg, submode),
+            .bitmask = 0,
+            .value.u8 = SUBMODE__LANDING_HOLD,
+         },{
+            /****       WP # 14         ****/
+            .data_type = LC_UINT8,
+            .operator_id = EQUAL_TO,
+            .message_id = CNT_BUS_MID,
+            .offset = BUS_OFFSET(gdn_bus_msg, biprop_time_cmd),
+            .bitmask = 0,
+            .value.u8 = 100,
         }
     }
 };
