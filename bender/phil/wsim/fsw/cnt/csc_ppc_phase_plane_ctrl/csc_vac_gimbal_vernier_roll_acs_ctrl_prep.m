@@ -34,3 +34,4 @@ Kp = vac_gim_kp;
 Ki = vac_gim_ki;
 Kd = vac_gim_kd;
 
+vac_gim_cmd_quant = 2^vac_gim_cmd_bits / (2*vac_gim_cmd_limit);   % [bits/meter]  gimbal command quantization

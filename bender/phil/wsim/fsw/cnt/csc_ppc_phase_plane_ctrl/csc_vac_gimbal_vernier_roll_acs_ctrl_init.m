@@ -39,3 +39,6 @@ vac_gim_kd = 10.0;
 vac_gim_kd = 20.0;
 vac_gim_kd = 5.0;
 
+vac_gim_cmd_limit = 0.1;   % [meter]  gimbal command length limit
+vac_gim_cmd_bits  = 16;    %          gimbal command analog-to-digital bits
+
