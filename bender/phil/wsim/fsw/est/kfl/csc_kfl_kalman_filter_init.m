@@ -69,4 +69,3 @@ kfl_altitude_init = 0;
 kfl_central_body_rotation_rate = central_body_rotation_rate;
 kfl_central_body_radius = central_body_radius;
 kfl_alt_wrt_meanrad = 0;
-kfl_lidar_switch_altitude = 90.0;
