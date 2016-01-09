@@ -29,7 +29,6 @@ pref_plot_traj_values = 1;
 pref_plot_pos_vel_errors = 1;
 pref_plot_attitude_errors = 1;
 pref_plot_phase_plane = 1;
-pref_plot_lla = 1;
 pref_plot_prop_data = 1;
 
 % Enables exporting figures to powerpoint

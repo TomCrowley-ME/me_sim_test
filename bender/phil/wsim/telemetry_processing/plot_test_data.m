@@ -123,7 +123,6 @@ else
     pref_plot_pos_vel_errors = 1;
     pref_plot_attitude_errors = 1;
     pref_plot_phase_plane = 1;
-    pref_plot_lla = 1;
 end
 
 %-------------------------------------------------------------------------%
@@ -257,7 +256,7 @@ if pref_plot_traj_values
     col = (ColNum-1)*(width+border) + mincol;
     %-------------------------------------------------------------------------%
     
-    figure(fnum); clf; set(fnum,'Position',[col row-50 width height])
+    figure(fnum); clf; set(fnum,'Position',[col row-80 width height])
     
     legend_cell = {};
     
@@ -290,7 +289,7 @@ if pref_plot_traj_values
     col = (ColNum-1)*(width+border) + mincol;
     %-------------------------------------------------------------------------%
     
-    figure(fnum); clf; set(fnum,'Position',[col row-50 width height])
+    figure(fnum); clf; set(fnum,'Position',[col row-80 width height])
     legend_cell = {};
     
     if plot_truth
@@ -315,13 +314,44 @@ if pref_plot_traj_values
     bgfill([tTopo tMax], pref_topo_plot_bg_color, pref_topo_plot_bg_alpha)
     %saveas(gcf,'EulerAngles.png');%saveas(gcf,'EulerAngles.fig')
     
+    %-------------------------------------------------------------------------%
+    %-----                          ALT                                  -----%
+    fnum = fig_numbers(6);
+    RowNum = 2;
+    ColNum = 3;
+    row = maxrow - (RowNum-1)*(height+4*border) ;
+    col = (ColNum-1)*(width+border) + mincol;
+    %-------------------------------------------------------------------------%
+    figure(fnum); clf; set(fnum,'Position',[col row-80 width height])
+    legend_cell = {};
+
+    legend_cell = {};
+    if plot_truth
+      plot(truth.fsw_rate.total.sim_altitude,'LineWidth',2,'Color',[0.929 0.694 0.125]),grid on
+      legend_cell = cat(1,legend_cell,'Truth');
+    end
+    if plot_est
+      hold on;
+      plot(telem.est.altitude,'Color',[0.929 0.694 0.125]),grid on
+      legend_cell = cat(1,legend_cell,'Estimate');
+    end
+    legend(legend_cell,'Location','NorthEast','fontsize',10)
+
+    ylabel('meters','fontsize',14)
+    xlabel('Time (sec)','fontsize',14)
+    title([data_label 'Altitude'],'fontsize',14)
+
+    set(gcf,'Name','Altitude')
+    bgfill([tTopo tMax], pref_topo_plot_bg_color, pref_topo_plot_bg_alpha)
+    %saveas(gcf,'Altitude.png');%saveas(gcf,'Altitude.fig')
+
 end
 
 if pref_plot_pos_vel_errors
     
     %-------------------------------------------------------------------------%
     %-----                          Pos and Vel Err                      -----%
-    fnum = fig_numbers(6);
+    fnum = fig_numbers(7);
     RowNum = 2;
     ColNum = 3;
     row = maxrow - (RowNum-1)*(height+4*border) ;
@@ -368,53 +398,8 @@ if pref_plot_pos_vel_errors
     
 end
 
-if pref_plot_lla
 
-    %-------------------------------------------------------------------------%
-    %-----                          Lat, Lon, Alt                        -----%
-    fnum = fig_numbers(7);
-    RowNum = 2;
-    ColNum = 3;
-    row = maxrow - (RowNum-1)*(height+4*border) ;
-    col = (ColNum-1)*(width+border) + mincol;
-    %-------------------------------------------------------------------------%
-    figure(fnum); clf; set(fnum,'Position',[col+280 row-158 width 2*height])
-    legend_cell = {};
-
-    subplot(2,1,1)
-    plot(truth.sim.detic_latitude,'LineWidth',2)
-    hold on
-    plot(truth.sim.longitude,'LineWidth',2)
-    grid on;
-
-    ylabel('degrees','fontsize',14)
-    title([data_label 'Detic Latitude and Longitude'],'fontsize',14)
-    legend_cell = cat(1,legend_cell,'Lat','Lon');
-    legend(legend_cell,'Location','SouthEast','fontsize',10)
-
-    legend_cell = {};
-    subplot(2,1,2)
-    if plot_truth
-      plot(truth.sim.altitude,'LineWidth',2,'Color',[0.929 0.694 0.125]),grid on
-      legend_cell = cat(1,legend_cell,'Truth');
-    end
-    if plot_est
-      hold on;
-      plot(telem.est.altitude,'Color',[0.929 0.694 0.125]),grid on
-      legend_cell = cat(1,legend_cell,'Estimate');
-    end
-    legend(legend_cell,'Location','NorthEast','fontsize',10)
-
-    ylabel('meters','fontsize',14)
-    xlabel('Time (sec)','fontsize',14)
-    title([data_label 'Altitude'],'fontsize',14)
-
-    set(gcf,'Name','Lat,Lon,Alt')
-    %saveas(gcf,'LLA.png');%saveas(gcf,'LLA.fig')
-
-end
-
-fig_numbers_used = [fig_numbers(1:5)*pref_plot_traj_values fig_numbers(6)*pref_plot_pos_vel_errors fig_numbers(7)*pref_plot_lla];
+fig_numbers_used = [fig_numbers(1:6)*pref_plot_traj_values fig_numbers(7)*pref_plot_pos_vel_errors];
 fig_numbers_used( fig_numbers_used == 0 ) = [];
 
 link_fig_axes(fig_numbers_used)

@@ -353,21 +353,22 @@ if ~isempty(truth)
     
     
     % create truth data at the FSW rate for direct comparison
-    truth.fsw_rate.topo.sim_pos      = resample(truth.sim.pos_topo,     telem.est.local_pos.Time);
-    truth.fsw_rate.topo.sim_vel      = resample(topo_true_vel_10hz,     telem.est.vel.Time);
-    truth.fsw_rate.topo.sim_acc      = resample(topo_true_acc_10hz,     telem.est.accel.Time);
-    truth.fsw_rate.topo.sim_rate     = resample(topo_true_rate_10hz,    telem.est.rate.Time);
-    truth.fsw_rate.topo.sim_euler    = resample(truth.sim.euler_zyx,    telem.est.euler_xyz.Time);
+    truth.fsw_rate.topo.sim_pos      = resample(truth.sim.pos_topo,       telem.est.local_pos.Time);
+    truth.fsw_rate.topo.sim_vel      = resample(topo_true_vel_10hz,       telem.est.vel.Time);
+    truth.fsw_rate.topo.sim_acc      = resample(topo_true_acc_10hz,       telem.est.accel.Time);
+    truth.fsw_rate.topo.sim_rate     = resample(topo_true_rate_10hz,      telem.est.rate.Time);
+    truth.fsw_rate.topo.sim_euler    = resample(truth.sim.euler_zyx,      telem.est.euler_xyz.Time);
     truth.fsw_rate.topo.sim_quat     = resample(truth.sim.q_topo_to_body, telem.est.euler_xyz.Time);
-    truth.fsw_rate.topo.sim_altitude = resample(truth.altitude,             telem.est.local_pos.Time);
+    truth.fsw_rate.topo.sim_altitude = resample(truth.altitude,           telem.est.altitude.Time);
     
     % create truth data at the FSW rate for direct comparison
     truth.fsw_rate.mci.sim_pos      = resample(truth.sim.rtk_pos_eci,           telem.est.local_pos.Time);
-    truth.fsw_rate.mci.sim_vel      = resample(mci_true_vel_10hz,           telem.est.vel.Time);
-    truth.fsw_rate.mci.sim_acc      = resample(mci_true_acc_10hz,   telem.est.accel.Time);
-    truth.fsw_rate.mci.sim_rate     = resample(mci_true_rate_10hz,telem.est.rate.Time);
+    truth.fsw_rate.mci.sim_vel      = resample(mci_true_vel_10hz,               telem.est.vel.Time);
+    truth.fsw_rate.mci.sim_acc      = resample(mci_true_acc_10hz,               telem.est.accel.Time);
+    truth.fsw_rate.mci.sim_rate     = resample(mci_true_rate_10hz,              telem.est.rate.Time);
     truth.fsw_rate.mci.sim_euler    = resample(truth.sim.rrk_euler_zyx_rot_deg, telem.est.euler_xyz.Time);
     truth.fsw_rate.mci.sim_quat     = resample(truth.sim.rrk_q_body_from_eci,   telem.est.euler_xyz.Time);
+    truth.fsw_rate.mci.sim_altitude = resample(truth.sim.altitude,              telem.est.altitude.Time);
     
     % nadir_cam_angle_off_vertical = 180 - acosd( nadir_cam_2_opt_axis_topo(:,3) );
     % side_cam_angle_off_vertical = 180 - acosd( side_cam_2_opt_axis_topo(:,3) );
@@ -385,6 +386,7 @@ if ~isempty(truth)
         truth.fsw_rate.total.sim_acc   = append( getsamples(truth.fsw_rate.mci.sim_acc, iMCI), getsamples(truth.fsw_rate.topo.sim_acc, iTopo) );
         truth.fsw_rate.total.sim_euler = append( getsamples(truth.fsw_rate.mci.sim_euler, iMCI), getsamples(truth.fsw_rate.topo.sim_euler, iTopo) );
         truth.fsw_rate.total.sim_rate  = append( getsamples(truth.fsw_rate.mci.sim_rate, iMCI), getsamples(truth.fsw_rate.topo.sim_rate, iTopo) );
+        truth.fsw_rate.total.sim_altitude  = append( getsamples(truth.fsw_rate.mci.sim_altitude, iMCI), getsamples(truth.fsw_rate.topo.sim_altitude, iTopo) );
         
     end
     
