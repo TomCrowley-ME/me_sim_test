@@ -56,13 +56,13 @@ else
     csc_vac_vernier_acs_ctrl_init
     csc_vac_vernier_acs_ctrl_prep
     alpha1_x = vac_vernier_thruster_trq_x/mpl_inertia_initial(1,1);
-    alpha2_x = vac_alpha_gain_vernier_only*alpha1_x;
+    alpha2_x = vac_alpha_gain*alpha1_x;
 
     alpha1_y = vac_vernier_thruster_trq_y/mpl_inertia_initial(2,2);
-    alpha2_y = vac_alpha_gain_vernier_only*alpha1_y;
+    alpha2_y = vac_alpha_gain*alpha1_y;
 
     alpha1_z = vac_vernier_thruster_trq_z/mpl_inertia_initial(3,3);
-    alpha2_z = vac_alpha_gain_vernier_only*alpha1_z;
+    alpha2_z = vac_alpha_gain*alpha1_z;
 
     theta_db = vac_rotx_deadband;
     edot = [-20*pi/180:.01*pi/180:20*pi/180];
