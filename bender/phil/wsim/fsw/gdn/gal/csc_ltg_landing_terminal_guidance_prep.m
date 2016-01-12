@@ -22,6 +22,7 @@ ltg_pwpf_reference_mass = sum([emp_mass_fillfrac_100-emp_initial_fuel_used emp_m
 ltg_pwpf_reference_min_delta_v = ltg_pwpf_accel_integ_tm * lac_main_mono_thrust_available / ltg_pwpf_reference_mass; % i think this is the same as it used to be....
 ltg_pwpf_reference_min_delta_v = ltg_pwpf_accel_integ_tm * lac_main_biprop_thrust_available / ltg_pwpf_reference_mass; % i think this is the same as it used to be....
 
-ltg_pwpf_trigger_on_alpha = ltg_pwpf_reference_min_delta_v + 1;
+ltg_pwpf_trigger_delta_alpha = 0.5;
+ltg_pwpf_trigger_on_alpha = ltg_pwpf_reference_min_delta_v + ltg_pwpf_trigger_delta_alpha;
 ltg_pwpf_trigger_off_alpha = min( 2,ltg_pwpf_reference_min_delta_v );
 

@@ -14,11 +14,13 @@
 
 start_idx = 36700;
 start_idx = 39500;
-start_idx = 3300;
+start_idx = 500;
 start_idx = 1;
+start_idx = 5000;
 end_idx = 39500;
 end_idx = 185;
 end_idx = size(telem.cnt.quat_err.Time);
+end_idx = 32000;
 
 if isempty(truth) == 0 && exist('vac_vernier_thruster_trq_x','var') > 0
     

@@ -16,8 +16,8 @@
 
 % Altitude above surface to cut off thrust and ACS
 gdn_altitude_transition_free_drift_takeoff = -1.0; % Set to 0.0 meter when taking off  % RENAME ME: Used in ltg_lat, and the CNT
-gdn_altitude_transition_free_drift_landing =  1.05; % Set to 1.05 meter for approach and landing
-gdn_altitude_transition_free_drift_landing =  0.50; % Set to 0.5 meter with 10 cm accuracy altimeter
+gdn_altitude_transition_free_drift_landing =  0.75; % Set to 0.5 meter with 10 cm accuracy altimeter
+gdn_altitude_transition_free_drift_landing =  1.00; % Set to 1.00 meter for approach and landing
 
 csu_lpc_landing_pre_coast_init
 csu_lic_landing_inter_coast_init;
