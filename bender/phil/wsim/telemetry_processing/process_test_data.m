@@ -166,7 +166,8 @@ if exist('wsim_prefs.m','file')
 else
     pref_plot_test_data       = 1;
     pref_plot_attitude_errors = 0;
-    pref_plot_phase_plane     = 1;
+    pref_plot_phase_plane_c   = 0;
+    pref_plot_phase_plane_v   = 1;
     pref_plot_prop_data       = 0;
     pref_export_to_ppt        = 0;
 end
@@ -179,8 +180,12 @@ if pref_plot_attitude_errors
     plot_angular_errors('all', figure(100), error, analysis)
 end
 
-if pref_plot_phase_plane
+if pref_plot_phase_plane_c
     plot_phase_planes
+end
+
+if pref_plot_phase_plane_v
+    plot_phase_planes_vernier
 end
 
 if pref_plot_prop_data && earth_vehicle_flag
