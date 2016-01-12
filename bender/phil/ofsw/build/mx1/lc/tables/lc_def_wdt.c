@@ -126,9 +126,9 @@ LC_WatchpointDefinitionTable_t watchpoint_def_table =
             .data_type = LC_UINT8,
             .operator_id = EQUAL_TO,
             .message_id = CNT_BUS_MID,
-            .offset = BUS_OFFSET(gdn_bus_msg, biprop_time_cmd),
+            .offset = BUS_OFFSET(gdn_bus_msg, burn_complete),
             .bitmask = 0,
-            .value.u8 = 100,
+            .value.u8 = 1,
         }
     }
 };

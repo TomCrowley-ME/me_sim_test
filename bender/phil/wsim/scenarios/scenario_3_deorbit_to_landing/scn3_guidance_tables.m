@@ -1,4 +1,3 @@
-tlt_terminal_vertical_vel_zero_mean_bias = 1.5;
 
 %   Time   PosTopoX PosTopoY PosTopoZ VelTopoX VelTopoY VelTopoZ  Kpx  Kpy  Kpz  Kix    Kiy    Kiz   Kdx    Kdy    Kdz 
 tlt_descent_translate_table_descending = ...
