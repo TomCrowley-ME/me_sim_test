@@ -1,4 +1,11 @@
 %%
+if ~exist('nadir_dtheta','var') && exist('WORKSPACE.mat','file')
+    load WORKSPACE.mat
+elseif ~exist('nadir_dtheta','var') && exist('meas_R_data.mat','file')
+    load meas_R_data.mat
+end
+
+%%
 figure,plot(nadir_dtheta.time,nadir_dtheta.signals.values,'b',...
             nadir_dtheta_filtered.time,nadir_dtheta_filtered.signals.values,'r','Linewidth',2),grid
 cf=gcf;if exist('figs'),figs=[figs cf.Number];else figs=cf.Number;end

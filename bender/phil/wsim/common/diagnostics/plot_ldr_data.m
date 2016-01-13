@@ -1,4 +1,11 @@
 %%
+if ~exist('ldr_alt','var') && exist('WORKSPACE.mat','file')
+    load WORKSPACE.mat
+elseif ~exist('ldr_alt','var') && exist('ldr_data.mat','file')
+    load ldr_data.mat
+end
+
+%%
 figure,plot(ldr_flat_slant_range.time,ldr_flat_slant_range.signals.values,'b',...
             ldr_ellipsoid_slant_range.time,reshape(ldr_ellipsoid_slant_range.signals.values,1,450001),'r'),grid
 cf=gcf;figs=cf.Number;
@@ -25,7 +32,7 @@ legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
 figure,plot(ldr_alt.time,ldr_alt.signals.values,'b',...
-            rsp_alt.time,reshape(rsp_alt.signals.values,45001,1),'r',...
+            rsp_subsat_alt.time,reshape(rsp_subsat_alt.signals.values,45001,1),'r',...
             rsp_topo_alt.time,reshape(rsp_topo_alt.signals.values,1,45001),'g'),grid
 hold on,plot(telem.est.Time,telem.est.altitude.Data,'Color',[0.929 0.694 0.125])
 cf=gcf;figs=[figs cf.Number];
@@ -39,8 +46,8 @@ legend_cell = {'LDR','Subsat','Topo','Estimate'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(rsp_alt.time,ldr_alt.signals.values(1:10:end)-reshape(rsp_alt.signals.values,45001,1),'b',...
-            rsp_alt.time,ldr_alt.signals.values(1:10:end)-reshape(rsp_topo_alt.signals.values,45001,1),'r'),grid
+figure,plot(rsp_subsat_alt.time,ldr_alt.signals.values(1:10:end)-reshape(rsp_subsat_alt.signals.values,45001,1),'b',...
+            rsp_topo_alt.time,ldr_alt.signals.values(1:10:end)-reshape(rsp_topo_alt.signals.values,45001,1),'r'),grid
 hold on,plot(telem.est.time,truth.sim.altitude.Data(1:10:end)-telem.est.altitude.Data,'Color',[0.929 0.694 0.125])
 cf=gcf;figs=[figs cf.Number];
 
@@ -61,7 +68,7 @@ xlabel('Time, sec'),ylabel('meters/sec')
 fig_text='Vertical Velocity';
 title(fig_text),set(gcf,'Name',fig_text)
 
-ylim([-140 200])
+ylim([-100 50])
 legend_cell = {'Truth','Estimate'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
@@ -75,13 +82,13 @@ xlabel('Velocity, meters/sec'),ylabel('Altitude, meters')
 fig_text='Altitude vs Vertical Velocity';
 title(fig_text),set(gcf,'Name',fig_text)
 
-xlim([-150 10]),ylim([-100 1000])
+xlim([-100 10]),ylim([-100 1000])
 legend_cell = {'Truth','Estimate'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
 figure,plot(ldr_azimuth.time,reshape(ldr_azimuth.signals.values,1,450001),'b',...
-            rsp_azimuth.time,reshape(rsp_azimuth.signals.values,1,45001),'r'),grid
+            rsp_boresight_azimuth.time,reshape(rsp_boresight_azimuth.signals.values,1,45001),'r'),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('degrees')
@@ -105,7 +112,7 @@ legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
 figure,plot(ldr_sag.time,reshape(ldr_sag.signals.values,1,450001),'b',...
-            rsp_sag.time,reshape(rsp_sag.signals.values,1,45001),'r'),grid
+            rsp_boresight_sag.time,reshape(rsp_boresight_sag.signals.values,1,45001),'r'),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
@@ -125,6 +132,30 @@ title(fig_text),set(gcf,'Name',fig_text)
 set(gca,'YTick',0:1,'YTickLabel',{'Invalid','Valid'})
 
 ylim([-0.1 1.1])
+
+%%
+figure,plot(rsp_topo_subsat_sag.time,reshape(rsp_topo_subsat_sag.signals.values,1,45001)),grid
+cf=gcf;figs=[figs cf.Number];
+
+xlabel('Time, sec'),ylabel('meters')
+fig_text='Subsatellite Distance Below Topocentric Horizontal Plane';
+title(fig_text),set(gcf,'Name',fig_text)
+
+%%
+figure,plot(rsp_topo_subsat_distance.time,rsp_topo_subsat_distance.signals.values),grid
+cf=gcf;figs=[figs cf.Number];
+
+xlabel('Time, sec'),ylabel('meters')
+fig_text='Subsatellite Distance on Topocentric Horizontal Plane';
+title(fig_text),set(gcf,'Name',fig_text)
+
+%%
+figure,plot(rsp_subsat_azimuth.time,reshape(rsp_subsat_azimuth.signals.values,1,45001)),grid
+cf=gcf;figs=[figs cf.Number];
+
+xlabel('Time, sec'),ylabel('degrees')
+fig_text='Subsatellite Azimuth From Topocentric';
+title(fig_text),set(gcf,'Name',fig_text)
 
 %%
 link_fig_axes(figs)

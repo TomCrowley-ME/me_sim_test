@@ -32,8 +32,13 @@ fig_text='Angle Between Desired Pointing and Velocity Vector';
 title(fig_text),set(gcf,'Name',fig_text)
 
 %%
-figure,plot(truth.sim.time,truth.sim.altitude.Data,'b',...
-            telem.est.time,telem.est.altitude.Data,'r'),grid
+if isfield(truth.fsw_rate.total,'sim_altitude')
+  figure,plot(truth.fsw_rate.total.sim_altitude.Time,truth.fsw_rate.total.sim_altitude.Data,'b',...
+              telem.est.time,telem.est.altitude.Data,'r'),grid
+else
+  figure,plot(truth.sim.altitude.time,truth.sim.altitude.Data,'b',...
+              telem.est.time,telem.est.altitude.Data,'r'),grid
+end
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
