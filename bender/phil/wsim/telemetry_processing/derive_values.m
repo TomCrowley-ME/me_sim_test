@@ -32,7 +32,6 @@ end
 
 if isfield(telem, 'est')
     est_surface_rel_pos   = telem.est.pos;
-    est_surface_rel_pos.Data(:,3) = telem.est.altitude.Data ;
     
     if isfield(telem, 'cmp')
         iTopo = find( telem.cmp.est_ref_frame.Data == 2);
@@ -41,7 +40,7 @@ if isfield(telem, 'est')
              warning('Multiple transitions between frames. Sim structure will be incorrect')
          end
          
-        telem.est.local_pos   = append( getsamples(telem.est.pos, iMCI), getsamples(est_surface_rel_pos, iTopo) );
+        telem.est.local_pos   = append( getsamples(telem.est.pos, iMCI), getsamples(telem.est.pos, iTopo) );
     end
 
     % convert estimated quaternion into zyx euler angles
