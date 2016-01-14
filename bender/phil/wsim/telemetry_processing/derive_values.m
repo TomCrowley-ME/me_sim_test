@@ -324,8 +324,8 @@ end
 
 if ~isempty(truth)
     
-    true_altitude = truth.sim.pos_topo.Data(:,3);
-    truth.altitude = timeseries(true_altitude, truth.sim.pos_topo.Time, 'name','derived_altitude');
+    true_altitude = truth.sim.altitude.Data;
+    truth.altitude = timeseries(true_altitude, truth.sim.altitude.Time, 'name','derived_altitude');
     
     if isnan(telem.est.accel.TimeInfo.Increment) || (truth.sim.acc_topo.TimeInfo.Increment)
         nFSW = max( round( mean(diff(telem.est.accel.Time))/mean(diff(truth.sim.acc_topo.Time)) ) , 1);

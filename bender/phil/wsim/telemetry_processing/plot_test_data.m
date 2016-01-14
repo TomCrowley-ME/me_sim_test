@@ -327,7 +327,7 @@ if pref_plot_traj_values
 
     legend_cell = {};
     if plot_truth
-      plot(truth.fsw_rate.total.sim_altitude,'LineWidth',2,'Color',[0.929 0.694 0.125]),grid on
+      plot(truth.sim.altitude,'LineWidth',2,'Color',[0.929 0.694 0.125]),grid on
       legend_cell = cat(1,legend_cell,'Truth');
     end
     if plot_est
