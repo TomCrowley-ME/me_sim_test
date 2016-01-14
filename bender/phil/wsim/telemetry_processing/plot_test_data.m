@@ -339,9 +339,9 @@ if pref_plot_traj_values
 
     ylabel('meters','fontsize',14)
     xlabel('Time (sec)','fontsize',14)
-    title([data_label 'Altitude'],'fontsize',14)
+    title([data_label 'Subsat Altitude'],'fontsize',14)
 
-    set(gcf,'Name','Altitude')
+    set(gcf,'Name','Subsat Altitude')
     bgfill([tTopo tMax], pref_topo_plot_bg_color, pref_topo_plot_bg_alpha)
     %saveas(gcf,'Altitude.png');%saveas(gcf,'Altitude.fig')
 
