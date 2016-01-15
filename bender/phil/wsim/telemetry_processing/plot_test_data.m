@@ -338,7 +338,7 @@ if pref_plot_traj_values
     legend(legend_cell,'Location','NorthEast','fontsize',10)
 
     ylabel('meters','fontsize',14)
-    xlabel('Time (sec)','fontsize',14)
+    xlabel('time (sec)','fontsize',14)
     title([data_label 'Subsat Altitude'],'fontsize',14)
 
     set(gcf,'Name','Subsat Altitude')
@@ -366,8 +366,8 @@ if pref_plot_pos_vel_errors
         plot(error.knowledge.total.pos)
         grid on;box on; hold_colors;
         
-        ylabel('External Position Estimator Error (m)','fontsize',14)
-        title(latex_prep([data_label 'External Position Estimator Error (m)']),'fontsize',14)
+        ylabel('meters','fontsize',14)
+        title(latex_prep([data_label 'External Position Estimator Error']),'fontsize',14)
         legend_cell = cat(1,legend_cell,'X','Y','Z');
         legend(legend_cell,'Location','NorthEast','fontsize',10)
         set(gcf,'Name','Estimator Errors')
@@ -382,9 +382,9 @@ if pref_plot_pos_vel_errors
         plot(error.knowledge.total.vel)
         grid on;box on; hold_colors;
         
-        ylabel('External Velocity Estimator Error (m/s)','fontsize',14)
-        xlabel('Time (sec)','fontsize',14)
-        title(latex_prep([data_label 'External Velocity Estimator Error (m/s)']),'fontsize',14)
+        ylabel('meters/sec','fontsize',14)
+        xlabel('time (sec)','fontsize',14)
+        title(latex_prep([data_label 'External Velocity Estimator Error']),'fontsize',14)
         legend_cell = cat(1,legend_cell,'X','Y','Z');
         legend(legend_cell,'Location','NorthEast','fontsize',10)
         bgfill([tTopo tMax], pref_topo_plot_bg_color, pref_topo_plot_bg_alpha)
@@ -446,8 +446,8 @@ end
 %
 %     title('Euler 123 Attitude Command Error Relative to Topo Frame','fontsize',14)
 %     legend(Mrate,'Location','NorthEast','fontsize',10)
-%     xlabel('time (sec)','fontsize',14)
 %     ylabel('degrees','fontsize',14)
+%     xlabel('time (sec)','fontsize',14)
 % end
 % %saveas(gcf,'EulerErrors.png');%saveas(gcf,'EulerErrors.fig')
 %
@@ -465,9 +465,9 @@ end
 % if plot_truth && plot_est
 %     plot(error.vel_topo); grid on;box on;
 %
-%     ylabel('External Velocity Estimator Error (m/s)','fontsize',14)
-%     xlabel('Time (sec)','fontsize',14)
-%     title('Topo: External Velocity Estimator Error (m/s)','fontsize',14)
+%     title('External Velocity Estimator Error in Topo Frame','fontsize',14)
+%     ylabel('meters/sec','fontsize',14)
+%     xlabel('time (sec)','fontsize',14)
 % end
 % %saveas(gcf,'VelEstErr.png');%saveas(gcf,'VelEstErr.fig')
 %
@@ -487,8 +487,8 @@ end
 %
 %     title('Euler 123 Attitude Estimation Error Relative to Topo Frame','fontsize',14)
 %     legend(Mrate,'Location','NorthEast','fontsize',10)
-%     xlabel('time (sec)','fontsize',14)
 %     ylabel('degrees','fontsize',14)
+%     xlabel('time (sec)','fontsize',14)
 % end
 % %saveas(gcf,'EulerEstErrors.png');%saveas(gcf,'EulerEstErrors.fig')
 %
