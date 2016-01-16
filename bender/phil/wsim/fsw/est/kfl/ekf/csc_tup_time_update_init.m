@@ -19,19 +19,19 @@
 %-------------------------------------------------------------------------%
 
 % high altitude process noise
-tup_process_noise_high     =  diag([ 1.1   1.1   10.1 ,  0.000505    0.000505     0.000505 ,  0.00001  0.00001  0.00001 , 0.001 0.001 0.001 , 0.001 0.001 0.001 ]);
+tup_process_noise_high     =  diag([  1.1    1.1   10.1 ,  0.000505    0.000505     0.000505 ,  0.00001  0.00001  0.00001 , 0.001 0.001 0.001 , 0.001 0.001 0.001 ]);
 
 % low altitude process noise
-tup_process_noise_low      =  diag([10.1  10.1  150.1 , 1000.2515  1000.25150  10000.25105 ,   1000.1   1000.1  10000.1 , 0.001 0.001 0.001 , 0.001 0.001 0.001 ]);
+tup_process_noise_low      =  diag([ 10.1   10.1  150.1 , 1000.2515  1000.25150  10000.25105 ,   1000.1   1000.1  10000.1 , 0.001 0.001 0.001 , 0.001 0.001 0.001 ]);
 
 % terminal descent process noise
-tup_process_noise_terminal =  diag([10.1  10.1    1e4 , 1000.2515  1000.25150  10000.25105 ,   1000.1   1000.1  10000.1 , 0.001 0.001 0.001 , 0.001 0.001 0.001 ]);
+tup_process_noise_terminal =  diag([ 10.1   10.1    1e4 , 1000.2515  1000.25150  10000.25105 ,   1000.1   1000.1  10000.1 , 0.001 0.001 0.001 , 0.001 0.001 0.001 ]);
 
 % zero out process noise when landed, except on attitude (if using tracker)
 tup_landed_attitude_process_noise = [0.001 0.001 0.001]; % should be commented
 
 tup_noise_switch_alt   = 2500;
-tup_noise_terminal_alt = 1000;
+tup_noise_terminal_alt =  200;
 
 %------------------------------------------------------------------------%
 %       Create equations of motion (linear)                              %
