@@ -77,7 +77,7 @@ legend_cell = {'Truth-Estimate'};
 legend(legend_cell,'Location','NorthWest','fontsize',8)
 
 %%
-figure,plot(telem.est.time,truth.sim.pos_topo.Data(1:10:end,:)-telem.est.pos.Data),grid
+figure,plot(telem.est.time,truth.fsw_rate.total.sim_pos.Data-telem.est.pos.Data),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
