@@ -1,18 +1,11 @@
 %%
-if ~exist('ldr_alt','var') && exist('WORKSPACE.mat','file')
-    load WORKSPACE.mat
-elseif ~exist('ldr_alt','var') && exist('ldr_data.mat','file')
-    load ldr_data.mat
-end
-
-%%
 figure,plot(ldr_flat_slant_range.time,ldr_flat_slant_range.signals.values,'b',...
             ldr_ellipsoid_slant_range.time,reshape(ldr_ellipsoid_slant_range.signals.values,1,450001),'r'),grid
 cf=gcf;figs=cf.Number;
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Slant Range Outputs From Lidar Model';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 ylim([-100 15000])
 legend_cell = {'Flat','Ellipsoid'};
@@ -25,7 +18,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Slant Range Input to Radar Sensor Processing';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 legend_cell = {'100m','15K'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
@@ -39,7 +32,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Altitude';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 ylim([-100 7000])
 legend_cell = {'LDR','Subsat','Topo','Estimate'};
@@ -53,7 +46,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Altitude Error';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 ylim([-50 50])
 legend_cell = {'LDR-Subsat','LDR-Topo','Truth-Estimate'};
@@ -66,7 +59,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters/sec')
 fig_text='Vertical Velocity';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 ylim([-100 10])
 legend_cell = {'Truth','Estimate'};
@@ -78,9 +71,31 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters/sec')
 fig_text='Vertical Velocity Error';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 legend_cell = {'Truth-Estimate'};
+legend(legend_cell,'Location','NorthWest','fontsize',8)
+
+%%
+figure,plot(telem.est.time,truth.sim.pos_topo.Data(1:10:end,:)-telem.est.pos.Data),grid
+cf=gcf;figs=[figs cf.Number];
+
+xlabel('Time, sec'),ylabel('meters')
+fig_text='Position Estimation Error';
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
+
+legend_cell = {'X','Y','Z'};
+legend(legend_cell,'Location','NorthWest','fontsize',8)
+
+%%
+figure,plot(telem.est.time,truth.fsw_rate.total.sim_vel.Data-telem.est.vel.Data),grid
+cf=gcf;figs=[figs cf.Number];
+
+xlabel('Time, sec'),ylabel('meters/sec')
+fig_text='Velocity Estimation Error';
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
+
+legend_cell = {'X','Y','Z'};
 legend(legend_cell,'Location','NorthWest','fontsize',8)
 
 %%
@@ -91,7 +106,7 @@ figure,plot(truth.sim.vel_topo.Data(:,3),truth.sim.altitude.Data,'b',...
 
 xlabel('Velocity, meters/sec'),ylabel('Altitude, meters')
 fig_text='Altitude vs Vertical Velocity';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 xlim([-100 10]),ylim([-100 1000])
 legend_cell = {'Truth','Estimate'};
@@ -104,7 +119,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('degrees')
 fig_text='Lidar Boresight Azimuth';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 legend_cell = {'LDR','RSP'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
@@ -116,7 +131,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('degrees')
 fig_text='Lidar Boresight Nadir Angle';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 legend_cell = {'LDR','RSP'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
@@ -128,7 +143,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Slant Range Intercept Below Subsatellite Horizontal Plane';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 legend_cell = {'LDR','RSP'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
@@ -139,7 +154,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec')
 fig_text='Slant Range Valid Flag';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 set(gca,'YTick',0:1,'YTickLabel',{'Invalid','Valid'})
 
 ylim([-0.1 1.1])
@@ -150,7 +165,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Subsatellite Distance Below Topocentric Horizontal Plane';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 %%
 figure,plot(rsp_topo_subsat_distance.time,rsp_topo_subsat_distance.signals.values),grid
@@ -158,7 +173,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Subsatellite Distance on Topocentric Horizontal Plane';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 %%
 figure,plot(rsp_subsat_azimuth.time,reshape(rsp_subsat_azimuth.signals.values,1,45001)),grid
@@ -166,7 +181,7 @@ cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('degrees')
 fig_text='Subsatellite Azimuth From Topocentric';
-title(fig_text),set(gcf,'Name',fig_text)
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 %%
 link_fig_axes(figs)
