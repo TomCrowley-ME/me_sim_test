@@ -18,76 +18,29 @@
 % 11/12/13                                                                %
 %-------------------------------------------------------------------------%
 
-%radar location, relative to origin of body coords
-ldr_pos_x = 0.549 * cos(pi/4);    
-ldr_pos_y = 0.549 * sin(pi/4);
-ldr_pos_z = -0.4451;
+% lidar1 location
+ldr1_pos_x = 0.549 * cos(pi/4);    
+ldr1_pos_y = 0.549 * sin(pi/4);
+ldr1_pos_z = -0.4451;
 
-% % lidar : nadir pointing % %
-ldr_lander_rotx = 0;
-ldr_lander_roty = pi;
-ldr_lander_rotz = 0;
+% lidar1 orientation : nadir pointing
+ldr1_lander_rotx = 0;
+ldr1_lander_roty = pi;
+ldr1_lander_rotz = 0;
+
+% lidar2 location
+ldr2_pos_x = 0.549 * cos(pi/4);    
+ldr2_pos_y = 0.549 * sin(pi/4);
+ldr2_pos_z = -0.4451;
+
+% lidar2 orientation : 45 deg from nadir
+ldr2_lander_rotx = 0;
+ldr2_lander_roty = pi*3/4;
+ldr2_lander_rotz = 0;
 
 ldr_use_meme_flag = 0;
 
 flr_2k_model = 2;
 flr_100m_model = 1;
 
-% %-------------------------------------------------------------------------%
-% % % %                           2K LIDARS                             % % %
-% %-------------------------------------------------------------------------%
-%     
-%     %  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-%     % % % unit 1 % % %
-%     ldr1_pos_x = 0*0.549 * cos(pi/4);    %reference drawing by Earl Daley 
-%     ldr1_pos_y = 0*0.549 * sin(pi/4);
-%     ldr1_pos_z = 0*-0.4451;
-% 
-%     ldr1_lander_rotx = 0;
-%     ldr1_lander_roty = pi;
-%     ldr1_lander_rotz = 0;
-%     
-%     %  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-%     % % % unit 2 % % %
-%     ldr2_pos_x = 0*0.549 * cos(pi/4);    %reference drawing by Earl Daley 
-%     ldr2_pos_y = 0*0.549 * sin(pi/4);
-%     ldr2_pos_z = 0*-0.4451;
-% 
-%     ldr2_lander_rotx = 0;
-%     ldr2_lander_roty = pi;
-%     ldr2_lander_rotz = 0;
-%     %  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-%     
-% %-------------------------------------------------------------------------%
-% % % %                         100m LIDARS                             % % %
-% %-------------------------------------------------------------------------%
-%     
-%     %  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-%     % % % unit 3 % % %
-%     ldr3_pos_x = 0*0.549 * cos(pi/4);    %reference drawing by Earl Daley 
-%     ldr3_pos_y = 0*0.549 * sin(pi/4);
-%     ldr3_pos_z = 0*-0.4451;
-% 
-%     ldr3_lander_rotx = 0;
-%     ldr3_lander_roty = pi;
-%     ldr3_lander_rotz = 0;
-%     
-%     %  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-%     % % % unit 4 % % %
-%     ldr4_pos_x = 0*0.549 * cos(pi/4);    %reference drawing by Earl Daley 
-%     ldr4_pos_y = 0*0.549 * sin(pi/4);
-%     ldr4_pos_z = 0*-0.4451;
-% 
-%     ldr4_lander_rotx = 0;
-%     ldr4_lander_roty = pi;
-%     ldr4_lander_rotz = 0;
-%     %  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -%
-
-
-
 ldr_null_meas = -100;
-
-
-
-
-%%%%%%%%%%%%%%% END SCRIPT %%%%%%%%%%%%%%%

@@ -18,6 +18,8 @@
 % 11/12/13                                                                %
 %-------------------------------------------------------------------------%
 
-ldr_position_in_lander= [ldr_pos_x ldr_pos_y ldr_pos_z];
+ldr1_lander_pos = [ldr1_pos_x ldr1_pos_y ldr1_pos_z];
+ldr2_lander_pos = [ldr2_pos_x ldr2_pos_y ldr2_pos_z];
 
-ldr_lander_dcm = rot_angles_to_dcm( [ldr_lander_rotz ldr_lander_roty ldr_lander_rotx] );
+ldr1_lander_dcm = rot_angles_to_dcm( [ldr1_lander_rotz ldr1_lander_roty ldr1_lander_rotx] );
+ldr2_lander_dcm = rot_angles_to_dcm( [ldr2_lander_rotz ldr2_lander_roty ldr2_lander_rotx] );
