@@ -21,6 +21,8 @@ csc_cmp_command_mode_process_prep;
 csc_cnt_attitude_control_prep;
 csc_gdn_guidance_prep;
 
+csc_rsp_radar_sensor_prep
+
 csc_kfl_kalman_filter_prep;
 csc_emp_est_mass_props_prep;
 csc_tup_time_update_prep
