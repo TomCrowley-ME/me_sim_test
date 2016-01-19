@@ -23,6 +23,3 @@ mkf_selection_index = [ kfl_acc_bias_index kfl_gyro_bias_index kfl_gibbs_index];
 mkf_zero_gibbs = [ 0 0 0];
 mkf_null_quat = [ 0 0 0 1];
 
-mkf_meas_z_filter_order    = 1;
-mkf_meas_z_filter_freq     = 0.1;
-mkf_meas_z_filter_coeffs   = fir1(mkf_meas_z_filter_order,mkf_meas_z_filter_freq);
