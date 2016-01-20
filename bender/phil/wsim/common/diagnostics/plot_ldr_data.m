@@ -13,7 +13,7 @@ legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
 figure,plot(rsp_slant_range_100.time,rsp_slant_range_100.signals.values,'b',...
-            rsp_slant_range_2k.time,rsp_slant_range_2k.signals.values,'r'),grid
+            rsp_slant_range_15k.time,rsp_slant_range_15k.signals.values,'r'),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')

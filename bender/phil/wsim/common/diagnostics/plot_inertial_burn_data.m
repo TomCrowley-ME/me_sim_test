@@ -3,7 +3,7 @@ figure,plot(telem.cnt.main_thruster_cmd),grid
 cf=gcf;figs=cf.Number;
 
 ylim([-10 110])
-xlabel('Time, sec')
+xlabel('Time, sec'),ylabel('On-time, msec')
 fig_text='Main Thruster Fire Command';
 title(fig_text),set(gcf,'Name',fig_text)
 
