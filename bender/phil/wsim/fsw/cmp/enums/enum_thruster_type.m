@@ -10,5 +10,6 @@ classdef enum_thruster_type < uint8
         fine                 (2)
         mono                 (3)
         biprop               (4)
+        coarse_fine          (5)
     end
 end
