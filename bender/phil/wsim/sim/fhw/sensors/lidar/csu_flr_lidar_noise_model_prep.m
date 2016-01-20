@@ -18,10 +18,6 @@
 % 11/12/13                                                                %
 %-------------------------------------------------------------------------%
 
-
-
-flr_2k_rate_counter     = flr_2k_update_time / sim_time_step_size;
+flr_15k_rate_counter    = flr_15k_update_time / sim_time_step_size;
 flr_100m_rate_counter   = flr_100m_update_time / sim_time_step_size;
 
-
-%%%%%%%%%%%%%%% END SCRIPT %%%%%%%%%%%%%%%

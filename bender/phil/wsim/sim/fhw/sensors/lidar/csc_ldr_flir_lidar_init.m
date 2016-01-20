@@ -40,7 +40,4 @@ ldr2_lander_rotz = 0;
 
 ldr_use_meme_flag = 0;
 
-flr_2k_model = 2;
-flr_100m_model = 1;
-
 ldr_null_meas = -100;
