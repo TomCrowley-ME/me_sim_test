@@ -134,6 +134,7 @@ tfl_thruster24_orientation =  [0,0,1];
 
 % Thruster 25 Geometry
 tfl_thruster25_position    =  [0,0,0.508];
+tfl_thruster25_position    =  [0,0,-0.508];
 tfl_thruster25_orientation =  [0,0,1.0];
 
 thruster_list = [   tfl_thruster1_orientation/norm(tfl_thruster1_orientation);...
