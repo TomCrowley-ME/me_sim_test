@@ -1,32 +1,37 @@
 %%
-figure,plot(ldr_flat_slant_range.time,ldr_flat_slant_range.signals.values,'b',...
-            ldr_ellipsoid_slant_range.time,reshape(ldr_ellipsoid_slant_range.signals.values,1,450001),'r'),grid
+figure,co=get(gca,'ColorOrder');
+set(gcf,'DefaultAxesColorOrder',co([1 2 3 5 7 6 4],:));
+plot(ldr_flat_slant_range.time,ldr_flat_slant_range.signals.values,...
+     ldr_ellipsoid_slant_range.time,ldr_ellipsoid_slant_range.signals.values),grid
 cf=gcf;figs=cf.Number;
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Slant Range Outputs From Lidar Model';
 title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
-ylim([-100 15000])
-legend_cell = {'Flat','Ellipsoid'};
+ylim([-100 15100])
+legend_cell = {'1\_Flat','2\_Flat','1\_Ellipsoid','2\_Ellipsoid'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(rsp_slant_range_100.time,rsp_slant_range_100.signals.values,'b',...
-            rsp_slant_range_15k.time,rsp_slant_range_15k.signals.values,'r'),grid
+figure,plot(rsp_ldr1_slant_range_100.time,rsp_ldr1_slant_range_100.signals.values,'b',...
+            rsp_ldr1_slant_range_15k.time,rsp_ldr1_slant_range_15k.signals.values,'r',...
+            rsp_ldr2_slant_range_15k.time,rsp_ldr2_slant_range_15k.signals.values,'g'),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Slant Range Input to Radar Sensor Processing';
 title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
-legend_cell = {'100m','15K'};
+legend_cell = {'1\_100m','1\_15K','2\_15K'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(ldr_alt.time,ldr_alt.signals.values,'b',...
-            rsp_subsat_alt.time,reshape(rsp_subsat_alt.signals.values,45001,1),'r',...
-            rsp_topo_alt.time,reshape(rsp_topo_alt.signals.values,1,45001),'g'),grid
+figure,co=get(gca,'ColorOrder');
+set(gcf,'DefaultAxesColorOrder',co([1 2 5 7 6 4],:));
+plot(truth.sim.altitude.Time,truth.sim.altitude.Data,...
+     rsp_subsat_alt.time,rsp_subsat_alt.signals.values,...
+     rsp_topo_alt.time,rsp_topo_alt.signals.values),grid
 hold on,plot(telem.est.Time,telem.est.altitude.Data,'Color',[0.929 0.694 0.125])
 cf=gcf;figs=[figs cf.Number];
 
@@ -34,13 +39,15 @@ xlabel('Time, sec'),ylabel('meters')
 fig_text='Altitude';
 title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
-ylim([-100 7000])
-legend_cell = {'LDR','Subsat','Topo','Estimate'};
+ylim([-100 12000])
+legend_cell = {'Truth','Subsat1','Subsat2','Topo1','Topo2','Estimate'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(rsp_subsat_alt.time,ldr_alt.signals.values(1:10:end)-reshape(rsp_subsat_alt.signals.values,45001,1),'b',...
-            rsp_topo_alt.time,ldr_alt.signals.values(1:10:end)-reshape(rsp_topo_alt.signals.values,45001,1),'r'),grid
+figure,co=get(gca,'ColorOrder');
+set(gcf,'DefaultAxesColorOrder',co([1 2 5 7 6 4],:));
+plot(rsp_subsat_alt.time,truth.sim.altitude.Data(1:10:end)*[1 1]-rsp_subsat_alt.signals.values,...
+     rsp_topo_alt.time,truth.sim.altitude.Data(1:10:end)*[1 1]-rsp_topo_alt.signals.values),grid
 hold on,plot(telem.est.time,truth.sim.altitude.Data(1:10:end)-telem.est.altitude.Data,'Color',[0.929 0.694 0.125])
 cf=gcf;figs=[figs cf.Number];
 
@@ -49,7 +56,7 @@ fig_text='Altitude Error';
 title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
 ylim([-50 50])
-legend_cell = {'LDR-Subsat','LDR-Topo','Truth-Estimate'};
+legend_cell = {'Subsat1','Subsat2','Topo1','Topo2','Estimate'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
@@ -113,43 +120,43 @@ legend_cell = {'Truth','Estimate'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(ldr_azimuth.time,reshape(ldr_azimuth.signals.values,1,450001),'b',...
-            rsp_boresight_azimuth.time,reshape(rsp_boresight_azimuth.signals.values,1,45001),'r'),grid
+figure,plot(ldr_azimuth.time,ldr_azimuth.signals.values,...
+            rsp_boresight_azimuth.time,rsp_boresight_azimuth.signals.values),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('degrees')
 fig_text='Lidar Boresight Azimuth';
 title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
-legend_cell = {'LDR','RSP'};
+legend_cell = {'LDR1','LDR2','RSP1','RSP2'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(ldr_nadir_angle.time,ldr_nadir_angle.signals.values,'b',...
-            rsp_nadir_angle.time,rsp_nadir_angle.signals.values,'r'),grid
+figure,plot(ldr_nadir_angle.time,ldr_nadir_angle.signals.values,...
+            rsp_nadir_angle.time,rsp_nadir_angle.signals.values),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('degrees')
 fig_text='Lidar Boresight Nadir Angle';
 title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
-legend_cell = {'LDR','RSP'};
+legend_cell = {'LDR1','LDR2','RSP1','RSP2'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(ldr_sag.time,reshape(ldr_sag.signals.values,1,450001),'b',...
-            rsp_boresight_sag.time,reshape(rsp_boresight_sag.signals.values,1,45001),'r'),grid
+figure,plot(ldr_sag.time,ldr_sag.signals.values,...
+            rsp_boresight_sag.time,rsp_boresight_sag.signals.values),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Slant Range Intercept Below Subsatellite Horizontal Plane';
 title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
-legend_cell = {'LDR','RSP'};
+legend_cell = {'LDR1','LDR2','RSP1','RSP2'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(rsp_valid.time,reshape(rsp_valid.signals.values,1,45001)),grid
+figure,plot(rsp_valid.time,rsp_valid.signals.values),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec')
@@ -158,14 +165,30 @@ title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 set(gca,'YTick',0:1,'YTickLabel',{'Invalid','Valid'})
 
 ylim([-0.1 1.1])
+legend_cell = {'1','2'};
+legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(rsp_topo_subsat_sag.time,reshape(rsp_topo_subsat_sag.signals.values,1,45001)),grid
+figure,plot(rsp_subsat_azimuth.time,rsp_subsat_azimuth.signals.values),grid
+cf=gcf;figs=[figs cf.Number];
+
+xlabel('Time, sec'),ylabel('degrees')
+fig_text='Subsatellite Azimuth From Topocentric';
+title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
+
+legend_cell = {'1','2'};
+legend(legend_cell,'Location','NorthEast','fontsize',8)
+
+%%
+figure,plot(rsp_subsat_sag.time,rsp_subsat_sag.signals.values),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec'),ylabel('meters')
 fig_text='Subsatellite Distance Below Topocentric Horizontal Plane';
 title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
+
+legend_cell = {'1','2'};
+legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
 figure,plot(rsp_topo_subsat_distance.time,rsp_topo_subsat_distance.signals.values),grid
@@ -175,14 +198,9 @@ xlabel('Time, sec'),ylabel('meters')
 fig_text='Subsatellite Distance on Topocentric Horizontal Plane';
 title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
 
-%%
-figure,plot(rsp_subsat_azimuth.time,reshape(rsp_subsat_azimuth.signals.values,1,45001)),grid
-cf=gcf;figs=[figs cf.Number];
-
-xlabel('Time, sec'),ylabel('degrees')
-fig_text='Subsatellite Azimuth From Topocentric';
-title(fig_text,'fontsize',14),set(gcf,'Name',fig_text)
+legend_cell = {'1','2'};
+legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
 link_fig_axes(figs)
-xlim([3950 4100]);
+xlim([3890 4100]);
