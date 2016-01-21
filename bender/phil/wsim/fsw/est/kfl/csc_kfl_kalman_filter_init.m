@@ -25,7 +25,7 @@ est_time_step = fsw_dt;
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - %
 
 kfl_n_state = 15;
-kfl_n_meas  = 6;
+kfl_n_meas  = 7;
 kfl_n_sense = 3;
 
 kfl_pos_index       = [1 2 3];
