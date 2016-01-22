@@ -39,38 +39,35 @@ legend_cell = {'1','2'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(meas_R_angle.time,meas_R_angle.signals.values),grid
+figure,semilogy(meas_R_angle.time,meas_R_angle.signals.values+eps),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec')
 fig_text='Measurement noise covariance due to nadir angle';
 title(fig_text),set(gcf,'Name',fig_text)
 
-ylim([-100 1e4])
 legend_cell = {'1','2'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(meas_R_dtheta.time,meas_R_dtheta.signals.values),grid
+figure,semilogy(meas_R_dtheta.time,meas_R_dtheta.signals.values+eps),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec')
 fig_text='Measurement noise covariance due to nadir angular rate';
 title(fig_text),set(gcf,'Name',fig_text)
 
-ylim([-100 1e4])
 legend_cell = {'1','2'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
 %%
-figure,plot(meas_R.time,meas_R.signals.values),grid
+figure,semilogy(meas_R.time,meas_R.signals.values+eps),grid
 cf=gcf;figs=[figs cf.Number];
 
 xlabel('Time, sec')
 fig_text='Total Measurement noise covariance';
 title(fig_text),set(gcf,'Name',fig_text)
 
-ylim([-10 1e3])
 legend_cell = {'1','2'};
 legend(legend_cell,'Location','NorthEast','fontsize',8)
 
