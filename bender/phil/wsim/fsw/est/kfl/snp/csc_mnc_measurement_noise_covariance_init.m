@@ -37,8 +37,8 @@ mnc_R_lower_limit_dtheta   = [0.0001 0.0001];
 mnc_noise_switch_alt          = [2400  4120];            % [m]
 
 % expected nadir angle
-mnc_nadir_angle_high          = [70.0  30.0];            % [deg]
-mnc_nadir_angle_low           = [ 0.0  75.0];            % [deg]
+mnc_nadir_angle_high          = [70.0  31.0];            % [deg]
+mnc_nadir_angle_low           = [ 0.0  65.0];            % [deg]
 
 % lidar angle-dependent measurements
 mnc_meas_noise_angle_high     = [180.0  5.0];            % [deg]
