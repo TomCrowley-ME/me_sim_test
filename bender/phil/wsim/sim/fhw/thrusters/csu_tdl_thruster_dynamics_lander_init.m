@@ -31,13 +31,16 @@ tdl_main_mono_thrust = 2135.1463776;
 tdl_main_biprop_thrust = 2224.11081;
  % thruster force is from MX-Micro 450 N Biprop
 tdl_main_biprop_thrust = 450;
+ % thruster force is from MX-Micro 250 lbf Biprop
+tdl_main_biprop_thrust = 1112.06;
 
     tdl_main_biprop_noise_mean = 0; %(Newton)
     tdl_main_biprop_noise_std_percent  = 2/3; %(Newton, 1sigma) % 3% total variability, transformed to 1signma. %made it up, escrane 30 April 2014
     tdl_main_biprop_noise_enable = 0;
 
 % acs thruster data DIY Configuration 10 lbf Coarse
-tdl_coarse_acs_thrust = 44.48;
+tdl_coarse_acs_thrust = 44.48; % MX and MTV
+tdl_coarse_acs_thrust = 26.68; % Mx-micro
 
     tdl_coarse_acs_noise_mean = 0; %(Newton)
     tdl_coarse_acs_noise_std_percent  = 10/3; %(percentage, 1sigma) %prop test data from 22 April 2014, 10% total excursion

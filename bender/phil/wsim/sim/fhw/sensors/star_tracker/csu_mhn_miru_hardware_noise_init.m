@@ -25,6 +25,7 @@ mhn_three_axis_index = [1 3 2];
 mhn_accel_sensitivity= (2.77e-4 * 9.81);  %2.77e-4 G  converted to m/s^2
 mhn_gyro_sensitivity =  (8.75e-3)*pi/180;  %8.75e-3 deg per sec converted to rad/s
 mhn_accel_range = 2*9.81;   % 2 g's in m/s^2
+mhn_accel_range = 3*9.81;   % 3 g's in m/s^2 - 01/22/2016 based on 40 kg lander with 1112 N biprop (250 lbf)
 mhn_gyro_range = 250*pi/180;  %250 deg/s in rad/s
 
 % don't have miru values for these, using old ln200 value

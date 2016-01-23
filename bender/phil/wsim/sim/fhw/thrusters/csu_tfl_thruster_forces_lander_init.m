@@ -26,6 +26,7 @@ tfl_thruster1_orientation =  [0,0.259,0.966];
 % Thruster 2 Geometry
 tfl_thruster2_position    =  [0.6668,0,0.3378];
 tfl_thruster2_position    =  [0.6668,0,-0.22];
+tfl_thruster2_position    =  [0.6668,0,-0.50]; % MX-micro
 tfl_thruster2_orientation =  [0,0,1];
 
 % Thruster 3 Geometry
@@ -40,7 +41,7 @@ tfl_thruster4_orientation =  [-0.259,0,0.966];
 
 % Thruster 5 Geometry
 tfl_thruster5_position    =  [0,0.6668,0.3378];
-tfl_thruster5_position    =  [0,0.6668,-0.22];
+tfl_thruster5_position    =  [0,0.6668,-0.50]; % MX-micro
 tfl_thruster5_orientation =  [0,0,1];
 
 % Thruster 6 Geometry
@@ -55,7 +56,7 @@ tfl_thruster7_orientation =  [0,0.259,0.966];
 
 % Thruster 8 Geometry
 tfl_thruster8_position    =  [-0.6668,0,0.3378];
-tfl_thruster8_position    =  [-0.6668,0,-0.22];
+tfl_thruster8_position    =  [-0.6668,0,-0.50]; % MX-micro
 tfl_thruster8_orientation =  [0,0,1];
 
 % Thruster 9 Geometry
@@ -70,7 +71,7 @@ tfl_thruster10_orientation =  [0.259,0,0.966];
 
 % Thruster 11 Geometry
 tfl_thruster11_position    =  [0,-0.6668,0.3378];
-tfl_thruster11_position    =  [0,-0.6668,-0.22];
+tfl_thruster11_position    =  [0,-0.6668,-0.50]; % MX-micro
 tfl_thruster11_orientation =  [0,0,1];
 
 % Thruster 12 Geometry
