@@ -20,16 +20,16 @@
 
 snp_zero_index = zeros(1,kfl_n_meas);
 
-snp_imu_index = [1 2 3 4 5 6];
-snp_imu_zero_index = [0 0 0 0 0 0];
+snp_imu_index      = [ 1 2 3 4 5 6 7 ];
+snp_imu_zero_index = [ 0 0 0 0 0 0 0 ];
 
-snp_rdr_index = [1];
-snp_rdr_zero_index = [0];
+snp_rdr_index      = [ 1 2 ];
+snp_rdr_zero_index = [ 0 0 ];
 
-snp_stg_index = [4 5 6];
-snp_stg_zero_index = [0 0 0];
+snp_stg_index      = [ 5 6 7 ];
+snp_stg_zero_index = [ 0 0 0 ];
 
-snp_fsp_index = [ 2 3 ];
+snp_fsp_index      = [ 3 4 ];
 snp_fsp_zero_index = [ 0 0 ]; 
 
 snp_combustion_delay = 4;

@@ -33,7 +33,7 @@ rsp_ldr2_pos_x = 0.549 * cos(pi/4);
 rsp_ldr2_pos_y = 0.549 * sin(pi/4);
 rsp_ldr2_pos_z = -0.4451;
 
-% lidar2 orientation : 45 deg from nadir
+% lidar2 orientation : canted from nadir
 rsp_ldr2_lander_rotx = 0;
-rsp_ldr2_lander_roty = pi*3/4;
+rsp_ldr2_lander_roty = pi*(180-75)/180;     % 75deg off-nadir
 rsp_ldr2_lander_rotz = 0;

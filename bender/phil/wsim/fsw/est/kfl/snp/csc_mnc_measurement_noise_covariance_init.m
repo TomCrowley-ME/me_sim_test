@@ -18,30 +18,34 @@
 % 01/19/16                                                                %
 %-------------------------------------------------------------------------%
 
-mnc_noise_switch_alt   = 2000;             % [m]
-mnc_noise_terminal_alt =  100;             % [m]
-
 % altitude-dependent measurements
-mnc_meas_noise_alt      = 8000.0;           % [m]
-mnc_meas_noise_alt_gain = [0.2    1000  1000];
-mnc_R_lower_limit_alt   = [0.0001   10    10];
+mnc_meas_noise_alt      = 8000.0;                        % [m]
+mnc_meas_noise_alt_gain = [0.2    0.2     1000   1000];
+mnc_R_lower_limit_alt   = [0.0001 0.0001  10     10];
 
-% nadir angular rate-dependent measurements
-mnc_dtheta_filter_order    = 1;
-mnc_dtheta_filter_freq     = 0.1;
-mnc_dtheta_filter_coeffs   = fir1(mnc_dtheta_filter_order,mnc_dtheta_filter_freq);
-mnc_meas_noise_dtheta      = 4.0;           % [deg/sec]
-mnc_meas_noise_dtheta_gain = 0.0;
-mnc_meas_noise_dtheta_exp  = 11;
-mnc_R_lower_limit_dtheta   = 0.0001;
+% lidar angular rate-dependent measurements
+mnc_dtheta_filter_order    = [1      1];
+mnc_dtheta_filter_freq     = [0.1    0.1];
+mnc_dtheta_filter_coeffs   = [fir1(mnc_dtheta_filter_order(1),mnc_dtheta_filter_freq(1));,...
+                              fir1(mnc_dtheta_filter_order(2),mnc_dtheta_filter_freq(2))];
+mnc_meas_noise_dtheta      = [4.0    4.0];               % [deg/sec]
+mnc_meas_noise_dtheta_gain = [0.0    0.0];
+mnc_meas_noise_dtheta_exp  = [11     11];
+mnc_R_lower_limit_dtheta   = [0.0001 0.0001];
 
-% nadir angle-dependent measurements
-mnc_meas_noise_angle_high     = 90.0;       % [deg]
-mnc_meas_noise_angle_low      = 10.0;       % [deg]
-mnc_meas_noise_angle_terminal = 10.0;       % [deg]
-mnc_meas_noise_angle_gain     = 1.0;
-mnc_meas_noise_angle_exp      = 10;
-mnc_R_lower_limit_angle       = 0.0001;
+% lidar parameter switching altitude
+mnc_noise_switch_alt          = [2400  4120];            % [m]
+
+% expected nadir angle
+mnc_nadir_angle_high          = [70.0  30.0];            % [deg]
+mnc_nadir_angle_low           = [ 0.0  75.0];            % [deg]
+
+% lidar angle-dependent measurements
+mnc_meas_noise_angle_high     = [180.0  5.0];            % [deg]
+mnc_meas_noise_angle_low      = [10.0   0.0];            % [deg]
+mnc_meas_noise_angle_gain     = [1.0    1.0];
+mnc_meas_noise_angle_exp      = [10     10];
+mnc_R_lower_limit_angle       = [0.0001 0.0001];
 
 % NON altitude-dependent measurements
 mnc_meas_noise_indep = [ 9e-4 9e-4 9e-4];

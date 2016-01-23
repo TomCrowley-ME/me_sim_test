@@ -33,9 +33,9 @@ ldr2_pos_x = 0.549 * cos(pi/4);
 ldr2_pos_y = 0.549 * sin(pi/4);
 ldr2_pos_z = -0.4451;
 
-% lidar2 orientation : 45 deg from nadir
+% lidar2 orientation : canted from nadir
 ldr2_lander_rotx = 0;
-ldr2_lander_roty = pi*3/4;
+ldr2_lander_roty = pi*(180-75)/180;     % 75deg off-nadir
 ldr2_lander_rotz = 0;
 
 ldr_use_meme_flag = 0;
