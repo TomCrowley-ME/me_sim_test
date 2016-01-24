@@ -21,7 +21,7 @@ tlt_altitude_table = 0;
 
 
 % Velocity command bias to drive errors to zero mean
-tlt_terminal_vertical_vel_zero_mean_bias = 0.00; % Bias for 50 hz GN&C descent rate for Approach and Landing
+tlt_terminal_vertical_vel_zero_mean_bias = 0.00; % Set in MOS Proc as well.
 
 % Constant Velocity Command Terminal Guidance Off Vertical Limit Params
 tlt_off_vertical_limit = 5.0; % if spurious big pitch angles come in due velocimetry errors limit so errors do not build up

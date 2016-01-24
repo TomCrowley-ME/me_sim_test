@@ -21,4 +21,4 @@ ltg_pwpf_accel_err_km = 1;
 ltg_pwpf_reference_prop_ratio = 0.7;
 ltg_pwpf_tm_over_dt=1;
 
-ltg_minimum_pulse_width_milliseconds = 80;
+ltg_minimum_pulse_width_milliseconds = 20;
