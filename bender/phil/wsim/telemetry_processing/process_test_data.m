@@ -181,7 +181,7 @@ if pref_plot_attitude_errors
 end
 
 if pref_plot_phase_plane_c
-    plot_phase_planes
+    plot_phase_planes_coarse
 end
 
 if pref_plot_phase_plane_v
