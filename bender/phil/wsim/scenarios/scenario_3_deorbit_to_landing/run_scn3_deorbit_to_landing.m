@@ -94,10 +94,11 @@ nimbus_sim_prep;
     sim_set_kfl_error_state_prep
     %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - %
 
-imh_accel_noise_on      =1;  % 1 - ON, 0 - OFF
-imh_gyro_noise_on       =1;  % 1 - ON, 0 - OFF
-imh_accel_bias_noise_on =1;  % 1 - ON, 0 - OFF
-imh_gyro_bias_noise_on  =1;  % 1 - ON, 0 - OFF
+% miru noise and bias flags
+mhn_accel_noise_on      =1;  % 1 - ON, 0 - OFF
+mhn_gyro_noise_on       =1;  % 1 - ON, 0 - OFF
+mhn_accel_bias_noise_on =1;  % 1 - ON, 0 - OFF
+mhn_gyro_bias_noise_on  =1;  % 1 - ON, 0 - OFF
 
 % set_param('nimbus','SimulationMode','RapidAccelerator')
 
