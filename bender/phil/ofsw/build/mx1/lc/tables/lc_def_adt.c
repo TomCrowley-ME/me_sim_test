@@ -71,12 +71,12 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
         },{
             /****       AP # 8          ****/
             .default_state = ACTIVE,
-            .rts_id = 15,
+            .rts_id = 18,
             .max_fail_before_rts = 1,
             .rpn_equation = { 3, 9, NOT, AND },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 28,
-            .event_text = "Terminal, Vernier ACS",   
+            .event_text = "Terminal, Coarse Pitch/Yaw, Vernier Roll ACS",   
         },{
            /****       AP # 9          ****/
             .default_state = ACTIVE,

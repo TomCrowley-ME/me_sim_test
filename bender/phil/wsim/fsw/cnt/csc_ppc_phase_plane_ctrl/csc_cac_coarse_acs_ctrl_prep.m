@@ -67,9 +67,7 @@ end
 
 cac_total_trq_axial_force_matx = [cac_coarse_thruster_force*cac_coarse_trq_matx';cac_coarse_thruster_force_axial];
 cac_trq_axial_force_pinv_matx = pinv(cac_total_trq_axial_force_matx);
-cac_saturation_axial_force = 8*cac_coarse_thruster_force*cosd(15)+4*cac_coarse_thruster_force;
-
-
+cac_saturation_axial_force = 0*cac_coarse_thruster_force*cosd(15)+4*cac_coarse_thruster_force;
 
 %%%%%%%%%%%%%%% END SCRIPT %%%%%%%%%%%%%%%
 

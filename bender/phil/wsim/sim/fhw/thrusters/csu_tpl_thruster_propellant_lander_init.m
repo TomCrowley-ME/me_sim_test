@@ -14,8 +14,8 @@
 
 tpl_main_biprop_isp   = 310;
 tpl_main_monoprop_isp = 160;
-tpl_coarse_acs_isp    = 160;
 tpl_coarse_acs_isp    = 280;
+tpl_coarse_acs_isp    = 160;
 tpl_vernier_acs_isp   = 100;
 % tpl_acs_isp = 266;
 
