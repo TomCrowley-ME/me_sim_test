@@ -34,17 +34,17 @@ mnc_meas_noise_dtheta_exp  = [11     11];
 mnc_R_lower_limit_dtheta   = [0.0001 0.0001];
 
 % lidar parameter switching altitude
-mnc_noise_switch_alt          = [2400  4120];            % [m]
+mnc_noise_switch_alt          = [9700  10250];           % [m]
 
 % expected nadir angle
-mnc_nadir_angle_high          = [70.0  31.0];            % [deg]
+mnc_nadir_angle_high          = [70.0  32.0];            % [deg]
 mnc_nadir_angle_low           = [ 0.0  65.0];            % [deg]
 
 % lidar angle-dependent measurements
-mnc_meas_noise_angle_high     = [180.0  5.0];            % [deg]
-mnc_meas_noise_angle_low      = [10.0   0.0];            % [deg]
-mnc_meas_noise_angle_gain     = [1.0    1.0];
-mnc_meas_noise_angle_exp      = [10     10];
+mnc_meas_noise_angle_high     = [180.0 180.0];           % [deg]
+mnc_meas_noise_angle_low      = [10.0    0.0];           % [deg]
+mnc_meas_noise_angle_gain     = [1.0     1.0];
+mnc_meas_noise_angle_exp      = [10      10];
 mnc_R_lower_limit_angle       = [0.0001 0.0001];
 
 % NON altitude-dependent measurements

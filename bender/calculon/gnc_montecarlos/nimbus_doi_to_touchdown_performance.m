@@ -413,6 +413,7 @@ for i2mc = 1 : length(mc_i)
           tpl_rp1_to_htp_ratio   = 1/9;
         elseif strcmp(mission_type,'micro')
           tdl_main_biprop_thrust = 450.0;
+          tdl_main_biprop_thrust = 1112.06;
           tpl_main_biprop_isp    = 310.0;
           tpl_rp1_to_htp_ratio   = 1/7.5;
         end

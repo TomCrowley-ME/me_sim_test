@@ -10,5 +10,6 @@ classdef enum_burn_type < uint8
         gravity_turn         (2)
         vnc                  (3)
         peg                  (4)
+        hybrid               (5)
     end
 end
