@@ -20,6 +20,10 @@ cac_acs_time_gain_x = 20.0;
 cac_acs_time_gain_y = 20.0;
 cac_acs_time_gain_z = 20.0;
 
+cac_acs_time_no_thrust_gain_x = 20;
+cac_acs_time_no_thrust_gain_y = 20;
+cac_acs_time_no_thrust_gain_z = 20;
+
 cac_coarse_desired_thrust_gain = 1.0;
 
 cac_max_thrust_to_weight_ratio = 1.05;
