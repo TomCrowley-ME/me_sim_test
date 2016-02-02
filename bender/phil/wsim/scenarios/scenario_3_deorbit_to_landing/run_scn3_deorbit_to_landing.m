@@ -35,7 +35,7 @@ set_central_body;
 
 %-------------------------------------------------------------------------%
 % set the stop time of the simulation
-sim_stop_time = 200;
+sim_stop_time = 500;
 sim_stop_time = 4500;
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - %

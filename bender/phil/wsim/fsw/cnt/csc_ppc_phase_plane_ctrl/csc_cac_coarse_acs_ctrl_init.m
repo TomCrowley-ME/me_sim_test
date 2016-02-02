@@ -33,6 +33,9 @@ cac_roty_deadband = 0.5*pi/180;
 cac_rotz_deadband_minus = 0.5*pi/180;
 cac_rotz_deadband = 0.5*pi/180;
 
+cac_phase_plane_att_limit  = 5*pi/180;
+cac_phase_plane_rate_limit = 3*pi/180;
+
 cac_cg_offset_gain_compensation_x = 1*[51 26 23 18 17 14 11 1000 1000 780 0 780 1000 1000 11 14 17 18 23 26 51];
 cac_cg_offset_gain_compensation_y = 1*[51 26 23 18 17 14 11 1000 1000 780 0 780 1000 1000 11 14 17 18 23 26 51];
 

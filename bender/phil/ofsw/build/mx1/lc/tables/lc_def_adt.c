@@ -53,18 +53,18 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
         },{
             /****       AP # 6          ****/
             .default_state = ACTIVE,
-            .rts_id = 16,
+            .rts_id = 14,
             .max_fail_before_rts = 1,
             .rpn_equation = { 9 },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 26,
-            .event_text = "Main Engine Fire! -> Gimbal Steer Biprop, Vernier Roll",
+            .event_text = "Main Engine Fire! -> Coarse Pitch/Yaw, Vernier Roll",
         },{
             /****       AP # 7          ****/
             .default_state = PASSIVE,
             .rts_id = 15,
             .max_fail_before_rts = 1,
-            .rpn_equation = { 10, 11, NOT, AND, 3, NOT, AND, 6, NOT, AND },
+            .rpn_equation = { 10, 3, NOT, AND, 6, NOT, AND },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 27,
             .event_text = "Coast in Vernier ACS",        
