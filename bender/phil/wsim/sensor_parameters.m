@@ -35,7 +35,7 @@
 
     % minimum/maximum slant-range reutrn (in meters)
     ldr_2k_range_min = 1;
-    ldr_2k_range_max = 5000.0;
+    ldr_2k_range_max = 15000.0;
     
 %-------------------------------------------------------------------------%
 %                 COMPUTER VISION PARAMS                                  %

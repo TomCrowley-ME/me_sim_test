@@ -35,7 +35,6 @@ set_central_body;
 
 %-------------------------------------------------------------------------%
 % set the stop time of the simulation
-sim_stop_time = 500;
 sim_stop_time = 4500;
 
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - %
@@ -67,10 +66,71 @@ elseif strcmp(mission_type,'micro')
   mpl_mass_dry          = 38.0;
   mpl_mass_fillfrac_100 = 110.0;
   mpl_mass_fillfrac_0   = mpl_mass_dry;
+  mpl_cgz_location_fillfrac_0   = 0.20;
+  mpl_cgz_location_fillfrac_100 = 0.09;
+  mpl_htp_mass_initial  = 39.7059;
+  mpl_rp1_mass_initial  = 5.2941;  
   emp_mass_fillfrac_100 = mpl_mass_fillfrac_100;
   emp_mass_fillfrac_0   = mpl_mass_fillfrac_0;
-  mpl_htp_mass_initial  = 39.7059;
-  mpl_rp1_mass_initial  = 5.2941;
+elseif strcmp(mission_type,'3rd_stg_plus_micro')
+  mpl_mass_dry          = 134.38;
+  mpl_mass_fillfrac_0   = mpl_mass_dry;
+  mpl_mass_fillfrac_100 = 222.38;
+  mpl_mass_wet_dry = [mpl_mass_fillfrac_0, mpl_mass_fillfrac_100];
+  mpl_cgz_location_fillfrac_0   = 0.87;
+  mpl_cgz_location_fillfrac_100 = 0.54;
+  mpl_cg_wet_dry = [mpl_cgx_location_fillfrac_0, mpl_cgx_location_fillfrac_100; ...
+                    mpl_cgy_location_fillfrac_0, mpl_cgy_location_fillfrac_100; ...
+                    mpl_cgz_location_fillfrac_0, mpl_cgz_location_fillfrac_100];
+
+  mpl_Ixx_fillfrac_0 = 122.29;
+  mpl_Iyy_fillfrac_0 = 122.33;
+  mpl_Izz_fillfrac_0 = 5.70;
+  mpl_Ixy_fillfrac_0 = 0.01;
+  mpl_Iyz_fillfrac_0 = 0.07;
+  mpl_Ixz_fillfrac_0 = 0.49;
+  mpl_Ixx_fillfrac_0 = 88; % Bud with current prop numbers factored in model.  Needs to be modified for our tank config instead of MTV
+  mpl_Iyy_fillfrac_0 = 88;
+  mpl_Izz_fillfrac_0 = 1.0;
+  mpl_Ixy_fillfrac_0 = 0.01;
+  mpl_Iyz_fillfrac_0 = 0.07;
+  mpl_Ixz_fillfrac_0 = 0.49;
+  mpl_Ixx_fillfrac_100 = 125.79;  %From Bud 02/03/2016
+  mpl_Iyy_fillfrac_100 = 125.82;
+  mpl_Izz_fillfrac_100 = 8.71;
+  mpl_Ixy_fillfrac_100 = 0.01;
+  mpl_Iyz_fillfrac_100 = 0.49;
+  mpl_Ixz_fillfrac_100 = 0.07;
+  mpl_htp_mass_initial  = 76.27;
+  mpl_rp1_mass_initial  = 11.73;
+  mpl_inertia_fillfrac_100 = [mpl_Ixx_fillfrac_100, mpl_Iyy_fillfrac_100, mpl_Izz_fillfrac_100, mpl_Ixy_fillfrac_100, mpl_Iyz_fillfrac_100, mpl_Ixz_fillfrac_100]';
+  mpl_inertia_fillfrac_0   = [mpl_Ixx_fillfrac_0,   mpl_Iyy_fillfrac_0,   mpl_Izz_fillfrac_0,   mpl_Ixy_fillfrac_0,   mpl_Iyz_fillfrac_0,   mpl_Ixz_fillfrac_0]';
+  mpl_mass_dry    = mpl_mass_fillfrac_0;
+  mpl_cg_dry      = [mpl_cgx_location_fillfrac_0 mpl_cgy_location_fillfrac_0 mpl_cgz_location_fillfrac_0];
+  mpl_inertia_dry = buildInertiaMatrix(mpl_inertia_fillfrac_0([1 2 3 4 6 5]));
+  mpl_inertia_wet_dry = [mpl_inertia_fillfrac_0, mpl_inertia_fillfrac_100];
+  emp_mass_fillfrac_0   = mpl_mass_fillfrac_0;
+  emp_mass_fillfrac_100 = mpl_mass_fillfrac_100;
+  emp_mass_wet_dry = [emp_mass_fillfrac_0, emp_mass_fillfrac_100];
+  emp_cgz_location_fillfrac_0   = mpl_cgz_location_fillfrac_0;
+  emp_cgz_location_fillfrac_100 = mpl_cgz_location_fillfrac_100;
+  emp_cg_wet_dry_z = [emp_cgz_location_fillfrac_0, emp_cgz_location_fillfrac_100];
+  emp_Ixx_fillfrac_0 = mpl_Ixx_fillfrac_0;
+  emp_Iyy_fillfrac_0 = mpl_Iyy_fillfrac_0;
+  emp_Izz_fillfrac_0 = mpl_Izz_fillfrac_0;
+  emp_Ixy_fillfrac_0 = mpl_Ixy_fillfrac_0;
+  emp_Iyz_fillfrac_0 = mpl_Iyz_fillfrac_0;
+  emp_Ixz_fillfrac_0 = mpl_Ixz_fillfrac_0;
+  emp_Ixx_fillfrac_100 = mpl_Ixx_fillfrac_100;
+  emp_Iyy_fillfrac_100 = mpl_Iyy_fillfrac_100;
+  emp_Izz_fillfrac_100 = mpl_Izz_fillfrac_100;
+  emp_Ixy_fillfrac_100 = mpl_Ixy_fillfrac_100;
+  emp_Iyz_fillfrac_100 = mpl_Iyz_fillfrac_100;
+  emp_Ixz_fillfrac_100 = mpl_Ixz_fillfrac_100;
+  emp_inertia_fillfrac_100 = [emp_Ixx_fillfrac_100, emp_Iyy_fillfrac_100, emp_Izz_fillfrac_100, -emp_Ixy_fillfrac_100, -emp_Iyz_fillfrac_100, -emp_Ixz_fillfrac_100]';
+  emp_inertia_fillfrac_0   = [emp_Ixx_fillfrac_0,   emp_Iyy_fillfrac_0,   emp_Izz_fillfrac_0,   -emp_Ixy_fillfrac_0,   -emp_Iyz_fillfrac_0,   -emp_Ixz_fillfrac_0]';
+  emp_inertia_wet_dry = [emp_inertia_fillfrac_0, emp_inertia_fillfrac_100];
+  emp_max_fuel_used = emp_mass_fillfrac_100 - emp_mass_fillfrac_0;
 end
 % set main engine values based on mission type
 if strcmp(mission_type,'1')
@@ -78,6 +138,11 @@ if strcmp(mission_type,'1')
   tpl_main_biprop_isp    = 310.0;
   tpl_rp1_to_htp_ratio   = 1/9;
 elseif strcmp(mission_type,'micro')
+  tdl_main_biprop_thrust = 450.0;
+  tdl_main_biprop_thrust = 1112.06;
+  tpl_main_biprop_isp    = 310.0;
+  tpl_rp1_to_htp_ratio   = 1/7.5;
+elseif strcmp(mission_type,'3rd_stg_plus_micro')
   tdl_main_biprop_thrust = 450.0;
   tdl_main_biprop_thrust = 1112.06;
   tpl_main_biprop_isp    = 310.0;

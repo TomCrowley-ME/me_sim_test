@@ -167,7 +167,7 @@ else
     pref_plot_test_data       = 1;
     pref_plot_attitude_errors = 0;
     pref_plot_phase_plane_c   = 0;
-    pref_plot_phase_plane_v   = 1;
+    pref_plot_phase_plane_v   = 0;
     pref_plot_prop_data       = 0;
     pref_export_to_ppt        = 0;
 end

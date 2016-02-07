@@ -2,21 +2,24 @@ proc scn3_mos
 
 ; ;  ESTIMATOR PARAMETER TABLE UPDATES ; ;
 Parameters_csc_est_state_est.emp_initial_fuel_used = 26. ; assumes 46 kg htp+rp1+gn2 left (must add to 72 kg)
-Parameters_csc_est_state_est.emp_mass_fillfrac_100 = 110.
-Parameters_csc_est_state_est.emp_mass_fillfrac_0   = 38.0
+Parameters_csc_est_state_est.emp_initial_fuel_used = 0. ; 3rd stage plus lander wet
+Parameters_csc_est_state_est.emp_mass_fillfrac_100 = 110.; lander stage
+Parameters_csc_est_state_est.emp_mass_fillfrac_0   = 38.0; lander stage
+;Parameters_csc_est_state_est.emp_mass_fillfrac_100 = 222.38; 3rd stage/lander
+;Parameters_csc_est_state_est.emp_mass_fillfrac_0   = 134.38; 3rd stage/lander
 
 Parameters_csc_est_state_est.kfl_topocentric_latitude =  -60
 Parameters_csc_est_state_est.kfl_topocentric_longitude =  60
 Parameters_csc_est_state_est.kfl_alt_wrt_meanrad = 0
 
 ; ;  GUIDANCE PARAMETER TABLE UPDATES ; ;
-Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = 1.0
+Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = 0.75
 Parameters_csc_gdn_guidance.lic_coast_complete_altitude = 5000
 Parameters_csc_gdn_guidance.lpc_pre_coast_time = 1;
 Parameters_csc_gdn_guidance.tlt_off_vertical_limit = 10
 Parameters_csc_gdn_guidance.tlt_off_vertical_limit_altitude_enable = 20
 Parameters_csc_gdn_guidance.tlt_off_vertical_limit_altitude_enable = 40
-Parameters_csc_gdn_guidance.lac_monoprop_coarse_transition_alt = 100;
+Parameters_csc_gdn_guidance.lac_monoprop_coarse_transition_alt = 1e6;
 Parameters_csc_cnt_attitude_control.cac_acs_time_gain_x = 0.1; works for 5 ms minimum
 Parameters_csc_cnt_attitude_control.cac_acs_time_gain_y = 0.1; works for 5 ms minimum
 Parameters_csc_cnt_attitude_control.cac_acs_time_gain_x = 4; works for 5 ms
@@ -25,8 +28,8 @@ Parameters_csc_cnt_attitude_control.cac_acs_time_gain_x = 5; works for 30 and 5 
 Parameters_csc_cnt_attitude_control.cac_acs_time_gain_y = 5; works for 30 and 5 ms minimum
 Parameters_csc_cnt_attitude_control.cac_acs_time_gain_x = 2; works for 5 ms
 Parameters_csc_cnt_attitude_control.cac_acs_time_gain_y = 2; 
-Parameters_csc_cnt_attitude_control.cac_acs_time_gain_x = 5; works for 30 and 5 ms minimum
-Parameters_csc_cnt_attitude_control.cac_acs_time_gain_y = 5; works for 30 and 5 ms minimum
+Parameters_csc_cnt_attitude_control.cac_acs_time_gain_x = 6; 
+Parameters_csc_cnt_attitude_control.cac_acs_time_gain_y = 6; 
 Parameters_csc_cnt_attitude_control.cac_acs_time_no_thrust_gain_x = 15; 
 Parameters_csc_cnt_attitude_control.cac_acs_time_no_thrust_gain_y = 15; 
 Parameters_csc_cnt_attitude_control.cac_alpha_gain_coarse_only = 20; works for 5 ms minimum

@@ -22,10 +22,12 @@
 % 100 percent fill fraction
 mpl_mass_fillfrac_100 = 260.0;   % MTV-1
 mpl_mass_fillfrac_100 = 572.9;   % Updated 01/16/2014 per Matt
+mpl_mass_fillfrac_100 = 222.38;  % MXmicro lander plus 3rd stage
 
-% 100 percent fill fraction
+% 0 percent fill fraction
 % mpl_mass_fillfrac_0 = 177.3;   % Updated 01/16/2014 per Matt
 mpl_mass_fillfrac_0 = 175.8;   % Tom's number 12/06/2013
+mpl_mass_fillfrac_0 = 189.04;  % Bud's number 1/2016
 
 % % Source: Thruster Sheet (metric) new coordinates 07232013
 % mpl_cgx_location_fillfrac_0 = -0.015;

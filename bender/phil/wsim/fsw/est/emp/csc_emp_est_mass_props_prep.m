@@ -42,8 +42,8 @@ emp_biprop_gISP_inverse = 1 ./ (psp_main_biprop_isp*emp_earth_grav);
 
 
 % Lander Inertia Tensor
-emp_inertia_fillfrac_100 = [emp_Ixx_fillfrac_100, emp_Iyy_fillfrac_100, emp_Izz_fillfrac_100, -emp_Ixy_fillfrac_100, -emp_Iyz_fillfrac_100, -emp_Ixz_fillfrac_100]'/10;
-emp_inertia_fillfrac_0   = [emp_Ixx_fillfrac_0,   emp_Iyy_fillfrac_0,   emp_Izz_fillfrac_0,   -emp_Ixy_fillfrac_0,   -emp_Iyz_fillfrac_0,   -emp_Ixz_fillfrac_0]'/10;
+emp_inertia_fillfrac_100 = [emp_Ixx_fillfrac_100, emp_Iyy_fillfrac_100, emp_Izz_fillfrac_100, -emp_Ixy_fillfrac_100, -emp_Iyz_fillfrac_100, -emp_Ixz_fillfrac_100]';
+emp_inertia_fillfrac_0   = [emp_Ixx_fillfrac_0,   emp_Iyy_fillfrac_0,   emp_Izz_fillfrac_0,   -emp_Ixy_fillfrac_0,   -emp_Iyz_fillfrac_0,   -emp_Ixz_fillfrac_0]';
 
 emp_inertia_wet_dry = [emp_inertia_fillfrac_0, emp_inertia_fillfrac_100];
 
