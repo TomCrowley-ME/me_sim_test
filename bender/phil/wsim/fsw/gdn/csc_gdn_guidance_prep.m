@@ -14,3 +14,4 @@
 
 csc_gib_gdn_inertial_burn_prep;
 csc_gal_gdn_approach_landing_prep;
+csu_lat_landing_approach_targeting_prep;
