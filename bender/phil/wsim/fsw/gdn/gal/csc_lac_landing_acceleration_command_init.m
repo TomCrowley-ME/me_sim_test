@@ -16,6 +16,7 @@
 
 
 % Transition from Main Engine Terminal Guidance to Coarse Thruster Monoprop Terminal
+lac_monoprop_coarse_transition_alt = 1000; %meters
 lac_monoprop_coarse_transition_alt = 1e6; %meters
 
 % initial value for acceleration available, but value needs scrubbing
