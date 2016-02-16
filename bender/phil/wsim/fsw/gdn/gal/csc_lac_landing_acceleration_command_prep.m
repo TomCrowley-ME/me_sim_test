@@ -15,5 +15,6 @@
 
 lac_main_mono_thrust_available = psp_main_mono_thrust;
 lac_main_biprop_thrust_available = psp_main_biprop_thrust;
-lac_coarse_acs_thrust_available = psp_coarse_acs_thrust*4 + psp_coarse_acs_thrust*8*cosd(15);
+lac_coarse_acs_thrust_available = psp_coarse_acs_thrust*4 + psp_coarse_acs_thrust*8*cosd(15); % 12 coarse thrusters MX-1
+lac_coarse_acs_thrust_available = psp_coarse_acs_thrust*4; % 4 coarse thrusters MX-micro
 
