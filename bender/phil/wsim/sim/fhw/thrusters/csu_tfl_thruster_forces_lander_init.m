@@ -91,7 +91,6 @@ tfl_thruster13_orientation =  [0,0,-1];
 
 % Thruster 14 Geometry
 tfl_thruster14_position    =  [0.6731,0,0.3378];
-tfl_thruster14_orientation =  [0,1,0];
 tfl_thruster14_orientation =  [0,-1,0];
 
 % Thruster 15 Geometry
@@ -116,7 +115,6 @@ tfl_thruster19_orientation =  [0,0,-1];
 
 % Thruster 20 Geometry
 tfl_thruster20_position    =  [-0.6731,0,0.3378];
-tfl_thruster20_orientation =  [0,-1,0];
 tfl_thruster20_orientation =  [0,1,0];
 
 % Thruster 21 Geometry
