@@ -16,11 +16,12 @@ start_idx = 36700;
 start_idx = 39500;
 start_idx = 3300;
 start_idx = 1;
-start_idx = 38620;
+start_idx = 40800;
+start_idx = 40900;
 end_idx = 185;
 end_idx = size(telem.cnt.quat_err.Time);
-end_idx = 40690;
-end_idx = 38760;
+end_idx = 40900;
+end_idx = 40950;
 
 if isempty(truth) == 0 && exist('cac_coarse_thruster_trq_x','var') > 0
     
@@ -121,7 +122,7 @@ if isempty(truth) == 0
     plot(c3_y(ceil(size(edot,2)/2):end),edot(ceil(size(edot,2)/2):end),'black','linewidth',2)
     plot(c4_y(1:ceil(size(edot,2)/2)),edot(1:ceil(size(edot,2)/2)),'black','linewidth',2)
 
-    plot(-error.pointing.components_error_deg.Data(start_idx:end_idx-1,2),-truth.sim.rrk_rate_body_eci_body.Data(start_idx*10:10:end_idx*10-9,2)*180/pi,'g','linewidth',2)
+    plot(-error.pointing.components_error_deg.Data(start_idx:end_idx-1,2),-truth.sim.rrk_rate_body_eci_body.Data(start_idx*10:10:end_idx*10-9,2)*180/pi,'r','linewidth',2)
     %saveas(gcf,'TruePhaseY.png');
 
     figure(103);clf;grid on;box on;hold on;title('True Phase Plane - Z Axis');xlabel('Angle - Z Error (deg)');ylabel('Rate - Z Error (deg/sec)')
@@ -131,7 +132,7 @@ if isempty(truth) == 0
     plot(c3_z(ceil(size(edot,2)/2):end),edot(ceil(size(edot,2)/2):end),'black','linewidth',2)
     plot(c4_z(1:ceil(size(edot,2)/2)),edot(1:ceil(size(edot,2)/2)),'black','linewidth',2)
 
-    plot(-error.pointing.components_error_deg.Data(start_idx:end_idx-1,3),-truth.sim.rrk_rate_body_eci_body.Data(start_idx*10:10:end_idx*10-9,3)*180/pi,'r','linewidth',2)
+    plot(-error.pointing.components_error_deg.Data(start_idx:end_idx-1,3),-truth.sim.rrk_rate_body_eci_body.Data(start_idx*10:10:end_idx*10-9,3)*180/pi,'y','linewidth',2)
     %saveas(gcf,'TruePhaseZ.png');
     
     figure(104);clf;grid on;box on;hold on;title('Flight Phase Plane - X Axis');xlabel('Angle - X Error (deg)');ylabel('Rate - X Error (deg/sec)')
@@ -151,7 +152,7 @@ if isempty(truth) == 0
     plot(c3_y(ceil(size(edot,2)/2):end),edot(ceil(size(edot,2)/2):end),'black','linewidth',2)
     plot(c4_y(1:ceil(size(edot,2)/2)),edot(1:ceil(size(edot,2)/2)),'black','linewidth',2)
 
-    plot(-error.pointing.flight_components_error_deg.Data(start_idx:end_idx,2),-telem.est.rate.Data(start_idx:end_idx,2)*180/pi,'g','linewidth',2)
+    plot(-error.pointing.flight_components_error_deg.Data(start_idx:end_idx,2),-telem.est.rate.Data(start_idx:end_idx,2)*180/pi,'r','linewidth',2)
     %saveas(gcf,'FlightPhaseY.png');
 
     figure(106);clf;grid on;box on;hold on;title('Flight Phase Plane - Z Axis');xlabel('Angle - Z Error (deg)');ylabel('Rate - Z Error (deg/sec)')
@@ -161,7 +162,7 @@ if isempty(truth) == 0
     plot(c3_z(ceil(size(edot,2)/2):end),edot(ceil(size(edot,2)/2):end),'black','linewidth',2)
     plot(c4_z(1:ceil(size(edot,2)/2)),edot(1:ceil(size(edot,2)/2)),'black','linewidth',2)
 
-    plot(-error.pointing.flight_components_error_deg.Data(start_idx:end_idx,3),-telem.est.rate.Data(start_idx:end_idx,3)*180/pi,'r','linewidth',2)
+    plot(-error.pointing.flight_components_error_deg.Data(start_idx:end_idx,3),-telem.est.rate.Data(start_idx:end_idx,3)*180/pi,'y','linewidth',2)
     %saveas(gcf,'FlightPhaseZ.png');
 
 else
@@ -183,7 +184,7 @@ else
     plot(c3_y(ceil(size(edot,2)/2):end),edot(ceil(size(edot,2)/2):end),'black','linewidth',2)
     plot(c4_y(1:ceil(size(edot,2)/2)),edot(1:ceil(size(edot,2)/2)),'black','linewidth',2)
 
-    plot(-telem.est.euler_xyz.Data(start_idx:end_idx,2),-telem.est.rate.Data(start_idx:end_idx,2)*180/pi,'g','linewidth',2)
+    plot(-telem.est.euler_xyz.Data(start_idx:end_idx,2),-telem.est.rate.Data(start_idx:end_idx,2)*180/pi,'r','linewidth',2)
     %saveas(gcf,'FlightPhaseY.png');
 
     figure(106);clf;grid on;box on;hold on;title('Flight Phase Plane - Z Axis');xlabel('Angle - Z Error (deg)');ylabel('Rate - Z Error (deg/sec)')
@@ -193,7 +194,7 @@ else
     plot(c3_z(ceil(size(edot,2)/2):end),edot(ceil(size(edot,2)/2):end),'black','linewidth',2)
     plot(c4_z(1:ceil(size(edot,2)/2)),edot(1:ceil(size(edot,2)/2)),'black','linewidth',2)
 
-    plot(-telem.est.euler_xyz.Data(start_idx:end_idx,3),-telem.est.rate.Data(start_idx:end_idx,3)*180/pi,'r','linewidth',2)
+    plot(-telem.est.euler_xyz.Data(start_idx:end_idx,3),-telem.est.rate.Data(start_idx:end_idx,3)*180/pi,'y','linewidth',2)
     %saveas(gcf,'FlightPhaseZ.png');
 
 end
