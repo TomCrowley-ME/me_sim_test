@@ -27,6 +27,15 @@ tlt_terminal_vertical_vel_zero_mean_bias = 0.00; % Set in MOS Proc as well.
 tlt_off_vertical_limit = 5.0; % if spurious big pitch angles come in due velocimetry errors limit so errors do not build up
 tlt_off_vertical_limit_altitude_enable = 300; % Lower altitude to allow pitchover to initially reduce lateral velocities upon entering
 
+% Vertical component guidance based on full thrust with lateral control
+% from table
+tlt_quadratic_terminal = 1;
+
+% Altitude to switch back to table guidance
+tlt_hdot_control_alt = 30;  
+
+% Efficiency reduction gain due to ACS off pulsing
+tlt_accel_avail_gain = 0.4;
 
 %   Alt(m) PosTopoX PosTopoY PosTopoZ VelTopoX VelTopoY VelTopoZ  Kpx  Kpy  Kpz  Kix    Kiy    Kiz   Kdx    Kdy    Kdz
 tlt_descent_translate_table_descending = ...
