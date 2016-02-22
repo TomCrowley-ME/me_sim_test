@@ -64,7 +64,9 @@ if strcmp(mission_type,'1')
   mpl_rp1_mass_initial  = 19.0;
 elseif strcmp(mission_type,'micro')
   mpl_mass_dry          = 38.0;
+  mpl_mass_dry          = 29.0; % 10-02-15 Bud Fraze
   mpl_mass_fillfrac_100 = 110.0;
+  mpl_mass_fillfrac_100 = 117.04; % 10-02-15 Bud Fraze
   mpl_mass_fillfrac_0   = mpl_mass_dry;
   mpl_cgz_location_fillfrac_0   = 0.20;
   mpl_cgz_location_fillfrac_100 = 0.09;
