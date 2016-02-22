@@ -70,8 +70,8 @@ elseif strcmp(mission_type,'micro')
   mpl_mass_fillfrac_0   = mpl_mass_dry;
   mpl_cgz_location_fillfrac_0   = 0.20;
   mpl_cgz_location_fillfrac_100 = 0.09;
-  mpl_htp_mass_initial  = 39.7059;
-  mpl_rp1_mass_initial  = 5.2941;  
+  mpl_htp_mass_initial  = 39.7059+14.2133;
+  mpl_rp1_mass_initial  = 5.2941+2.1867;  
   emp_mass_fillfrac_100 = mpl_mass_fillfrac_100;
   emp_mass_fillfrac_0   = mpl_mass_fillfrac_0;
 elseif strcmp(mission_type,'3rd_stg_plus_micro')
