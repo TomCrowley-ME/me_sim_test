@@ -72,8 +72,8 @@ for i=1:length(blks)
     %Only generate tick information if they are tagged OFSW
     if isKey(optionsMap,'OFSW') || isKey(optionsMap, 'GSSE')
         hz = 0;
-        if (sample_time(1) > 0)
-            hz = (1 / sample_time(1));
+        if (sample_time{1,1} > 0)
+            hz = (1 / sample_time{1,1});
         end
 
         name = get_param(blks{i}, 'Name');
