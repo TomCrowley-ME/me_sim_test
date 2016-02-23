@@ -35,7 +35,7 @@ tlt_quadratic_terminal = 1;
 tlt_hdot_control_alt = 30;  
 
 % Efficiency reduction gain due to ACS off pulsing
-tlt_accel_avail_gain = 0.30;
+tlt_accel_avail_gain = 0.40;
 
 %   Alt(m) PosTopoX PosTopoY PosTopoZ VelTopoX VelTopoY VelTopoZ  Kpx  Kpy  Kpz  Kix    Kiy    Kiz   Kdx    Kdy    Kdz
 tlt_descent_translate_table_descending = ...
