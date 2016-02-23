@@ -1,0 +1,1382 @@
+>> DispToText version 1.0
+>> Number of objects = 104
+
+#************************************************************
+>> Object ITOS.javadisplay.lib.PropertyListCore
+ItosClassDefaults java.lang.String BeanBox
+foreground java.awt.Color java.awt.Color[r=255,g=255,b=255]
+background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+gridVisible java.lang.Boolean false
+gridSnapping java.lang.Boolean false
+gridX java.lang.Integer 10
+gridY java.lang.Integer 10
+gridColor java.awt.Color java.awt.Color[r=128,g=128,b=128]
+windowlocationX java.lang.Integer 0
+windowlocationY java.lang.Integer 70
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Line visible
+WrapperTop int 532
+WrapperLeft int 384
+BeanWidth int 296
+BeanHeight int 10
+BackgroundImageA boolean false
+BackgroundImageB boolean true
+Anchor1 int 0
+Anchor2 int 2
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Opaque boolean false
+StrokeColor java.awt.Color java.awt.Color[r=255,g=0,b=0]
+StrokeDrawn boolean true
+StrokeWidth float 3.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 441
+WrapperLeft int 421
+BeanWidth int 168
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Label java.lang.String EST vehicle altitude (m)
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 370
+WrapperLeft int 830
+BeanWidth int 24
+BeanHeight int 16
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=bold,size=13]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String EGC
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 432
+WrapperLeft int 856
+BeanWidth int 7
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String %
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 387
+WrapperLeft int 817
+BeanWidth int 49
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String Chamber
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 400
+WrapperLeft int 842
+BeanWidth int 21
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String PSI
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 237
+WrapperLeft int 1183
+BeanWidth int 21
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String PSI
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 127
+WrapperLeft int 1155
+BeanWidth int 24
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ConvertedFormat java.lang.String %3u
+ConvertedFormatStatus java.lang.String OK
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+IsConvertedField boolean true
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String ADIO_MSG.PRESSURE_MEAS_VEC[3]
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 74
+WrapperLeft int 1150
+BeanWidth int 24
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ConvertedFormat java.lang.String %3u
+ConvertedFormatStatus java.lang.String OK
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+IsConvertedField boolean true
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String ADIO_MSG.PRESSURE_MEAS_VEC[4]
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 452
+WrapperLeft int 60
+BeanWidth int 238
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Label java.lang.String EST vehicle angular rate (deg/sec)
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 193
+WrapperLeft int 401
+BeanWidth int 210
+BeanHeight int 17
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Label java.lang.String Estimated Lateral Position (m)
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 8
+WrapperLeft int 465
+BeanWidth int 429
+BeanHeight int 22
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=18]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String Guidance Navigation and Control Console
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 82
+WrapperLeft int 131
+BeanWidth int 64
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=102,b=102]
+ConvertedFormat java.lang.String 
+ConvertedFormatStatus java.lang.String No format
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=128,g=128,b=128]
+IsConvertedField boolean true
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String CMP_MTV_MSG.MODE
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 82
+WrapperLeft int 10
+BeanWidth int 105
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String spacecraft mode
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 82
+WrapperLeft int 203
+BeanWidth int 128
+BeanHeight int 16
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ConvertedFormat java.lang.String %16c
+ConvertedFormatStatus java.lang.String OK
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=128,g=128,b=128]
+IsConvertedField boolean true
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String CMP_MTV_MSG.SUBMODE
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 102
+WrapperLeft int 10
+BeanWidth int 245
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String ACS control disabled duration (sec)
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 170
+WrapperLeft int 240
+BeanWidth int 0
+BeanHeight int 0
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ConvertedFormat java.lang.String 
+ConvertedFormatStatus java.lang.String No format
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=128,g=128,b=128]
+IsConvertedField boolean false
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String CMP_MTV_MSG.CNT_ACTIVE_CONTROLLER_DISABLE
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 102
+WrapperLeft int 330
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String CMP_MTV_MSG.CNT_ACTIVE_CONTROLLER_DISABLE .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Expression visible
+WrapperTop int 102
+WrapperLeft int 260
+BeanWidth int 65
+BeanHeight int 14
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ExprName java.lang.String 
+Expression java.lang.String CMP_MTV_MSG.CNT_ACTIVE_CONTROLLER_DISABLE/1000.0
+ExpressionStatus java.lang.String OK
+Format java.lang.String %9.3f
+FormatStatus java.lang.String OK
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 122
+WrapperLeft int 10
+BeanWidth int 245
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String EGC control disabled duration (sec)
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Expression visible
+WrapperTop int 122
+WrapperLeft int 260
+BeanWidth int 65
+BeanHeight int 14
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ExprName java.lang.String 
+Expression java.lang.String CMP_MTV_MSG.EGC_CONTROLLER_DISABLE/1000.0
+ExpressionStatus java.lang.String OK
+Format java.lang.String %9.3f
+FormatStatus java.lang.String OK
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 122
+WrapperLeft int 330
+BeanWidth int 21
+BeanHeight int 16
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String CMP_MTV_MSG.EGC_CONTROLLER_DISABLE .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 142
+WrapperLeft int 230
+BeanWidth int 19
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String cmp_mtv_msg.hover_enable .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 142
+WrapperLeft int 10
+BeanWidth int 189
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String Guidance hover enable state
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 162
+WrapperLeft int 10
+BeanWidth int 203
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String Guidance takeoff enable state
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 162
+WrapperLeft int 230
+BeanWidth int 19
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String cmp_mtv_msg.takeoff_enable .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 282
+WrapperLeft int 130
+BeanWidth int 72
+BeanHeight int 17
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ConvertedFormat java.lang.String %5.2f
+ConvertedFormatStatus java.lang.String OK
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+IsConvertedField boolean true
+IsLimitField boolean true
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String EST_MTV_MSG.ANGLE_OFF_VERTICAL
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 262
+WrapperLeft int 80
+BeanWidth int 196
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Label java.lang.String EST vehicle total tilt (deg)
+
+#************************************************************
+>> Object ITOS.javadisplay.fp.FPBean visible
+WrapperTop int 454
+WrapperLeft int 8
+BeanWidth int 344
+BeanHeight int 212
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Graph1 ITOS.javadisplay.fp.FPGraphInfo #EST_MTV_MSG.RATE[0]*180/3.14159# java.awt.Color[r=0,g=0,b=255]
+Graph2 ITOS.javadisplay.fp.FPGraphInfo #EST_MTV_MSG.RATE[1]*180/3.14159# java.awt.Color[r=0,g=255,b=0]
+Graph3 ITOS.javadisplay.fp.FPGraphInfo #EST_MTV_MSG.RATE[2]*180/3.14159# java.awt.Color[r=255,g=0,b=0]
+LegendShowing boolean true
+SlotDelta double 0.1
+SlotWidth int 3
+TimeMnemonic java.lang.String GBL_GMTOFF
+YHashDefault boolean false
+YHashDelta double 2.0
+YLabelDelta double 5.0
+YLabelsDefault boolean false
+YMax double 20.0
+YMin double -20.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 242
+WrapperLeft int 150
+BeanWidth int 88
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ConvertedFormat java.lang.String %11s
+ConvertedFormatStatus java.lang.String OK
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=128,g=128,b=128]
+IsConvertedField boolean true
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String CMP_MTV_MSG.EST_REF_FRAME
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 242
+WrapperLeft int 10
+BeanWidth int 133
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String EST reference frame
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 124
+WrapperLeft int 811
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse1_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 147
+WrapperLeft int 927
+BeanWidth int 6
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 9
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 184
+WrapperLeft int 930
+BeanWidth int 6
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 109
+WrapperLeft int 812
+BeanWidth int 12
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 12
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 109
+WrapperLeft int 847
+BeanWidth int 12
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 11
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 124
+WrapperLeft int 845
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse2_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 109
+WrapperLeft int 882
+BeanWidth int 12
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 10
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 123
+WrapperLeft int 879
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse2_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 146
+WrapperLeft int 905
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse4_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 181
+WrapperLeft int 905
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse5_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 216
+WrapperLeft int 927
+BeanWidth int 6
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 7
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 214
+WrapperLeft int 905
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse6_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 254
+WrapperLeft int 812
+BeanWidth int 6
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 4
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 254
+WrapperLeft int 848
+BeanWidth int 6
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 5
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 254
+WrapperLeft int 888
+BeanWidth int 6
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 6
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 233
+WrapperLeft int 882
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse7_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 234
+WrapperLeft int 843
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse8_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 234
+WrapperLeft int 808
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse9_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 144
+WrapperLeft int 784
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse12_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 214
+WrapperLeft int 773
+BeanWidth int 6
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 3
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 214
+WrapperLeft int 784
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse10_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 85
+WrapperLeft int 745
+BeanWidth int 168
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Label java.lang.String Coarse Thrusters Enabled
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 80
+WrapperLeft int 918
+BeanWidth int 24
+BeanHeight int 27
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse_arm[0] .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 10
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 577
+WrapperLeft int 1063
+BeanWidth int 248
+BeanHeight int 17
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=14]
+Label java.lang.String Estimated Propellant Percentage
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.NeedleGauge visible
+WrapperTop int 597
+WrapperLeft int 1113
+BeanWidth int 200
+BeanHeight int 80
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+DialColor java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Direction boolean true
+DisableHashMarks boolean false
+DisableText boolean false
+Expression java.lang.String 100.0*(EST_MTV_MSG.MASS-158.0)/74.4
+ExpressionStatus java.lang.String OK
+Font java.awt.Font java.awt.Font[family=Dialog,name=Dialog,style=bold,size=10]
+HashDelta double 10.0
+LabelDelta double 20.0
+MaxDeg double -90.0
+Maximum double 100.0
+MinDeg double 90.0
+Minimum double 0.0
+NeedleColor java.awt.Color java.awt.Color[r=51,g=51,b=51]
+RH java.lang.String 0.0
+RL java.lang.String 20.0
+YH java.lang.String 0.0
+YL java.lang.String 50.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Expression visible
+WrapperTop int 432
+WrapperLeft int 813
+BeanWidth int 56
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ExprName java.lang.String 
+Expression java.lang.String 100.0*EGC_BUS_MSG.THROTTLE/65536.0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Format java.lang.String %6.2f
+FormatStatus java.lang.String OK
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 417
+WrapperLeft int 800
+BeanWidth int 84
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String Throttle CMD
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 57
+WrapperLeft int 801
+BeanWidth int 90
+BeanHeight int 20
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=bold,size=16]
+Label java.lang.String THRUSTERS
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 75
+WrapperLeft int 1053
+BeanWidth int 91
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String High Pressure
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 74
+WrapperLeft int 1177
+BeanWidth int 21
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Label java.lang.String PSI
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 95
+WrapperLeft int 1149
+BeanWidth int 66
+BeanHeight int 20
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String regulator
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 127
+WrapperLeft int 1043
+BeanWidth int 105
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String Medium Pressure
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 127
+WrapperLeft int 1183
+BeanWidth int 21
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Label java.lang.String PSI
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 160
+WrapperLeft int 1052
+BeanWidth int 119
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String Pressure Solenoid
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 157
+WrapperLeft int 1173
+BeanWidth int 25
+BeanHeight int 24
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.valve1_htp_tank_pressurant_time .eq. 0
+ExpressionStatus java.lang.String OK
+IndicatorFalse java.awt.Color java.awt.Color[r=0,g=255,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=255,g=0,b=0]
+Radius int 10
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 163
+WrapperLeft int 1244
+BeanWidth int 91
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String Vent Solenoid
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 177
+WrapperLeft int 1293
+BeanWidth int 28
+BeanHeight int 22
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.valve2_htp_tank_pressurant_vent_time .eq. 0
+ExpressionStatus java.lang.String OK
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 10
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Line visible
+WrapperTop int 187
+WrapperLeft int 1183
+BeanWidth int 107
+BeanHeight int 12
+BackgroundImageA boolean false
+BackgroundImageB boolean true
+Anchor1 int 0
+Anchor2 int 2
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Opaque boolean false
+StrokeColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+StrokeDrawn boolean true
+StrokeWidth float 3.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Line visible
+WrapperTop int 97
+WrapperLeft int 1173
+BeanWidth int 14
+BeanHeight int 109
+BackgroundImageA boolean false
+BackgroundImageB boolean true
+Anchor1 int 2
+Anchor2 int 3
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Opaque boolean false
+StrokeColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+StrokeDrawn boolean true
+StrokeWidth float 5.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 237
+WrapperLeft int 1157
+BeanWidth int 31
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+ConvertedFormat java.lang.String %3u
+ConvertedFormatStatus java.lang.String OK
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IsConvertedField boolean true
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean true
+MnemonicName java.lang.String ADIO_MSG.PRESSURE_MEAS_VEC[0]
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Ellipse visible
+WrapperTop int 207
+WrapperLeft int 1143
+BeanWidth int 91
+BeanHeight int 90
+BackgroundImageA boolean false
+BackgroundImageB boolean true
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ContentAreaFilled boolean true
+Foreground java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Opaque boolean false
+StrokeColor java.awt.Color java.awt.Color[r=51,g=51,b=51]
+StrokeDrawn boolean true
+StrokeWidth float 1.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 245
+WrapperLeft int 1020
+BeanWidth int 119
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=153,g=153,b=255]
+Label java.lang.String HTP Tank Pressure
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 309
+WrapperLeft int 1078
+BeanWidth int 91
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String Feed Solenoid
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 307
+WrapperLeft int 1173
+BeanWidth int 23
+BeanHeight int 20
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.valve4_htp_main_engine_feed_time .eq. 0
+ExpressionStatus java.lang.String OK
+IndicatorFalse java.awt.Color java.awt.Color[r=0,g=255,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=255,g=0,b=0]
+Radius int 10
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Line visible
+WrapperTop int 297
+WrapperLeft int 1173
+BeanWidth int 14
+BeanHeight int 66
+BackgroundImageA boolean false
+BackgroundImageB boolean true
+Anchor1 int 2
+Anchor2 int 3
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Opaque boolean false
+StrokeColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+StrokeDrawn boolean true
+StrokeWidth float 5.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Line visible
+WrapperTop int 337
+WrapperLeft int 1193
+BeanWidth int 113
+BeanHeight int 10
+BackgroundImageA boolean false
+BackgroundImageB boolean true
+Anchor1 int 0
+Anchor2 int 2
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Opaque boolean false
+StrokeColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+StrokeDrawn boolean true
+StrokeWidth float 3.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 327
+WrapperLeft int 1303
+BeanWidth int 23
+BeanHeight int 20
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.valve4_htp_main_engine_feed_time .eq. 0
+ExpressionStatus java.lang.String OK
+IndicatorFalse java.awt.Color java.awt.Color[r=0,g=255,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=255,g=0,b=0]
+Radius int 10
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 313
+WrapperLeft int 1253
+BeanWidth int 98
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String Purge Solenoid
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 184
+WrapperLeft int 773
+BeanWidth int 6
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 2
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 150
+WrapperLeft int 773
+BeanWidth int 6
+BeanHeight int 13
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=10]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Label java.lang.String 1
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 400
+WrapperLeft int 815
+BeanWidth int 24
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+ConvertedFormat java.lang.String %3u
+ConvertedFormatStatus java.lang.String OK
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IsConvertedField boolean true
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String ADIO_MSG.PRESS_MAIN_ENGINE_CHAMBER
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Ellipse visible
+WrapperTop int 363
+WrapperLeft int 788
+BeanWidth int 108
+BeanHeight int 105
+BackgroundImageA boolean false
+BackgroundImageB boolean true
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ContentAreaFilled boolean true
+Foreground java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Opaque boolean false
+StrokeColor java.awt.Color java.awt.Color[r=51,g=51,b=51]
+StrokeDrawn boolean true
+StrokeWidth float 1.0
+
+#************************************************************
+>> Object ITOS.javadisplay.fp.FPBean visible
+WrapperTop int 282
+WrapperLeft int 10
+BeanWidth int 337
+BeanHeight int 163
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Graph1 ITOS.javadisplay.fp.FPGraphInfo #EST_MTV_MSG.ANGLE_OFF_VERTICAL# java.awt.Color[r=0,g=0,b=255]
+LegendShowing boolean false
+SlotDelta double 0.1
+SlotWidth int 3
+TimeMnemonic java.lang.String GBL_GMTOFF
+YHashDefault boolean true
+YHashDelta double 1.0
+YLabelDelta double 2.0
+YLabelsDefault boolean false
+YMax double 10.0
+YMin double 0.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 383
+WrapperLeft int 848
+BeanWidth int 21
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String PSI
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 62
+WrapperLeft int 160
+BeanWidth int 240
+BeanHeight int 20
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=bold,size=16]
+Label java.lang.String COMMAND/MODE INFORMATION
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 202
+WrapperLeft int 146
+BeanWidth int 100
+BeanHeight int 20
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=bold,size=16]
+Label java.lang.String NAVIGATION
+
+#************************************************************
+>> Object ITOS.javadisplay.plot.ItosPlot visible
+WrapperTop int 196
+WrapperLeft int 363
+BeanWidth int 250
+BeanHeight int 246
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Graph1 ITOS.javadisplay.plot.GraphInfo #est_mtv_msg.pos[1]# java.awt.Color[r=255,g=255,b=0] Diamonds
+More ITOS.javadisplay.plot.PlotMoreProp 200 yNotLog noLegend Bottom NoHGrid NoVGrid -1.0 1.0 "" ""
+XExprStatus java.lang.String OK
+XExprString java.lang.String EST_MTV_MSG.POS[0]
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Rectangle visible
+WrapperTop int 245
+WrapperLeft int 503
+BeanWidth int 93
+BeanHeight int 78
+BackgroundImageA boolean false
+BackgroundImageB boolean true
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ContentAreaFilled boolean true
+Foreground java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Opaque boolean false
+StrokeColor java.awt.Color java.awt.Color[r=51,g=51,b=51]
+StrokeDrawn boolean true
+StrokeWidth float 1.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 10
+WrapperLeft int 217
+BeanWidth int 144
+BeanHeight int 15
+ConvertedFormat java.lang.String 
+ConvertedFormatStatus java.lang.String No format
+ConvertedMaxLength int 18
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+IsConvertedField boolean true
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String GBL_GMTOFF
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 10
+WrapperLeft int 13
+BeanWidth int 147
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Label java.lang.String Ground-based UTC Time
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 386
+WrapperLeft int 837
+BeanWidth int 21
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String PSI
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 377
+WrapperLeft int 827
+BeanWidth int 49
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String Chamber
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 370
+WrapperLeft int 831
+BeanWidth int 21
+BeanHeight int 15
+BackgroundColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Label java.lang.String EGC
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Indicator visible
+WrapperTop int 179
+WrapperLeft int 785
+BeanWidth int 24
+BeanHeight int 17
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Expression java.lang.String act_mtv_msg.coarse11_time .eq. 0
+ExpressionStatus java.lang.String OK
+ForegroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+IndicatorFalse java.awt.Color java.awt.Color[r=255,g=0,b=0]
+IndicatorTrue java.awt.Color java.awt.Color[r=0,g=255,b=0]
+Radius int 8
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.MneBean visible
+WrapperTop int 25
+WrapperLeft int 217
+BeanWidth int 120
+BeanHeight int 15
+ConvertedFormat java.lang.String %y-%j-%T
+ConvertedFormatStatus java.lang.String OK
+ConvertedMaxLength int 0
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+IsConvertedField boolean true
+IsLimitField boolean false
+IsQualityField boolean false
+IsRawField boolean false
+IsStaticField boolean false
+MnemonicName java.lang.String GBL_MR_PKTTIME
+RawFormat java.lang.String 
+RawFormatStatus java.lang.String No format
+RawMaxLength int 0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.TextLabel visible
+WrapperTop int 26
+WrapperLeft int 12
+BeanWidth int 196
+BeanHeight int 15
+Font java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+Label java.lang.String Most Recent Packet Timestamp
+
+#************************************************************
+>> Object ITOS.javadisplay.fp.FPBean visible
+WrapperTop int 443
+WrapperLeft int 361
+BeanWidth int 341
+BeanHeight int 200
+BackgroundColor java.awt.Color java.awt.Color[r=0,g=0,b=0]
+ForegroundColor java.awt.Color java.awt.Color[r=255,g=255,b=255]
+Graph1 ITOS.javadisplay.fp.FPGraphInfo #EST_MTV_MSG.ALTITUDE# java.awt.Color[r=255,g=255,b=0]
+LegendShowing boolean true
+SlotDelta double 0.1
+SlotWidth int 3
+TimeMnemonic java.lang.String GBL_GMTOFF
+YHashDefault boolean false
+YHashDelta double 0.1
+YLabelDelta double 0.2
+YLabelsDefault boolean false
+YMax double 2.0
+YMin double 0.0
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Expression visible
+WrapperTop int 289
+WrapperLeft int 739
+BeanWidth int 56
+BeanHeight int 15
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ExprName java.lang.String COARSE1_FULL_ON
+Expression java.lang.String ACT_MTV_MSG.COARSE1_TIME .GE. 100
+ExpressionStatus java.lang.String OK
+Format java.lang.String 
+FormatStatus java.lang.String No format
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Expression visible
+WrapperTop int 320
+WrapperLeft int 742
+BeanWidth int 56
+BeanHeight int 15
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ExprName java.lang.String COARSE1_DUTY_CYCLE
+Expression java.lang.String ((ACT_MTV_MSG.COARSE1_TIME .GE. 100)*100+(ACT_MTV_MSG.COARSE1_TIME .LT. 100)*ACT_MTV_MSG.COARSE1_TIME)/100
+ExpressionStatus java.lang.String OK
+Format java.lang.String 
+FormatStatus java.lang.String No format
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Expression visible
+WrapperTop int 316
+WrapperLeft int 850
+BeanWidth int 56
+BeanHeight int 15
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ExprName java.lang.String 
+Expression java.lang.String COARSE1_DUTY_CYCLE+COARSE2_DUTY_CYCLE
+ExpressionStatus java.lang.String OK
+Format java.lang.String 
+FormatStatus java.lang.String No format
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Expression visible
+WrapperTop int 353
+WrapperLeft int 747
+BeanWidth int 56
+BeanHeight int 15
+ExprFont java.awt.Font java.awt.Font[family=Monospaced,name=Monospaced,style=plain,size=12]
+ExprName java.lang.String COARSE2_DUTY_CYCLE
+Expression java.lang.String ((ACT_MTV_MSG.COARSE2_TIME .GE. 100)*100+(ACT_MTV_MSG.COARSE2_TIME .LT. 100)*ACT_MTV_MSG.COARSE2_TIME)/100
+ExpressionStatus java.lang.String OK
+Format java.lang.String 
+FormatStatus java.lang.String No format
+
+#************************************************************
+>> Object ITOS.javadisplay.beans.Line visible
+WrapperTop int 496
+WrapperLeft int 439
+BeanWidth int 113
+BeanHeight int 10
+BackgroundImageA boolean false
+BackgroundImageB boolean true
+Anchor1 int 0
+Anchor2 int 2
+Background java.awt.Color java.awt.Color[r=0,g=0,b=0]
+Opaque boolean false
+StrokeColor java.awt.Color java.awt.Color[r=102,g=204,b=255]
+StrokeDrawn boolean true
+StrokeWidth float 3.0

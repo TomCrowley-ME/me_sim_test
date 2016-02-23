@@ -1,0 +1,31 @@
+PROC enable_thrio_app 
+
+LOCAL current_frame, change_frame, ref_type, new_frame
+LOCAL current_cmd_pc, cmd_status, cmp_status, status, success, send_cmd
+
+current_frame = THRIOHK_ACTIVE
+
+ASK (concat("Current THRIO active state is ", current_frame, "\n\nCommand authorization: click OK to accept value and send command\n\thrio_enable")), send_cmd
+
+IF (isnull(send_cmd)) THEN
+    RETURN
+ENDIF
+
+current_cmd_pc = THRIOHK_CMDPC
+
+/thrio_enable
+
+WAIT 1 UNTIL (THRIOHK_ACTIVE .EQ. 1 ) status=success
+cmp_status=success
+WAIT 1 UNTIL (THRIOHK_CMDPC .gt. current_cmd_pc) status=success
+cmd_status=success
+
+if (bwand(cmd_status, cmp_status) .eq. 0) THEN
+   EVENT ERROR "The enable command cannot be verified"
+ELSE
+   EVENT INFO "THRIO has been enabled"
+ENDIF
+
+RETURN
+
+ENDPROC

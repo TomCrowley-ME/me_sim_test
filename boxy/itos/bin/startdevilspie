@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# This script kills all devils pie daemons that may be running then
+# starts a new one.  Devilspie is the program that allows the FOT
+# to autoplace their ITOS pages and application windows
+#
+killall devilspie
+devilspie -a &

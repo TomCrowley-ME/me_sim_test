@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Export {{table_name}}</h1> 
+
+	<form method="post" action="/do_export">
+		Scenario Name:
+		<input type="text" name="scenario_name" value="" style="width:200px"/>						
+		<input type="submit" value="Export"/>
+		<input type="hidden" name="table_name" value="{{table_name}}"/>
+	</form>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+	<h1>Scenario Parameter Tables</h1> 
+
+	<form method="post" action="/do_export">
+		<td>
+			<input type="submit" value="export all tables" name="export"/>
+		</td>
+		<input type="hidden" name="scenario_name" value="{{scenario_name}}"/>
+	</form>
+				
+	<table class="TFtable" style="width:600px">
+		<thead>
+		<th>App Name</th>
+		<th>edit</th>
+		<th>export</th>
+		</thead>
+		{% for table_name in table_names %}
+			<tr>
+				<td style="width:500px">
+					{{table_name}}
+				</td>	
+				<form method="post" action="/edit_parameter_table">
+					<td>
+						<input type="submit" value="edit" name="edit"/>
+					</td>
+					<input type="hidden" name="scenario_name" value="{{scenario_name}}"/>
+					<input type="hidden" name="table_name" value="{{table_name}}"/>
+				</form>
+				<form method="post" action="/do_export">
+					<td>
+						<input type="submit" value="export this table" name="export"/>
+					</td>
+					<input type="hidden" name="scenario_name" value="{{scenario_name}}"/>
+					<input type="hidden" name="table_name" value="{{table_name}}"/>
+				</form>
+			</tr>			
+		{% endfor %}
+	</table>		
+{% endblock %}

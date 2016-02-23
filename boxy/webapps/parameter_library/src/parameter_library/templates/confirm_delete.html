@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Delete {{to_be_deleted_name}}</h1> 
+
+	Are you sure you want to delete <b>{{to_be_deleted_name}}</b> ({{to_be_deleted_type}})? This action cannot be undone!<br><br> 
+	<form method="post" action="/do_delete">
+		<input type="submit" value="yes" name="confirmation"/>
+		<input type="submit" value="no" name="confirmation"/>
+		<input type="hidden" name="to_be_deleted_name" value="{{to_be_deleted_name}}"/>
+		<input type="hidden" name="to_be_deleted_type" value="{{to_be_deleted_type}}"/>
+	</form>
+{% endblock %}

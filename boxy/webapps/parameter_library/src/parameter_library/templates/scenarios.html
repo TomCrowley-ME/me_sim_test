@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Create New Scenario</h1> 
+	<form method="post" action="/add_scenario">
+		<table class="TFtable" style="width:600px">
+			<tr>
+				<td>
+					Scenario Name: <input type="text" name="scenario_name">
+				</td>
+				<td>
+					SCENARIO variable prefix: <input type="text" name="scenario_var_prefix">
+				</td>
+				<td>
+					<input type="submit" value="Create New Scenario" name="create">
+				</td>
+			</tr>
+		</table>
+	</form>
+	<hr>
+	<h2>Scenarios</h2> 
+
+	<table class="TFtable" style="width:600px">
+		<thead>
+		<th>Scenario Name</th>
+		<th>tables</th>
+		<th>delete</th>
+		</thead>
+		{% for scenario_name in scenario_names %}
+			<tr>
+				<td style="width:500px">
+					{{scenario_name}}
+				</td>	
+				<form method="post" action="/scenario_tables">
+					<td>
+						<input type="submit" value="tables" name="tables"/>
+					</td>
+					<input type="hidden" name="scenario_name" value="{{scenario_name}}"/>
+				</form>
+				<form method="post" action="/confirm_delete">
+					<td>
+						<input type="submit" value="del" name="del"/>
+					</td>
+					<input type="hidden" name="to_be_deleted_name" value="{{scenario_name}}"/>
+					<input type="hidden" name="to_be_deleted_type" value="Scenario"/>
+				</form>
+			</tr>			
+		{% endfor %}
+	</table>		
+{% endblock %}

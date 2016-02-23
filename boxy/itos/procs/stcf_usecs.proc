@@ -1,0 +1,22 @@
+PROC stcf_usecs
+
+LOCAL usecs
+
+IF (TIME_STCFSUBSECS .GT. 0xFFFFDF00) THEN
+IF (TIME_STCFSUBSECS .GT. 0xFFFFDF00) THEN
+    usecs = 999999
+ELSE
+    usecs = BWRSHIFT(BWRSHIFT(BWRSHIFT(TIME_STCFSUBSECS, 7) * 125, 7) * 125, 12)
+
+    IF (BWAND(TIME_STCFSUBSECS, 0x3FFFFFF) .NE. 0) THEN
+        usecs = usecs + 1
+    ENDIF
+
+    IF (usecs .GT. 500000) THEN
+        usecs = usecs - 1
+    ENDIF
+ENDIF
+
+SHOVAL usecs
+
+ENDPROC

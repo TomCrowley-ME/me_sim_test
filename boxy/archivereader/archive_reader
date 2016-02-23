@@ -1,0 +1,355 @@
+#!/usr/bin/env python3
+import os
+import sys
+import getopt
+import struct
+import re
+
+from collections import namedtuple
+from cntutil import CNTUtil
+
+PacketData = namedtuple('PacketData', ['name', 'header', 'packing', 'wanted_parameters'])
+
+class ArchiveReader:
+    def __init__(self, vehicle, with_sim):
+        self.cnt = CNTUtil(os.path.expandvars("$BENDER_PATH/clamps/moonex_cnt_dictionary.json"))
+
+        self.packet_dict = dict()
+        self.csv_files = dict()
+
+        if vehicle:
+            self.cnt.discover_space_system(self.cnt.get_root(), vehicle)
+            self.fsw_tlm_seq_cont = self.cnt.get_telemetry_sequence_containers(vehicle)
+            self.fsw_abs_seq_cont = self.cnt.get_abstract_sequence_containers(vehicle)
+            self.fsw_param_types = self.cnt.get_parameter_types(vehicle)
+            self.fsw_host = self.cnt.get_host(vehicle)
+
+            self.load_packets(self.fsw_host, self.fsw_tlm_seq_cont, self.fsw_abs_seq_cont, self.fsw_param_types)
+
+        if with_sim:
+            sim = vehicle+'-SIM'
+            self.cnt.discover_space_system(self.cnt.get_root(), sim)
+            self.sim_tlm_seq_cont = self.cnt.get_telemetry_sequence_containers(sim)
+            self.sim_abs_seq_cont = self.cnt.get_abstract_sequence_containers(sim)
+            self.sim_param_types = self.cnt.get_parameter_types(sim)
+            self.sim_host = self.cnt.get_host(sim)
+
+            self.load_packets(self.sim_host, self.sim_tlm_seq_cont, self.sim_abs_seq_cont, self.sim_param_types)
+
+    def emit_packet(self, raw_packet, output_dir, prefix=''):
+        packet_header = struct.unpack_from('>HHHIH', raw_packet, 0)
+
+        apid = packet_header[0] - 0x800
+        sequence = packet_header[1] & 0x3fff
+        timestamp = packet_header[3] + packet_header[4]/0xFFFF
+
+        packet_data = self.packet_dict.get(apid)
+        if packet_data:
+            csv_file = self.csv_files.get(apid)
+            if not csv_file:
+                # Hack -- ignore prefix for wsim buses
+                if packet_data.name.endswith('_msg'):
+                    csv_file = open(output_dir + packet_data.name + ".csv", "w")
+                else:
+                    csv_file = open(output_dir + prefix + packet_data.name + ".csv", "w")
+                csv_file.write(', '.join(packet_data.header) + '\n')
+                self.csv_files[apid] = csv_file
+
+            expected_size = struct.calcsize(packet_data.packing)+12
+            actual_size = len(raw_packet)
+            if expected_size == actual_size:
+                packet_values = struct.unpack_from(packet_data.packing, raw_packet, 12)
+
+                csv_file.write(str(timestamp) + ", " + str(sequence) + ", ")
+                for i in range(len(packet_values)):
+                    if i in packet_data.wanted_parameters:
+                        if type(packet_values[i]) is bytes:
+                            c_string = packet_values[i].decode("ascii").rstrip('\0')
+                            c_string = c_string.replace('"', '\"')
+                            csv_file.write('"' + c_string +  '", ')
+                        else:
+                            csv_file.write(str(packet_values[i]) + ", ")
+                csv_file.write("\n")
+            else:
+                print("Bad format for %s : %s (expected %u bytes, got %u)" % (packet_data.name,packet_data.packing,expected_size,actual_size))
+
+    def process_archive(self, headerfile, output_dir, prefix=''):
+        basename, extension = os.path.splitext(headerfile)
+        file_index = 0
+        prev_frame_sequence = -1
+        partial_packet = b''
+
+        frame_header_fmt = '>IHIH'
+        packet_header_fmt = '>HHHIH'
+        frame_header_size = struct.calcsize(frame_header_fmt)
+        packet_header_size = struct.calcsize(packet_header_fmt)
+
+        filename = basename + '.' + str(file_index)
+        while os.path.isfile(filename):
+            with open(filename, 'rb') as f:
+                for frame in iter(lambda: f.read(1119), ''):
+                    if not frame:
+                        break
+
+                    frame_header = struct.unpack_from(frame_header_fmt, frame, 0)
+                    frame_ptr = frame_header_size
+                    first_packet = frame_header[3]
+                    frame_sequence = frame_header[2] >> 8
+
+                    if frame_sequence != prev_frame_sequence + 1 and prev_frame_sequence != -1:
+                        #TODO: Try to reconstruct partial packet
+                        print("MISSED A FRAME")
+                    elif partial_packet:
+                        total_packet = partial_packet + frame[frame_ptr:frame_ptr+first_packet]
+                        self.emit_packet(total_packet, output_dir, prefix)
+                    partial_packet = b''
+
+                    frame_ptr += first_packet
+
+                    while True:
+                        if frame_ptr + packet_header_size >= 1117:
+                            partial_packet = frame[frame_ptr:1117]
+                            break
+
+                        packet_header = struct.unpack_from(packet_header_fmt, frame, frame_ptr)
+                        length = packet_header[2] - 5
+
+                        if frame_ptr + packet_header_size + length >= 1117:
+                            partial_packet = frame[frame_ptr : 1117]
+                            break
+
+                        self.emit_packet(frame[frame_ptr : frame_ptr + packet_header_size + length], output_dir, prefix)
+                        frame_ptr += packet_header_size + length
+
+
+                    prev_frame_sequence = frame_sequence
+
+            file_index += 1
+            filename = basename + '.' + str(file_index)
+
+        for f in self.csv_files.values():
+            f.close()
+
+        self.csv_files.clear()
+
+
+
+    def load_packets(self, host, tlm_seq_containers, abstract_seq_containers, param_types):
+        for sc in tlm_seq_containers.values():
+            if sc.get("abstract"):
+                continue
+
+            apid = int(self.cnt.get_apid(sc.get("base")), 16)
+
+            packet_data = self.gen_struct_info(sc, tlm_seq_containers, abstract_seq_containers, param_types)
+
+            if self.fsw_host.get('byte_order') == 'big_endian':
+                struct_packing = '>' + packet_data.packing
+            else:
+                struct_packing = '<' + packet_data.packing
+
+            csv_header = ['ccsds_time', 'ccsds_seq']
+            csv_header.extend(packet_data.header)
+            self.packet_dict[apid] = PacketData(packet_data.name, csv_header, struct_packing, packet_data.wanted_parameters)
+
+    def gen_struct_info(self, seq_container, tlm_seq_containers, abstract_seq_containers, param_types):
+        csv_header = []
+        struct_packing = ''
+        current_index = 0
+        desired_indices = list()
+
+        params, restrictions = self.cnt.expand_base_container(seq_container, abstract_seq_containers, list(), dict())
+
+        for p in params:
+            param_name = p.get("name")
+            type_name = p.get("type")
+            is_padding = False
+
+            param_type = param_types.get(type_name)
+
+            if "ccsds" in type_name:
+                continue
+
+            if re.search('pad.*', param_name, re.I) or re.search('spare.*', param_name, re.I):
+                is_padding = True
+
+            if not param_type:
+                if type_name in abstract_seq_containers.keys():
+                    sub_struct_data = self.gen_struct_info(abstract_seq_containers[type_name], tlm_seq_containers, abstract_seq_containers, param_types)
+
+                    dimensions = p.get('dimensions')
+                    if dimensions:
+                        total_size = 1
+                        for d in dimensions:
+                            dim_len = d.get('len')
+                            total_size *= dim_len
+
+                        struct_packing += total_size*sub_struct_data.packing
+                        for i in range(total_size):
+                            csv_header.extend([param_name + '_' + str(i) + '_' + subparam_name for subparam_name in sub_struct_data.header])
+                            desired_indices += [current_index + v for v in sub_struct_data.wanted_parameters]
+                            current_index += sub_struct_data.wanted_parameters[-1] + 1
+
+                    else:
+                        struct_packing += sub_struct_data.packing
+                        csv_header.extend(sub_struct_data.header)
+                        desired_indices += [current_index + v for v in sub_struct_data.wanted_parameters]
+                        current_index += sub_struct_data.wanted_parameters[-1] + 1
+                else:
+                    print("Malformed packet parameter -- cannot find type '%s'" % (param_type,))
+
+            else:
+                type_char = self.get_type_char(param_type)
+
+                dimensions = p.get('dimensions')
+                if dimensions:
+                    total_size = 1
+                    for d in dimensions:
+                        dim_len = d.get('len')
+                        total_size *= dim_len
+
+                    type_char = str(total_size) + type_char
+
+                    for i in range(total_size):
+                        if not is_padding:
+                            csv_header.append(param_name + '_' + str(i))
+                            desired_indices.append(current_index)
+                        current_index += 1
+                else:
+                    if not is_padding:
+                        csv_header.append(param_name)
+                        desired_indices.append(current_index)
+
+                    current_index += 1
+
+
+                struct_packing += type_char
+
+        packet_data = PacketData(seq_container.get("name"), csv_header, struct_packing, desired_indices)
+        return packet_data
+
+    def get_type_char(self, param_type):
+        type_char = None
+        base_type = param_type.get('base_type')
+
+        if base_type == 'integer' or base_type == 'enumeration':
+            size_in_bits = param_type.get('size_in_bits')
+
+            if size_in_bits == 8:
+                type_char = 'b'
+            elif size_in_bits == 16:
+                type_char = 'h'
+            elif size_in_bits == 32:
+                type_char = 'i'
+            elif size_in_bits == 64:
+                type_char = 'q'
+            else:
+                print("BITFIELD DETECTED")
+
+            if not param_type.get('signed'):
+                type_char = type_char.upper()
+
+        elif base_type == 'float':
+            size_in_bits = param_type.get('size_in_bits')
+
+            if size_in_bits == 32:
+                type_char = 'f'
+            else:
+                type_char = 'd'
+
+        elif base_type == 'string':
+            if param_type.get('name') == 'TIME44':
+                type_char = '2I'
+            else:
+                type_char = str(param_type.get('length_in_characters')) + 's'
+
+        elif base_type == 'pointer':
+            # TODO: use host to determine pointer size
+            type_char = 'I'
+
+        else:
+            print('UNKNOWN BASE TYPE %s' % (base_type,))
+
+        return type_char
+
+def main(argv):
+    header_information = dict()
+
+    try:
+        opts, args = getopt.getopt(argv, 'ho:v:s', ["help", "output=", "vehicle=", "with-sim"])
+    except getopt.GetoptError as err:
+        print(str(err))
+        print_usage()
+        sys.exit(2)
+
+    output_dir = ''
+    vehicle = 'MX1'
+    with_sim = False
+
+    for o, a in opts:
+        if o in ("-h", "--help"):
+            print_usage()
+            sys.exit()
+        elif o in ("-o", "--output"):
+            if not os.path.isdir(a):
+                print("Specified output folder does not exist!")
+                print_usage()
+                sys.exit(2)
+            output_dir = a + '/'
+        elif o in ("-v", "--vehicle"):
+            vehicle = a
+        elif o in ("-s", "--with-sim"):
+            with_sim = True
+
+    if len(args) != 1 or not os.path.isfile(args[0]):
+        print_usage()
+        return
+
+    sim_archive = None
+    fsw_archive = None
+
+    # Try to find the header file associated with the supplied
+    filename = args[0]
+    basename, extension = os.path.splitext(args[0])
+
+    if extension != '.H':
+        if os.path.isfile(basename + '.H'):
+            filename = basename + '.H'
+            print('using %s...' % (filename,))
+        else:
+            print("can't find header file for %s" % (filename,))
+            return
+
+    # Check to see if this is a sim archive
+    if basename.endswith('.sim'):
+        sim_archive = filename
+
+        fsw_filename = basename[0:-4] + '.H'
+        if os.path.isfile(fsw_filename):
+            fsw_archive = fsw_filename
+    else:
+        fsw_archive = filename
+
+        sim_filename = basename + '.sim.H'
+        if os.path.isfile(sim_filename):
+            sim_archive = sim_filename
+
+    #with open(filename, 'r') as f:
+    #    for line in f:
+    #        setting = line.split('#')
+    #        header_information[setting[1].strip()] = setting[0].strip()
+
+
+    ar = ArchiveReader(vehicle, with_sim)
+
+    if fsw_archive:
+        ar.process_archive(fsw_archive, output_dir)
+    if with_sim and sim_archive:
+        ar.process_archive(sim_archive, output_dir, prefix='sim_')
+
+def print_usage():
+    print('usage: archive_reader [-v vehicle|--vehicle=vehicle] [-s|--with-sim] [-o dir|--output=dir] <path_to_file>')
+    print('                      [-h|--help]')
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

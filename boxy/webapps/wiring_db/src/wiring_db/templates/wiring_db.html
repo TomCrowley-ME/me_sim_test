@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MoonEx Wiring Database</title>	
+
+	    <!-- Latest compiled and minified CSS -->
+	    <link rel="stylesheet" href="/static/bootstrap.min.css">
+<!-- 	    <link rel="stylesheet" href="/static/style.css">
+ -->	    <!-- <link rel="stylesheet" href="/static/wiring_table.css"> -->
+
+	    <!-- Latest compiled and minified JavaScript -->
+	    <script src="/static/jquery.min.js"></script> 
+	    <script src="/static/bootstrap.min.js"></script>
+
+		<script>
+			var modified_row_id_list = [];
+			next_id = {{max_id | safe}} + 1;
+			
+			function makeEditable(row_id) {
+				row_id = String(row_id);
+				var row = document.getElementById(row_id); 
+				row.setAttribute("contenteditable", "true");
+
+				var button = document.getElementById(row_id+"_button"); 
+				button.setAttribute("onclick", "makeUneditable('" + row_id + "')");
+				button.innerHTML = "Done Editing";
+			}
+
+			function makeUneditable(row_id) {
+				row_id = String(row_id);
+				console.log(row_id);
+				var row = document.getElementById(row_id); 
+				row.setAttribute("contenteditable", "false");
+
+				var button = document.getElementById(row_id+"_button"); 
+				button.setAttribute("onclick", "makeEditable('" + row_id + "')")
+				button.innerHTML = "Edit";
+
+				//add this cell to a list of cells to be updated
+				modified_row_id_list.push(row_id);
+			}
+
+			function AddPostData() {
+                var modified_rows = new Array(modified_row_id_list.length);
+                for (i=0; i<modified_row_id_list.length; i++) {
+                	row = document.getElementById(modified_row_id_list[i]);
+                	list_of_row = [];
+
+                	for (j=0; j<row.cells.length - 1; j++) {
+                		list_of_row.push(row.cells[j].innerHTML);
+                		list_of_row.push('-split-')
+                		console.log(row.cells[j].innerHTML)
+                	}
+                	modified_rows[i] = [list_of_row];
+                }
+                var formInfo = document.forms["submission_form"];
+
+				formInfo.elements["modified_row_data"].value = modified_rows;
+            }
+
+            function CreateNewRow(table_id, column_length) {
+            	// Find a <table> element with id="myTable":
+            	console.log(table_id)
+				var table = document.getElementById(table_id);
+				console.log(table)
+
+				// Create an empty <tr> element and add it to the 1st position of the table:
+				var row = table.insertRow(1);
+
+				for (i=0; i<=column_length - 1; i++) {
+					var cell = row.insertCell(i);
+				}
+				row.cells[0].innerHTML = next_id;
+				next_id = next_id + 1;
+
+				modified_row_id_list.push(row.cells[0].innerHTML)
+				row.setAttribute("contenteditable", "true");
+				row.setAttribute("id", row.cells[0].innerHTML);
+
+				row.cells[9] = "<button>Edit</button>";
+            }
+
+            function test() {
+            	var modified_rows = new Array(modified_row_id_list.length);
+                for (i=0; i<modified_row_id_list.length; i++) {
+                	row = document.getElementById(modified_row_id_list[i]);
+                	list_of_row = [];
+
+                	for (j=0; j<row.cells.length - 1; j++) {
+                		list_of_row.push(row.cells[j].innerHTML);
+                		list_of_row.push('-split-')
+                		console.log(row.cells[j].innerHTML)
+                	}
+                	modified_rows[i] = [list_of_row];
+                }
+
+                console.log(modified_rows)
+            }
+
+
+		</script>
+
+	</head>	
+	<body>
+	<div class="">
+	<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+		<h3>Wiring Database Tool</h3>
+
+		<h4>Primary Functions</h4>
+
+	</div>
+	</div>
+
+	<div class="row">
+	<div class="col-md-2 col-md-offset-1">
+
+		<form method="POST" action="/loaddb" style="margin-bottom: 8px">
+		    <input id="submit-btn" class="btn btn-primary" type="submit" value="Load DB from JSON File">
+		</form>
+	</div>
+
+	{% if not is_running_on_server %}
+		<div class="col-md-2">
+
+			<form id="submission_form" method="POST" action="/savedb">
+				<input type="hidden" name="modified_row_data" value="" />
+			    <input id="submit-btn" class="btn btn-success" type="submit" value="Save Changes to File" onclick="AddPostData();">
+			</form>
+
+		</div>
+	{% endif %}
+
+	</div>
+
+	<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+	<br>
+
+	<h5>Workflow: Load JSON from file --> edit JSON --> Save changes to file</h5>
+
+	</div>
+	</div>
+
+	<div class="row">
+	<div class="col-md-10 col-md-offset-1">
+
+	<hr>
+		<h4>Filters</h4>
+
+		<form method="post" action="/">
+			<table class="TFtable" style="width:300px">
+				<tr>
+					<td>
+						Signal Name:
+						<select name="signal_name_selected" style="margin-right:8px;">
+							<option value="ALL">ALL</option>
+							{% for signal_name in unique_signal_names %}
+								{% if previous_signal_name == signal_name %}
+									<option value="{{signal_name}}" selected="selected">{{signal_name}}</option>
+								{% else %}
+									<option value="{{signal_name}}">{{signal_name}}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</td>
+					<td> 
+						Net Name:
+						<select name="net_name_selected" style="margin-right:8px;">
+							<option value="ALL">ALL</option>
+							{% for net_name in unique_net_names %}
+								{% if previous_net_name == net_name %}
+									<option value="{{net_name}}" selected="selected">{{net_name}}</option>
+								{% else %}
+									<option value="{{net_name}}">{{net_name}}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</td>
+					<td>
+						Interface:
+						<select name="interface_connector_selected" style="margin-right:8px;">
+							<option value="ALL">ALL</option>
+							{% for interface_connector in unique_interface_connectors %}
+								{% if previous_interface_connector == interface_connector %}
+									<option value="{{interface_connector}}" selected="selected">{{interface_connector}}</option>
+								{% else %}
+									<option value="{{interface_connector}}">{{interface_connector}}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="submit" value="Filter" name="Filter" class="btn btn-primary">
+					</td>
+					<td>
+						<a href="/" class="btn btn-default" role="button">Clear Filters</a>
+					</td>
+				</tr>
+			</table>
+						
+		</form>
+
+		<hr>
+
+		</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-10 col-md-offset-1">
+
+		        <div class="tabbable">
+				    <ul id="myTab" class="nav nav-tabs">
+				        
+				        {% for board in board_types %}
+				            <li {% if board == "cab_external" %} class="active" {% endif %}><a href="#{{board}}" data-toggle="tab">{{board}}</a></li>
+				        {% endfor %}
+
+				    </ul>
+				    <div class="tab-content">
+				        {% for board in board_types %}
+
+				        	<div class="tab-pane" class="active">
+
+				        	</div> 
+
+
+					        <div class="tab-pane {% if board == "cab_external" %} active {% endif %}" id="{{board}}">    
+					            
+					            <table id="{{board}}_table" class="table table-striped" style="width:700px; background-color:#C0C0C0;">
+
+									<thead>
+										<tr style="background-color: grey">
+											{% for column_name in board_to_column[board] %}
+											<th>{{column_name}}</th>
+											{% endfor %}
+											{% if not is_running_on_server %}
+											<th> <button id="new-row" type="button" class="btn btn-primary btn-xs" onclick="CreateNewRow('{{board}}_table', {{board_to_column[board] | length}})">New</button> </th>
+											{% endif %}
+										</tr>
+									</thead>
+
+									<tbody>
+									{% for row in table %}
+										{% if row[1] == board %}
+											
+
+											<tr id="{{row[0]}}">
+
+
+												{% for cell in row %}
+												<td>{{cell}}</td>
+												{% endfor %}
+
+												{% if not is_running_on_server %}
+													<td contenteditable="false">
+								                    <script>
+								                        document.writeln('<button id="' + String({{row[0]}})+'_button"');
+								                    </script>
+								                    type="button" class="btn btn-default btn-xs" onclick="makeEditable({{row[0]}})">Edit</button>
+							                    {% endif %}
+							                </td>
+											</tr>
+										{% endif %}			
+									{% endfor %}
+									</tbody>
+
+								</table>
+					            
+					        </div>
+				        {% endfor %}
+					</div>
+				</div> 
+
+			</div>
+		</div>
+		</div>
+
+	</body>
+</html>

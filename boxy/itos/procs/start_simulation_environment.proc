@@ -1,0 +1,24 @@
+PROC start_simulation_environment
+
+
+GBL_CMD_DELAY=0
+
+/est_set_reference_frame frame=TOPOCENTRIC
+ 
+LOCAL initial_met
+initial_met = SIM_TIME_METSECS
+SPEED 0
+WAIT UNTIL (SIM_TIME_METSECS .NE. initial_met)
+
+WAIT 4
+
+/HS.TIME_SETCLOCK TIME="2014-121-11:59:58"
+
+start sync_time
+
+WAIT 0.7
+/est_reinit
+WAIT 0.1
+/egc_reinit
+
+ENDPROC

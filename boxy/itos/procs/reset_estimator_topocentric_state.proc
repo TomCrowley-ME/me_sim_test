@@ -1,0 +1,52 @@
+PROC reset_estimator_topocentric_state 
+
+LOCAL current_frame, change_frame, call_proc, send_cmd 
+LOCAL current_cmd_pc, cmd_status, cmp_status, status, success
+
+LABEL1:
+current_frame = p@cmp_mtv_msg.est_ref_frame
+
+IF (current_frame .eq. "INERTIAL") THEN
+    ASK "EST reference frame is currently set to INERTIAL. Frame must be set to TOPOCENTRIC to perform reset.\nPress ENTER to call proc for frame change, CANCEL to exit with no change.", call_proc
+    IF (isnull(call_proc)) THEN
+        RETURN
+    ELSE
+        START set_estimator_reference_frame
+        GOTO LABEL1
+    ENDIF
+ELSEif (current_frame .eq. "TOPOCENTRIC") THEN
+    
+     ASK (concat("EST reference frame is currently set to ", current_frame, "\n\nPress ENTER to proceed (vehicle must be stationary)  and CANCEL to exit with no chage")), change_frame
+    IF (isnull(change_frame)) THEN
+        RETURN
+    ENDIF
+    
+    LABEL2:
+    ASK ("Command authorization: click OK to accept value and send comand \n\\est_mtv_zero_topocentric_position"), send_cmd
+    IF (isnull(send_cmd)) THEN
+        RETURN
+    ENDIF
+
+    current_cmd_pc = cmp_mtv_msg.process_cmds_counter
+
+    /est_mtv_zero_topocentric_position
+
+    WAIT 1 UNTIL (cmp_mtv_msg.est_mtv_reset_topo_position .EQ. 1 ) status=success
+    cmp_status=success
+    WAIT 1 UNTIL (cmp_mtv_msg.process_cmds_counter .gt. current_cmd_pc) status=success
+    cmd_status=success
+
+    if (bwand(cmd_status, cmp_status) .eq. 0) THEN
+       EVENT ERROR "The re-zero command cannot be verified"
+    ELSE
+       EVENT INFO "Estimator frame re-zeroing has been successfully sent"
+    ENDIF
+
+    RETURN
+
+ELSE 
+    EVENT ERROR "Nonexistent frame commanded"
+    RETURN
+ENDIF
+
+ENDPROC

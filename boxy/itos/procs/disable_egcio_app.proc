@@ -1,0 +1,31 @@
+PROC disable_egcio_app
+
+LOCAL current_frame, change_frame, ref_type, new_frame
+LOCAL current_cmd_pc, cmd_status, cmp_status, status, success, send_cmd
+
+current_frame = EGCIOHK_ACTIVE
+
+ASK (concat("Current EGCIO active state is ", current_frame, "\n\nCommand authorization: click OK to accept value and send command\n\\egcio_disable")), send_cmd
+
+IF (isnull(send_cmd)) THEN
+    RETURN
+ENDIF
+
+current_cmd_pc = EGCIOHK_CMDPC
+
+/egcio_disable
+
+WAIT 1 UNTIL (EGCIOHK_ACTIVE .EQ. 0 ) status=success
+cmp_status=success
+WAIT 1 UNTIL (EGCIOHK_CMDPC .gt. current_cmd_pc) status=success
+cmd_status=success
+
+if (bwand(cmd_status, cmp_status) .eq. 0) THEN
+   EVENT ERROR "The disable command cannot be verified"
+ELSE
+   EVENT INFO "EGCIO has been disabled"
+ENDIF
+
+RETURN
+
+ENDPROC

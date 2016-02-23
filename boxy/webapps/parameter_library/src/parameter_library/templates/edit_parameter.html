@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Edit Parameter</h1> 
+
+	<form method="post" action="/update_param">
+		<table class="TFtable" style="width:800px">
+		{% for row in form %}
+			<tr>
+				<td style="width:100px">
+					{{ row[1] }}
+				</td>
+				<td style="width:300px">
+					<input type="text" name="{{row[0]}}" value="{{row[2]}}" style="width:700px"/>						
+					<input type="hidden" name="parameter_name" value="{{row[1]}}"/>
+				</td>
+			</tr>
+		{% endfor %}
+		</table>
+		<input type="submit" value="{{action}}" name="action"/>
+	</form>
+{% endblock %}

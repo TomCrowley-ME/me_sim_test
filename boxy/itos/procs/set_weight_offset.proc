@@ -1,0 +1,33 @@
+PROC set_weight_offset 
+
+LOCAL percentage
+ASK "Enter percentage of estimated vehicle weight to offload with EGC, [0 - 100]", percentage
+if (isnull(percentage)) THEN
+    EVENT WARN  "Must enter a numeric value to continue"
+    RETURN
+ENDIF
+
+
+ASK (concat("Command authorization: click OK to accept value and send comand \n\\egc_set_weight_offset percent= ", tostring(percentage)))
+
+LOCAL current_cmd_pc, cmd_status, current_offload, cmp_status, status, success
+current_offload = cmp_mtv_msg.egc_weight_offload_percent
+current_cmd_pc = cmp_mtv_msg.process_cmds_counter
+SHOVAL current_cmd_pc
+
+/egc_set_weight_offset percent=percentage
+
+WAIT 1 UNTIL (cmp_mtv_msg.egc_weight_offload_percent .EQ. percentage ) status=success
+cmp_status=success
+WAIT 1 UNTIL (cmp_mtv_msg.process_cmds_counter .gt. current_cmd_pc) status=success
+cmd_status=success
+
+if (bwand(cmd_status, cmp_status) .eq. 0) THEN
+   EVENT ERROR "The mass has not been set...proc has failed"
+ELSE
+   EVENT INFO "EGC weight offload  has been successfully set"
+ENDIF
+
+RETURN
+
+ENDPROC

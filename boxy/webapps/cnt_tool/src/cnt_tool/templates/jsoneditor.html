@@ -1,0 +1,80 @@
+
+{% extends "base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+
+{% block navsubmit %}
+<li>
+{% if not is_running_on_server %}
+<form id="json_form" method="POST" action="/updatedict">
+    <input type="hidden" name="json_data" value="" />
+    <input id="submit-btn" type="submit" value="Submit Changes" class="btn btn-primary" onclick="AddPostData();" style="margin-top: 8px">
+</form>
+{% else %}
+<a href="#">No Submit - On Zoidberg</a>
+{% endif %}
+</li>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-1">
+
+        <script src="/static/jsoneditor.js"></script>
+        <script>
+
+            function AddPostData() {
+                var data = JSON.stringify(editor.getValue());
+                console.log(data)
+                var formInfo = document.forms['json_form'];
+                formInfo.elements["json_data"].value = data;
+            }
+        </script>
+        <h2>Space System Editor</h2>
+        <hr>
+        {% if validation_errors %}
+            <div class="alert alert-danger">
+                <h4>Validation Errors</h4>
+                <ul>
+                {% for error, system in validation_errors.items() %}
+                    <li><strong>System: {{system}}</strong> - {{error}}</li>
+                {% endfor %}
+                </ul>
+            </div>
+            <hr>
+        {% endif %}
+
+        <h4>System: {{system_name}} </h4>
+        <div id='editor_holder'></div>
+
+        <script>
+          // Initialize the editor with a JSON schema
+          JSONEditor.defaults.editors.object.options.ajax = true;
+          JSONEditor.defaults.editors.object.options.collapsed = false;
+          JSONEditor.defaults.editors.object.options.no_additional_properties = true;
+          JSONEditor.defaults.editors.object.options.disable_properties = false;
+          var editor = new JSONEditor(document.getElementById('editor_holder'),{
+
+            theme: "bootstrap3",
+            iconlib: "fontawesome4",
+            ajax: true,
+            startval : {{json_to_edit | safe}},
+            schema: {{json_schema | safe}},
+
+          });
+
+          console.log({{json_schema | safe}})
+
+
+
+        </script>
+    </div>
+</div>
+
+
+{% endblock %}

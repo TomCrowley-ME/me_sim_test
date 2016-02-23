@@ -1,0 +1,51 @@
+PROC is_valid_sc_mode_sc_submode(sc_mode, sc_submode)
+SPEED 0
+
+GLOBAL valid_mode_submode_pair
+
+LOCAL valid_mode, valid_submode, valid_pair
+
+; initialize global as false to be returned early
+valid_mode_submode_pair = 0
+
+; allow only a subset of modes: surface, safe, landing
+; allow only a subset of submodes: none, landing_terminal
+
+IF (sc_mode .eq. "SAFE" .or. sc_mode .eq. "LANDING" .or. sc_mode .eq. "SURFACE") THEN
+    valid_mode = 1
+ELSE
+    valid_mode = 0
+    RETURN
+ENDIF
+
+
+IF (sc_submode .eq. "NONE" .or. sc_submode .eq. "LANDING_TERMINAL") THEN
+    valid_submode = 1
+ELSE
+    valid_submode = 0
+    RETURN
+ENDIF
+
+IF (sc_mode .eq. "SAFE" .or. sc_mode .eq. "SURFACE") THEN
+    IF (sc_submode .eq. "NONE") THEN
+        valid_pair = 1
+    ELSE
+        valid_pair = 0
+    ENDIF
+ELSEIF (sc_mode .eq. "LANDING") THEN
+    IF (sc_submode .eq. "LANDING_TERMINAL") THEN
+        valid_pair = 1
+    ELSE
+        valid_pair = 0
+    ENDIF
+ENDIF
+
+IF (valid_pair) THEN
+    valid_mode_submode_pair = 1
+ELSE
+    valid_mode_submode_pair = 0
+ENDIF
+
+RETURN
+
+ENDPROC

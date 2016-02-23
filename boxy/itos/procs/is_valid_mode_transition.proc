@@ -1,0 +1,34 @@
+PROC is_valid_mode_transition(current_mode, current_submode, desired_mode, desired_submode)
+SPEED 0
+
+GLOBAL valid_mode_transition
+valid_mode_transition = 0
+
+if (valid_mode_submode_pair .eq. 1) THEN
+
+; allow only a subset of modes: surface, surfacesage, safe, landing
+; allow only a subset of submodes: none, landing_terminal
+
+    IF (current_mode .eq. "STARTUP") THEN
+        IF (desired_mode .eq. "SAFE") THEN
+            valid_mode_transition = 1
+        ENDIF
+    ELSEIF (current_mode .eq. "SURFACE") THEN
+        IF (desired_moded .ne. "SAFE") THEN
+             valid_mode_transition = 1
+        ENDIF
+    ELSEIF (current_mode .eq. "SAFE") THEN
+        IF (desired_mode .eq. "SURFACE") THEN
+            valid_mode_transition = 1
+        ENDIF
+    ELSEIF (current_mode .eq. "LANDING") THEN
+        valid_mode_transition = 1
+    ENDIF
+
+ELSE
+    EVENT ERROR "Cannot compute valid transition to desired mode/submode since valid_mode_transition is not set"
+ENDIF 
+
+RETURN
+
+ENDPROC

@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MoonEx Procs Web App</title>	
+
+	    <!-- Latest compiled and minified CSS -->
+	    <link rel="stylesheet" href="/static/bootstrap.min.css">
+		<!-- 
+		<link rel="stylesheet" href="/static/style.css">
+	    <link rel="stylesheet" href="/static/wiring_table.css"> 
+		-->
+	    <!-- Latest compiled and minified JavaScript -->
+	    <script src="/static/jquery.min.js"></script> 
+	    <script src="/static/bootstrap.min.js"></script>
+	
+		<style>
+			body{
+				background-color: #E3DAC9;
+			}
+
+.navbar-default {
+    background-color: #373737;
+    border-color: #727171;
+}
+.navbar-default .navbar-brand {
+    color: #b1b1b1;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    color: #fefefe;
+}
+.navbar-default .navbar-text {
+    color: #b1b1b1;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #b1b1b1;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #fefefe;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: #fefefe;
+    background-color: #727171;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #fefefe;
+    background-color: #727171;
+}
+.navbar-default .navbar-toggle {
+    border-color: #727171;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: #727171;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #b1b1b1;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+    border-color: #b1b1b1;
+}
+.navbar-default .navbar-link {
+    color: #b1b1b1;
+}
+.navbar-default .navbar-link:hover {
+    color: #fefefe;
+}
+
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #b1b1b1;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #fefefe;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+        color: #fefefe;
+        background-color: #727171;
+    }
+}
+
+            
+		</style>
+
+        {% block head %}
+        {% endblock %}
+
+	</head>	
+
+	<body>
+
+
+<!-- Fixed navbar -->
+    <div id="mynavbar" class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        <div class="navbar-header">
+
+          <a class="navbar-brand" href="/">
+            MoonEx E-Procs Tool
+          </a>
+
+
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Test Procedure List<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                   {% for test in tests_list %}                                 
+                                <li>
+                                     <a href="/test_page/{{test['test_num']}}">{{test['test_name']}}</a>
+                                </li>
+                            {% endfor %}
+                </ul>
+            </li>
+            <li><a href="/create_procs">Create New Test</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="http://zoidberg.moonexpress.com:8090/display/MS/E-Procs+Tool">About</a></li>
+          </ul>
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+    </div>
+
+<br><br><br>
+
+		<div class="row">
+			<div class="col-md-3 col-md-offset-1" >
+
+                {% block left_column %}
+                {% endblock %}
+
+			</div>
+
+			<div class="col-md-7">
+				<div style="padding:5px">
+
+                    {% block content %}
+                    {% endblock %}
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                {% block end_row %}
+                {% endblock %}
+            </div>
+        </div>
+
+    </body>
+</html>

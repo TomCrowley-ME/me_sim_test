@@ -1,0 +1,29 @@
+#!/bin/bash
+if [ $# -ne 2 ]
+then
+    echo "Usage: ./export_data <archive_file> <name>"
+else
+    if [[ $1 =~ scn([0-9]+)_([^_]+) ]]
+    then
+        scn_num=${BASH_REMATCH[1]}
+        hw=${BASH_REMATCH[2]}
+    else
+        echo "Can't deduce scenario number!"
+        exit
+    fi
+
+    scn_dir=$(find ~/bender/phil/wsim/scenarios -iname "scenario_${scn_num}_*")
+    if [ -z "$scn_dir" ]
+    then
+        echo "Can't find scenario $1"
+        exit
+    fi
+    dirname="scn${scn_num}_${hw}_$(date +%m%d%y)_$2"
+    data_dir="$scn_dir/$dirname"
+    nfs_dir="/srv/nfs/runs/$dirname"
+    mkdir -p $data_dir
+    mkdir -p $nfs_dir
+
+    archive_reader -v MTV1x -s -o $data_dir $1
+    cp $data_dir/* $nfs_dir
+fi

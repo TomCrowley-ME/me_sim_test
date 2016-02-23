@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Parameters</h1> 
+
+	<table class="TFtable" style="width:1200px">
+		<tr>
+			<td>
+				<form method="post" action="/parameters">
+					<table class="TFtable" style="width:700px">
+						<tr>
+							<td>
+								Parameter Name: <input type="text" name="name" value="{{filter_name}}" style="width:200px"/>						
+								Application Name:
+								<select name="app_selected">
+									<option value="ALL">ALL</option>
+									{% for app_name in unique_app_names %}
+										<option {{filter_selected_dict[app_name]}} value="{{app_name}}">{{app_name}}</option>
+									{% endfor %}
+								</select>
+								<input type="checkbox" name="tunable_only" value="tunable_only" {{filter_tunable_only}}>Tunable Only
+							</td>
+							<td>
+								<input type="submit" value="filter" name="filter">
+							</td>
+							<td>
+								<input type="submit" value="clear" name="clear">
+							</td>
+						</tr>
+					</table>
+				</form>
+			</td>
+			<td>
+				<form method="post" action="/add_edit_parameter">
+					<table class="TFtable" style="width:100px">
+						<tr>
+							<td>
+								<input type="submit" value="Add New Parameter" name="add_edit_parameter">
+								<input type="hidden" name="action" value="add"/>
+							</td>
+						</tr>
+					</table>
+				</form>
+				<form method="post" action="/import_json_form">
+					<table class="TFtable" style="width:100px">
+						<tr>
+							<td>
+								<input type="submit" value="Import Parameters" name="import_parameters">
+							</td>
+						</tr>
+					</table>
+				</form>
+			</td>
+		</tr>
+	</table>
+	
+	<hr>
+	
+	<table class="TFtable" style="width:1200px">
+		<thead>
+		{% for column_name in column_names %}
+		<th>{{column_name}}</th>
+		{% endfor %}
+		<th>edit</th>
+		<th>delete</th>
+		</thead>
+		{% for row in table %}
+			<tr id="{{row[0]}}">
+			{% for cell in row %}
+			<td>{{cell}}</td>
+			{% endfor %}
+			<form method="post" action="/add_edit_parameter">
+				<td>
+					<input type="submit" value="edit" name="action"/>
+				</td>
+				<input type="hidden" name="param_name" value="{{row[0]}}"/>
+			</form>
+			<form method="post" action="/confirm_delete">
+				<td>
+					<input type="submit" value="del" name="del"/>
+				</td>
+				<input type="hidden" name="to_be_deleted_name" value="{{row[0]}}"/>
+				<input type="hidden" name="to_be_deleted_type" value="Parameter"/>
+			</form>
+			</tr>			
+		{% endfor %}
+	</table>		
+{% endblock %}

@@ -1,0 +1,28 @@
+! DemoSAT ITOS XDefaults Settings
+!
+!To load this file in:
+!xrdb -merge itos.xdefaults
+!
+!Run xwininfo to find information about current window (to find out this stuff)
+!
+
+! Global Defaults
+XDsp_plot*dataSetSize:			4000
+XDsp_mnepage*foreground:                green
+XDsp_mnepage*background:                black
+*Proc.geometry:                         825x370+765+25
+XGstol.geometry:                        828x30+0+92
+stol_events.geometry:                   1590x80+0+151
+events.geometry:                        1590x661+0+260
+pktcount.geometry:                      484x295+356+151
+gse_status.geometry:			346x464+0+151
+
+! Status-page-specific resources
+demo_status*foreground:			white
+demo_status*background:			black
+demo_status*fontColor:			white
+demo_status.geometry:			-0+0
+demo_status.numRows:			16
+demo_status.numCols:			43
+
+prop_system_status*XmBulletinBoard.backgroundPixmap:    pages/lro/LRO_Prop_Schematic.xpm

@@ -1,0 +1,64 @@
+proc run_schooner81
+
+LOCAL FILENAME
+FILENAME=CONCAT("scn81_hil_",STRFDATE("%m%d%y_%H%M%S", P@GBL_WALLCLOCK))
+
+START run_archiver(FILENAME)
+
+GBL_CMD_DELAY=0
+
+/est_set_reference_frame frame=TOPOCENTRIC
+
+LOCAL initial_met
+initial_met = SIM_TIME_METSECS
+
+SPEED 0
+WAIT UNTIL (SIM_TIME_METSECS .NE. initial_met)
+WAIT 4
+
+/HS.TIME_SETCLOCK TIME="2014-121-11:59:58"
+start sync_time
+
+WAIT 0.7
+/est_reinit
+
+WAIT 0.1
+/egc_reinit
+
+/cmp_set_mode mode=SAFE, submode=NONE
+
+/cmp_set_mode mode=SURFACE, submode=NONE
+
+/est_mtv_set_propellant_mass prop_mass=55.976
+/est_mtv_zero_topocentric_position
+/egc_set_weight_offset percent=91.5
+
+WAIT 15
+
+/act_mtv_pressurant_valve_enable
+WAIT 0.1
+/act_mtv_set_htp_tank_pressurant_vent_valve_state state=CLOSE
+WAIT 0.1
+/act_mtv_set_htp_tank_pressurant_valve_state state=OPEN
+WAIT 0.1
+/act_mtv_set_htp_main_engine_feed_valve_state state=OPEN
+WAIT 0.1
+
+/thrio_enable
+start plot_topo_motion
+
+WAIT 1
+/egcio_poweron
+WAIT 1
+/egcio_init
+WAIT 4
+/egcio_enable
+
+/sc_startrts rts_id=41
+
+
+WAIT 25
+
+START stop_archiver(FILENAME)
+
+endproc

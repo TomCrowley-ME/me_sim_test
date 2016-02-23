@@ -1,0 +1,16 @@
+proc plot_scn85
+
+STRIPCHART hs.sim_data_mtv_msg.lander_state_bus.rrk_rate_body_eci_body[0] hs.sim_data_mtv_msg.lander_state_bus.rrk_rate_body_eci_body[1] hs.sim_data_mtv_msg.lander_state_bus.rrk_rate_body_eci_body[2] FAST YMIN=-0.1 YMAX=0.1
+STRIPCHART hs.sim_data_mtv_msg.lander_state_bus.rrk_euler_zyx_rot_deg[0] hs.sim_data_mtv_msg.lander_state_bus.rrk_euler_zyx_rot_deg[1] hs.sim_data_mtv_msg.lander_state_bus.rrk_euler_zyx_rot_deg[2] FAST YMIN=-180 YMAX=180
+
+STRIPCHART act_mtv_msg.coarse1_time act_mtv_msg.coarse2_time act_mtv_msg.coarse3_time FAST YMIN=0 YMAX=120
+STRIPCHART act_mtv_msg.coarse4_time act_mtv_msg.coarse5_time act_mtv_msg.coarse6_time FAST YMIN=0 YMAX=120
+STRIPCHART act_mtv_msg.coarse7_time act_mtv_msg.coarse8_time act_mtv_msg.coarse9_time FAST YMIN=0 YMAX=120
+STRIPCHART act_mtv_msg.coarse10_time act_mtv_msg.coarse11_time act_mtv_msg.coarse12_time FAST YMIN=0 YMAX=120
+
+STRIPCHART hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[0] hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[1] hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[2] FAST YMIN=0 YMAX=120
+STRIPCHART hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[3] hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[4] hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[5] FAST YMIN=0 YMAX=120
+STRIPCHART hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[6] hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[7] hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[8] FAST YMIN=0 YMAX=120
+STRIPCHART hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[9] hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[10] hs.sim_data_mtv_msg.actuator_mtv_msg.thrusts[11] FAST YMIN=0 YMAX=120
+
+endproc

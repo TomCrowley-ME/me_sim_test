@@ -1,0 +1,13 @@
+PROC set_vehicle_utc_time
+
+; Synchronize the system time with NTP to minimize differences
+LOCAL status
+status = SYSTEM "gksudo 'ntpd -q'"
+
+IF (status .EQ. 0) THEN
+    /TIME_SETCLOCK TIME=P@GBL_GMTOFF
+ELSE
+    SHO "Error setting system time"
+ENDIF
+
+ENDPROC

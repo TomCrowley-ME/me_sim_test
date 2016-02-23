@@ -1,0 +1,55 @@
+@CHARSET "UTF-8";
+
+select { display: inline; }
+
+body { 
+	font-family:'lucida grande', tahoma, verdana, arial, sans-serif; 
+	font-size:11px; 
+}
+
+table,th,td{
+	border:1px solid black;
+	border-collapse:collapse;
+	padding:8px;
+}
+
+td.number {
+	text-align: right;
+	font-weight: bold;
+	padding-right: 5px;
+	white-space: nowrap;
+}
+
+td.boolean {
+	text-align: center;
+}
+
+th.boolean {
+	text-align: center;
+}
+
+<!--
+	<style type="text/css">
+	body { font-family:'lucida grande', tahoma, verdana, arial, sans-serif; font-size:11px; }
+	.TFtable{
+		width:100%; 
+		border-collapse:collapse; 
+	}
+	.TFtable td{ 
+		padding:7px; border:#4e95f4 1px solid;
+	}
+	/* provide some minimal visual accomodation for IE8 and below */
+	.TFtable tr{
+		background: #b8d1f3;
+	}
+	/*  Define the background color for all the ODD background rows  */
+	.TFtable tr:nth-child(odd){ 
+		background: #b8d1f3;
+	}
+	/*  Define the background color for all the EVEN background rows  */
+	.TFtable tr:nth-child(even){
+		background: #dae5f4;
+	}
+</style>
+-->
+

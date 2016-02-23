@@ -1,0 +1,50 @@
+PROC set_estimator_reference_frame 
+
+LOCAL current_frame, change_frame, ref_type, new_frame
+LOCAL current_cmd_pc, cmd_status, cmp_status, status, success, send_cmd
+
+current_frame = p@cmp_mtv_msg.est_ref_frame
+
+ASK (concat("EST reference frame is currently set to ", current_frame, "\n\nPress ENTER to change and CANCEL to exit with no change")), change_frame
+IF (isnull(change_frame)) THEN
+    RETURN
+ENDIF
+
+LABEL1:
+ASK "Enter reference frame for EST to use: TYPE 1 for INERTIAL or TYPE 2 for TOPOCENTRIC, CANCEL to exit", ref_type
+IF (isnull(ref_type)) THEN
+    RETURN
+ELSEIF (ref_type .eq. "1") THEN
+    new_frame = "INERTIAL"
+ELSEIF (ref_type .eq. "2") THEN
+    new_frame = "TOPOCENTRIC"
+ELSE
+    EVENT ERROR "Must enter valid frame type. Return to frame entry"
+    GOTO LABEL1
+ENDIF
+
+
+LABEL2:
+ASK (concat("Command authorization: click OK to accept value and send command \n\\est_set_reference_frame frame= ", new_frame)), send_cmd
+IF (isnull(send_cmd)) THEN
+    RETURN
+ENDIF
+
+current_cmd_pc = cmp_mtv_msg.process_cmds_counter
+
+/est_set_reference_frame frame=NAME(new_frame)
+
+WAIT 1 UNTIL (p@cmp_mtv_msg.est_ref_frame .EQ. new_frame ) status=success
+cmp_status=success
+WAIT 1 UNTIL (cmp_mtv_msg.process_cmds_counter .gt. current_cmd_pc) status=success
+cmd_status=success
+
+if (bwand(cmd_status, cmp_status) .eq. 0) THEN
+   EVENT ERROR "The frame command cannot be verified"
+ELSE
+   EVENT INFO "Estimator frame has been successfully set"
+ENDIF
+
+RETURN
+
+ENDPROC

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rechtml -o html $(find rec/ -name "*.rec" -print)

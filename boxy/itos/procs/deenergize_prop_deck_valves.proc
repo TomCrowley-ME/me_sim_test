@@ -1,0 +1,136 @@
+PROC deenergize_prop_deck_valves 
+
+LOCAL valves_enabled 
+LOCAL current_cmd_pc, cmd_status, cmp_status, status, success
+LOCAL send_cmd, cmd_specific
+
+LABEL1:
+valves_enabled = cmp_mtv_msg.act_mtv_valve_cmd_enable
+if (valves_enabled) THEN
+    ASK "Prop deck valve commands are currently ENABLED.\n Hit ENTER to continue to stand down from flight configuration, CANCEL to exit.", cmd_specific
+    if (isnull(cmd_specific)) THEN
+        EVENT WARN  "Exiting energize_prop_deck_valves with no action"
+        RETURN
+    ENDIF
+ELSE
+    ASK "Prop deck valve commands are currently DISABLED\nCommand authorization: click OK to accept value and send command\n\\act_mtv_pressurant_valve_enable", send_cmd
+    IF (isnull(send_cmd)) THEN
+        EVENT WARN "Exiting energize_prop_deck_vlaves with no action"
+        RETURN
+    ELSE
+               
+        current_cmd_pc = cmp_mtv_msg.process_cmds_counter
+
+        /act_mtv_pressurant_valve_enable
+
+        WAIT 1 UNTIL (cmp_mtv_msg.act_mtv_valve_cmd_enable .EQ. 1 ) status=success
+        cmp_status=success
+        WAIT 1 UNTIL (cmp_mtv_msg.process_cmds_counter .gt. current_cmd_pc) status=success
+        cmd_status=success
+
+        IF (bwand(cmd_status, cmp_status) .eq. 0) THEN
+             EVENT ERROR "Pressurant valve enable command cannot be confirmed"
+             ASK "Command receipt cannot be confirmed! \nEnter 1 to execute proc step again 0 or cancel to exit"
+            IF (isnull(answer)) THEN
+                RETURN
+            ELSE
+               IF (STRTOL(answer) .eq. 1) THEN
+                   EVAL concat("GOTO label", answer)
+               ELSE
+                   RETURN
+               ENDIF
+            ENDIF
+        ELSE
+             EVENT INFO "Pressurant valves have been enabled for commanding"
+        ENDIF
+    ENDIF
+ENDIF
+
+LABEL2:
+if (p@cmp_mtv_msg.act_htp_tank_press_vent_valve .eq. "OPEN") THEN
+    ASK "HTP pressurant tank vent valve is OPEN.\n No action necessary to stand down from flight configuration\n Hit ENTER to continue commanding prop deck valves, CANCEL to exit.", cmd_specific
+    if (isnull(cmd_specific)) THEN
+        EVENT WARN  "Exiting energize_prop_deck_valves"
+        RETURN
+    ENDIF
+ELSE
+    ASK "HTP pressurant tank vent valve is CLOSE\nCommand authorization: click OK to accept value and send command\n\/act_mtv_set_htp_tank_pressurant_vent_valve_state state=OPEN", send_cmd
+    IF (isnull(send_cmd)) THEN
+        EVENT WARN "Exiting energize_prop_deck_vlaves"
+        RETURN
+    ELSE
+               
+        current_cmd_pc = cmp_mtv_msg.process_cmds_counter
+        
+        /act_mtv_set_htp_tank_pressurant_vent_valve_state state=OPEN
+
+        WAIT 1 UNTIL (p@cmp_mtv_msg.act_htp_tank_press_vent_valve .EQ. "OPEN" ) status=success
+        cmp_status=success
+        WAIT 1 UNTIL (cmp_mtv_msg.process_cmds_counter .gt. current_cmd_pc) status=success
+        cmd_status=success
+
+        IF (bwand(cmd_status, cmp_status) .eq. 0) THEN
+             EVENT ERROR "HTP vent valve command status cannot be confirmed"
+             ASK "Command receipt cannot be confirmed! \nEnter 2 to execute proc step again 0 or cancel to exit"
+            IF (isnull(answer)) THEN
+                RETURN
+            ELSE
+               IF (STRTOL(answer) .eq. 2) THEN
+                   EVAL concat("GOTO label", answer)
+               ELSE
+                   RETURN
+               ENDIF
+            ENDIF
+        ELSE
+             EVENT INFO "HTP pressurant tank vent valve has been OPENED--venting now"
+        ENDIF
+    ENDIF
+ENDIF
+
+LABEL3:
+if (p@cmp_mtv_msg.act_htp_main_purge_valve .eq. "OPEN") THEN
+    ASK "HTP purge valve is OPEN.\n No action necessary to stand down from flight configuration\n Hit ENTER to continue, CANCEL to exit.", cmd_specific
+    if (isnull(cmd_specific)) THEN
+        EVENT WARN  "Exiting energize_prop_deck_valves"
+        RETURN
+    ENDIF
+ELSE
+    ASK "HTP purge valve is CLOSED\nCommand authorization: click OK to accept value and send command\n\/act_mtv_set_htp_main_engine_purge_valve_state state=OPEN", send_cmd
+    IF (isnull(send_cmd)) THEN
+        EVENT WARN "Exiting energize_prop_deck_vlaves"
+        RETURN
+    ELSE
+               
+        current_cmd_pc = cmp_mtv_msg.process_cmds_counter
+        
+        /act_mtv_set_htp_main_engine_purge_valve_state state=OPEN
+
+        WAIT 1 UNTIL (p@cmp_mtv_msg.act_htp_main_purge_valve .EQ. "OPEN" ) status=success
+        cmp_status=success
+        WAIT 1 UNTIL (cmp_mtv_msg.process_cmds_counter .gt. current_cmd_pc) status=success
+        cmd_status=success
+
+        IF (bwand(cmd_status, cmp_status) .eq. 0) THEN
+             EVENT ERROR "HTP valve command status cannot be confirmed"
+             ASK "Command receipt cannot be confirmed! \nEnter 3 to execute proc step again 0 or cancel to exit"
+            IF (isnull(answer)) THEN
+                RETURN
+            ELSE
+               IF (STRTOL(answer) .eq. 3) THEN
+                   EVAL concat("GOTO label", answer)
+               ELSE
+                   RETURN
+               ENDIF
+            ENDIF
+        ELSE
+             EVENT INFO "HTP pressurant purge valve has been OPENED"
+        ENDIF
+    ENDIF
+ENDIF
+
+ASK "Purge valve is open: command purge valve closed when discharge complete. Hit ENTER to exit"
+
+
+RETURN
+
+ENDPROC

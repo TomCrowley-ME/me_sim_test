@@ -1,0 +1,19 @@
+PROC egc_warmup_sequence
+
+LOCAL send_cmd, current_frame
+
+current_frame = EGCIOHK_ACTIVE
+
+ ASK (concat("Current EGCIO active state is ", current_frame, "\n\nCommand authorization: click OK to accept value and send commands\n\\egcio_init\n\\egcio_enable")), send_cmd
+
+
+IF (isnull(send_cmd)) THEN
+    RETURN
+ENDIF
+
+WAIT 1
+/egcio_init
+WAIT 4
+/egcio_enable
+
+ENDPROC

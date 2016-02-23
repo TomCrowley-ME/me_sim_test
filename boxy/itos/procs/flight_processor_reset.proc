@@ -1,0 +1,44 @@
+PROC flight_processor_reset
+
+LOCAL init_counter, send_cmd, run_again, current_mode
+LOCAL success
+
+
+LABEL1:
+send_cmd = 0
+ASK "Command authorization: click OK to accept value and send command\n\\es_reset restartype=poweron_reset", send_cmd
+
+IF (isint(send_cmd)) THEN
+    EVENT WARN "Exiting flight_processor_reset without sending command"
+    RETURN
+ENDIF
+
+current_mode = p@cmp_mtv_msg.mode
+
+/es_reset restarttype=poweron_reset
+
+IF (current_mode .ne. "STARTUP") THEN
+    WAIT 60 UNTIL (p@cmp_mtv_msg.mode .EQ. "STARTUP") status=success
+ELSE
+    WAIT 45
+    success = p@cmp_mtv_msg.mode .EQ. "STARTUP"
+ENDIF
+
+init_counter = cmp_hk_msg.InitCounter
+
+if (init_counter .eq. 0 .and. success) THEN
+   EVENT INFO "Telemetry indicates sucessfull processor reset"
+ELSE
+   EVENT ERROR "Cannot confirm processor reset using telemetry"
+   run_again = 0
+   ASK "Cannot confirm processor reset using telemtry.\n\n Press ENTER to rerun proc, CANCEL to exit", run_again
+   IF (isint(run_again)) THEN
+       RETURN
+   ELSE
+      GOTO LABEL1
+   ENDIF
+ENDIF
+
+RETURN
+
+ENDPROC

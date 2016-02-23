@@ -1,0 +1,74 @@
+#!/bin/sh --norc
+
+# The colon-seperated list of directories to
+# search for display pages.
+export ITOS_PAGEPATH=$ITOS_GROUPDIR/pages:$ITOS_GROUPDIR/pages/autogen:$ITOS_DIR/pages:$ITOS_DIR/pages/autogen
+
+# Search for archive files.
+export ITOS_TM_ARCHPATH=$ITOS_GROUPDIR/output/archive
+
+# Name of default page to run on start
+export ITOS_STATUSPG=autogen
+
+# Name of others pages to run on start
+#export ITOS_BASEPG_1=gse_status
+#export ITOS_BASEPG_2=pktcount
+
+# The colon-seperated list of directories to
+# search for stol procedures.
+export ITOS_PROCPATH=$ITOS_GROUPDIR/procs:$ITOS_DIR/procs:$ITOS_GROUPDIR/procs/autogen:$ITOS_DIR/procs/autogen
+
+# The colon-seperated list of directories to
+# search for executables.
+export PATH=$ITOS_GROUPDIR/bin:$PATH
+
+# The colon-seperated list of directories to
+# search for configuration monitors.
+export ITOS_CFGMONPATH=$ITOS_GROUPDIR/cfgmon
+
+# The name of the stol procedure that's
+# automatically started when the ITOS software
+# first comes up.  (If unset, no proc gets
+# automatically started).
+export ITOS_START_PROC=moonex_startup
+
+# The name and port of the host running the tlm controller.
+#export ITOS_TMCTRL_HOST=myfeds
+#export ITOS_TMCTRL_PORT=32000
+
+# Directory where on-line help html files are rooted.  I.e., the
+# table of contents to the on-line help is at
+# ``${ITOS_URLPREFIX}/Welcome.shtml''
+export ITOS_URLPREFIX=file:${ITOS_DIR}/htdocs/Welcome.html
+export ITOS_URLBROWSER=firefox
+
+# Time in event message headers. Used by dsp_evtlog.
+# Should be "local" or "gmt".
+export ITOS_EVT_TIME=gmt
+
+# Enable the STOL well-known-port
+export ITOS_STOLWKP=33100
+
+# Set the ITOS output directory
+export ITOS_OUTPUTDIR=output
+
+# Set the ITOS temporary directory (where the mission_odb is copied to)
+export ITOS_TMPDIR=output/tmp
+export ITOS_DBDIR=$ITOS_GROUPDIR/odb
+
+# Set the sequential print output directory
+export ITOS_SPRTDIR=$ITOS_OUTPUTDIR/prints
+
+# Load in the appropriate Xdefaults
+xrdb -merge ${ITOS_GROUPDIR}/itos.xdefaults
+
+# Set the ITOS device configuration directory (for Device.conf / GPIB stuff)
+export ITOS_DEVCFGDIR=${ITOS_GROUPDIR}
+
+#
+# GPIB / SCPI Device Enumeration
+#
+
+if [ -r ~/.itosrc ]; then
+    source ~/.itosrc
+fi

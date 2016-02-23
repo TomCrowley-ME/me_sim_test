@@ -1,0 +1,17 @@
+page dev
+
+color ( banner (cyan, default) button (white, white) fsw_reboot (red, gray) sim_reboot (red,gray))
+
+banner (1, 1, "Dev stuff")
+
+GBL_GMTOFF (+, 1, "GMT::       :v%22T:")
+
+banner (4, 4, "FSW")
+button fsw_reboot (+1, 2, "Reboot", "/es_reset restarttype=poweron_reset")
+
+banner (4, 26, "SIM")
+button sim_reboot (+1, 24, "Reboot", "/hs.es_reset restarttype=poweron_reset")
+
+
+button fsw_sync    (+1, 2, "Sync FSW Time", "START sync_time")
+button sim_time_81 (=, 24, "Set Sim Time (81)", "/HS.TIME_SETCLOCK TIME=2014-121-11:59:58")

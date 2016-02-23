@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Import JSON file</h1> 
+
+	Import a JSON file containing parameter definitions<br><br> 
+	<form method="post" action="/import_json" enctype="multipart/form-data">
+		Please specify a valid parameter JSON file:
+		<input type="file" name="json_file" size="40"><br>
+		<input type="submit" value="Upload">
+	</form>
+	
+{% endblock %}

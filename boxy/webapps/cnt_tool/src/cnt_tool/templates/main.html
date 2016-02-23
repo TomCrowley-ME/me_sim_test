@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+
+
+<script>
+$(function () {
+    $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+    $('.tree li.parent_li > span').on('click', function (e) {
+        var children = $(this).parent('li.parent_li').find(' > ul > li');
+        if (children.is(":visible")) {
+            children.hide('fast');
+            $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+        } else {
+            children.show('fast');
+            $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+        }
+        e.stopPropagation();
+    });
+});
+</script>
+
+
+<style>
+    .tree {
+        min-height:20px;
+        padding:19px;
+        margin-bottom:20px;
+        background-color:#fbfbfb;
+        border:1px solid #999;
+        -webkit-border-radius:4px;
+        -moz-border-radius:4px;
+        border-radius:4px;
+        -webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05)
+    }
+    .tree li {
+        list-style-type:none;
+        margin:0;
+        padding:10px 5px 0 5px;
+        position:relative
+    }
+    .tree li::before, .tree li::after {
+        content:'';
+        left:-20px;
+        position:absolute;
+        right:auto
+    }
+    .tree li::before {
+        border-left:1px solid #999;
+        bottom:50px;
+        height:100%;
+        top:0;
+        width:1px
+    }
+    .tree li::after {
+        border-top:1px solid #999;
+        height:20px;
+        top:25px;
+        width:25px
+    }
+    .tree li span {
+        -moz-border-radius:5px;
+        -webkit-border-radius:5px;
+        border:1px solid #999;
+        border-radius:5px;
+        display:inline-block;
+        padding:3px 8px;
+        text-decoration:none
+    }
+    .tree li.parent_li>span {
+        cursor:pointer
+    }
+    .tree>ul>li::before, .tree>ul>li::after {
+        border:0
+    }
+    .tree li:last-child::before {
+        height:30px
+    }
+    .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
+        background:#eee;
+        border:1px solid #94a0b4;
+        color:#000
+    }
+</style>
+
+{% endblock %}
+
+
+
+
+{% block content %}
+<div class="row">
+	<div class="col-md-7 col-md-offset-1">
+		<h3>Space System Inheritance Tree</h3>
+        <h6 class="text-warning">***restrictions: editor does not allow for addition of Space Systems (must be added to sub_systems by hand in raw JSON).***</h4>
+
+
+
+<div class="tree well">
+    <ul>
+        <li>
+            <span><i class="icon-folder-open"></i> {{system_list[0].name}}
+			  <form action="/jsoneditor">
+			  	<input type="hidden" name="system_name" value="{{system_list[0].name}}">
+                <button type="submit" class="btn btn-link">{{system_list[0].description}}</button>
+			  </form>
+              </span>
+
+            <ul>
+            {%- for system in system_list[0].sub_systems recursive %}
+
+                <li>
+                {% if system.space_system.sub_systems %}
+                    <span><i class="icon-minus-sign"></i> {{system.space_system.name}}
+                        <a>
+                        <form action="/jsoneditor">
+                            <input type="hidden" name="system_name" value="{{system.space_system.name}}">
+                            <button type="submit" class="btn btn-link">{{system.space_system.description}}</button>
+                        </form>
+                        </a>
+                    </span>
+
+                    <ul class="submenu">{{ loop(system.space_system.sub_systems) }}</ul>
+
+				{% else %}
+                    <span><i class="icon-leaf"></i> {{system.space_system.name}}
+                        <a>
+			            <form action="/jsoneditor">
+			            	<input type="hidden" name="system_name" value="{{system.space_system.name}}">
+                            <button type="submit" class="btn btn-link">{{system.space_system.description}}</button>
+			            </form>
+                        </a>
+                    </span>
+				{% endif %}
+                </li>
+
+            {%- endfor %}
+            </ul>
+
+        </li>
+    </ul>
+</div>
+
+
+
+
+		<table class="table table-bordered table-striped">
+		    <thead>
+		        <tr>
+		            <th>System</th>
+		            <th>Parent</th>
+		            <th>Description</th>
+		            <th>Properties</th>
+		            <th>Edit</th>
+		        </tr>
+		    </thead>
+
+		    <tbody>
+				{% for system in system_list %}
+					<tr>
+						<td>{{system.name}}</td>
+						<td>{{system.parent}}</td>
+						<td>{{system.description}}</td>
+						<td>
+							<ul>
+								<li>Common Data:
+									{% if system.common_data %}
+										<ul>
+											{% for key in system.common_data %}
+												<li>{{key}}  ({{system.common_data[key] | length }})</li>
+											{% endfor %}
+										</ul>
+									{% endif %}
+								</li>
+								<li>Telemetry Data:
+								{% if system.telemetry_data %}
+									<ul>
+										{% for key in system.telemetry_data %}
+											<li>{{key}} ({{system.telemetry_data[key] | length }})</li>
+										{% endfor %}
+									</ul>
+								{% endif %}
+								</li>
+								<li>Command Data:
+									{% if system.command_data %}
+									<ul>
+										{% for key in system.command_data %}
+											<li>{{key}} ({{system.command_data[key] | length }})</li>
+										{% endfor %}
+									</ul>
+								{% endif %}
+								</li>
+							</ul>
+						</td>
+					<td>
+					<form action="/jsoneditor">
+						<input type="hidden" name="system_name" value="{{system.name}}">
+						<input type="submit" class="btn btn-default btn-sm" value="Edit System">
+					</form>
+					</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="col-md-3 col-md-offset-1">
+		<h3>Tools</h3>
+		<hr>
+		<h4>Search by Tag</h4>
+		<form name="input" method="get">
+		Filter by sequence container tag: 
+			<select name="the_tag">
+				<option value="">Select Tag</option>
+				{% for tag in tag_list %}
+					<option value="{{tag}}">{{tag}}</option>
+				{% endfor %}
+			</select>
+			<br><br>
+			<input type="submit" class="btn btn-default btn-sm" value="Submit">
+		</form>
+		{% if s_c_list %}
+			<h5>You asked to filter by {{the_tag}}, the sequence containers are:</h5>
+			<ul>
+				{% for sc in s_c_list %}
+					<li>{{sc}}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+
+		<hr>
+
+		<h4>View Entire JSON</h4>
+		(much better with JSONView browser extension 
+			<a href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en">Chrome/Chromium</a> 
+			<a href="https://addons.mozilla.org/en-us/firefox/addon/jsonview/">Firefox</a>)
+		<br><br>
+		<form action="/printjson" method="GET">
+			<input type="submit" class="btn btn-default btn-sm" value="View">
+		</form>
+
+	</div>
+</div>
+
+{% endblock %}

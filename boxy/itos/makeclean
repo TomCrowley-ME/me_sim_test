@@ -1,0 +1,9 @@
+#!/bin/bash
+
+rm -rf output/tmp/*
+rm -rf odb/*
+rm -rf html/*
+rm -rf rec/autogen/*
+rm -rf pages/autogen/*
+rm -rf procs/autogen/*
+rm -rf ctrlsource.dat

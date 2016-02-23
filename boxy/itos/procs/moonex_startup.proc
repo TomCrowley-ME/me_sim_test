@@ -1,0 +1,20 @@
+PROC moonex_startup
+SPEED 0
+SHO "Welcome to the MoonEx ITOS environment!"
+
+SHO "Setting global epoch to J2000..."
+GBL_DEF_EPOCH=cfe_time
+
+SHO "Setting up ITOS log tagging..."
+global GS_TAGNAME
+GS_TAGNAME=concat(substr(P@GBL_WALLCLOCK,1,2),"-",substr(P@GBL_WALLCLOCK,4,3))
+LOG > (GS_TAGNAME) PUSH
+
+START setup_environment
+START pipe_event_logs
+START attach_tlm_sources
+IF (GBL_CONSOLE_MODE .eq. "COMMANDER") THEN
+    START init_cmd_graphs
+ENDIF
+
+ENDPROC

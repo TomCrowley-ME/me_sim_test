@@ -1,0 +1,9 @@
+proc plot_topo_motion
+
+STRIPCHART hs.sim_tlm_msg.pos_topo[2] FAST YMIN=-10 YMAX=40
+STRIPCHART hs.sim_tlm_msg.vel_topo[0] hs.sim_tlm_msg.vel_topo[1] hs.sim_tlm_msg.vel_topo[2] FAST YMIN=-5 YMAX=5
+STRIPCHART est_mtv_msg.altitude FAST YMIN=-10 YMAX=40
+STRIPCHART est_mtv_msg.vel[0] est_mtv_msg.vel[1] est_mtv_msg.vel[2] FAST YMIN=-5 YMAX=5
+STRIPCHART est_mtv_msg.landed FAST YMIN=0 YMAX=2
+
+endproc

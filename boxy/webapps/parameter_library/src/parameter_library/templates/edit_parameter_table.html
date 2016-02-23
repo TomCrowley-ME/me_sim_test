@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+	<h1>Edit Parameter Table</h1> 
+
+	<table class="TFtable" style="width:800px">
+		<thead>
+		<th>Parameter Name</th>
+		<th>Parameter Value</th>
+		</thead>
+		{% for row in table %}
+			<tr>
+				<form method="post" action="/edit_parameter_value">
+					<td style="width:200px">
+						{{row[0]}}
+					</td>	
+					<td>
+						<textarea name="value" style="width:760px" ROWS=5 COLS=80>{{row[1]}}</textarea>
+						<input type="hidden" name="parameter_table_name" value="{{parameter_table_name}}"/>
+						<input type="hidden" name="parameter_table_param_name" value="{{row[0]}}"/>
+					</td>
+					<td>
+						<input type="submit" value="update" name="update"/>
+					</td>
+				</form>
+			</tr>			
+		{% endfor %}
+	</table>		
+{% endblock %}

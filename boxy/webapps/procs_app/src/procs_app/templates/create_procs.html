@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block left_column %}
+
+	{% if adding_proc %}
+
+		<h5>Current Procedures in this Test:</h5>
+		{% if proc_list %}
+			<ol>
+			{% for proc in proc_list %}
+				<li><a href="/create_procs/{{proc['test_num']}}/{{proc['proc_num']}}">{{proc['ID']}}</a></li>
+			{% endfor %}
+			</ol>
+		{% endif %}
+
+		<hr>
+
+	{% endif %}
+
+{% endblock %}
+
+{% block content %}
+
+	{% if new_test %}
+		<form action="/create_new_test" method="POST">
+		<h4>Enter a name for the test:</h4>
+		<input type="text" name="submitted_test_name"> <br><br>
+		<h4>Enter a description for the test:</h4>
+		<textarea cols="75" name="description"></textarea> <br><br>
+		<input type="submit" style="margin: 5px;" class="btn btn-primary" value="Start New Test">
+		</form>
+
+	{% elif adding_proc %}
+
+		<h4>Current Test: {{current_test['test_name']}}</h4>
+
+		<form action="/create_procs/{{current_test['test_num']}}/{{proc_num}}" method="POST">
+		<h5></h5>
+			<ul>
+				<li><strong>Proc ID</strong>: <br>
+					<input type="text" name="ID">
+				</li>
+				<li><strong>Summary</strong>: <br>
+					<textarea cols="75" name="summary"></textarea>
+				</li>
+				<li><strong>Actions</strong> (comma delineated): <br>
+					<textarea cols="75" name="actions"></textarea>
+				</li>
+				<li><strong>Expected Results</strong>: <br>
+					<textarea cols="75" name="expected_results"></textarea>
+				</li>
+			</ul>
+		<input type="submit" style="margin: 5px;" class="btn btn-primary" name="submit" value="Next">
+		<input type="submit" style="margin: 5px;" class="btn btn-default" name="submit" value="Done with Test">
+		</form>
+
+	{% endif %}
+
+{% endblock %}

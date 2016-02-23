@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block left_column %}
+<h4>List of Procedures</h4>
+<ol>
+{% for proc in procs_list %}
+	<li>
+		{% if proc['ID'] == requested_proc_source['ID'] %}
+			<strong>Current Proc: </strong>
+		{% endif %}
+		<a href="/view_test/{{proc['test_num']}}/{{requested_proc_record['run_num']}}/{{proc['proc_num']}}">{{proc['ID']}} - {{proc['summary']}}</a>
+	</li>
+{% endfor %}
+</ol>
+{% endblock %}
+
+{% block content %}
+
+	<h4 style="text-align:center;">Current Test: {{requested_test['test_name']}}</h4>
+	<h4 style="text-align:center;">Read Only - Viewing Mode</h4>
+	<ul>
+		<li><strong>ID</strong>: {{requested_proc_source['ID']}}</li>
+		<li><strong>Summary</strong>: {{requested_proc_source['summary']}}</li>
+		<li><strong>Actions</strong>: <br><br>
+			{% for action in requested_proc_source['actions'] %}
+				<input type="checkbox" name="actions" value="{{action}}" onclick="return false"
+					{% if action in requested_proc_record['actions'] %}
+						checked
+					{% endif %}
+					> {{action}}<br>
+			{% endfor %}
+			<br>
+		</li>
+		<li><strong>Expected Results</strong>: {{requested_proc_source['expected_results']}}</li>
+		<li><strong>Discrepancies</strong>: <br>
+			<textarea cols="75" name="discrepancies" readonly>{{requested_proc_record['discrepancies']}}</textarea>
+		</li>
+		<li><strong>Notes for the operator</strong>: <br>
+			<textarea cols="75" name="notes" readonly>{{requested_proc_record['notes']}}</textarea>
+		</li>
+		<li><strong>Red Lines</strong>: <br>
+			<textarea cols="75" name="red_lines" readonly>{{requested_proc_record['red_lines']}}</textarea>
+		</li>
+	</ul>
+
+	{% if not last_proc %}
+		<a class="btn btn-primary" href="/view_test/{{requested_proc_record['test_num']}}/{{requested_proc_record['run_num']}}/{{requested_proc_source['proc_num']|int + 1}}">Next Proc</a>
+	{% else %}
+		***This is the final proc in this test***<br>
+		<a class="btn btn-default" href="/test_page/{{requested_proc_record['test_num']}}">Return to Test Page</a>
+	{% endif %}
+
+{% endblock %}

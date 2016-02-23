@@ -1,0 +1,42 @@
+PROC set_propellant_load 
+
+LOCAL htp_mass
+ASK "Enter total mass of HTP loaded, in kilograms", htp_mass
+if (isnull(htp_mass)) THEN
+    EVENT WARN  "Must enter a numeric value to continue"
+    RETURN
+ENDIF
+
+LOCAL nitrogen_mass
+ASK "Enter total mass of N2 loaded, in kilograms", nitrogen_mass
+if (isnull(nitrogen_mass)) THEN
+    EVENT WARN "Must enter a numeric value to continue"
+    RETURN
+ENDIF
+
+LOCAL total_prop
+total_prop = htp_mass + nitrogen_mass
+
+ASK (concat("Command authorization: click OK to accept value and send comand \n\\est_mtv_set_propellant_mass prop= ", tostring(total_prop)))
+
+LOCAL current_cmd_pc, current_mass, est_status, cmp_status, status, success
+current_mass = est_mtv_msg.mass
+current_cmd_pc = cmp_mtv_msg.process_cmds_counter
+
+
+/est_mtv_set_propellant_mass prop_mass=total_prop
+
+WAIT 1 UNTIL (cmp_mtv_msg.est_mtv_propellant_mass_update .EQ. total_prop ) status=success
+cmp_status=success
+WAIT 1 UNTIL (est_mtv_msg.mass .ne. current_mass) status=success
+est_status=success
+
+if (bwand(est_status, cmp_status) .eq. 0) THEN
+   EVENT ERROR "The mass has not been set...proc has failed"
+ELSE
+   EVENT INFO "Estimated mass has been successfully set"
+ENDIF
+
+RETURN
+
+ENDPROC

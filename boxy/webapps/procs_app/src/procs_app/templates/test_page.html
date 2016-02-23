@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block left_column %}
+
+	<h4>List of Procedures:</h4>
+		<ol>
+		{% for proc in current_test_procs_list %}
+			<li>{{proc['ID']}} - {{proc['summary']}}</li>
+		{% endfor %}
+		</ol>
+
+{% endblock %}
+
+{% block content %}
+
+
+	<div style="text-align:center">
+	<h4>{{test_for_current_page['test_name']}}</h4>
+	<form action="/test_page/{{test_for_current_page['test_num']}}/" method="POST">
+		<input type="submit" class="btn btn-primary" value="Start a New Test Run">
+	</form>
+	</div>
+	<h4>Test Summary:</h4>
+	<p>{{test_for_current_page['description']}}</p>
+	<hr>
+	{% if current_test_runs_list %}
+		<h4>View Previous Runs:</h4>
+		<ol>
+		{% for run in current_test_runs_list %}
+			<li><a href="/view_test/{{run['test_num']}}/{{run['run_num']}}/0" >{{run['time_created']}}</a></li>
+		{% endfor %}
+		</ol>
+
+		<hr>
+	{% endif %}
+
+	<h4>Extra Stats</h4>
+	<p>What would be useful down here? I can add stats like average test time, number of red lines, num of discrepancies in most recent test, etc</p>
+
+
+{% endblock %}

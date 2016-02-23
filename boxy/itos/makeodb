@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ -r ~/.itosrc ]; then
+    source ~/.itosrc
+fi
+
+rm -f odb/*
+#recc -v B.0 -o odb/ $(find graphs/ rec/ -name "*.rec" -print)
+recc -v B.0 -o odb/ $(find rec/ -name "*.rec" -print)

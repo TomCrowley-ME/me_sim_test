@@ -1,0 +1,259 @@
+proc execute_hil_test
+
+LOCAL label_value
+LOCAL answer
+
+LOCAL FILENAME
+FILENAME=CONCAT("scn81_hil_",STRFDATE("%m%d%y_%H%M%S", P@GBL_WALLCLOCK))
+
+LABEL1:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n1 - START TELEMETRY ARCHIVE"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START run_archiver(FILENAME)
+
+LABEL2:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n2 - SUBSYSTEMS CHECKOUT"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+answer = 0
+ASK "Hold for subsystems checkout. Hit ENTER when ready to continue"
+IF (isint(answer)) THEN
+    RETURN
+ENDIF
+
+LABEL3:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n3 - SET SPACECRAFT MODE TO SURFACE"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+; set to safe:none
+START set_spacecraft_mode
+
+; set to surface:none
+START set_spacecraft_mode
+
+LABEL4:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n4 - SET CURRENT SPACECRAFT WEIGHT"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+;scenario 81 uses 56  kg
+START set_propellant_load
+
+LABEL5:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n5 - SET EGC WEIGHT OFFSET PERCENTAGE"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+; 5/6ths is 83.3333333
+; scn81 uses 91.5
+START set_weight_offset
+
+LABEL6:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n6 - RESET ESTIMATOR TO LOCAL TOPOCENTRIC POSITION"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START reset_estimator_topocentric_state
+
+LABEL7:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n7 - ENERGIZE PROP DECK VALVES"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START energize_prop_deck_valves
+
+LABEL8:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n8 - ENABLE THRUSTER I/O TO SEND COMMANDS TO ACS"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START enable_thrio_app
+
+LABEL9:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n9 - ENABLE AND WARM UP EGC"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START egc_warmup_sequence
+
+LABEL20:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n20 - Set roll command to current, local north"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START send_inertial_north_cmd
+
+LABEL10:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n10 - Start flight RTS at appropriate time"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+answer = 0
+ASK (CONCAT("Time remaining until inertial north alignment is ", TOSTRING(sequence_start_time-cmp_mtv_msg.timestamp), "\n Press ENTER to continue holding, CANCEL to exit.")) 
+IF (isint(answer)) THEN
+    RETURN
+ENDIF
+
+WAIT sequence_start_time-cmp_mtv_msg.timestamp
+answer = 0
+ASK ("FLIGHT BEGINS IN 5 SECONDS FROM COMMAND\n\nCommand authorization: click OK to accept value and send command \n\\sc_startrts rts_id=41")
+ IF (isint(answer)) THEN
+     RETURN
+ ENDIF
+/sc_startrts rts_id=41
+
+
+LABEL11:
+answer = 0
+ASK "FLIGHT IN PROGRESS\nHit ENTER when vehicle flight test is complete"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVENT ERROR "Bad keyboard entry during flight"
+ENDIF
+
+LABEL12:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n12 - ENTER SURFACE MODE"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START set_spacecraft_mode
+
+LABEL13:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n13 -DISABLE THRIO AND EGCIO"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START disable_thrio_app
+
+START disable_egcio_app 
+
+
+LABEL14:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n14 - DEENERGIZE PROP DECK VALVES"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START deenergize_prop_deck_valves
+
+LABEL15:
+answer = 0
+ASK "Enter proc step number to GOTO, or click OK to continue to next step:\n15 - STOP TELEMETRY ARCHIVE COLLECTION"
+label_value = answer
+if (isint(answer)) THEN
+    RETURN
+elseif (label_value .eq. "" ) THEN
+    ; no action required
+else
+    EVAL concat("GOTO LABEL", label_value )
+ENDIF
+
+START stop_archiver(FILENAME)
+
+
+endproc

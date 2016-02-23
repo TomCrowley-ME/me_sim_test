@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block left_column %}
+	
+	{% if current_test_procs_list %}
+	<h4>List of Procedures:</h4>
+	<ol>
+		{% for proc in current_test_procs_list %}
+			<li>
+				{% if proc['ID'] == requested_proc['ID'] %}
+					<strong>Current Proc: </strong>
+				{% endif %}
+
+				{{proc['ID']}} - {{proc['summary']}}
+
+			</li>
+		{% endfor %}
+	</ol>
+
+	<br><br>
+
+	{% endif %}
+
+	<div style="text-align:center;">
+		<img style="width: 100%;" alt="mission ops" src="/static/mission_ops.jpg">
+	</div>
+
+{% endblock %}
+
+
+{% block content %}
+
+	{% if requested_proc %}
+	<form action="/run_test/{{requested_test['test_num']}}/{{run_num}}/{{requested_proc['proc_num']}}" method="POST">
+	<h4 style="text-align:center;">Current Test: {{requested_test['test_name']}}</h4>
+		<ul>
+			<li><strong>ID</strong>: {{requested_proc['ID']}}</li>
+			<li><strong>Summary</strong>: {{requested_proc['summary']}}</li>
+			<li><strong>Actions</strong>: <br><br>
+				{% for action in requested_proc['actions'] %}
+					<input type="checkbox" name="actions" value="{{action}}"> {{action}}<br>
+				{% endfor %}
+				<br>
+			</li>
+			<li><strong>Expected Results</strong>: {{requested_proc['expected_results']}}</li>
+			<li><strong>Discrepancies</strong>: <br>
+				<textarea cols="75" name="discrepancies"></textarea>
+			</li>
+			<li><strong>Notes for the operator</strong>: <br>
+				<textarea cols="75" name="notes"></textarea>
+			</li>
+			<li><strong>Red Lines</strong>: <br>
+				<textarea cols="75" name="red_lines"></textarea>
+			</li>
+		</ul>
+		{% if not final_proc %}
+		<input type="submit" style="margin: 5px;" class="btn btn-primary" name="submit" value="Confirm and Procede">
+		{% else %}
+		<h5>***This is the final procedure for this test***</h5>
+		<input type="submit" style="margin: 5px;" class="btn btn-default" name="submit" value="Confirm and Finish Test">
+		{% endif %}
+
+	</form>
+
+	{% else %}
+		<h4 style="text-align:center">Welcome to the MoonEx E-Procs Portal</h4>
+		<strong>Current Functionality:</strong> <br>
+		<ul>
+			<li>create a new test procedure
+				<ul><li><a href="create_procs">click here</a> or on the navigation bar where it says create new test</li></ul>
+			</li>
+			<li>run an already created test procedure
+				<ul><li>click the Test Procedures Link/Dropdown on the navbar then click the start new test run button</li></ul>
+			</li>
+			<li>view previously run tests
+				<ul><li>click the Test Procedures Link/Dropdown on the navbar  then click a test from the previous runs button</li></ul>
+			</li>
+			<li>look at a list of procs in a test
+				<ul><li>click the Test Procedures Link/Dropdown on the navbar and it will bring you to the correct page</li></ul>
+			</li>
+		</ul>
+
+		<!--  <p>-if you would like to follow along with the current operator <a href"/current_operator">click here</a></p>
+		<p>-if you would like to become the current operator <a href="/become_operator">click here</a></p> -->
+	{% endif %}
+
+{% endblock %}
+
+{% block end_row %}
+
+	{% if not requested_proc %}
+	{% endif %}
+
+{% endblock %}
