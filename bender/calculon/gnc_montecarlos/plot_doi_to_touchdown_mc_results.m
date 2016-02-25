@@ -1,6 +1,6 @@
 load MC_WORKSPACE
 load doi_to_touchdown_mcall.mat
-close all
+%close all
 
 for kk = 1 : mc_n
     
@@ -62,7 +62,7 @@ for iter=1:size(mc_all_final,1)
    lateral_gnc_vel_scalar(iter)  = norm(mc_all_final(iter,18:19),2);
    vertical_gnc_pos_scalar(iter) = mc_all_final(iter,17);
    vertical_gnc_vel_scalar(iter) = abs(mc_all_final(iter,20));
-   final_est_vert_pos_err(iter)  = abs(mc_all_final(iter,4));
+   final_est_vert_pos_err(iter)  = abs(mc_all_final(iter,14));
    final_est_pos_err(iter)       = norm(mc_all_final(iter,2:3));
    final_est_vel_err(iter)       = norm(mc_all_final(iter,5:7));
    final_est_ang_err(iter)       = norm(mc_all_final(iter,8:10));
@@ -78,7 +78,7 @@ for iter=1:size(mc_all_final,1)
    htp_used(iter) = mc_all_final(iter,43);
    gn2_used(iter) = mc_all_final(iter,44);
    rp1_used(iter) = mc_all_final(iter,45);
-   final_mass(iter) = mc_all_final(iter,14);
+   final_mass(iter) = mc_all_final(iter,46);
 
    if mc_all_final(iter,39)==0 %% && total_fuel_used_scalar(iter) > mean_fuel_used - half_sigma_fuel_dispersion
        Success(iter) = 1;
@@ -93,7 +93,7 @@ end
 fprintf(sprintf('Number of Successful Landings: %d\n',nsuccess))
 fprintf(sprintf('Number of Failed Landings: %d\n',nfail))
 
-lateral_gnc_pos_scalar_limit  = 10000.0;
+lateral_gnc_pos_scalar_limit  = 15000.0;
 lateral_gnc_vel_scalar_limit  = 5.0;
 lateral_est_vel_scalar_limit  = 5.0;
 final_est_vert_pos_err_limit  = 10.0;
@@ -1320,9 +1320,9 @@ end
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),'b*');
+     plot(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),'b*');text(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),'r*');
+     plot(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),'r*');text(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Monoprop Thrust Performance vs Touchdown Vertical Velocity';
@@ -1335,9 +1335,9 @@ saveas(gcf,'VerticalVelandMonoPropThrust.png');%saveas(gcf,'VerticalVelandMonoPr
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),'b*');
+     plot(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),'b*');text(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),'r*');
+     plot(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),'r*');text(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Monoprop Isp Performance vs Touchdown Vertical Velocity';
@@ -1350,53 +1350,57 @@ saveas(gcf,'VerticalVelandMonoPropIsp.png');%saveas(gcf,'VerticalVelandMonoPropI
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(mc_all_final(itest,15),mc_all_final(itest,16),'b*');
+     plot(mc_all_final(itest,15),mc_all_final(itest,16),'b*');text(mc_all_final(itest,15),mc_all_final(itest,16),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(mc_all_final(itest,15),mc_all_final(itest,16),'r*');
+     plot(mc_all_final(itest,15),mc_all_final(itest,16),'r*');text(mc_all_final(itest,15),mc_all_final(itest,16),strcat('   ',num2str(itest)),'Color','r');
  end
 end
-mean_landing_error = mean(mc_all_final(:,15:16),1);
-standard_deviation_landing_error = std(mc_all_final(:,15:16),1);
 title_string = 'Touchdown Topocentric Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Topocentric X Position (meters)','fontsize',14)
 ylabel('Topocentric Y Position (meters)','fontsize',14)
-str_text_box = {sprintf('Mean     = %9.2f, %9.2f m',mean_landing_error),sprintf('3 Sigma = %9.2f, %9.2f m',3*standard_deviation_landing_error)};
-annotation('textbox',[.2 .8 .47 .1],'string',str_text_box) 
-hold on;
-ellipse_3_sigma_y = mean_landing_error(2)+3*standard_deviation_landing_error(2)*sin(2*pi*0.01*[0:100]);
-ellipse_3_sigma_x = mean_landing_error(1)+3*standard_deviation_landing_error(1)*cos(2*pi*0.01*[0:100]);
-plot(ellipse_3_sigma_x,ellipse_3_sigma_y,'r-','linewidth',2);
+if size(mc_all_final(:,15:16),1)>1
+  mean_landing_error = mean(mc_all_final(:,15:16),1);
+  standard_deviation_landing_error = std(mc_all_final(:,15:16),1);
+  str_text_box = {sprintf('Mean     = %9.2f, %9.2f m',mean_landing_error),sprintf('3 Sigma = %9.2f, %9.2f m',3*standard_deviation_landing_error)};
+  annotation('textbox',[.2 .8 .47 .1],'string',str_text_box) 
+  hold on;
+  ellipse_3_sigma_y = mean_landing_error(2)+3*standard_deviation_landing_error(2)*sin(2*pi*0.01*[0:100]);
+  ellipse_3_sigma_x = mean_landing_error(1)+3*standard_deviation_landing_error(1)*cos(2*pi*0.01*[0:100]);
+  plot(ellipse_3_sigma_x,ellipse_3_sigma_y,'r-','linewidth',2);
+end
 saveas(gcf,'LateralPosErr.png');%saveas(gcf,'LateralPosErr.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
   if(mc_all_final(itest,39)==0)
-     plot(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),'b*');
+     plot(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),'b*');text(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),'r*');
+     plot(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),'r*');text(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),strcat('   ',num2str(itest)),'Color','r');
  end
 end
-mean_landing_error = mean(mc_all_final(:,15:16),1);
-standard_deviation_landing_error = std(mc_all_final(:,15:16),1);
 title_string = 'Touchdown Topocentric Position Relative to Median';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Topocentric X Position (meters)','fontsize',14)
 ylabel('Topocentric Y Position (meters)','fontsize',14)
-str_text_box = {sprintf('Mean     = %9.2f, %9.2f m',mean_landing_error),sprintf('3 Sigma = %9.2f, %9.2f m',3*standard_deviation_landing_error)};
-annotation('textbox',[.2 .8 .47 .1],'string',str_text_box) 
-hold on;
-ellipse_3_sigma_y = 3*standard_deviation_landing_error(2)*sin(2*pi*0.01*[0:100]);
-ellipse_3_sigma_x = 3*standard_deviation_landing_error(1)*cos(2*pi*0.01*[0:100]);
-plot(ellipse_3_sigma_x,ellipse_3_sigma_y,'r-','linewidth',2);
+if size(mc_all_final(:,15:16),1)>1
+  mean_landing_error = mean(mc_all_final(:,15:16),1);
+  standard_deviation_landing_error = std(mc_all_final(:,15:16),1);
+  str_text_box = {sprintf('Mean     = %9.2f, %9.2f m',mean_landing_error),sprintf('3 Sigma = %9.2f, %9.2f m',3*standard_deviation_landing_error)};
+  annotation('textbox',[.2 .8 .47 .1],'string',str_text_box) 
+  hold on;
+  ellipse_3_sigma_y = 3*standard_deviation_landing_error(2)*sin(2*pi*0.01*[0:100]);
+  ellipse_3_sigma_x = 3*standard_deviation_landing_error(1)*cos(2*pi*0.01*[0:100]);
+  plot(ellipse_3_sigma_x,ellipse_3_sigma_y,'r-','linewidth',2);
+end
 saveas(gcf,'LateralPosErrMedian.png');%saveas(gcf,'LateralPosErrMedian.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),'b*');
+     plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),'b*');text(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),'r*');
+     plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),'r*');text(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Touchdown Lateral Velocity vs Vertical Velocity';
@@ -1408,9 +1412,9 @@ saveas(gcf,'LateralVelandVerticalVel.png');%saveas(gcf,'LateralVelandVerticalVel
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(lateral_gnc_vel_scalar(itest),lateral_gnc_pos_scalar(itest),'b*');
+     plot(lateral_gnc_vel_scalar(itest),lateral_gnc_pos_scalar(itest),'b*');text(lateral_gnc_vel_scalar(itest),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(lateral_gnc_vel_scalar(itest),lateral_gnc_pos_scalar(itest),'r*');
+     plot(lateral_gnc_vel_scalar(itest),lateral_gnc_pos_scalar(itest),'r*');text(lateral_gnc_vel_scalar(itest),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Touchdown Lateral Velocity vs Lateral Position';
@@ -1422,9 +1426,9 @@ saveas(gcf,'LateralVelandPosErr.png');%saveas(gcf,'LateralVelandPosErr.fig')
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_vel_scalar(itest),'b*');
+     plot(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_vel_scalar(itest),'b*');text(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_vel_scalar(itest),'r*');
+     plot(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_vel_scalar(itest),'r*');text(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Lateral Center of Mass Offset vs Touchdown Lateral Velocity';
@@ -1436,9 +1440,9 @@ saveas(gcf,'LateralCMandLateralVel.png');%saveas(gcf,'LateralCMandLateralVel.fig
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(cm_az_deg(itest),lateral_gnc_vel_scalar(itest),'b*');
+     plot(cm_az_deg(itest),lateral_gnc_vel_scalar(itest),'b*');text(cm_az_deg(itest),lateral_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(cm_az_deg(itest),lateral_gnc_vel_scalar(itest),'r*');
+     plot(cm_az_deg(itest),lateral_gnc_vel_scalar(itest),'r*');text(cm_az_deg(itest),lateral_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Lateral Center of Mass Offset Azimuth vs Lateral Touchdown Velocity';
@@ -1450,9 +1454,9 @@ saveas(gcf,'LateralCMAzimuthandLateralVel.png');%saveas(gcf,'LateralCMAzimuthand
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(norm(mc_all_final(itest,21:22)),norm(mc_all_final(itest,24:25)),'b*');
+     plot(norm(mc_all_final(itest,21:22)),norm(mc_all_final(itest,24:25)),'b*');text(norm(mc_all_final(itest,21:22)),norm(mc_all_final(itest,24:25)),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(norm(mc_all_final(itest,21:22)),norm(mc_all_final(itest,24:25)),'r*');
+     plot(norm(mc_all_final(itest,21:22)),norm(mc_all_final(itest,24:25)),'r*');text(norm(mc_all_final(itest,21:22)),norm(mc_all_final(itest,24:25)),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Touchdown Angle vs Body Rate';
@@ -1464,9 +1468,9 @@ saveas(gcf,'TDAngleVsRate.png');%saveas(gcf,'TDAngleVsRate.fig')
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(norm(mc_all_final(itest,21:22)),lateral_gnc_vel_scalar(itest),'b*');
+     plot(norm(mc_all_final(itest,21:22)),lateral_gnc_vel_scalar(itest),'b*');text(norm(mc_all_final(itest,21:22)),lateral_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(norm(mc_all_final(itest,21:22)),lateral_gnc_vel_scalar(itest),'r*');
+     plot(norm(mc_all_final(itest,21:22)),lateral_gnc_vel_scalar(itest),'r*');text(norm(mc_all_final(itest,21:22)),lateral_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Touchdown Angle vs Lateral Velocity';
@@ -1553,9 +1557,9 @@ saveas(gcf,'CgZPos.png');%saveas(gcf,'CgZPos.fig')
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_pos_scalar(itest),'b*');
+     plot(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_pos_scalar(itest),'b*');text(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_pos_scalar(itest),'r*');
+     plot(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_pos_scalar(itest),'r*');text(lateral_cg_wet_offset(itest)*1e3,lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Lateral Center of Mass Offset vs Lateral Position';
@@ -1567,9 +1571,9 @@ saveas(gcf,'LateralCMandPosErr.png');%saveas(gcf,'LateralCMandPosErr.fig')
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(cm_az_deg(itest),lateral_gnc_pos_scalar(itest),'b*');
+     plot(cm_az_deg(itest),lateral_gnc_pos_scalar(itest),'b*');text(cm_az_deg(itest),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(cm_az_deg(itest),lateral_gnc_pos_scalar(itest),'r*');
+     plot(cm_az_deg(itest),lateral_gnc_pos_scalar(itest),'r*');text(cm_az_deg(itest),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Lateral Center of Mass Offset Azimuth vs Touchdown Lateral Position';
@@ -1581,9 +1585,9 @@ saveas(gcf,'LateralCMAzimuthandPosErr.png');%saveas(gcf,'LateralCMAzimuthandPosE
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(lateral_cg_wet_offset(itest)*1e3,total_fuel_used_scalar(itest),'b*');
+     plot(lateral_cg_wet_offset(itest)*1e3,total_fuel_used_scalar(itest),'b*');text(lateral_cg_wet_offset(itest)*1e3,total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(lateral_cg_wet_offset(itest)*1e3,total_fuel_used_scalar(itest),'r*');
+     plot(lateral_cg_wet_offset(itest)*1e3,total_fuel_used_scalar(itest),'r*');text(lateral_cg_wet_offset(itest)*1e3,total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Lateral Center of Mass Offset vs Propellant Usage';
@@ -1595,9 +1599,9 @@ saveas(gcf,'LateralCMandPropUsed.png');%saveas(gcf,'LateralCMandPropUsed.fig')
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(cm_az_deg(itest),total_fuel_used_scalar(itest),'b*');
+     plot(cm_az_deg(itest),total_fuel_used_scalar(itest),'b*');text(cm_az_deg(itest),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(cm_az_deg(itest),total_fuel_used_scalar(itest),'r*');
+     plot(cm_az_deg(itest),total_fuel_used_scalar(itest),'r*');text(cm_az_deg(itest),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Lateral Center of Mass Offset Azimuth vs Propellant Usage';
@@ -1609,9 +1613,9 @@ saveas(gcf,'LateralCMAzimuthandPropUsed.png');%saveas(gcf,'LateralCMAzimuthandPr
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(vertical_est_vel_scalar(itest),final_mass(itest),'b*');t(ipos) = text(vertical_est_vel_scalar(itest),final_mass(itest),strcat('Case',num2str(itest)),'Color','b');
+     plot(vertical_est_vel_scalar(itest),final_mass(itest),'b*');text(vertical_est_vel_scalar(itest),final_mass(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(vertical_est_vel_scalar(itest),final_mass(itest),'r*');t(ipos) = text(vertical_est_vel_scalar(itest),final_mass(itest),strcat('Case',num2str(itest)),'Color','r');
+     plot(vertical_est_vel_scalar(itest),final_mass(itest),'r*');text(vertical_est_vel_scalar(itest),final_mass(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Vertical Velocity Estimation Error vs Landed Mass';
@@ -1623,9 +1627,9 @@ saveas(gcf,'VertVelEstErrandLandedMass.png');%saveas(gcf,'VertVelEstErrandLanded
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),'b*');
+     plot(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),'r*');
+     plot(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Main Engine Misaligment vs Touchdown Lateral Position';
@@ -1637,9 +1641,9 @@ saveas(gcf,'MainEngMisalignandPosErr.png');%saveas(gcf,'MainEngMisalignandPosErr
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),'b*');
+     plot(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),'r*');
+     plot(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Main Engine Misaligment Azimuth vs Touchdown Lateral Position';
@@ -1651,9 +1655,9 @@ saveas(gcf,'MainEngMisalignAzandPosErr.png');%saveas(gcf,'MainEngMisalignAzandPo
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),'b*');
+     plot(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),'b*');text(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),'r*');
+     plot(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),'r*');text(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Main Engine Misaligment vs Propellant Usage';
@@ -1665,9 +1669,9 @@ saveas(gcf,'MainEngMisalignandPropUsed.png');%saveas(gcf,'MainEngMisalignandProp
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),'b*');
+     plot(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),'b*');text(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),'r*');
+     plot(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),'r*');text(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Main Engine Misaligment Azimuth vs Propellant Usage';
@@ -1680,9 +1684,9 @@ saveas(gcf,'MainEngMisalignAzandPropUsed.png');%saveas(gcf,'MainEngMisalignAzand
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),'b*');
+     plot(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),'b*');text(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),'r*');
+     plot(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),'r*');text(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Touchdown True Lateral Position Error vs Lateral Position Estimation Error';
@@ -1735,11 +1739,40 @@ for ipos = 1:mc_n
         warning(['no data for run' num2str(ipos)])
         continue
     end
+    n=find(mc_traj_data.sim_pos.Time==3700);
     if exist('mc_traj_data','var')
      if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.sim_pos.Data(:,1),mc_traj_data.sim_pos.Data(:,2),'b-');hold on   
+            plot3(mc_traj_data.sim_pos.Data(n:end,1),mc_traj_data.sim_pos.Data(n:end,2),mc_traj_data.altitude.Data(n:end),'b-');hold on   
      else
-            plot(mc_traj_data.sim_pos.Data(:,1),mc_traj_data.sim_pos.Data(:,2),'r-');hold on 
+            plot3(mc_traj_data.sim_pos.Data(n:end,1),mc_traj_data.sim_pos.Data(n:end,2),mc_traj_data.altitude.Data(n:end),'r-');hold on 
+     end
+    end
+    hold on; grid on;
+end
+zlim([0 15000]);
+title_string = 'Landing Site Relative Position in Topocentric Frame';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Topocentric X Position (meters)','fontsize',14);
+ylabel('Topocentric Y Position (meters)','fontsize',14);
+zlabel('Altitude (meters)','fontsize',14);
+saveas(gcf,'TruePos3D.png');%saveas(gcf,'TruePos3D.fig')
+
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    n=find(mc_traj_data.sim_pos.Time==3700);
+    if exist('mc_traj_data','var')
+     if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.sim_pos.Data(n:end,1),mc_traj_data.sim_pos.Data(n:end,2),'b-');hold on   
+     else
+            plot(mc_traj_data.sim_pos.Data(n:end,1),mc_traj_data.sim_pos.Data(n:end,2),'r-');hold on 
      end
     end
     for imax=1:size(mc_traj_data.sim_pos.Data,1) 
@@ -1904,33 +1937,33 @@ xlabel('Time (sec)','fontsize',14);
 ylabel('Topocentric Z Velocity (meters/sec)','fontsize',14);
 saveas(gcf,'TrueZVel.png');%saveas(gcf,'TrueZVel.fig')
 %%
-figure;grid on;hold on;
-for itest=1:size(mc_all_final,1)
- if(mc_all_final(itest,39)==0)
-     plot(lateral_cg_wet_offset(itest)*1e3,max_excursion(itest),'b*');
- elseif(mc_all_final(itest,39)==1)
-     plot(lateral_cg_wet_offset(itest)*1e3,max_excursion(itest),'r*');
- end
-end
-title_string = 'Lateral Center of Mass Offset vs MTV Max Lateral Excursion';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Lateral Center of Mass Offset (mm)','fontsize',14)
-ylabel('Max Lateral Excursion (m)','fontsize',14)
-saveas(gcf,'LateralCMandMaxLatExcursion.png');%saveas(gcf,'LateralCMandMaxLatExcursion.fig')
+% figure;grid on;hold on;
+% for itest=1:size(mc_all_final,1)
+%  if(mc_all_final(itest,39)==0)
+%      plot(lateral_cg_wet_offset(itest)*1e3,max_excursion(itest),'b*');
+%  elseif(mc_all_final(itest,39)==1)
+%      plot(lateral_cg_wet_offset(itest)*1e3,max_excursion(itest),'r*');
+%  end
+% end
+% title_string = 'Lateral Center of Mass Offset vs MTV Max Lateral Excursion';
+% title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+% xlabel('Lateral Center of Mass Offset (mm)','fontsize',14)
+% ylabel('Max Lateral Excursion (m)','fontsize',14)
+% saveas(gcf,'LateralCMandMaxLatExcursion.png');%saveas(gcf,'LateralCMandMaxLatExcursion.fig')
 %%
-figure;grid on;hold on;
-for itest=1:size(mc_all_final,1)
- if(mc_all_final(itest,39)==0)
-     plot(cm_az_deg(itest),max_excursion(itest),'b*');
- elseif(mc_all_final(itest,39)==1)
-     plot(cm_az_deg(itest),max_excursion(itest),'r*');
- end
-end
-title_string = 'Lateral Center of Mass Offset Azimuth vs MTV Max Lateral Excursion';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Lateral Center of Mass Offset Azimuth (deg)','fontsize',14)
-ylabel('Max Lateral Excursion (m)','fontsize',14)
-saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.png');%saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.fig')
+% figure;grid on;hold on;
+% for itest=1:size(mc_all_final,1)
+%  if(mc_all_final(itest,39)==0)
+%      plot(cm_az_deg(itest),max_excursion(itest),'b*');
+%  elseif(mc_all_final(itest,39)==1)
+%      plot(cm_az_deg(itest),max_excursion(itest),'r*');
+%  end
+% end
+% title_string = 'Lateral Center of Mass Offset Azimuth vs MTV Max Lateral Excursion';
+% title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+% xlabel('Lateral Center of Mass Offset Azimuth (deg)','fontsize',14)
+% ylabel('Max Lateral Excursion (m)','fontsize',14)
+% saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.png');%saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -1950,6 +1983,7 @@ for ipos = 1:mc_n
     end
     hold on; grid on;
 end
+xlim([3700 4200])
 title_string = 'Commanded Z-Velocity Error';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
@@ -1990,9 +2024,9 @@ for ipos = 1:mc_n
     end
     if exist('mc_traj_data','var')
       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude,'b-');hold on,text(4040,mc_traj_data.altitude.Data(find(mc_traj_data.sim_vel.Time > 4030 & mc_traj_data.sim_vel.Time<4040,1,'first'),1),strcat('Case',num2str(ipos)),'Color','b');
+            plot(mc_traj_data.altitude,'b-');hold on,text(3980,mc_traj_data.altitude.Data(find(mc_traj_data.sim_vel.Time > 3980 & mc_traj_data.sim_vel.Time<3990,1,'first'),1),strcat('Case',num2str(ipos)),'Color','b');
       else
-            plot(mc_traj_data.altitude,'r-');hold on,text(4040,mc_traj_data.altitude.Data(find(mc_traj_data.sim_vel.Time > 4030 & mc_traj_data.sim_vel.Time<4040,1,'first'),1),strcat('Case',num2str(ipos)),'Color','r');
+            plot(mc_traj_data.altitude,'r-');hold on,text(3980,mc_traj_data.altitude.Data(find(mc_traj_data.sim_vel.Time > 3980 & mc_traj_data.sim_vel.Time<3990,1,'first'),1),strcat('Case',num2str(ipos)),'Color','r');
       end
     end
     hold on; grid on;
@@ -2014,9 +2048,9 @@ for ipos = 1:mc_n
     end
     if exist('mc_traj_data','var')
       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data),'b-');hold on,text(9300,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 9495 & mc_traj_data.altitude.Data<9505,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
+            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data),'b-');hold on,text(6980,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6980 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
       else
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data),'r-');hold on,text(9300,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 9495 & mc_traj_data.altitude.Data<9505,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
+            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data),'r-');hold on,text(6980,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6980 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
       end
     end
     hold on; grid on;
@@ -2038,9 +2072,9 @@ for ipos = 1:mc_n
     end
     if exist('mc_traj_data','var')
       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'b-');hold on;t(ipos) = text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 990 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','b');
+            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'b-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 990 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','b');
       else
-            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'r-');hold on;t(ipos) = text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 990 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','r');
+            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'r-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 990 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','r');
       end
     end
     hold on; grid on;
@@ -2062,9 +2096,9 @@ for ipos = 1:mc_n
     end
     if exist('mc_traj_data','var')
       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');hold on;t(ipos) = text(5000,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 4995 & mc_traj_data.altitude.Data<5005,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
+            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');hold on;text(6980,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6980 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
       else
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');hold on;t(ipos) = text(5000,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 4995 & mc_traj_data.altitude.Data<5005,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
+            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');hold on;text(6980,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6980 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
       end
     end
     hold on; grid on;clear t
@@ -2145,6 +2179,31 @@ for ipos = 1:mc_n
     end
     if exist('mc_traj_data','var')
        if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.htp_used_main,'b-');hold on
+       else
+            plot(mc_traj_data.htp_used_main,'r-');hold on
+       end
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+title_string = 'HTP Mass Used Main';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Time (sec)','fontsize',14);
+ylabel('Mass (kg)','fontsize',14);
+saveas(gcf,'HtpUsedMain.png');%saveas(gcf,'HtpUsedMain.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
             plot(mc_traj_data.htp_used_acs,'b-');hold on
        else
             plot(mc_traj_data.htp_used_acs,'r-');hold on
@@ -2152,6 +2211,7 @@ for ipos = 1:mc_n
     end
     hold on; grid on;
 end
+xlim([3700 4200])
 title_string = 'HTP Mass Used ACS';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
@@ -2176,6 +2236,7 @@ for ipos = 1:mc_n
     end
     hold on; grid on;
 end
+xlim([3700 4200])
 title_string = 'RP1 Mass Used';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);

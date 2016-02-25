@@ -7,7 +7,7 @@ i = nimbus_index_mcall_final;
 
 tFSW = telem.est.local_pos.Time;
 
-mas_mass = resample(truth.sim.mass, tFSW);
+mass = resample(truth.sim.mass, tFSW);
 thr_thruster_forces_body = resample(truth.sim.thruster_forces, tFSW);
 
 % act_fIn = zeros( size(thr_thruster_forces_body.Data) );
@@ -26,6 +26,9 @@ act_f_n = normrows(thr_thruster_forces_body.Data);
 if ~isempty(find( all( abs(truth.fsw_rate.topo.sim_vel.Data) < 1e-6, 2),1)) && ~isempty(find( all( abs(truth.sim.vel_topo.Data) < 1e-6, 2),1)-1)
     touchdown_est_initial = find( all( abs(truth.fsw_rate.topo.sim_vel.Data) < 1e-6, 2),1)-1;
     touchdown_initial = find( all( abs(truth.sim.vel_topo.Data) < 1e-6, 2),1)-1;
+else
+    touchdown_est_initial = 0;
+    touchdown_initial = 0;
 end
 
 if touchdown_est_initial == 0 || touchdown_initial == 0
@@ -76,6 +79,7 @@ mcall(i.est_pos_err)            = error.knowledge.total.pos.Data(touchdown_est,:
 mcall(i.est_vel_err)            = error.knowledge.total.vel.Data(touchdown_est,:); 
 mcall(i.est_angles_xyz_err)     = error.knowledge.total.euler.Data(touchdown_est,:); 
 mcall(i.est_rates_dps_err)      = error.knowledge.total.rate.Data(touchdown_est,:)* 180/pi;
+mcall(i.est_alt_err)            = truth.sim.altitude.Data(touchdown) - telem.est.altitude.Data(touchdown_est);
 
 mcall(i.gnc_pos_err)            = truth.fsw_rate.total.sim_pos.Data(touchdown_est,:);
 mcall(i.gnc_vel_err)            = truth.fsw_rate.total.sim_vel.Data(touchdown_est,:);
@@ -96,15 +100,15 @@ mcall(i.cgx_final ) = truth.sim.cg.Data(end,1);
 mcall(i.cgy_final ) = truth.sim.cg.Data(end,2);
 mcall(i.cgz_final ) = truth.sim.cg.Data(end,3);
 
-mcall(i.htp_used  ) = truth.sim.htp_used_main.Data(end) + truth.sim.htp_used_acs.Data(end);
-mcall(i.rp1_used  ) = truth.sim.rp1_used_main.Data(end);
-mcall(i.gn2_used  ) = truth.sim.gn2_used_acs.Data(end);
+mcall(i.htp_used  ) = truth.sim.htp_used_main.Data(touchdown) + truth.sim.htp_used_acs.Data(touchdown);
+mcall(i.rp1_used  ) = truth.sim.rp1_used_main.Data(touchdown);
+mcall(i.gn2_used  ) = truth.sim.gn2_used_acs.Data(touchdown);
 
 horz_vel            = norm(mcall(i.gnc_vel_err(1:2)));
 horz_vel_est_err    = norm(mcall(i.est_vel_err(1:2)));
 vert_vel            = norm(mcall(i.gnc_vel_err(3)));
 vert_vel_est_err    = abs(mcall(i.est_vel_err(3)));
-alt_knowledge       = norm(mcall(i.est_pos_err(3)));
+alt_knowledge       = norm(mcall(i.est_alt_err));
 horz_pos            = norm(mcall(i.gnc_pos_err(1:2)),2);
 body_rates          = norm(mcall(i.gnc_rates_dps_err));
 final_gnc_ang_err   = norm(mcall(i.gnc_angles_zyx_err(1:2)));
@@ -115,7 +119,7 @@ htp_mass_initial    = evalin('base','mpl_htp_mass_initial');
 rp1_mass_initial    = evalin('base','mpl_rp1_mass_initial');
 gn2_mass_initial    = evalin('base','mpl_gn2_mass_initial');
 
-lateral_gnc_pos_scalar_limit  = 10000.0;
+lateral_gnc_pos_scalar_limit  = 15000.0;
 lateral_gnc_vel_scalar_limit  = 5.0;
 lateral_est_vel_scalar_limit  = 5.0;
 final_est_vert_pos_err_limit  = 10.0;

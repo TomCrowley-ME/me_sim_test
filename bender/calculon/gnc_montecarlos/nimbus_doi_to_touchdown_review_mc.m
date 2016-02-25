@@ -3,6 +3,7 @@
 load MC_WORKSPACE
 clear mc_all_initial mc_all_final
 
+%%
 mc_prefix_s = 'doi_to_touchdown_mc';
 mc_i = 1:mc_n;
 iin = nimbus_index_mcall_initial;
@@ -55,8 +56,11 @@ for pp = 1 : size(variable_names,1)
     indices = cell(n_bins);
     
     for kk = 2 : size(bins,1)
-        if strncmp(var_name,char('azimuth'),3)==1 || strncmp(var_name,char('misalignment'),3)==1 || strncmp(var_name,char('drain_efficiency'),3)==1 ...
-                || strncmp(var_name,char('acs_thruster_delay'),3)==1 || strncmp(var_name,char('acs_thruster_bias'),3)==1
+       % skip non-scalar dispersion variables
+        if strcmp(var_name,char('pos_est_err'))==1 || strcmp(var_name,char('vel_est_err'))==1 ... 
+            || strcmp(var_name,char('azimuth'))==1 || strcmp(var_name,char('misalignment'))==1 ...
+            || strcmp(var_name,char('drain_efficiency'))==1 ...
+            || strcmp(var_name,char('acs_thruster_delay'))==1 || strcmp(var_name,char('acs_thruster_bias'))==1
             continue
         end
         percent_bin = [bins(kk-1,1:size(dispersions,2)) ;bins(kk,1:size(dispersions,2))];
@@ -91,7 +95,10 @@ for pp = 1 : size(variable_names,1)
         
     end
 
-    if strncmp(var_name,char('azimuth'),3)==1 || strncmp(var_name,char('misalignment'),3)==1
+    if strcmp(var_name,char('pos_est_err'))==1 || strcmp(var_name,char('vel_est_err'))==1 ...
+        || strcmp(var_name,char('azimuth'))==1 || strcmp(var_name,char('misalignment'))==1 ...
+        || strcmp(var_name,char('drain_efficiency'))==1 ...
+        || strcmp(var_name,char('acs_thruster_delay'))==1 || strcmp(var_name,char('acs_thruster_bias'))==1
         continue
     end
     % rename structure

@@ -6,6 +6,21 @@ load_model nimbus;
 % define mission type: "micro", "1", "2"
 mission_type='micro';
 
+% set propellant mass nominal values based on mission type
+if strcmp(mission_type,'1')
+  htp_mass_nominal = 176.05;
+  rp1_mass_nominal = 19.0;
+  gn2_mass_nominal = 0.5;
+elseif strcmp(mission_type,'micro')
+  htp_mass_nominal = 39.7059;
+  rp1_mass_nominal = 5.2941;
+  gn2_mass_nominal = 0.2;
+end
+
+%-------------------------------------------------------------------------%
+% define reference frame for estimation error dispersions: "VNC", "LVLH", "RVN"
+est_err_frame_type='VNC';
+
 %-------------------------------------------------------------------------%
 % define nonvirtual buses
 nimbus_bus_all;
@@ -19,7 +34,7 @@ set_central_body;
  
 %-------------------------------------------------------------------------%
 % set the stop time of the simulation
-sim_stop_time = 4200;
+sim_stop_time = 4300;
  
 % - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - %
 % simulation init (sets initial conditions and calls FSW init files)
@@ -32,10 +47,10 @@ mc_prefix_s_pos     = 'doi_to_touchdown_pos_mc';
 mc_prefix_workspace = 'doi_to_touchdown_workspace_mc';
  
 % set seed!
-RandStream.setGlobalStream(RandStream.create('mt19937ar','seed',4))
+RandStream.setGlobalStream(RandStream.create('mt19937ar','seed',14))
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mc_n = 100;  % User set to total number of MC cases
+mc_n = 20;  % User set to total number of MC cases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % percent of range errors
@@ -44,7 +59,7 @@ percent_variation = (0.1)/100; % Range above and below mean (FLIR MLR 2K 0.1% at
 percent_errors = percent_mean + percent_variation*rand(mc_n,1);
  
 % % hardcode
-percent_errors = 0.010*ones(mc_n,1);
+percent_errors = 0.001*ones(mc_n,1);
  
 % max acquisition range
 max_range_mean = 1.0*5000; % Set mean to 2.5 km
@@ -103,34 +118,24 @@ delay_t_vec = 0.25*ones(mc_n,1);
 % lateral_cm_z_dry = 1.0*(0.01/3)*randn(mc_n,1);
  
 % total lateral cm dry - uniform distribution
-lateral_cm_x_dry_max =  0.001;
-lateral_cm_y_dry_max =  0.001;
-lateral_cm_z_dry_max =  0.001;
-lateral_cm_x_dry_min = -0.001;
-lateral_cm_y_dry_min = -0.001;
-lateral_cm_z_dry_min = -0.001;
+lateral_cm_x_dry_max =  0.0001;
+lateral_cm_y_dry_max =  0.0001;
+lateral_cm_z_dry_max =  0.0001;
+lateral_cm_x_dry_min = -0.0001;
+lateral_cm_y_dry_min = -0.0001;
+lateral_cm_z_dry_min = -0.0001;
 lateral_cm_x_dry = (lateral_cm_x_dry_max - lateral_cm_x_dry_min)/3*randn(mc_n,1);
 lateral_cm_y_dry = (lateral_cm_y_dry_max - lateral_cm_y_dry_min)/3*randn(mc_n,1);
 lateral_cm_z_dry = (lateral_cm_z_dry_max - lateral_cm_z_dry_min)/3*randn(mc_n,1);
  
 % set initial HTP mass
-if strcmp(mission_type,'1')
-  htp_mass_nominal = 176.05+4;
-elseif strcmp(mission_type,'micro')
-  htp_mass_nominal = 39.7059;
-end
-htp_mass_min = htp_mass_nominal-0;
-htp_mass_max = htp_mass_nominal+0;
+htp_mass_min = htp_mass_nominal-0.1;
+htp_mass_max = htp_mass_nominal+0.1;
 mid=(htp_mass_max+htp_mass_min)/2;sigma=(htp_mass_max-htp_mass_min)/3;
 htp_mass     =  mid+sigma*randn(mc_n,1);                                     % normal  distribution
 % htp_mass     = htp_mass_min + (htp_mass_max - htp_mass_min)*rand(mc_n,1);  % uniform distribution
  
 % set initial RP1 mass
-if strcmp(mission_type,'1')
-  rp1_mass_nominal = 19.0+0.3;
-elseif strcmp(mission_type,'micro')
-  rp1_mass_nominal = 5.2941;
-end
 rp1_mass_min = rp1_mass_nominal-0.1;
 rp1_mass_max = rp1_mass_nominal+0.1;
 mid=(rp1_mass_max+rp1_mass_min)/2;sigma=(rp1_mass_max-rp1_mass_min)/3;
@@ -138,85 +143,85 @@ rp1_mass     =  mid+sigma*randn(mc_n,1);                                     % n
 % rp1_mass     = rp1_mass_min + (rp1_mass_max - rp1_mass_min)*rand(mc_n,1);  % uniform distribution
  
 % set initial GN2 mass
-gn2_mass_nominal = 0.2;
-gn2_mass_min = gn2_mass_nominal-0.1;
-gn2_mass_max = gn2_mass_nominal+0.1;
+gn2_mass_min = gn2_mass_nominal-0.01;
+gn2_mass_max = gn2_mass_nominal+0.01;
 mid=(gn2_mass_max+gn2_mass_min)/2;sigma=(gn2_mass_max-gn2_mass_min)/3;
 gn2_mass     =  mid+sigma*randn(mc_n,1);                                     % normal  distribution
 % gn2_mass     = gn2_mass_min + (gn2_mass_max - gn2_mass_min)*rand(mc_n,1);  % uniform distribution
  
 % set random misalignment angles and azimuth angles for 25 thrusters
-misalignment_ang_deg_1sigma = 0.125;
+misalignment_ang_deg_3sigma = 0.1;
  
 for i=1:25
     azimuth_ang(1:mc_n,i) = 360*rand(mc_n,1);
-    misalignment_ang(1:mc_n,i) = misalignment_ang_deg_1sigma*randn(mc_n,1);
+    misalignment_ang(1:mc_n,i) = misalignment_ang_deg_3sigma/3*randn(mc_n,1);
 end
  
 % set monoprop thrust gain, nominally set to 1
-monoprop_thrust_min = 0.99;
-monoprop_thrust_max = 1.01;
+monoprop_thrust_min = 0.98;
+monoprop_thrust_max = 1.00;
 % monoprop_thrust     = monoprop_thrust_min + (monoprop_thrust_max - monoprop_thrust_min)*rand(mc_n,1);
 mid=(monoprop_thrust_max+monoprop_thrust_min)/2;sigma=(monoprop_thrust_max-monoprop_thrust_min)/3;
 monoprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set monoprop Isp gain, nominally set to 1
-monoprop_isp_min = 0.99;
-monoprop_isp_max = 1.01;
+monoprop_isp_min = 0.98;
+monoprop_isp_max = 1.00;
 % monoprop_isp     = monoprop_isp_min + (monoprop_isp_max - monoprop_isp_min)*rand(mc_n,1);
 mid=(monoprop_isp_max+monoprop_isp_min)/2;sigma=(monoprop_isp_max-monoprop_isp_min)/3;
 monoprop_isp     =  mid+sigma*randn(mc_n,1);
  
 % set biprop thrust gain, nominally set to 1
-biprop_thrust_min = 0.99;
-biprop_thrust_max = 1.01;
+biprop_thrust_min = 0.98;
+biprop_thrust_min = 0.997;
+biprop_thrust_max = 1.00;
 % biprop_thrust     = biprop_thrust_min + (biprop_thrust_max - biprop_thrust_min)*rand(mc_n,1);
 mid=(biprop_thrust_max+biprop_thrust_min)/2;sigma=(biprop_thrust_max-biprop_thrust_min)/3;
 biprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set biprop Isp gain, nominally set to 1
-biprop_isp_min = 0.99;
-biprop_isp_max = 1.01;
+biprop_isp_min = 0.98;
+biprop_isp_max = 1.00;
 % biprop_isp     = biprop_isp_min + (biprop_isp_max - biprop_isp_min)*rand(mc_n,1);
 mid=(biprop_isp_max+biprop_isp_min)/2;sigma=(biprop_isp_max-biprop_isp_min)/3;
 biprop_isp     =  mid+sigma*randn(mc_n,1);
  
-% set mass estimate bias, nominally set to 1
-mass_estimate_bias_min = -1.0;
-mass_estimate_bias_max =  1.0;
+% set mass estimate bias, nominally set to 0
+mass_estimate_bias_min = -0.001;
+mass_estimate_bias_max =  0.001;
 % mass_estimate_bias     = mass_estimate_bias_min + (mass_estimate_bias_max - mass_estimate_bias_min)*rand(mc_n,1);
 mid=(mass_estimate_bias_max+mass_estimate_bias_min)/2;sigma=(mass_estimate_bias_max-mass_estimate_bias_min)/3;
 mass_estimate_bias     =  mid+sigma*randn(mc_n,1);
  
 % set biprop burn start delay, msec, nominally set to 0
 biprop_start_delay_min = 0.0;
-biprop_start_delay_max = 20.0;
+biprop_start_delay_max = 0.0;
 sigma=(biprop_start_delay_max-biprop_start_delay_min)/3;
 biprop_start_delay     = abs(sigma*randn(mc_n,1));
  
 % set biprop stop delay, msec, nominally set to 0
 biprop_stop_delay_min = 0.0;
-biprop_stop_delay_max = 20.0;
+biprop_stop_delay_max = 0.0;
 sigma=(biprop_stop_delay_max-biprop_stop_delay_min)/3;
 biprop_stop_delay     = abs(sigma*randn(mc_n,1));
- 
-% Normal distribution with 1 sigma position error 50/3 meters and 1.5/3 m/s  
-% Spherical distribution
-%                         1.00*((2000/3)*randn(mc_n,1)), ...
-%                         1.00*((2000/3)*randn(mc_n,1)), ...
-%                         1.00*((2000/3)*randn(mc_n,1)), ...
-%                         1.00*((2/3)*randn(mc_n,1)), ...
-%                         1.00*((2/3)*randn(mc_n,1)), ...
-%                         1.00*((2/3)*randn(mc_n,1)), ...
-% Below based on run from DOI to Landing: Knowledge Errors at start of Braking Burn
-mc_6dof_variables=cat(2, percent_errors,...
-                         max_ranges, ...
-                        (1000/3)*randn(mc_n,1), ...
-                        (1000/3)*randn(mc_n,1), ...
-                        (1000/3)*randn(mc_n,1), ...
-                        (0.2/3)*randn(mc_n,1), ...
-                        (0.2/3)*randn(mc_n,1), ...
-                        (0.2/3)*randn(mc_n,1), ...
+
+% set position estimation errors in radial, velocity and orbit normal directions, meters
+pos_est_err_3sigma_rhat = 1.0;
+pos_est_err_3sigma_vhat = 1.0;
+pos_est_err_3sigma_nhat = 1.0;
+pos_est_err             = randn(mc_n,3).*(ones(mc_n,1)*[pos_est_err_3sigma_rhat pos_est_err_3sigma_vhat pos_est_err_3sigma_nhat]/3);
+
+% set velocity estimation errors in radial, velocity and orbit normal directions, meters/sec
+vel_est_err_3sigma_rhat = 0.1;
+vel_est_err_3sigma_vhat = 0.1;
+vel_est_err_3sigma_nhat = 0.1;
+vel_est_err             = randn(mc_n,3).*(ones(mc_n,1)*[vel_est_err_3sigma_rhat vel_est_err_3sigma_vhat vel_est_err_3sigma_nhat]/3);
+
+% define Monte Carlo initialization structure
+mc_6dof_variables=cat(2,percent_errors,...
+                        max_ranges, ...
+                        pos_est_err, ...
+                        vel_est_err, ...
                         st_noise_vec, ...
                         integ_time_vec, ...
                         aov_vec, ...
@@ -238,17 +243,13 @@ mc_6dof_variables=cat(2, percent_errors,...
                         biprop_stop_delay, ...
                         mass_estimate_bias ...
                         );
-% and velocity error 2/3 m/s
-% for icase=1:mc_n
-%     mc_6dof_variables(icase,3:5) = randn(3,1)*500/3 ;
-%     mc_6dof_variables(icase,6:8) = randn(3,1)*2/3 ;
-% end
  
-ivars = struct( 'ldr_2k_percent_error',1,...
-                'ldr_2k_range_max',2,...
-                'est_posx',3,'est_posy',4,'est_posz',5,...
-                'est_velx',6,'est_vely',7,'est_velz',8,...
-                'kfl_star_tracker_transverse_noise',9,...
+% define indexes to Monte Carlo initialization variables
+ivars = struct( 'percent_error',1,...
+                'range_max',2,...
+                'pos_est_err',[3:5],...
+                'vel_est_err',[6:8],...
+                'star_tracker_transverse_noise',9,...
                 'cam_integ_time',10,...
                 'cam_aov',11,...
                 'cam_image_delta_t',12,...
@@ -292,42 +293,55 @@ for i2mc = 1 : length(mc_i)
     sim_set_kfl_error_state_init
     %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - -%
  
-%     imh_accel_noise_on      = 1;  % 1 - ON, 0 - OFF
-%     imh_gyro_noise_on       = 1;  % 1 - ON, 0 - OFF
-%     imh_accel_bias_noise_on = 1;  % 1 - ON, 0 - OFF
-%     imh_gyro_bias_noise_on  = 1;  % 1 - ON, 0 - OFF
+%     mhn_accel_noise_on      = 1;  % 1 - ON, 0 - OFF
+%     mhn_gyro_noise_on       = 1;  % 1 - ON, 0 - OFF
+%     mhn_accel_bias_noise_on = 1;  % 1 - ON, 0 - OFF
+%     mhn_gyro_bias_noise_on  = 1;  % 1 - ON, 0 - OFF
  
     % %%%%%%%%%%%%%
     % Adjust here
     % %%%%%%%%%%%%%
  
-        if ~isnan( mc_6dof_variables(imc,ivars.ldr_2k_percent_error) )
-            ldr_2k_percent_error = mc_6dof_variables(imc,ivars.ldr_2k_percent_error);
+        if ~isnan( mc_6dof_variables(imc,ivars.percent_error) )
+            flr_15k_percent_error = mc_6dof_variables(imc,ivars.percent_error);
         end
-        if ~isnan( mc_6dof_variables(imc,ivars.ldr_2k_range_max) )
-            ldr_2k_range_max = mc_6dof_variables(imc,ivars.ldr_2k_range_max);
+        if ~isnan( mc_6dof_variables(imc,ivars.range_max) )
+            flr_15k_range_max = mc_6dof_variables(imc,ivars.range_max);
         end
-        if ~isnan( mc_6dof_variables(imc,ivars.est_posx) )
-            kfl_position_init(1) = ini_position_v(1) + mc_6dof_variables(imc,ivars.est_posx);
+        
+        % radial, velocity, orbit normal, co-normal and local horizontal frame basis vectors
+        rhat=ini_position_v/norm(ini_position_v);
+        vhat=ini_velocity_v/norm(ini_velocity_v);
+        nhat=cross(rhat,vhat)/norm(cross(rhat,vhat));
+        chat=cross(vhat,nhat)/norm(cross(vhat,nhat));
+        hhat=cross(nhat,rhat)/norm(cross(nhat,rhat));
+
+        % radial, velocity, orbit normal to inertial frame DCM
+        rvn2eci=[rhat; vhat; nhat]';
+        % VNC to inertial frame DCM
+        vnc2eci=[vhat; nhat; chat]';
+        % LVLH to inertial frame DCM
+        lvlh2eci=[rhat; hhat; nhat]';
+
+        % select DCM
+        if strcmp(est_err_frame_type,'VNC')
+          DCM = vnc2eci;
+        elseif strcmp(est_err_frame_type,'LVLH')
+          DCM = lvlh2eci;
+        else
+          DCM = rvn2eci;
         end
-        if ~isnan( mc_6dof_variables(imc,ivars.est_posy) )
-            kfl_position_init(2) =  ini_position_v(2) + mc_6dof_variables(imc,ivars.est_posy);
+
+        % initial position and velocity estimates in ECI frame
+        if ~isnan( mc_6dof_variables(imc,ivars.pos_est_err) )
+            kfl_position_init = ini_position_v' + DCM*mc_6dof_variables(imc,ivars.pos_est_err)';
         end
-        if ~isnan( mc_6dof_variables(imc,ivars.est_posz) )
-            kfl_position_init(3) =  ini_position_v(3) + mc_6dof_variables(imc,ivars.est_posz);
+        if ~isnan( mc_6dof_variables(imc,ivars.vel_est_err) )
+            kfl_velocity_init = ini_velocity_v' + DCM*mc_6dof_variables(imc,ivars.vel_est_err)';
         end
-        if ~isnan( mc_6dof_variables(imc,ivars.est_velx) )
-            kfl_velocity_init(1) = ini_velocity_v(1) + mc_6dof_variables(imc,ivars.est_velx);
-        end
-        if ~isnan( mc_6dof_variables(imc,ivars.est_vely) )
-            kfl_velocity_init(2) =  ini_velocity_v(2) + mc_6dof_variables(imc,ivars.est_vely);
-        end
-        if ~isnan( mc_6dof_variables(imc,ivars.est_velz) )
-            kfl_velocity_init(3) =  ini_velocity_v(3) + mc_6dof_variables(imc,ivars.est_velz);
-        end
- 
-        if ~isnan( mc_6dof_variables(imc,ivars.kfl_star_tracker_transverse_noise) )
-            kfl_star_tracker_transverse_noise = mc_6dof_variables(imc,ivars.kfl_star_tracker_transverse_noise);
+
+        if ~isnan( mc_6dof_variables(imc,ivars.star_tracker_transverse_noise) )
+            kfl_star_tracker_transverse_noise = mc_6dof_variables(imc,ivars.star_tracker_transverse_noise);
         end
         
         if ~isnan( mc_6dof_variables(imc,ivars.cam_integ_time) )
@@ -412,8 +426,7 @@ for i2mc = 1 : length(mc_i)
           tpl_main_biprop_isp    = 310.0;
           tpl_rp1_to_htp_ratio   = 1/9;
         elseif strcmp(mission_type,'micro')
-          tdl_main_biprop_thrust = 450.0;
-          tdl_main_biprop_thrust = 1112.06;
+          tdl_main_biprop_thrust = 1112.0;
           tpl_main_biprop_isp    = 310.0;
           tpl_rp1_to_htp_ratio   = 1/7.5;
         end

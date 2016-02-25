@@ -9,4 +9,4 @@ pref_export_to_ppt        = 0;
 pref_topo_plot_bg_color   = 'y';
 pref_topo_plot_bg_alpha   = 0.05;
 pref_plot_traj_values     = 1;
-pref_plot_pos_vel_errors  = 0;
+pref_plot_pos_vel_errors  = 1;
