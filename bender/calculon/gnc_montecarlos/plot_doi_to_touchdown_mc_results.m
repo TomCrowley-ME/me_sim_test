@@ -2048,9 +2048,9 @@ for ipos = 1:mc_n
     end
     if exist('mc_traj_data','var')
       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data),'b-');hold on,text(6980,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6980 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
+            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');hold on,text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
       else
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data),'r-');hold on,text(6980,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6980 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
+            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');hold on,text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
       end
     end
     hold on; grid on;
@@ -2096,9 +2096,9 @@ for ipos = 1:mc_n
     end
     if exist('mc_traj_data','var')
       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');hold on;text(6980,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6980 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
+            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');hold on;text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
       else
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');hold on;text(6980,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6980 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
+            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');hold on;text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
       end
     end
     hold on; grid on;clear t

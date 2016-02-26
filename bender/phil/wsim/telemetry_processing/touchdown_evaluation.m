@@ -81,7 +81,7 @@ gn2_mass_used = truth.sim.gn2_used_acs.Data(touchdown);
 lateral_cg_truth = 1e3*truth.sim.cg.Data(touchdown,1:2);
 lateral_cg_est = 1e3*telem.est.cg.Data(touchdown_est,1:2);
 
-lateral_gnc_pos_scalar_limit  = 10000.0;
+lateral_gnc_pos_scalar_limit  = 25000.0;
 lateral_gnc_vel_scalar_limit  = 5.0;
 lateral_est_vel_scalar_limit  = 5.0;
 final_est_vert_pos_err_limit  = 10.0;

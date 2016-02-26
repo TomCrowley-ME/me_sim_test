@@ -12,9 +12,21 @@ if strcmp(mission_type,'1')
   rp1_mass_nominal = 19.0;
   gn2_mass_nominal = 0.5;
 elseif strcmp(mission_type,'micro')
-  htp_mass_nominal = 39.7059;
-  rp1_mass_nominal = 5.2941;
+  mpl_mass_dry          = 38.0;
+  mpl_mass_dry          = 29.0; % 10-02-15 Bud Fraze
+  mpl_mass_fillfrac_100 = 110.0;
+  mpl_mass_fillfrac_100 = 117.04; % 10-02-15 Bud Fraze
+  mpl_mass_fillfrac_0   = mpl_mass_dry;
+  mpl_cgz_location_fillfrac_0   = 0.20;
+  mpl_cgz_location_fillfrac_100 = 0.09;
+  mpl_htp_mass_initial  = 39.7059+14.2133;
+  mpl_rp1_mass_initial  = 5.2941+2.1867;  
+  emp_mass_fillfrac_100 = mpl_mass_fillfrac_100;
+  emp_mass_fillfrac_0   = mpl_mass_fillfrac_0;
+  htp_mass_nominal =mpl_htp_mass_initial;
+  rp1_mass_nominal =mpl_rp1_mass_initial ;
   gn2_mass_nominal = 0.2;
+
 end
 
 %-------------------------------------------------------------------------%
@@ -50,7 +62,7 @@ mc_prefix_workspace = 'doi_to_touchdown_workspace_mc';
 RandStream.setGlobalStream(RandStream.create('mt19937ar','seed',14))
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mc_n = 20;  % User set to total number of MC cases
+mc_n = 2;  % User set to total number of MC cases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % percent of range errors
