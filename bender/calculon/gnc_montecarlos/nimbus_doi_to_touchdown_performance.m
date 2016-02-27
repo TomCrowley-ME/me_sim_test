@@ -5,13 +5,11 @@ load_model nimbus;
 %-------------------------------------------------------------------------%
 % define mission type: "micro", "1", "2"
 mission_type='micro';
-
-% set propellant mass nominal values based on mission type
 if strcmp(mission_type,'1')
   htp_mass_nominal = 176.05;
   rp1_mass_nominal = 19.0;
   gn2_mass_nominal = 0.5;
-elseif strcmp(mission_type,'micro')
+else
   mpl_mass_dry          = 38.0;
   mpl_mass_dry          = 29.0; % 10-02-15 Bud Fraze
   mpl_mass_fillfrac_100 = 110.0;
@@ -26,7 +24,6 @@ elseif strcmp(mission_type,'micro')
   htp_mass_nominal =mpl_htp_mass_initial;
   rp1_mass_nominal =mpl_rp1_mass_initial ;
   gn2_mass_nominal = 0.2;
-
 end
 
 %-------------------------------------------------------------------------%
@@ -62,7 +59,7 @@ mc_prefix_workspace = 'doi_to_touchdown_workspace_mc';
 RandStream.setGlobalStream(RandStream.create('mt19937ar','seed',14))
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mc_n = 2;  % User set to total number of MC cases
+mc_n = 100;  % User set to total number of MC cases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % percent of range errors
@@ -170,30 +167,29 @@ for i=1:25
 end
  
 % set monoprop thrust gain, nominally set to 1
-monoprop_thrust_min = 0.98;
-monoprop_thrust_max = 1.00;
+monoprop_thrust_min = 0.997;
+monoprop_thrust_max = 1.003;
 % monoprop_thrust     = monoprop_thrust_min + (monoprop_thrust_max - monoprop_thrust_min)*rand(mc_n,1);
 mid=(monoprop_thrust_max+monoprop_thrust_min)/2;sigma=(monoprop_thrust_max-monoprop_thrust_min)/3;
 monoprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set monoprop Isp gain, nominally set to 1
-monoprop_isp_min = 0.98;
-monoprop_isp_max = 1.00;
+monoprop_isp_min = 0.997;
+monoprop_isp_max = 1.003;
 % monoprop_isp     = monoprop_isp_min + (monoprop_isp_max - monoprop_isp_min)*rand(mc_n,1);
 mid=(monoprop_isp_max+monoprop_isp_min)/2;sigma=(monoprop_isp_max-monoprop_isp_min)/3;
 monoprop_isp     =  mid+sigma*randn(mc_n,1);
  
 % set biprop thrust gain, nominally set to 1
-biprop_thrust_min = 0.98;
 biprop_thrust_min = 0.997;
-biprop_thrust_max = 1.00;
+biprop_thrust_max = 1.003;
 % biprop_thrust     = biprop_thrust_min + (biprop_thrust_max - biprop_thrust_min)*rand(mc_n,1);
 mid=(biprop_thrust_max+biprop_thrust_min)/2;sigma=(biprop_thrust_max-biprop_thrust_min)/3;
 biprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set biprop Isp gain, nominally set to 1
-biprop_isp_min = 0.98;
-biprop_isp_max = 1.00;
+biprop_isp_min = 0.997;
+biprop_isp_max = 1.003;
 % biprop_isp     = biprop_isp_min + (biprop_isp_max - biprop_isp_min)*rand(mc_n,1);
 mid=(biprop_isp_max+biprop_isp_min)/2;sigma=(biprop_isp_max-biprop_isp_min)/3;
 biprop_isp     =  mid+sigma*randn(mc_n,1);
@@ -288,7 +284,7 @@ for i2mc = 1 : length(mc_i)
     name_mc_ws = [ mc_prefix_workspace num2str(imc) ];
     
     nimbus_sim_init;
-    
+ 
     % Load the scenario
     fprintf('Scenario 3 loaded, for MX-%s\n',mission_type)
     load_scenario('scenario_3','nimbus');
@@ -395,17 +391,27 @@ for i2mc = 1 : length(mc_i)
 
         % set dry/wet mass nominal values based on mission type
         if strcmp(mission_type,'1')
-          mpl_mass_dry          = 175.8;
-          mpl_mass_fillfrac_100 = 572.9;
+          htp_mass_nominal = 176.05;
+          rp1_mass_nominal = 19.0;
+          gn2_mass_nominal = 0.5;
           mpl_mass_fillfrac_0   = mpl_mass_dry;
           emp_mass_fillfrac_100 = mpl_mass_fillfrac_100;
           emp_mass_fillfrac_0   = mpl_mass_fillfrac_0;
-        elseif strcmp(mission_type,'micro')
+        else
           mpl_mass_dry          = 38.0;
+          mpl_mass_dry          = 29.0; % 10-02-15 Bud Fraze
           mpl_mass_fillfrac_100 = 110.0;
+          mpl_mass_fillfrac_100 = 117.04; % 10-02-15 Bud Fraze
           mpl_mass_fillfrac_0   = mpl_mass_dry;
+          mpl_cgz_location_fillfrac_0   = 0.20;
+          mpl_cgz_location_fillfrac_100 = 0.09;
+          mpl_htp_mass_initial  = 39.7059+14.2133;
+          mpl_rp1_mass_initial  = 5.2941+2.1867;  
           emp_mass_fillfrac_100 = mpl_mass_fillfrac_100;
           emp_mass_fillfrac_0   = mpl_mass_fillfrac_0;
+          htp_mass_nominal =mpl_htp_mass_initial;
+          rp1_mass_nominal =mpl_rp1_mass_initial ;
+          gn2_mass_nominal = 0.2;
         end
 
         csu_mpl_mass_properties_lander_prep

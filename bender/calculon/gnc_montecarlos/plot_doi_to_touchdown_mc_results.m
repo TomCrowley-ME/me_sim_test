@@ -2072,9 +2072,9 @@ for ipos = 1:mc_n
     end
     if exist('mc_traj_data','var')
       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'b-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 990 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','b');
+            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'b-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 980 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','b');
       else
-            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'r-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 990 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','r');
+            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'r-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 980 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','r');
       end
     end
     hold on; grid on;
