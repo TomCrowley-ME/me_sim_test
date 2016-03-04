@@ -19,21 +19,21 @@ setenv('NIMBUS_ROOT',NIMBUS_ROOT);
 assignin('base', 'NIMBUS_ROOT', NIMBUS_ROOT);
 
 % Find Mercurial. Start by looking for the HG environment variable.
-hg_env = getenv('HG');
-
-if isempty(hg_env)
-    % No environment variable found... check the path
-    if ispc
-        [status, hg_path] = dos('where hg.exe');
-    else
-        [status, hg_path] = unix('which hg');
-    end
-    if status ~= 0
-        error('MATLAB can''t find Mercurial! Make sure it''s in your PATH. If you need help getting this set up, contact mikestewart@moonexpress.com.');
-    else
-        setenv('HG', strtrim(hg_path));
-    end
-end
+% hg_env = getenv('HG');
+% 
+% if isempty(hg_env)
+%     % No environment variable found... check the path
+%     if ispc
+%         [status, hg_path] = dos('where hg.exe');
+%     else
+%         [status, hg_path] = unix('which hg');
+%     end
+%     if status ~= 0
+%         error('MATLAB can''t find Mercurial! Make sure it''s in your PATH. If you need help getting this set up, contact mikestewart@moonexpress.com.');
+%     else
+%         setenv('HG', strtrim(hg_path));
+%     end
+% end
 
 has_minopencv = false;
 

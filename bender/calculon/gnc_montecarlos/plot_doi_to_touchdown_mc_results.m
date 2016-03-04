@@ -1099,78 +1099,78 @@ if exist('lateral_cg_wet_offset_fail')==1
     saveas(gcf,'HistWetCGOffsetFail.png');%saveas(gcf,'HistWetCGOffsetFail.fig')
 end
 %%
-figure;plot(monoprop_thrust,Success,'*');grid on
-title_string = 'Landing Success vs Monoprop Thrust Performance';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Monoprop Thrust','fontsize',14)
-ylabel('Success=1 Fail=0','fontsize',14)
-axis([-1 +1 -1 +2]);axis('auto x')
-saveas(gcf,'MonoPropThrustSuccFail.png')
-isuccess = 0;ifail = 0;clear monoprop_thrust_fail monoprop_thrust_success
-for itest =1:size(mc_all_initial,1)
-    if Success(itest) == 1
-        isuccess = isuccess + 1;
-        monoprop_thrust_success(isuccess) = monoprop_thrust(itest);
-    else
-        ifail = ifail + 1;
-        monoprop_thrust_fail(ifail) = monoprop_thrust(itest);
-    end
-end
-if exist('monoprop_thrust_success')==1
-    figure;hist(monoprop_thrust_success,20);grid on
-    title_string = 'Monoprop Thrust Performance to Landing Success';
-    title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
-    xlabel('Monoprop Thrust','fontsize',14)
-    ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistMonoPropThrustSucc.png');%saveas(gcf,'HistMonoPropThrustSucc.fig')
-end
-if exist('monoprop_thrust_fail')==1
-    figure;hist(monoprop_thrust_fail,20);grid on
-    h = findobj(gca,'Type','patch');
-    set(h,'FaceColor','r')
-    title_string = 'Monoprop Thrust Performance to Landing Failure';
-    title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
-    xlabel('Monoprop Thrust','fontsize',14)
-    ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistMonoPropThrustFail.png');%saveas(gcf,'HistMonoPropThrustFail.fig')
-end
-
-%%
-figure;plot(monoprop_isp,Success,'*');grid on
-title_string = 'Landing Success vs Monoprop Isp Performance';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Monoprop Isp','fontsize',14)
-ylabel('Success=1 Fail=0','fontsize',14)
-axis([-1 +1 -1 +2]);axis('auto x')
-saveas(gcf,'MonoPropIspSuccFail.png')
-isuccess = 0;ifail = 0;clear monoprop_isp_fail monoprop_isp_success
-for itest =1:size(mc_all_initial,1)
-    if Success(itest) == 1
-        isuccess = isuccess + 1;
-        monoprop_isp_success(isuccess) = monoprop_isp(itest);
-    else
-        ifail = ifail + 1;
-        monoprop_isp_fail(ifail) = monoprop_isp(itest);
-    end
-end
-if exist('monoprop_isp_success')==1
-    figure;hist(monoprop_isp_success,20);grid on
-    title_string = 'Monoprop Isp Performance to Landing Success';
-    title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
-    xlabel('Monoprop Isp','fontsize',14)
-    ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistMonoPropIspSucc.png');%saveas(gcf,'HistMonoPropIspSucc.fig')
-end
-if exist('monoprop_isp_fail')==1
-    figure;hist(monoprop_isp_fail,20);grid on
-    h = findobj(gca,'Type','patch');
-    set(h,'FaceColor','r')
-    title_string = 'Monoprop Isp Performance to Landing Failure';
-    title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
-    xlabel('Monoprop Isp','fontsize',14)
-    ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistMonoPropIspFail.png');%saveas(gcf,'HistMonoPropIspFail.fig')
-end
+% figure;plot(monoprop_thrust,Success,'*');grid on
+% title_string = 'Landing Success vs Monoprop Thrust Performance';
+% title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+% xlabel('Monoprop Thrust','fontsize',14)
+% ylabel('Success=1 Fail=0','fontsize',14)
+% axis([-1 +1 -1 +2]);axis('auto x')
+% saveas(gcf,'MonoPropThrustSuccFail.png')
+% isuccess = 0;ifail = 0;clear monoprop_thrust_fail monoprop_thrust_success
+% for itest =1:size(mc_all_initial,1)
+%     if Success(itest) == 1
+%         isuccess = isuccess + 1;
+%         monoprop_thrust_success(isuccess) = monoprop_thrust(itest);
+%     else
+%         ifail = ifail + 1;
+%         monoprop_thrust_fail(ifail) = monoprop_thrust(itest);
+%     end
+% end
+% if exist('monoprop_thrust_success')==1
+%     figure;hist(monoprop_thrust_success,20);grid on
+%     title_string = 'Monoprop Thrust Performance to Landing Success';
+%     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
+%     xlabel('Monoprop Thrust','fontsize',14)
+%     ylabel('Number of Cases','fontsize',14)
+%     saveas(gcf,'HistMonoPropThrustSucc.png');%saveas(gcf,'HistMonoPropThrustSucc.fig')
+% end
+% if exist('monoprop_thrust_fail')==1
+%     figure;hist(monoprop_thrust_fail,20);grid on
+%     h = findobj(gca,'Type','patch');
+%     set(h,'FaceColor','r')
+%     title_string = 'Monoprop Thrust Performance to Landing Failure';
+%     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
+%     xlabel('Monoprop Thrust','fontsize',14)
+%     ylabel('Number of Cases','fontsize',14)
+%     saveas(gcf,'HistMonoPropThrustFail.png');%saveas(gcf,'HistMonoPropThrustFail.fig')
+% end
+% 
+% %%
+% figure;plot(monoprop_isp,Success,'*');grid on
+% title_string = 'Landing Success vs Monoprop Isp Performance';
+% title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+% xlabel('Monoprop Isp','fontsize',14)
+% ylabel('Success=1 Fail=0','fontsize',14)
+% axis([-1 +1 -1 +2]);axis('auto x')
+% saveas(gcf,'MonoPropIspSuccFail.png')
+% isuccess = 0;ifail = 0;clear monoprop_isp_fail monoprop_isp_success
+% for itest =1:size(mc_all_initial,1)
+%     if Success(itest) == 1
+%         isuccess = isuccess + 1;
+%         monoprop_isp_success(isuccess) = monoprop_isp(itest);
+%     else
+%         ifail = ifail + 1;
+%         monoprop_isp_fail(ifail) = monoprop_isp(itest);
+%     end
+% end
+% if exist('monoprop_isp_success')==1
+%     figure;hist(monoprop_isp_success,20);grid on
+%     title_string = 'Monoprop Isp Performance to Landing Success';
+%     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
+%     xlabel('Monoprop Isp','fontsize',14)
+%     ylabel('Number of Cases','fontsize',14)
+%     saveas(gcf,'HistMonoPropIspSucc.png');%saveas(gcf,'HistMonoPropIspSucc.fig')
+% end
+% if exist('monoprop_isp_fail')==1
+%     figure;hist(monoprop_isp_fail,20);grid on
+%     h = findobj(gca,'Type','patch');
+%     set(h,'FaceColor','r')
+%     title_string = 'Monoprop Isp Performance to Landing Failure';
+%     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
+%     xlabel('Monoprop Isp','fontsize',14)
+%     ylabel('Number of Cases','fontsize',14)
+%     saveas(gcf,'HistMonoPropIspFail.png');%saveas(gcf,'HistMonoPropIspFail.fig')
+% end
 %%
 figure;plot(biprop_thrust,Success,'*');grid on
 title_string = 'Landing Success vs Biprop Thrust Performance';
@@ -1317,34 +1317,34 @@ if exist('stop_delay_fail')==1
     saveas(gcf,'HistMainStopDelayFail.png');%saveas(gcf,'HistMainStopDelayFail.fig')
 end
 %%
-figure;grid on;hold on;
-for itest=1:size(mc_all_final,1)
- if(mc_all_final(itest,39)==0)
-     plot(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),'b*');text(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
- elseif(mc_all_final(itest,39)==1)
-     plot(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),'r*');text(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
- end
-end
-title_string = 'Monoprop Thrust Performance vs Touchdown Vertical Velocity';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Monoprop Thrust','fontsize',14)
-ylabel('Topocentric Vertical Velocity (m/s)','fontsize',14)
-saveas(gcf,'VerticalVelandMonoPropThrust.png');%saveas(gcf,'VerticalVelandMonoPropThrust.fig')
+% figure;grid on;hold on;
+% for itest=1:size(mc_all_final,1)
+%  if(mc_all_final(itest,39)==0)
+%      plot(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),'b*');text(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+%  elseif(mc_all_final(itest,39)==1)
+%      plot(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),'r*');text(monoprop_thrust(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+%  end
+% end
+% title_string = 'Monoprop Thrust Performance vs Touchdown Vertical Velocity';
+% title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+% xlabel('Monoprop Thrust','fontsize',14)
+% ylabel('Topocentric Vertical Velocity (m/s)','fontsize',14)
+% saveas(gcf,'VerticalVelandMonoPropThrust.png');%saveas(gcf,'VerticalVelandMonoPropThrust.fig')
 
 %%
-figure;grid on;hold on;
-for itest=1:size(mc_all_final,1)
- if(mc_all_final(itest,39)==0)
-     plot(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),'b*');text(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
- elseif(mc_all_final(itest,39)==1)
-     plot(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),'r*');text(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
- end
-end
-title_string = 'Monoprop Isp Performance vs Touchdown Vertical Velocity';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Monoprop Isp','fontsize',14)
-ylabel('Topocentric Vertical Velocity (m/s)','fontsize',14)
-saveas(gcf,'VerticalVelandMonoPropIsp.png');%saveas(gcf,'VerticalVelandMonoPropIsp.fig')
+% figure;grid on;hold on;
+% for itest=1:size(mc_all_final,1)
+%  if(mc_all_final(itest,39)==0)
+%      plot(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),'b*');text(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+%  elseif(mc_all_final(itest,39)==1)
+%      plot(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),'r*');text(monoprop_isp(itest),vertical_gnc_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+%  end
+% end
+% title_string = 'Monoprop Isp Performance vs Touchdown Vertical Velocity';
+% title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+% xlabel('Monoprop Isp','fontsize',14)
+% ylabel('Topocentric Vertical Velocity (m/s)','fontsize',14)
+% saveas(gcf,'VerticalVelandMonoPropIsp.png');%saveas(gcf,'VerticalVelandMonoPropIsp.fig')
 
 %%
 figure;grid on;hold on;
