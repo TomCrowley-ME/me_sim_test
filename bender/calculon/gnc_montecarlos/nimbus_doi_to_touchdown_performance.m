@@ -71,15 +71,16 @@ percent_errors = percent_mean + percent_variation*rand(mc_n,1);
 percent_errors = 0.001*ones(mc_n,1);
  
 % max acquisition range
-max_range_mean = 1.0*5000; % Set mean to 2.5 km
-max_range_variation = 5000; % Range above and below mean
-max_ranges = abs(max_range_mean + max_range_variation*rand(mc_n,1));
+max_range_mean = 1.0*15000; % Set mean to 15 km
+max_range_variation = 500; % Range above and below mean
+sigma = max_range_variation/3;
+max_ranges = abs(max_range_mean + sigma*randn(mc_n,1));
 % max_ranges = abs(2*max_range_mean)*randn(mc_n,1);
  
 % hardcode
-max_ranges = 15000*ones(mc_n,1);
+%max_ranges = 15000*ones(mc_n,1);
  
-% star tracker transerve noise (in arcsecond)
+% star tracker transverse noise (in arcsecond)
 min_st_noise = 0;
 max_st_noise = 10;
 st_noise_vec = abs(min_st_noise + (max_st_noise-min_st_noise)*rand(mc_n,1));
@@ -129,13 +130,13 @@ delay_t_vec = 0.25*ones(mc_n,1);
 % total lateral cm dry - uniform distribution
 lateral_cm_x_dry_max =  0.0001;
 lateral_cm_y_dry_max =  0.0001;
-lateral_cm_z_dry_max =  0.0001;
+longitudinal_cm_z_dry_max =  0.0001;
 lateral_cm_x_dry_min = -0.0001;
 lateral_cm_y_dry_min = -0.0001;
-lateral_cm_z_dry_min = -0.0001;
+longitudinal_cm_z_dry_min = -0.0001;
 lateral_cm_x_dry = (lateral_cm_x_dry_max - lateral_cm_x_dry_min)/3*randn(mc_n,1);
 lateral_cm_y_dry = (lateral_cm_y_dry_max - lateral_cm_y_dry_min)/3*randn(mc_n,1);
-lateral_cm_z_dry = (lateral_cm_z_dry_max - lateral_cm_z_dry_min)/3*randn(mc_n,1);
+longitudinal_cm_z_dry = (longitudinal_cm_z_dry_max - longitudinal_cm_z_dry_min)/3*randn(mc_n,1);
  
 % set initial HTP mass
 htp_mass_min = htp_mass_nominal-0.1;
@@ -166,28 +167,28 @@ for i=1:25
     misalignment_ang(1:mc_n,i) = misalignment_ang_deg_3sigma/3*randn(mc_n,1);
 end
  
-% set monoprop thrust gain, nominally set to 1
+% set monoprop thrust scale factor, nominally set to 1
 monoprop_thrust_min = 0.997;
 monoprop_thrust_max = 1.003;
 % monoprop_thrust     = monoprop_thrust_min + (monoprop_thrust_max - monoprop_thrust_min)*rand(mc_n,1);
 mid=(monoprop_thrust_max+monoprop_thrust_min)/2;sigma=(monoprop_thrust_max-monoprop_thrust_min)/3;
 monoprop_thrust     =  mid+sigma*randn(mc_n,1);
  
-% set monoprop Isp gain, nominally set to 1
+% set monoprop Isp scale factor, nominally set to 1
 monoprop_isp_min = 0.997;
 monoprop_isp_max = 1.003;
 % monoprop_isp     = monoprop_isp_min + (monoprop_isp_max - monoprop_isp_min)*rand(mc_n,1);
 mid=(monoprop_isp_max+monoprop_isp_min)/2;sigma=(monoprop_isp_max-monoprop_isp_min)/3;
 monoprop_isp     =  mid+sigma*randn(mc_n,1);
  
-% set biprop thrust gain, nominally set to 1
+% set biprop thrust scale factor, nominally set to 1
 biprop_thrust_min = 0.997;
 biprop_thrust_max = 1.003;
 % biprop_thrust     = biprop_thrust_min + (biprop_thrust_max - biprop_thrust_min)*rand(mc_n,1);
 mid=(biprop_thrust_max+biprop_thrust_min)/2;sigma=(biprop_thrust_max-biprop_thrust_min)/3;
 biprop_thrust     =  mid+sigma*randn(mc_n,1);
  
-% set biprop Isp gain, nominally set to 1
+% set biprop Isp scale factor, nominally set to 1
 biprop_isp_min = 0.997;
 biprop_isp_max = 1.003;
 % biprop_isp     = biprop_isp_min + (biprop_isp_max - biprop_isp_min)*rand(mc_n,1);
@@ -201,7 +202,7 @@ mass_estimate_bias_max =  0.001;
 mid=(mass_estimate_bias_max+mass_estimate_bias_min)/2;sigma=(mass_estimate_bias_max-mass_estimate_bias_min)/3;
 mass_estimate_bias     =  mid+sigma*randn(mc_n,1);
  
-% set biprop burn start delay, msec, nominally set to 0
+% set biprop burn start delay, scale factor, nominally set to 0
 biprop_start_delay_min = 0.0;
 biprop_start_delay_max = 0.0;
 sigma=(biprop_start_delay_max-biprop_start_delay_min)/3;
@@ -217,13 +218,26 @@ biprop_stop_delay     = abs(sigma*randn(mc_n,1));
 pos_est_err_3sigma_rhat = 1.0;
 pos_est_err_3sigma_vhat = 1.0;
 pos_est_err_3sigma_nhat = 1.0;
-pos_est_err             = randn(mc_n,3).*(ones(mc_n,1)*[pos_est_err_3sigma_rhat pos_est_err_3sigma_vhat pos_est_err_3sigma_nhat]/3);
+% select DCM
+if strcmp(est_err_frame_type,'VNC')
+    pos_est_err = randn(mc_n,3).*(ones(mc_n,1)*[pos_est_err_3sigma_vhat pos_est_err_3sigma_nhat pos_est_err_3sigma_rhat]/3);
+elseif strcmp(est_err_frame_type,'LVLH')
+    pos_est_err = randn(mc_n,3).*(ones(mc_n,1)*[pos_est_err_3sigma_vhat pos_est_err_3sigma_nhat pos_est_err_3sigma_rhat]/3);
+else
+    pos_est_err = randn(mc_n,3).*(ones(mc_n,1)*[pos_est_err_3sigma_rhat pos_est_err_3sigma_vhat pos_est_err_3sigma_nhat]/3);
+end
 
 % set velocity estimation errors in radial, velocity and orbit normal directions, meters/sec
 vel_est_err_3sigma_rhat = 0.1;
 vel_est_err_3sigma_vhat = 0.1;
 vel_est_err_3sigma_nhat = 0.1;
-vel_est_err             = randn(mc_n,3).*(ones(mc_n,1)*[vel_est_err_3sigma_rhat vel_est_err_3sigma_vhat vel_est_err_3sigma_nhat]/3);
+if strcmp(est_err_frame_type,'VNC')
+    vel_est_err = randn(mc_n,3).*(ones(mc_n,1)*[vel_est_err_3sigma_vhat vel_est_err_3sigma_nhat vel_est_err_3sigma_rhat]/3);
+elseif strcmp(est_err_frame_type,'LVLH')
+    vel_est_err = randn(mc_n,3).*(ones(mc_n,1)*[vel_est_err_3sigma_vhat vel_est_err_3sigma_nhat vel_est_err_3sigma_rhat]/3);
+else
+    vel_est_err = randn(mc_n,3).*(ones(mc_n,1)*[vel_est_err_3sigma_rhat vel_est_err_3sigma_vhat vel_est_err_3sigma_nhat]/3);
+end
 
 % define Monte Carlo initialization structure
 mc_6dof_variables=cat(2,percent_errors,...
@@ -237,7 +251,7 @@ mc_6dof_variables=cat(2,percent_errors,...
                         delay_t_vec, ...
                         lateral_cm_x_dry, ...
                         lateral_cm_y_dry, ...
-                        lateral_cm_z_dry, ...
+                        longitudinal_cm_z_dry, ...
                         azimuth_ang,...
                         misalignment_ang,...
                         htp_mass, ...
@@ -329,7 +343,8 @@ for i2mc = 1 : length(mc_i)
         % VNC to inertial frame DCM
         vnc2eci=[vhat; nhat; chat]';
         % LVLH to inertial frame DCM
-        lvlh2eci=[rhat; hhat; nhat]';
+        % lvlh2eci=[rhat; hhat; nhat]';
+        lvlh2eci=[hhat; nhat; rhat]';
 
         % select DCM
         if strcmp(est_err_frame_type,'VNC')
@@ -468,12 +483,12 @@ for i2mc = 1 : length(mc_i)
  
         % biprop start delay
         if ~isnan( mc_6dof_variables(imc,ivars.biprop_start_delay) )
-            tdl_main_engine_start_delay = mc_6dof_variables(imc,ivars.biprop_start_delay)/1000;
+            tdl_main_engine_start_delay = mc_6dof_variables(imc,ivars.biprop_start_delay)*tdl_main_engine_start_delay;
         end
  
         % biprop stop delay
         if ~isnan( mc_6dof_variables(imc,ivars.biprop_stop_delay) )
-            tdl_main_engine_stop_delay = mc_6dof_variables(imc,ivars.biprop_stop_delay)/1000;
+            tdl_main_engine_stop_delay = mc_6dof_variables(imc,ivars.biprop_stop_delay)*tdl_main_engine_stop_delay;
         end
          
         kfl_state_init = [ kfl_position_init ; kfl_velocity_init ; kfl_acc_bias_init ;  kfl_gibbs_init ;  kfl_gyro_bias_init];
@@ -481,6 +496,7 @@ for i2mc = 1 : length(mc_i)
     sim_set_kfl_error_state_prep
  
     sim('nimbus');
+    
  %%
     clear mc_all_initial mc_all_final
     process_test_data(scenario_data_dir);
@@ -546,8 +562,8 @@ for i2mc = 1 : length(mc_i)
  
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
- 
-save MC_WORKSPACE
+
+Dispersion_Table_Out 
  
  
 
