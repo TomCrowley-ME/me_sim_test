@@ -67,11 +67,11 @@ ThreeSigma = [Three_Sigma_Pos(1); Three_Sigma_Pos(2); Three_Sigma_Pos(3); Three_
              max_range_variation;3*percent_variation;3*(max_integ_time-min_integ_time);...
              max_integ_time-min_integ_time;max_delay_t-min_delay_t];
 LowValue = -ThreeSigma + NominalValue;
-    Lowvalue(1:3) = ini_position_v' - DCM*Three_Sigma_Pos'; 
-    Lowvalue(4:6) = ini_velocity_v' - DCM*Three_Sigma_Vel'; 
+    LowValue(1:3) = ini_position_v' - DCM*Three_Sigma_Pos'; 
+    LowValue(4:6) = ini_velocity_v' - DCM*Three_Sigma_Vel'; 
 HighValue = ThreeSigma + NominalValue;
-    Highvalue(1:3) = ini_position_v' + DCM*Three_Sigma_Pos'; 
-    Highvalue(4:6) = ini_velocity_v' + DCM*Three_Sigma_Vel'; 
+    HighValue(1:3) = ini_position_v' + DCM*Three_Sigma_Pos'; 
+    HighValue(4:6) = ini_velocity_v' + DCM*Three_Sigma_Vel'; 
 
 T_Table_Test = table(DispersionParamName,NominalValue,MeanBiasSF,MinSF,MaxSF,Uniform_Gaussian,ThreeSigma,LowValue,HighValue);
 writetable(T_Table_Test,'DispersionInputs.csv');
