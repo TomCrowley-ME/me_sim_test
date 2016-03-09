@@ -63,12 +63,12 @@ mc_n = 100;  % User set to total number of MC cases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % percent of range errors
-percent_mean = 0/100; % Set mean to 0%
+percent_mean = 1/100; % Set mean to 0%
 percent_variation = (0.1)/100; % Range above and below mean (FLIR MLR 2K 0.1% at 1 km == 1 meter at 1 km)
 percent_errors = percent_mean + percent_variation*rand(mc_n,1);
  
 % % hardcode
-percent_errors = 0.001*ones(mc_n,1);
+% percent_errors = 0.001*ones(mc_n,1);
  
 % max acquisition range
 max_range_mean = 1.0*15000; % Set mean to 15 km
@@ -82,11 +82,11 @@ max_ranges = abs(max_range_mean + sigma*randn(mc_n,1));
  
 % star tracker transverse noise (in arcsecond)
 min_st_noise = 0;
-max_st_noise = 10;
+max_st_noise = 50;
 st_noise_vec = abs(min_st_noise + (max_st_noise-min_st_noise)*rand(mc_n,1));
  
 % % hardcode
-st_noise_vec = 9*ones(mc_n,1);
+% st_noise_vec = 9*ones(mc_n,1);
  
 % camera integration time (used in blur noise factor)
 min_integ_time =  5/ 1000;
@@ -94,7 +94,7 @@ max_integ_time = 15/ 1000;
 integ_time_vec = abs(min_integ_time + (max_integ_time-min_integ_time)*rand(mc_n,1));
  
 % % hardcode
-integ_time_vec = 0.010*ones(mc_n,1);
+% integ_time_vec = 0.010*ones(mc_n,1);
  
 % camera angular field of view
 min_aov = 30 * pi/180;
@@ -110,7 +110,7 @@ max_delta_t = 2;
 delta_t_vec = abs(min_delta_t + (max_delta_t-min_delta_t)*rand(mc_n,1));
  
 %hardcode
-delta_t_vec = 0.1*ones(mc_n,1);
+% delta_t_vec = 0.1*ones(mc_n,1);
  
 % image processing delay time
 min_delay_t = 0.1;
@@ -118,7 +118,7 @@ max_delay_t = 0.2;
 delay_t_vec = abs(min_delay_t + (max_delay_t-min_delay_t)*rand(mc_n,1));
  
 % % hardcode
-delay_t_vec = 0.25*ones(mc_n,1);
+% delay_t_vec = 0.25*ones(mc_n,1);
  
 % total lateral cm dry - normal distribution
 % lateral_cm_dry_sigma = 0.000;
@@ -215,9 +215,9 @@ sigma=(biprop_stop_delay_max-biprop_stop_delay_min)/3;
 biprop_stop_delay     = abs(sigma*randn(mc_n,1));
 
 % set position estimation errors in radial, velocity and orbit normal directions, meters
-pos_est_err_3sigma_rhat = 1.0;
-pos_est_err_3sigma_vhat = 1.0;
-pos_est_err_3sigma_nhat = 1.0;
+pos_est_err_3sigma_rhat = 10.0;
+pos_est_err_3sigma_vhat = 1000.0;
+pos_est_err_3sigma_nhat = 10.0;
 % select DCM
 if strcmp(est_err_frame_type,'VNC')
     pos_est_err = randn(mc_n,3).*(ones(mc_n,1)*[pos_est_err_3sigma_vhat pos_est_err_3sigma_nhat pos_est_err_3sigma_rhat]/3);
@@ -228,9 +228,9 @@ else
 end
 
 % set velocity estimation errors in radial, velocity and orbit normal directions, meters/sec
-vel_est_err_3sigma_rhat = 0.1;
-vel_est_err_3sigma_vhat = 0.1;
-vel_est_err_3sigma_nhat = 0.1;
+vel_est_err_3sigma_rhat = 0.5;
+vel_est_err_3sigma_vhat = 1.0;
+vel_est_err_3sigma_nhat = 0.5;
 if strcmp(est_err_frame_type,'VNC')
     vel_est_err = randn(mc_n,3).*(ones(mc_n,1)*[vel_est_err_3sigma_vhat vel_est_err_3sigma_nhat vel_est_err_3sigma_rhat]/3);
 elseif strcmp(est_err_frame_type,'LVLH')
@@ -364,7 +364,7 @@ for i2mc = 1 : length(mc_i)
         end
 
         if ~isnan( mc_6dof_variables(imc,ivars.star_tracker_transverse_noise) )
-            kfl_star_tracker_transverse_noise = mc_6dof_variables(imc,ivars.star_tracker_transverse_noise);
+            sta_angle_std = mc_6dof_variables(imc,ivars.star_tracker_transverse_noise);
         end
         
         if ~isnan( mc_6dof_variables(imc,ivars.cam_integ_time) )

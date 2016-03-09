@@ -35,7 +35,7 @@ end
 nsuccess = 0;
 nfail = 0;
 for iter=1:size(mc_all_final,1)
-   total_fuel_used_scalar(iter)  = mc_all_initial(iter,14) - mc_all_final(iter,14);
+   total_fuel_used_scalar(iter)  = mc_all_initial(iter,14) - mc_all_final(iter,14) - mpl_mass_dry;
 end
 mean_fuel_used = mean(total_fuel_used_scalar);
 half_sigma_fuel_dispersion = 0.5*std(total_fuel_used_scalar);
@@ -1350,63 +1350,22 @@ end
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(mc_all_final(itest,15),mc_all_final(itest,16),'b*');text(mc_all_final(itest,15),mc_all_final(itest,16),strcat('   ',num2str(itest)),'Color','b');
- elseif(mc_all_final(itest,39)==1)
-     plot(mc_all_final(itest,15),mc_all_final(itest,16),'r*');text(mc_all_final(itest,15),mc_all_final(itest,16),strcat('   ',num2str(itest)),'Color','r');
- end
-end
-title_string = 'Touchdown Topocentric Position';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Topocentric X Position (meters)','fontsize',14)
-ylabel('Topocentric Y Position (meters)','fontsize',14)
-if size(mc_all_final(:,15:16),1)>1
-  mean_landing_error = mean(mc_all_final(:,15:16),1);
-  standard_deviation_landing_error = std(mc_all_final(:,15:16),1);
-  str_text_box = {sprintf('Mean     = %9.2f, %9.2f m',mean_landing_error),sprintf('3 Sigma = %9.2f, %9.2f m',3*standard_deviation_landing_error)};
-  annotation('textbox',[.2 .8 .47 .1],'string',str_text_box) 
-  hold on;
-  ellipse_3_sigma_y = mean_landing_error(2)+3*standard_deviation_landing_error(2)*sin(2*pi*0.01*[0:100]);
-  ellipse_3_sigma_x = mean_landing_error(1)+3*standard_deviation_landing_error(1)*cos(2*pi*0.01*[0:100]);
-  plot(ellipse_3_sigma_x,ellipse_3_sigma_y,'r-','linewidth',2);
-end
-saveas(gcf,'LateralPosErr.png');%saveas(gcf,'LateralPosErr.fig')
-%%
-figure;grid on;hold on;
-for itest=1:size(mc_all_final,1)
-  if(mc_all_final(itest,39)==0)
-     plot(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),'b*');text(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),strcat('   ',num2str(itest)),'Color','b');
- elseif(mc_all_final(itest,39)==1)
-     plot(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),'r*');text(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),strcat('   ',num2str(itest)),'Color','r');
- end
-end
-title_string = 'Touchdown Topocentric Position Relative to Median';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Topocentric X Position (meters)','fontsize',14)
-ylabel('Topocentric Y Position (meters)','fontsize',14)
-if size(mc_all_final(:,15:16),1)>1
-  mean_landing_error = mean(mc_all_final(:,15:16),1);
-  standard_deviation_landing_error = std(mc_all_final(:,15:16),1);
-  str_text_box = {sprintf('Mean     = %9.2f, %9.2f m',mean_landing_error),sprintf('3 Sigma = %9.2f, %9.2f m',3*standard_deviation_landing_error)};
-  annotation('textbox',[.2 .8 .47 .1],'string',str_text_box) 
-  hold on;
-  ellipse_3_sigma_y = 3*standard_deviation_landing_error(2)*sin(2*pi*0.01*[0:100]);
-  ellipse_3_sigma_x = 3*standard_deviation_landing_error(1)*cos(2*pi*0.01*[0:100]);
-  plot(ellipse_3_sigma_x,ellipse_3_sigma_y,'r-','linewidth',2);
-end
-saveas(gcf,'LateralPosErrMedian.png');%saveas(gcf,'LateralPosErrMedian.fig')
-%%
-figure;grid on;hold on;
-for itest=1:size(mc_all_final,1)
- if(mc_all_final(itest,39)==0)
      plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),'b*');text(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
      plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),'r*');text(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),strcat('   ',num2str(itest)),'Color','r');
  end
 end
+ hold on;
 title_string = 'Touchdown Lateral Velocity vs Vertical Velocity';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Topocentric Lateral Velocity (m/s)','fontsize',14)
 ylabel('Topocentric Vertical Velocity (m/s)','fontsize',14)
+str_text_box = {sprintf('Lateral Velocity Error Spec= %9.2f m/s',lateral_gnc_vel_scalar_limit),sprintf('Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit)};
+annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+lateral_gnc_vel_scalar_limit_x = lateral_gnc_vel_scalar_limit*ones(1,100);
+final_gnc_vert_vel_err_limit_y = final_gnc_vert_vel_err_limit*ones(1,100);
+plot(lateral_gnc_vel_scalar_limit_x,0.01*[1:100].*final_gnc_vert_vel_err_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*lateral_gnc_vel_scalar_limit_x,final_gnc_vert_vel_err_limit_y,'r-','linewidth',2);
 saveas(gcf,'LateralVelandVerticalVel.png');%saveas(gcf,'LateralVelandVerticalVel.fig')
 %%
 figure;grid on;hold on;
@@ -1421,6 +1380,12 @@ title_string = 'Touchdown Lateral Velocity vs Lateral Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Topocentric Lateral Velocity (m/s)','fontsize',14)
 ylabel('Topocentric Lateral Position (m)','fontsize',14)
+str_text_box = {sprintf('Lateral Velocity Error Spec= %9.2f m/s',lateral_gnc_vel_scalar_limit),sprintf('Lateral Position Error Spec = %9.2f m/s',lateral_gnc_pos_scalar_limit)};
+annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+lateral_gnc_vel_scalar_limit_x = lateral_gnc_vel_scalar_limit*ones(1,100);
+lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
+plot(lateral_gnc_vel_scalar_limit_x,0.01*[1:100].*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*lateral_gnc_vel_scalar_limit_x,lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'LateralVelandPosErr.png');%saveas(gcf,'LateralVelandPosErr.fig')
 %%
 figure;grid on;hold on;
@@ -1435,6 +1400,10 @@ title_string = 'Lateral Center of Mass Offset vs Touchdown Lateral Velocity';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Lateral Center of Mass Offset (mm)','fontsize',14)
 ylabel('Topocentric Lateral Velocity (m/s)','fontsize',14)
+str_text_box = {sprintf('Lateral Velocity Error Spec= %9.2f m/s',lateral_gnc_vel_scalar_limit)};
+annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+lateral_gnc_vel_scalar_limit_y = lateral_gnc_vel_scalar_limit*ones(1,100);
+plot(0.01*[1:100]*max(lateral_cg_wet_offset)*1000,lateral_gnc_vel_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'LateralCMandLateralVel.png');%saveas(gcf,'LateralCMandLateralVel.fig')
 %%
 figure;grid on;hold on;
@@ -1449,6 +1418,10 @@ title_string = 'Lateral Center of Mass Offset Azimuth vs Lateral Touchdown Veloc
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Lateral Center of Mass Offset Azimuth (deg)','fontsize',14)
 ylabel('Topocentric Lateral Velocity (m/s)','fontsize',14)
+str_text_box = {sprintf('Lateral Velocity Error Spec= %9.2f m/s',lateral_gnc_vel_scalar_limit)};
+annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+lateral_gnc_vel_scalar_limit_y = lateral_gnc_vel_scalar_limit*ones(1,100);
+plot(0.01*[1:100]*max(cm_az_deg),lateral_gnc_vel_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'LateralCMAzimuthandLateralVel.png');%saveas(gcf,'LateralCMAzimuthandLateralVel.fig')
 %%
 figure;grid on;hold on;
@@ -1463,6 +1436,12 @@ title_string = 'Touchdown Angle vs Body Rate';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Angle From Vertical (deg)','fontsize',14)
 ylabel('Body Rate (deg/s)','fontsize',14)
+str_text_box = {sprintf('Touchdown Angle Error Spec= %9.2f deg',final_gnc_ang_err_limit),sprintf('Touchdown Angular Rate Error Spec = %9.2f deg/sec',final_gnc_rate_err_limit)};
+annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
+final_gnc_ang_err_limit_x = final_gnc_ang_err_limit*ones(1,100);
+final_gnc_rate_err_limit_y = final_gnc_rate_err_limit*ones(1,100);
+plot(final_gnc_ang_err_limit_x,0.01*[1:100].*final_gnc_rate_err_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*final_gnc_ang_err_limit_x,final_gnc_rate_err_limit_y,'r-','linewidth',2);
 saveas(gcf,'TDAngleVsRate.png');%saveas(gcf,'TDAngleVsRate.fig')
 %%
 figure;grid on;hold on;
@@ -1477,82 +1456,13 @@ title_string = 'Touchdown Angle vs Lateral Velocity';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Angle From Vertical (deg)','fontsize',14)
 ylabel('Topocentric Lateral Velocity (m/s)','fontsize',14)
+str_text_box = {sprintf('Touchdown Angle Error Spec= %9.2f deg',final_gnc_ang_err_limit),sprintf('Touchdown Lateral Velocity Error Spec = %9.2f m/s',lateral_gnc_vel_scalar_limit)};
+annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
+final_gnc_ang_err_limit_x = final_gnc_ang_err_limit*ones(1,100);
+lateral_gnc_vel_scalar_limit_y = lateral_gnc_vel_scalar_limit*ones(1,100);
+plot(final_gnc_ang_err_limit_x,0.01*[1:100].*lateral_gnc_vel_scalar_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*final_gnc_ang_err_limit_x,lateral_gnc_vel_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'TDAngleandLateralVel.png');%saveas(gcf,'TDAngleandLateralVel.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,1)*1e3,'b-');hold on
-       else
-            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,1)*1e3,'r-');hold on
-       end          
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-xlabel('Time (sec)','fontsize',14);
-ylabel('CG X Position (mm)','fontsize',14);
-title_string = 'CG X Position';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-saveas(gcf,'CgXPos.png');%saveas(gcf,'CgXPos.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,2)*1e3,'b-');hold on
-       else
-            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,2)*1e3,'r-');hold on
-       end          
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-xlabel('Time (sec)','fontsize',14);
-ylabel('CG Y Position (mm)','fontsize',14);
-title_string = 'CG Y Position';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-saveas(gcf,'CgYPos.png');%saveas(gcf,'CgYPos.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,3)*1e3,'b-');hold on
-       else
-            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,3)*1e3,'r-');hold on
-       end          
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-xlabel('Time (sec)','fontsize',14);
-ylabel('CG Z Position (mm)','fontsize',14);
-title_string = 'CG Z Position';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-saveas(gcf,'CgZPos.png');%saveas(gcf,'CgZPos.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1566,7 +1476,11 @@ title_string = 'Lateral Center of Mass Offset vs Lateral Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Lateral Center of Mass Offset (mm)','fontsize',14)
 ylabel('Topocentric Lateral Position (m)','fontsize',14)
-saveas(gcf,'LateralCMandPosErr.png');%saveas(gcf,'LateralCMandPosErr.fig')
+str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
+annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
+lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
+plot(0.01*[1:100].*max(lateral_cg_wet_offset)*1000,ones(1,100).*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
+saveas(gcf,'LateralMassOffsetandPosErr.png');
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1580,6 +1494,10 @@ title_string = 'Lateral Center of Mass Offset Azimuth vs Touchdown Lateral Posit
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Lateral Center of Mass Offset Azimuth (deg)','fontsize',14)
 ylabel('Touchdown Lateral Position (m)','fontsize',14)
+str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
+annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
+lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
+plot(0.01*[1:100].*max(cm_az_deg),ones(1,100).*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'LateralCMAzimuthandPosErr.png');%saveas(gcf,'LateralCMAzimuthandPosErr.fig')
 %%
 figure;grid on;hold on;
@@ -1594,6 +1512,10 @@ title_string = 'Lateral Center of Mass Offset vs Propellant Usage';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Lateral Center of Mass Offset (mm)','fontsize',14)
 ylabel('Propellant Usage (kg)','fontsize',14)
+str_text_box = {sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp1_mass_initial+gn2_mass_initial))};
+annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
+lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
+plot(0.01*[0:100].*max(lateral_cg_wet_offset)*1000,ones(1,101).*(htp_mass_initial+rp1_mass_initial+gn2_mass_initial),'r-','linewidth',2);
 saveas(gcf,'LateralCMandPropUsed.png');%saveas(gcf,'LateralCMandPropUsed.fig')
 %%
 figure;grid on;hold on;
@@ -1608,21 +1530,30 @@ title_string = 'Lateral Center of Mass Offset Azimuth vs Propellant Usage';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Lateral Center of Mass Offset Azimuth (deg)','fontsize',14)
 ylabel('Propellant Usage (kg)','fontsize',14)
+str_text_box = {sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp1_mass_initial+gn2_mass_initial))};
+annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
+plot(0.01*[0:100].*max(cm_az_deg),ones(1,101).*(htp_mass_initial+rp1_mass_initial+gn2_mass_initial),'r-','linewidth',2);
 saveas(gcf,'LateralCMAzimuthandPropUsed.png');%saveas(gcf,'LateralCMAzimuthandPropUsed.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(vertical_est_vel_scalar(itest),final_mass(itest),'b*');text(vertical_est_vel_scalar(itest),final_mass(itest),strcat('   ',num2str(itest)),'Color','b');
+     plot(vertical_est_vel_scalar(itest),total_fuel_used_scalar(itest),'b*');text(vertical_est_vel_scalar(itest),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(vertical_est_vel_scalar(itest),final_mass(itest),'r*');text(vertical_est_vel_scalar(itest),final_mass(itest),strcat('   ',num2str(itest)),'Color','r');
+     plot(vertical_est_vel_scalar(itest),total_fuel_used_scalar(itest),'r*');text(vertical_est_vel_scalar(itest),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
-title_string = 'Vertical Velocity Estimation Error vs Landed Mass';
+title_string = 'Vertical Velocity Estimation Error vs Propellant Usage';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
-ylabel('Landed Mass (kg)','fontsize',14)
-saveas(gcf,'VertVelEstErrandLandedMass.png');%saveas(gcf,'VertVelEstErrandLandedMass.fig')
+ylabel('Propellant Usage (kg)','fontsize',14)
+str_text_box = {sprintf('Vertical Velocity Estimation Error Spec= %9.2f deg',vertical_est_vel_scalar_limit),sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp1_mass_initial+gn2_mass_initial))};
+annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
+vertical_est_vel_scalar_limit_x = vertical_est_vel_scalar_limit*ones(1,100);
+initial_mass_limit_y = (htp_mass_initial+rp1_mass_initial+gn2_mass_initial)*ones(1,100);
+plot(vertical_est_vel_scalar_limit_x,0.01*[1:100].*initial_mass_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*vertical_est_vel_scalar_limit_x,initial_mass_limit_y,'r-','linewidth',2);
+saveas(gcf,'VertVelEstErrandPropUsed.png');%saveas(gcf,'VertVelEstErrandPropUsed.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1636,6 +1567,10 @@ title_string = 'Main Engine Misaligment vs Touchdown Lateral Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Main Engine Misaligment (deg)','fontsize',14)
 ylabel('Touchdown Lateral Position (m)','fontsize',14)
+str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
+annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
+lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
+plot(0.01*[1:100].*max(abs(mc_all_initial(itest,78))),ones(1,100).*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'MainEngMisalignandPosErr.png');%saveas(gcf,'MainEngMisalignandPosErr.fig')%%
 %%
 figure;grid on;hold on;
@@ -1650,6 +1585,10 @@ title_string = 'Main Engine Misaligment Azimuth vs Touchdown Lateral Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Main Engine Misaligment Azimuth (deg)','fontsize',14)
 ylabel('Touchdown Lateral Position (m)','fontsize',14)
+str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
+annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
+plot(0.01*[1:100]*max(abs(mc_all_initial(itest,53))),lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'MainEngMisalignAzandPosErr.png');%saveas(gcf,'MainEngMisalignAzandPosErr.fig')%%
 %%
 figure;grid on;hold on;
@@ -1664,22 +1603,11 @@ title_string = 'Main Engine Misaligment vs Propellant Usage';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Main Engine Misaligment (deg)','fontsize',14)
 ylabel('Propellant Usage (kg)','fontsize',14)
+str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
+annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
+plot(0.01*[0:100]*max(abs(mc_all_initial(:,78))),ones(1,101).*(htp_mass_initial+rp1_mass_initial+gn2_mass_initial),'r-','linewidth',2);
 saveas(gcf,'MainEngMisalignandPropUsed.png');%saveas(gcf,'MainEngMisalignandPropUsed.fig')%%
-%%
-figure;grid on;hold on;
-for itest=1:size(mc_all_final,1)
- if(mc_all_final(itest,39)==0)
-     plot(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),'b*');text(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
- elseif(mc_all_final(itest,39)==1)
-     plot(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),'r*');text(abs(mc_all_initial(itest,53)),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
- end
-end
-title_string = 'Main Engine Misaligment Azimuth vs Propellant Usage';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Main Engine Misaligment Azimuth (deg)','fontsize',14)
-ylabel('Propellant Usage (kg)','fontsize',14)
-saveas(gcf,'MainEngMisalignAzandPropUsed.png');%saveas(gcf,'MainEngMisalignAzandPropUsed.fig')%%
-
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1693,6 +1621,10 @@ title_string = 'Touchdown True Lateral Position Error vs Lateral Position Estima
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('True Lateral Position Error (m)','fontsize',14)
 ylabel('Lateral Position Estimation Error (m)','fontsize',14)
+str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
+annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+lateral_gnc_pos_scalar_limit_x = lateral_gnc_pos_scalar_limit*ones(1,101);
+plot(ones(1,101).*lateral_gnc_pos_scalar_limit_x,0.01*[0:100]*max(abs(final_est_pos_err)),'r-','linewidth',2);
 saveas(gcf,'TrueLatPosErrandPosEstErr.png');%saveas(gcf,'TrueLatPosErrandPosEstErr.fig')%%%%
 
 %%
@@ -1786,156 +1718,7 @@ title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Topocentric X Position (meters)','fontsize',14);
 ylabel('Topocentric Y Position (meters)','fontsize',14);
 saveas(gcf,'TruePosLateral.png');%saveas(gcf,'TruePosLateral.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,1),'b-');hold on
-       else
-            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,1),'r-');hold on
-       end          
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-title_string = 'Landing Site Relative X-Position in Topocentric Frame';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Time (sec)','fontsize',14);
-ylabel('Topocentric X Position (meters)','fontsize',14);
-saveas(gcf,'TrueXPos.png');%saveas(gcf,'TrueXPos.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,2),'b-');hold on
-       else
-            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,2),'r-');hold on
-       end           
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-title_string = 'Landing Site Relative Y-Position in Topocentric Frame';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Time (sec)','fontsize',14);
-ylabel('Topocentric Y Position (meters)','fontsize',14);
-saveas(gcf,'TrueYPos.png');%saveas(gcf,'TrueYPos.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,3),'b-');hold on
-       else
-            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,3),'r-');hold on
-       end           
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-title_string = 'Landing Site Relative Z-Position in Topocentric Frame';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Time (sec)','fontsize',14);
-ylabel('Topocentric Z Position (meters)','fontsize',14);
-saveas(gcf,'TrueZPos.png');%saveas(gcf,'TrueZPos.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,1),'b-');hold on
-       else
-            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,1),'r-');hold on
-       end          
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-title_string = 'Landing Site Relative X-Velocity in Topocentric Frame';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Time (sec)','fontsize',14);
-ylabel('Topocentric X Velocity (meters/sec)','fontsize',14);
-saveas(gcf,'TrueXVel.png');%saveas(gcf,'TrueXVel.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,2),'b-');hold on
-       else
-            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,2),'r-');hold on
-       end           
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-title_string = 'Landing Site Relative Y-Velocity in Topocentric Frame';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Time (sec)','fontsize',14);
-ylabel('Topocentric Y Velocity (meters/sec)','fontsize',14);
-saveas(gcf,'TrueYVel.png');%saveas(gcf,'TrueYVel.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,3),'b-');hold on
-       else
-            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,3),'r-');hold on
-       end           
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-title_string = 'Landing Site Relative Z-Velocity in Topocentric Frame';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Time (sec)','fontsize',14);
-ylabel('Topocentric Z Velocity (meters/sec)','fontsize',14);
-saveas(gcf,'TrueZVel.png');%saveas(gcf,'TrueZVel.fig')
+
 %%
 % figure;grid on;hold on;
 % for itest=1:size(mc_all_final,1)
@@ -1964,31 +1747,7 @@ saveas(gcf,'TrueZVel.png');%saveas(gcf,'TrueZVel.fig')
 % xlabel('Lateral Center of Mass Offset Azimuth (deg)','fontsize',14)
 % ylabel('Max Lateral Excursion (m)','fontsize',14)
 % saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.png');%saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.fig')
-%%
-figure;
-for ipos = 1:mc_n
-    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
-    if exist(strcat(name_mc_pos,'.mat'),'file')
-        load( name_mc_pos );
-    else
-        warning(['no data for run' num2str(ipos)])
-        continue
-    end
-    if exist('mc_traj_data','var')
-       if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.sim_vel.Time,mc_traj_data.gdn_vel_cmd.Data(:,3)-mc_traj_data.sim_vel.Data(:,3),'b-');hold on
-       else
-            plot(mc_traj_data.sim_vel.Time,mc_traj_data.gdn_vel_cmd.Data(:,3)-mc_traj_data.sim_vel.Data(:,3),'r-');hold on
-       end          
-    end
-    hold on; grid on;
-end
-xlim([3700 4200])
-title_string = 'Commanded Z-Velocity Error';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('Time (sec)','fontsize',14);
-ylabel('Velocity (meters/sec)','fontsize',14);
-saveas(gcf,'CmdZVelErr.png');%saveas(gcf,'CmdZVelErr.fig')
+
 %%
 figure;
 for ipos = 1:mc_n
@@ -2266,3 +2025,303 @@ title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Mass (kg)','fontsize',14);
 saveas(gcf,'Gn2Used.png');%saveas(gcf,'Gn2Used.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.sim_vel.Time,mc_traj_data.gdn_vel_cmd.Data(:,3)-mc_traj_data.sim_vel.Data(:,3),'b-');hold on
+       else
+            plot(mc_traj_data.sim_vel.Time,mc_traj_data.gdn_vel_cmd.Data(:,3)-mc_traj_data.sim_vel.Data(:,3),'r-');hold on
+       end          
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+title_string = 'Commanded Z-Velocity Error';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Time (sec)','fontsize',14);
+ylabel('Velocity (meters/sec)','fontsize',14);
+saveas(gcf,'CmdZVelErr.png');%saveas(gcf,'CmdZVelErr.fig')%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,1)*1e3,'b-');hold on
+       else
+            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,1)*1e3,'r-');hold on
+       end          
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+xlabel('Time (sec)','fontsize',14);
+ylabel('CG X Position (mm)','fontsize',14);
+title_string = 'CG X Position';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+saveas(gcf,'CgXPos.png');%saveas(gcf,'CgXPos.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,2)*1e3,'b-');hold on
+       else
+            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,2)*1e3,'r-');hold on
+       end          
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+xlabel('Time (sec)','fontsize',14);
+ylabel('CG Y Position (mm)','fontsize',14);
+title_string = 'CG Y Position';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+saveas(gcf,'CgYPos.png');%saveas(gcf,'CgYPos.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,3)*1e3,'b-');hold on
+       else
+            plot(mc_traj_data.cg.Time,mc_traj_data.cg.Data(:,3)*1e3,'r-');hold on
+       end          
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+xlabel('Time (sec)','fontsize',14);
+ylabel('CG Z Position (mm)','fontsize',14);
+title_string = 'CG Z Position';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+saveas(gcf,'CgZPos.png');%saveas(gcf,'CgZPos.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,1),'b-');hold on
+       else
+            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,1),'r-');hold on
+       end          
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+title_string = 'Landing Site Relative X-Position in Topocentric Frame';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Time (sec)','fontsize',14);
+ylabel('Topocentric X Position (meters)','fontsize',14);
+saveas(gcf,'TrueXPos.png');%saveas(gcf,'TrueXPos.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,2),'b-');hold on
+       else
+            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,2),'r-');hold on
+       end           
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+title_string = 'Landing Site Relative Y-Position in Topocentric Frame';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Time (sec)','fontsize',14);
+ylabel('Topocentric Y Position (meters)','fontsize',14);
+saveas(gcf,'TrueYPos.png');%saveas(gcf,'TrueYPos.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,3),'b-');hold on
+       else
+            plot(mc_traj_data.sim_pos.Time,mc_traj_data.sim_pos.Data(:,3),'r-');hold on
+       end           
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+title_string = 'Landing Site Relative Z-Position in Topocentric Frame';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Time (sec)','fontsize',14);
+ylabel('Topocentric Z Position (meters)','fontsize',14);
+saveas(gcf,'TrueZPos.png');%saveas(gcf,'TrueZPos.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,1),'b-');hold on
+       else
+            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,1),'r-');hold on
+       end          
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+title_string = 'Landing Site Relative X-Velocity in Topocentric Frame';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Time (sec)','fontsize',14);
+ylabel('Topocentric X Velocity (meters/sec)','fontsize',14);
+saveas(gcf,'TrueXVel.png');%saveas(gcf,'TrueXVel.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,2),'b-');hold on
+       else
+            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,2),'r-');hold on
+       end           
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+title_string = 'Landing Site Relative Y-Velocity in Topocentric Frame';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Time (sec)','fontsize',14);
+ylabel('Topocentric Y Velocity (meters/sec)','fontsize',14);
+saveas(gcf,'TrueYVel.png');%saveas(gcf,'TrueYVel.fig')
+%%
+figure;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        warning(['no data for run' num2str(ipos)])
+        continue
+    end
+    if exist('mc_traj_data','var')
+       if(mc_all_final(ipos,39)==0)
+            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,3),'b-');hold on
+       else
+            plot(mc_traj_data.sim_vel.Time,mc_traj_data.sim_vel.Data(:,3),'r-');hold on
+       end           
+    end
+    hold on; grid on;
+end
+xlim([3700 4200])
+title_string = 'Landing Site Relative Z-Velocity in Topocentric Frame';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Time (sec)','fontsize',14);
+ylabel('Topocentric Z Velocity (meters/sec)','fontsize',14);
+saveas(gcf,'TrueZVel.png');%saveas(gcf,'TrueZVel.fig')%%
+figure;grid on;hold on;
+for itest=1:size(mc_all_final,1)
+ if(mc_all_final(itest,39)==0)
+     plot(mc_all_final(itest,15),mc_all_final(itest,16),'b*');text(mc_all_final(itest,15),mc_all_final(itest,16),strcat('   ',num2str(itest)),'Color','b');
+ elseif(mc_all_final(itest,39)==1)
+     plot(mc_all_final(itest,15),mc_all_final(itest,16),'r*');text(mc_all_final(itest,15),mc_all_final(itest,16),strcat('   ',num2str(itest)),'Color','r');
+ end
+end
+title_string = 'Touchdown Topocentric Position';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Topocentric X Position (meters)','fontsize',14)
+ylabel('Topocentric Y Position (meters)','fontsize',14)
+if size(mc_all_final(:,15:16),1)>1
+  mean_landing_error = mean(mc_all_final(:,15:16),1);
+  standard_deviation_landing_error = std(mc_all_final(:,15:16),1);
+  str_text_box = {sprintf('Mean     = %9.2f, %9.2f m',mean_landing_error),sprintf('3 Sigma = %9.2f, %9.2f m',3*standard_deviation_landing_error),...
+     sprintf('Lateral Position Spec = %9.2f  m',lateral_gnc_pos_scalar_limit)};
+  annotation('textbox',[.3 .7 .47 .15],'string',str_text_box) 
+  hold on;
+  ellipse_3_sigma_y = mean_landing_error(2)+3*standard_deviation_landing_error(2)*sin(2*pi*0.01*[0:100]);
+  ellipse_3_sigma_x = mean_landing_error(1)+3*standard_deviation_landing_error(1)*cos(2*pi*0.01*[0:100]);
+  plot(ellipse_3_sigma_x,ellipse_3_sigma_y,'g-','linewidth',2);
+  pos_landing_spec_x = lateral_gnc_pos_scalar_limit*sin(2*pi*0.01*[0:100]);
+  pos_landing_spec_y = lateral_gnc_pos_scalar_limit*cos(2*pi*0.01*[0:100]);
+  plot(pos_landing_spec_x,pos_landing_spec_y,'r-','linewidth',2);  
+end
+saveas(gcf,'LateralPosErr.png');%saveas(gcf,'LateralPosErr.fig')
+%%
+figure;grid on;hold on;
+for itest=1:size(mc_all_final,1)
+  if(mc_all_final(itest,39)==0)
+     plot(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),'b*');text(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),strcat('   ',num2str(itest)),'Color','b');
+ elseif(mc_all_final(itest,39)==1)
+     plot(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),'r*');text(mc_all_final(itest,15)-median(mc_all_final(:,15)),mc_all_final(itest,16)-median(mc_all_final(:,16)),strcat('   ',num2str(itest)),'Color','r');
+ end
+end
+title_string = 'Touchdown Topocentric Position Relative to Median';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('Topocentric X Position (meters)','fontsize',14)
+ylabel('Topocentric Y Position (meters)','fontsize',14)
+if size(mc_all_final(:,15:16),1)>1
+  mean_landing_error = mean(mc_all_final(:,15:16),1);
+  standard_deviation_landing_error = std(mc_all_final(:,15:16),1);
+  str_text_box = {sprintf('Mean     = %9.2f, %9.2f m',mean_landing_error),sprintf('3 Sigma = %9.2f, %9.2f m',3*standard_deviation_landing_error)};
+  annotation('textbox',[.2 .8 .47 .1],'string',str_text_box) 
+  hold on;
+  ellipse_3_sigma_y = 3*standard_deviation_landing_error(2)*sin(2*pi*0.01*[0:100]);
+  ellipse_3_sigma_x = 3*standard_deviation_landing_error(1)*cos(2*pi*0.01*[0:100]);
+  plot(ellipse_3_sigma_x,ellipse_3_sigma_y,'g-','linewidth',2);
+end
+saveas(gcf,'LateralPosErrMedian.png');%saveas(gcf,'LateralPosErrMedian.fig')
