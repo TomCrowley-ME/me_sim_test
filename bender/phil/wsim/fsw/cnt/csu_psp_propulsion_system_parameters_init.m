@@ -29,11 +29,11 @@
     psp_main_biprop_isp   = 310;
     
      % thruster force is from MX-Micro Biprop
-    psp_main_biprop_thrust = 450;
-    psp_main_biprop_isp   = 310;
-    
-     % thruster force is from MX-Micro Biprop
     psp_main_biprop_thrust = 1112;
+    psp_main_biprop_isp   = 310;
+
+     % thruster force is from MX-Micro Biprop
+    psp_main_biprop_thrust = 450;
     psp_main_biprop_isp   = 310;
 
     % acs thruster data DIY Configuration 10 lbf Coarse
