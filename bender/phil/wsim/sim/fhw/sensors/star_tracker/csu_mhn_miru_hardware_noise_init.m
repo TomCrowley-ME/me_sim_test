@@ -18,6 +18,69 @@
 % 08/05/14                                                                %
 %-------------------------------------------------------------------------%
 
+
+%2nd order butter(2,0.01) -3 dB cutoff at 0.01 of sample nyquist frequency (0.5 hz of 50 hz (nyquist of 100 hz sample rate)
+imh_accel_response_num=[0.000241359049041961      0.000482718098083923      0.000241359049041961]; 
+imh_accel_response_den=[1         -1.95557824031504         0.956543676511203];
+
+imh_gyro_response_num=[0.000241359049041961      0.000482718098083923      0.000241359049041961];
+imh_gyro_response_den=[1         -1.95557824031504         0.956543676511203];
+
+%2nd order butter(2,0.1) -3 dB cutoff at 0.1 of sample nyquist frequency (5.0 hz of 50 hz (nyquist of 100 hz sample rate)
+imh_accel_response_num=[0.0200833655642113        0.0401667311284225        0.0200833655642113]; 
+imh_accel_response_den=[1         -1.56101807580072         0.641351538057563];
+
+imh_gyro_response_num=[0.0200833655642113        0.0401667311284225        0.0200833655642113];
+imh_gyro_response_den=[1         -1.56101807580072         0.641351538057563];
+
+%2nd order butter(2,0.90) -3 dB cutoff at 0.90 of sample nyquist frequency (45.0 hz of 50 hz (nyquist of 100 hz sample rate)
+imh_accel_response_num=[0.80059240346457          1.60118480692914          0.80059240346457]; 
+imh_accel_response_den=[1          1.56101807580072         0.641351538057563];
+
+imh_gyro_response_num=[0.80059240346457          1.60118480692914          0.80059240346457];
+imh_gyro_response_den=[1          1.56101807580072         0.641351538057563];
+
+%2nd order butter(2,0.80) -3 dB cutoff at 0.80 of sample nyquist frequency (40.0 hz of 50 hz (nyquist of 100 hz sample rate)
+imh_accel_response_num=[0.638945525159022          1.27789105031804         0.638945525159022]; 
+imh_accel_response_den=[1           1.1429805025399         0.412801598096189];
+
+imh_gyro_response_num=[0.638945525159022          1.27789105031804         0.638945525159022];
+imh_gyro_response_den=[1           1.1429805025399         0.412801598096189];
+
+%2nd order butter(2,0.0.95) -3 dB cutoff at 0.95 of sample nyquist frequency (47.5 hz of 50 hz (nyquist of 100 hz sample rate)
+imh_accel_response_num=[0.894858606122573          1.78971721224515         0.894858606122573]; 
+imh_accel_response_den=[1          1.77863177782458         0.800802646665708];
+
+imh_gyro_response_num=[0.894858606122573          1.78971721224515         0.894858606122573];
+imh_gyro_response_den=[1          1.77863177782458         0.800802646665708];
+
+%2nd order butter(2,0.80) -3 dB cutoff at 0.80 of sample nyquist frequency (40.0 hz of 50 hz (nyquist of 100 hz sample rate)
+imh_accel_response_num=[0.638945525159022          1.27789105031804         0.638945525159022]; 
+imh_accel_response_den=[1           1.1429805025399         0.412801598096189];
+
+imh_gyro_response_num=[0.638945525159022          1.27789105031804         0.638945525159022];
+imh_gyro_response_den=[1           1.1429805025399         0.412801598096189];
+
+%2nd order butter(2,0.0.20) -3 dB cutoff at 0.20 of sample nyquist frequency (10.0 hz of 50 hz (nyquist of 100 hz sample rate)
+imh_accel_response_num=[0.0674552738890719         0.134910547778144        0.0674552738890719]; 
+imh_accel_response_den=[1          -1.1429805025399         0.412801598096189];
+
+imh_gyro_response_num=[0.0674552738890719         0.134910547778144        0.0674552738890719];
+imh_gyro_response_den=[1          -1.1429805025399         0.412801598096189];
+
+%2nd order butter(2,0.0.60) -3 dB cutoff at 0.60 of sample nyquist frequency (30.0 hz of 50 hz (nyquist of 100 hz sample rate)
+imh_accel_response_num=[0.391335772501769         0.782671545003537         0.391335772501769]; 
+imh_accel_response_den=[1         0.369527377351241         0.195815712655833];
+
+imh_gyro_response_num=[0.391335772501769         0.782671545003537         0.391335772501769];
+imh_gyro_response_den=[1         0.369527377351241         0.195815712655833];
+
+% Turn off filter
+imh_accel_response_num = 1;
+imh_gyro_response_num = 1;
+imh_accel_response_den = 1;
+imh_gyro_response_den = 1;
+
 mhn_three_axis_index = [1 3 2];
 
 % accuracy and update parameters %% fix this sensitivity so it makes sense
@@ -36,8 +99,14 @@ mhn_dt = sim_time_step_size;
 % rate
 
  % ESC: reducing noise on gyro since differential accel model is not in there yet
-    mhn_gyro_noise_spec = 0.5*(30e-3); %deg/sqrt(sec), don't know if this is tied to attitude performance
-    mhn_gyro_bias_spec =  4; %deg/hr (don't know correlation time), don't know if this is tied to attitude performance
+    mhn_gyro_noise_spec = 0.03; %deg/sqrt(sec), SDI500
+    mhn_gyro_noise_spec = 0.15; %deg/sqrt(sec), STIM-300
+    mhn_gyro_noise_spec = 0.5*(30e-3); %deg/sqrt(sec), MIRU 
+
+    mhn_gyro_bias_spec =  10; %deg/hr SDI500
+    mhn_gyro_bias_spec =  250; %deg/hr STIM-300
+    mhn_gyro_bias_spec =  4; %deg/hr MIRU
+
     mhn_gyro_SF = 100/1e6;  % don't know this for MIRU
 
     % mhn_gyro_g_sensitive = 0.05; % arsec/sec/g
@@ -55,8 +124,14 @@ mhn_dt = sim_time_step_size;
 %-------------------------------------------------------------------------%
 % accel
 
-    mhn_accel_noise_spec = 30e-6;  % 30 microG/sqrt(hz)
-    mhn_accel_bias_spec =  0.7/9.8; % 0.7 m/s/hour
+    mhn_accel_noise_spec = 200e-6;  % 30 microG/sqrt(hz) SDI500
+    mhn_accel_noise_spec = 6100e-6;  % 30 microG/sqrt(hz) STIM-300
+    mhn_accel_noise_spec = 30e-6;  % 30 microG/sqrt(hz) MIRU
+
+    mhn_accel_bias_spec =  0.36/9.8; % 0.36 m/s/hour SDI500
+    mhn_accel_bias_spec =  0.18/9.8; % 0.49 m/s/hour STIM-300
+    mhn_accel_bias_spec =  0.7/9.8; % 0.7 m/s/hour MIRU
+
     mhn_accel_SF = 300/1e6; % don't know this for MIRU
     
     mhn_accel_bias_v = [0, 0, 0, 0, 0, 0, 0, 0];
