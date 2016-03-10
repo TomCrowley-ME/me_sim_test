@@ -59,7 +59,7 @@ mc_prefix_workspace = 'doi_to_touchdown_workspace_mc';
 RandStream.setGlobalStream(RandStream.create('mt19937ar','seed',14))
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mc_n = 100;  % User set to total number of MC cases
+mc_n = 2;  % User set to total number of MC cases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % percent of range errors
@@ -215,9 +215,9 @@ sigma=(biprop_stop_delay_max-biprop_stop_delay_min)/3;
 biprop_stop_delay     = abs(sigma*randn(mc_n,1));
 
 % set position estimation errors in radial, velocity and orbit normal directions, meters
-pos_est_err_3sigma_rhat = 1.0;
-pos_est_err_3sigma_vhat = 1.0;
-pos_est_err_3sigma_nhat = 1.0;
+pos_est_err_3sigma_rhat = 10.0;
+pos_est_err_3sigma_vhat = 1000.0;
+pos_est_err_3sigma_nhat = 10.0;
 % select DCM
 if strcmp(est_err_frame_type,'VNC')
     pos_est_err = randn(mc_n,3).*(ones(mc_n,1)*[pos_est_err_3sigma_vhat pos_est_err_3sigma_nhat pos_est_err_3sigma_rhat]/3);
@@ -228,9 +228,9 @@ else
 end
 
 % set velocity estimation errors in radial, velocity and orbit normal directions, meters/sec
-vel_est_err_3sigma_rhat = 0.1;
-vel_est_err_3sigma_vhat = 0.1;
-vel_est_err_3sigma_nhat = 0.1;
+vel_est_err_3sigma_rhat = 1.0;
+vel_est_err_3sigma_vhat = 1.0;
+vel_est_err_3sigma_nhat = 1.0;
 if strcmp(est_err_frame_type,'VNC')
     vel_est_err = randn(mc_n,3).*(ones(mc_n,1)*[vel_est_err_3sigma_vhat vel_est_err_3sigma_nhat vel_est_err_3sigma_rhat]/3);
 elseif strcmp(est_err_frame_type,'LVLH')
@@ -364,7 +364,7 @@ for i2mc = 1 : length(mc_i)
         end
 
         if ~isnan( mc_6dof_variables(imc,ivars.star_tracker_transverse_noise) )
-            kfl_star_tracker_transverse_noise = mc_6dof_variables(imc,ivars.star_tracker_transverse_noise);
+            sta_angle_std = mc_6dof_variables(imc,ivars.star_tracker_transverse_noise)*(pi/180)/3600;
         end
         
         if ~isnan( mc_6dof_variables(imc,ivars.cam_integ_time) )

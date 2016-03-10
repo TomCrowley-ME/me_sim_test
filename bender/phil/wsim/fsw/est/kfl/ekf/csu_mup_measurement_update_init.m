@@ -21,6 +21,6 @@
 mup_columns = [1 : kfl_n_state];
 mup_identity = eye(kfl_n_state);
 
-mup_inovation_limits = [ 6000 6000 0.5 0.5 0.1 0.1 0.1];
+mup_inovation_limits = [ 7000 7000 0.5 0.5 0.1 0.1 0.1];
 
 
