@@ -96,9 +96,9 @@ mcall(i.pos_burn2 )     = truth.fsw_rate.total.sim_pos.Data(istart2burn,:);
 
 mcall(i.vcrossover_time ) = tFSW(end)-tFSW(touchdown_est(1));
 
-mcall(i.cgx_final ) = truth.sim.cg.Data(end,1);
-mcall(i.cgy_final ) = truth.sim.cg.Data(end,2);
-mcall(i.cgz_final ) = truth.sim.cg.Data(end,3);
+mcall(i.cgx_final ) = truth.sim.cg.Data(touchdown,1);
+mcall(i.cgy_final ) = truth.sim.cg.Data(touchdown,2);
+mcall(i.cgz_final ) = truth.sim.cg.Data(touchdown,3);
 
 mcall(i.htp_used  ) = truth.sim.htp_used_main.Data(touchdown) + truth.sim.htp_used_acs.Data(touchdown);
 mcall(i.rp1_used  ) = truth.sim.rp1_used_main.Data(touchdown);

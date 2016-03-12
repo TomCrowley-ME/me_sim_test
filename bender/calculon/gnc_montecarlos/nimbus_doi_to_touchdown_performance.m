@@ -63,12 +63,12 @@ mc_n = 2;  % User set to total number of MC cases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % percent of range errors
-percent_mean = 0/100; % Set mean to 0%
+percent_mean = 1/100; % Set mean to 0%
 percent_variation = (0.1)/100; % Range above and below mean (FLIR MLR 2K 0.1% at 1 km == 1 meter at 1 km)
 percent_errors = percent_mean + percent_variation*rand(mc_n,1);
  
 % % hardcode
-percent_errors = 0.001*ones(mc_n,1);
+% percent_errors = 0.001*ones(mc_n,1);
  
 % max acquisition range
 max_range_mean = 1.0*15000; % Set mean to 15 km
@@ -82,11 +82,11 @@ max_ranges = abs(max_range_mean + sigma*randn(mc_n,1));
  
 % star tracker transverse noise (in arcsecond)
 min_st_noise = 0;
-max_st_noise = 10;
+max_st_noise = 50;
 st_noise_vec = abs(min_st_noise + (max_st_noise-min_st_noise)*rand(mc_n,1));
  
 % % hardcode
-st_noise_vec = 9*ones(mc_n,1);
+% st_noise_vec = 9*ones(mc_n,1);
  
 % camera integration time (used in blur noise factor)
 min_integ_time =  5/ 1000;
@@ -94,7 +94,7 @@ max_integ_time = 15/ 1000;
 integ_time_vec = abs(min_integ_time + (max_integ_time-min_integ_time)*rand(mc_n,1));
  
 % % hardcode
-integ_time_vec = 0.010*ones(mc_n,1);
+% integ_time_vec = 0.010*ones(mc_n,1);
  
 % camera angular field of view
 min_aov = 30 * pi/180;
@@ -110,7 +110,7 @@ max_delta_t = 2;
 delta_t_vec = abs(min_delta_t + (max_delta_t-min_delta_t)*rand(mc_n,1));
  
 %hardcode
-delta_t_vec = 0.1*ones(mc_n,1);
+% delta_t_vec = 0.1*ones(mc_n,1);
  
 % image processing delay time
 min_delay_t = 0.1;
@@ -118,7 +118,7 @@ max_delay_t = 0.2;
 delay_t_vec = abs(min_delay_t + (max_delay_t-min_delay_t)*rand(mc_n,1));
  
 % % hardcode
-delay_t_vec = 0.25*ones(mc_n,1);
+%delay_t_vec = 0.25*ones(mc_n,1);
  
 % total lateral cm dry - normal distribution
 % lateral_cm_dry_sigma = 0.000;
@@ -128,12 +128,12 @@ delay_t_vec = 0.25*ones(mc_n,1);
 % lateral_cm_z_dry = 1.0*(0.01/3)*randn(mc_n,1);
  
 % total lateral cm dry - uniform distribution
-lateral_cm_x_dry_max =  0.0001;
-lateral_cm_y_dry_max =  0.0001;
-longitudinal_cm_z_dry_max =  0.0001;
-lateral_cm_x_dry_min = -0.0001;
-lateral_cm_y_dry_min = -0.0001;
-longitudinal_cm_z_dry_min = -0.0001;
+lateral_cm_x_dry_max =  0.005;
+lateral_cm_y_dry_max =  0.005;
+longitudinal_cm_z_dry_max =  0.005;
+lateral_cm_x_dry_min = -0.005;
+lateral_cm_y_dry_min = -0.005;
+longitudinal_cm_z_dry_min = -0.005;
 lateral_cm_x_dry = (lateral_cm_x_dry_max - lateral_cm_x_dry_min)/3*randn(mc_n,1);
 lateral_cm_y_dry = (lateral_cm_y_dry_max - lateral_cm_y_dry_min)/3*randn(mc_n,1);
 longitudinal_cm_z_dry = (longitudinal_cm_z_dry_max - longitudinal_cm_z_dry_min)/3*randn(mc_n,1);
@@ -182,15 +182,15 @@ mid=(monoprop_isp_max+monoprop_isp_min)/2;sigma=(monoprop_isp_max-monoprop_isp_m
 monoprop_isp     =  mid+sigma*randn(mc_n,1);
  
 % set biprop thrust scale factor, nominally set to 1
-biprop_thrust_min = 0.997;
-biprop_thrust_max = 1.003;
+biprop_thrust_min = 0.950;
+biprop_thrust_max = 1.050;
 % biprop_thrust     = biprop_thrust_min + (biprop_thrust_max - biprop_thrust_min)*rand(mc_n,1);
 mid=(biprop_thrust_max+biprop_thrust_min)/2;sigma=(biprop_thrust_max-biprop_thrust_min)/3;
 biprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set biprop Isp scale factor, nominally set to 1
-biprop_isp_min = 0.997;
-biprop_isp_max = 1.003;
+biprop_isp_min = 0.950;
+biprop_isp_max = 1.000;
 % biprop_isp     = biprop_isp_min + (biprop_isp_max - biprop_isp_min)*rand(mc_n,1);
 mid=(biprop_isp_max+biprop_isp_min)/2;sigma=(biprop_isp_max-biprop_isp_min)/3;
 biprop_isp     =  mid+sigma*randn(mc_n,1);
@@ -203,14 +203,14 @@ mid=(mass_estimate_bias_max+mass_estimate_bias_min)/2;sigma=(mass_estimate_bias_
 mass_estimate_bias     =  mid+sigma*randn(mc_n,1);
  
 % set biprop burn start delay, scale factor, nominally set to 0
-biprop_start_delay_min = 0.0;
-biprop_start_delay_max = 0.0;
+biprop_start_delay_min = 0.950;
+biprop_start_delay_max = 1.050;
 sigma=(biprop_start_delay_max-biprop_start_delay_min)/3;
 biprop_start_delay     = abs(sigma*randn(mc_n,1));
  
 % set biprop stop delay, msec, nominally set to 0
-biprop_stop_delay_min = 0.0;
-biprop_stop_delay_max = 0.0;
+biprop_stop_delay_min = 0.950;
+biprop_stop_delay_max = 1.050;
 sigma=(biprop_stop_delay_max-biprop_stop_delay_min)/3;
 biprop_stop_delay     = abs(sigma*randn(mc_n,1));
 
@@ -228,9 +228,9 @@ else
 end
 
 % set velocity estimation errors in radial, velocity and orbit normal directions, meters/sec
-vel_est_err_3sigma_rhat = 1.0;
-vel_est_err_3sigma_vhat = 1.0;
-vel_est_err_3sigma_nhat = 1.0;
+vel_est_err_3sigma_rhat = 0.5;
+vel_est_err_3sigma_vhat = 0.5;
+vel_est_err_3sigma_nhat = 0.5;
 if strcmp(est_err_frame_type,'VNC')
     vel_est_err = randn(mc_n,3).*(ones(mc_n,1)*[vel_est_err_3sigma_vhat vel_est_err_3sigma_nhat vel_est_err_3sigma_rhat]/3);
 elseif strcmp(est_err_frame_type,'LVLH')
@@ -271,7 +271,7 @@ ivars = struct( 'percent_error',1,...
                 'range_max',2,...
                 'pos_est_err',[3:5],...
                 'vel_est_err',[6:8],...
-                'star_tracker_transverse_noise',9,...
+                'st_noise',9,...
                 'cam_integ_time',10,...
                 'cam_aov',11,...
                 'cam_image_delta_t',12,...
@@ -363,8 +363,8 @@ for i2mc = 1 : length(mc_i)
             kfl_velocity_init = ini_velocity_v' + DCM*mc_6dof_variables(imc,ivars.vel_est_err)';
         end
 
-        if ~isnan( mc_6dof_variables(imc,ivars.star_tracker_transverse_noise) )
-            sta_angle_std = mc_6dof_variables(imc,ivars.star_tracker_transverse_noise)*(pi/180)/3600;
+        if ~isnan( mc_6dof_variables(imc,ivars.st_noise) )
+            sta_angle_std = mc_6dof_variables(imc,ivars.st_noise)*(pi/180)/3600;
         end
         
         if ~isnan( mc_6dof_variables(imc,ivars.cam_integ_time) )

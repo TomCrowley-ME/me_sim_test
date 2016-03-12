@@ -1563,14 +1563,14 @@ for itest=1:size(mc_all_final,1)
      plot(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
-title_string = 'Main Engine Misaligment vs Touchdown Lateral Position';
+title_string = 'Main Engine Misalignment vs Touchdown Lateral Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Main Engine Misaligment (deg)','fontsize',14)
 ylabel('Touchdown Lateral Position (m)','fontsize',14)
 str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
 annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
-plot(0.01*[1:100].*max(abs(mc_all_initial(itest,78))),ones(1,100).*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*max(abs(mc_all_initial(:,78))),ones(1,100).*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'MainEngMisalignandPosErr.png');%saveas(gcf,'MainEngMisalignandPosErr.fig')%%
 %%
 figure;grid on;hold on;
@@ -1581,14 +1581,14 @@ for itest=1:size(mc_all_final,1)
      plot(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
-title_string = 'Main Engine Misaligment Azimuth vs Touchdown Lateral Position';
+title_string = 'Main Engine Misalignment Azimuth vs Touchdown Lateral Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Main Engine Misaligment Azimuth (deg)','fontsize',14)
 ylabel('Touchdown Lateral Position (m)','fontsize',14)
 str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
 annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
-plot(0.01*[1:100]*max(abs(mc_all_initial(itest,53))),lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100]*max(abs(mc_all_initial(:,53))),lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'MainEngMisalignAzandPosErr.png');%saveas(gcf,'MainEngMisalignAzandPosErr.fig')%%
 %%
 figure;grid on;hold on;
