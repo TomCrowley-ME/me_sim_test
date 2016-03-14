@@ -58,7 +58,7 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .rpn_equation = { 9 },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 26,
-            .event_text = "Main Engine Fire! -> Coarse Pitch/Yaw, Vernier Roll",
+            .event_text = "Main Engine Fire! -> (RTS-14) Coarse Pitch/Yaw, Vernier Roll, (RTS-19) Vernier ACS",
         },{
             /****       AP # 7          ****/
             .default_state = PASSIVE,
@@ -76,7 +76,7 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .rpn_equation = { 3, 9, NOT, AND },
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 28,
-            .event_text = "Terminal, Coarse Pitch/Yaw, Vernier Roll ACS",   
+            .event_text = "Terminal, (RTS-18) Coarse Pitch/Yaw, Vernier Roll ACS, Terminal, (RTS-19) all Vernier ACS",   
         },{
            /****       AP # 9          ****/
             .default_state = ACTIVE,
