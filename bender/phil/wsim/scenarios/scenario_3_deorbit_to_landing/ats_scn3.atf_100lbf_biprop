@@ -1,0 +1,22 @@
+2015-354-16:54:09 /est_set_reference_frame frame=INERTIAL
+2015-354-16:54:09 /gdn_set_inertial_primary_pointing_cmd x=0.0993752051715166, y=0.965458032052295, z=-0.240863772582819
+2015-354-16:54:09 /gdn_set_inertial_secondary_pointing_cmd x=-0.901, y=-0.412, z=-0.136
+2015-354-16:54:09 /gdn_set_body_primary_pointing_vector x=0, y=0, z=1
+2015-354-16:54:09 /gdn_set_body_secondary_pointing_vector x=-0.5, y=-0.866025403784439, z=0
+2015-354-16:54:09 /gdn_set_body_secondary_pointing_vector x=0, y=-1, z=0
+2015-354-16:54:09 /cmp_set_mode mode=POINTING, submode=NONE
+2015-354-16:56:50 /gdn_set_burn_parameters burn_type=GRAVITY_TURN, dv=46.20, dur=0.0
+2015-354-16:57:13 /cmp_set_mode mode=DEORBIT, submode=ACTIVE
+2015-354-16:58:14 /gdn_start_burn
+2015-354-16:58:85 /cmp_set_mode mode=DEORBIT, submode=COAST
+2015-354-16:59:09 /gdn_set_inertial_primary_pointing_cmd x=-0.0993752051715166, y=-0.965458032052295, z=0.240863772582819
+2015-354-16:59:09 /gdn_set_inertial_secondary_pointing_cmd x=0.9774,  y=-0.2057, z=-0.0482
+2015-354-16:59:09 /gdn_set_body_primary_pointing_vector x=0, y=0, z=1
+2015-354-16:59:09 /gdn_set_body_secondary_pointing_vector x=-0.5, y=-0.866025403784439, z=0
+2015-354-16:59:09 /gdn_set_body_secondary_pointing_vector x=0, y=-1, z=0
+2015-354-17:48:54 /gdn_set_peg_position_target frame=INERTIAL, x=-56026.6, y=-158956.8, z=-1734051.6
+2015-354-17:48:54 /gdn_set_peg_velocity_target frame=INERTIAL, x=-0.079587138806545, y=1.019293517387268, z=4.197377078634361
+2015-354-17:57:41 /gdn_set_burn_parameters burn_type=GRAVITY_TURN, dv=1810, dur=0
+2015-354-17:57:41 /cmp_set_mode mode=BRAKING, submode=ACTIVE
+2015-354-17:58:36 /gdn_start_burn
+2015-354-17:58:36 /est_set_reference_frame frame=TOPOCENTRIC

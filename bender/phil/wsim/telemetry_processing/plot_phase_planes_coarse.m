@@ -51,8 +51,8 @@ else
     csu_mpl_mass_properties_lander_prep
     csu_mpl_mass_properties_mtv_init
     csu_mpl_mass_properties_mtv_prep
-    csu_psp_propulstion_system_parameters_init
-    csu_psp_propulstion_system_parameters_mtv_init
+    csu_psp_propulsion_system_parameters_init
+    csu_psp_propulsion_system_parameters_mtv_init
     csc_emp_est_mass_props_init
     csc_emp_est_mass_props_mtv_init
     csc_emp_est_mass_props_prep

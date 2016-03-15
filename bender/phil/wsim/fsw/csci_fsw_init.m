@@ -36,8 +36,7 @@ csc_cmp_command_mode_process_init;
 csu_cml_command_latch_init;
 
 % generic prop system paramter init used by all GNC apps
-csu_psp_propulstion_system_parameters_init;
-
+csu_psp_propulsion_system_parameters_init;
 
 %-------------------------------------------------------------------------%
 % GDN (guidance)
