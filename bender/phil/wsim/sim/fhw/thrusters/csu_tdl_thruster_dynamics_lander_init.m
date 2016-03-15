@@ -31,6 +31,8 @@ tdl_main_mono_thrust = 2135.1463776;
 tdl_main_biprop_thrust = 2224.11081;
  % thruster force is from MX-Micro 250 lbf Biprop
 tdl_main_biprop_thrust = 1112.06;
+ % thruster force is from MX-Micro 300 lbf Biprop
+tdl_main_biprop_thrust = 1334.4;
  % thruster force is from MX-Micro 100 lbf Biprop
 tdl_main_biprop_thrust = 445;
 

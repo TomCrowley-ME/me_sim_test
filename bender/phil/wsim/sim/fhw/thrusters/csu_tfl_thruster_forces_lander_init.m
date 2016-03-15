@@ -138,8 +138,23 @@ tfl_thruster24_orientation =  [0,0,1];
 % Thruster 25 Geometry
 tfl_thruster25_position    =  [0,0,0.508];
 tfl_thruster25_position    =  [0,0,-1.5];   % 3rd stage plus micro lander
-tfl_thruster25_position    =  [0,0,-0.508]; % micro lander only
+tfl_thruster25_position    =  [0,0,-0.508]; % micro lander only - single main
+tfl_thruster25_position    =  [0.6,0,-0.508]; % micro lander only - 3 x 100 lbf mains
 tfl_thruster25_orientation =  [0,0,1.0];
+
+% Thruster 26 Geometry
+tfl_thruster26_position    =  [0,0,0.508];
+tfl_thruster26_position    =  [0,0,-1.5];   % 3rd stage plus micro lander
+tfl_thruster26_position    =  [0,0,-0.508]; % micro lander only - single main
+tfl_thruster26_position    =  [-0.3,0.5196,-0.508]; % micro lander only - 3 x 100 lbf mains
+tfl_thruster26_orientation =  [0,0,1.0];
+
+% Thruster 27 Geometry
+tfl_thruster27_position    =  [0,0,0.508];
+tfl_thruster27_position    =  [0,0,-1.5];   % 3rd stage plus micro lander
+tfl_thruster27_position    =  [0,0,-0.508]; % micro lander only - single main
+tfl_thruster27_position    =  [-0.3,-0.5196,-0.508]; % micro lander only - 3 x 100 lbf mains
+tfl_thruster27_orientation =  [0,0,1.0];
 
 thruster_list = [   tfl_thruster1_orientation/norm(tfl_thruster1_orientation);...
                     tfl_thruster2_orientation/norm(tfl_thruster2_orientation);...
@@ -165,7 +180,9 @@ thruster_list = [   tfl_thruster1_orientation/norm(tfl_thruster1_orientation);..
                     tfl_thruster22_orientation/norm(tfl_thruster22_orientation);...
                     tfl_thruster23_orientation/norm(tfl_thruster23_orientation);...
                     tfl_thruster24_orientation/norm(tfl_thruster24_orientation);...
-                    tfl_thruster25_orientation/norm(tfl_thruster25_orientation)];
+                    tfl_thruster25_orientation/norm(tfl_thruster25_orientation);...
+                    tfl_thruster26_orientation/norm(tfl_thruster26_orientation);...
+                    tfl_thruster26_orientation/norm(tfl_thruster27_orientation)];
                 
 tfl_thruster1_orientation = thruster_list(1,:);
 tfl_thruster2_orientation = thruster_list(2,:);
@@ -196,6 +213,8 @@ if exist('tfl_thruster_egc_orientation')
     tfl_thruster_egc_orientation =thruster_list(25,:);
 else
     tfl_thruster25_orientation = thruster_list(25,:);
+    tfl_thruster26_orientation = thruster_list(26,:);
+    tfl_thruster27_orientation = thruster_list(27,:);
 end
  
 

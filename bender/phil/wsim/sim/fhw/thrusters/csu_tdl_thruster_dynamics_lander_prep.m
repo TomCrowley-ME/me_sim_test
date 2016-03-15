@@ -92,7 +92,7 @@ tdl_thruster25_thrust_noise_std  = tdl_main_mono_noise_std;
 tdl_thruster25_thrust_noise_seed = 25;
 tdl_thruster25_thrust_noise_enable = tdl_main_mono_noise_enable;
 
-%Thruster 25 : Main mono vs biprop switch
+%Thruster 26 : Main mono vs biprop switch
 tdl_thruster26_rising_lookup_time = tdl_main_biprop_rising_lookup_time;
 tdl_thruster26_rising_lookup_thrust = tdl_main_biprop_rising_lookup_thrust;
 
@@ -103,6 +103,30 @@ tdl_thruster26_thrust_noise_mean = tdl_main_biprop_noise_mean;
 tdl_thruster26_thrust_noise_std  = tdl_main_biprop_noise_std;
 tdl_thruster26_thrust_noise_seed = 26;
 tdl_thruster26_thrust_noise_enable = tdl_main_biprop_noise_enable;
+
+%Thruster 27 : Main mono vs biprop switch
+tdl_thruster27_rising_lookup_time = tdl_main_biprop_rising_lookup_time;
+tdl_thruster27_rising_lookup_thrust = tdl_main_biprop_rising_lookup_thrust;
+
+tdl_thruster27_falling_lookup_time = tdl_main_biprop_falling_lookup_time;
+tdl_thruster27_falling_lookup_thrust = tdl_main_biprop_falling_lookup_thrust;
+
+tdl_thruster27_thrust_noise_mean = tdl_main_biprop_noise_mean;
+tdl_thruster27_thrust_noise_std  = tdl_main_biprop_noise_std;
+tdl_thruster27_thrust_noise_seed = 27;
+tdl_thruster27_thrust_noise_enable = tdl_main_biprop_noise_enable;
+
+%Thruster 28 : Main mono vs biprop switch
+tdl_thruster28_rising_lookup_time = tdl_main_biprop_rising_lookup_time;
+tdl_thruster28_rising_lookup_thrust = tdl_main_biprop_rising_lookup_thrust;
+
+tdl_thruster28_falling_lookup_time = tdl_main_biprop_falling_lookup_time;
+tdl_thruster28_falling_lookup_thrust = tdl_main_biprop_falling_lookup_thrust;
+
+tdl_thruster28_thrust_noise_mean = tdl_main_biprop_noise_mean;
+tdl_thruster28_thrust_noise_std  = tdl_main_biprop_noise_std;
+tdl_thruster28_thrust_noise_seed = 28;
+tdl_thruster28_thrust_noise_enable = tdl_main_biprop_noise_enable;
 
 %Thruster 1 : Coarse ACS
 tdl_thruster1_rising_lookup_time = tdl_coarse_acs_rising_lookup_time;
