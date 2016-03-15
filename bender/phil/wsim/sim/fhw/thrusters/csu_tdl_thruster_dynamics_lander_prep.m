@@ -70,15 +70,17 @@ tdl_main_biprop_rising_lookup_thrust = [0 0 tdl_main_biprop_thrust tdl_main_bipr
 tdl_main_biprop_falling_lookup_time = [-1 0 1 5 ]/1000;
 tdl_main_biprop_falling_lookup_thrust = [tdl_main_biprop_thrust tdl_main_biprop_thrust 0 0];
 
-tdl_main_biprop_noise_std  = (tdl_main_biprop_noise_std_percent/100)*tdl_vernier_acs_thrust; %(Newton, 1sigma)
-
+tdl_main_biprop_noise_std  = (tdl_main_biprop_noise_std_percent/100)*tdl_main_biprop_thrust; %(Newton, 1sigma)
+tdl_main_biprop_noise_mean_1 = ((tdl_main_biprop_noise_std_percent/100)*tdl_main_biprop_thrust)*randn(1,1);
+tdl_main_biprop_noise_mean_2 = ((tdl_main_biprop_noise_std_percent/100)*tdl_main_biprop_thrust)*randn(1,1);
+tdl_main_biprop_noise_mean_3 = ((tdl_main_biprop_noise_std_percent/100)*tdl_main_biprop_thrust)*randn(1,1);
 %-------------------------------------------------------------------------%
 % assign each thruster a lookup table
 %
 % Mapping:  1 : 12 = coarse acs
 %          13 : 24 = vernier acs
 %               25 = main monoprop
-%               26 = biprop switch for main
+%          26 : 28 = biprop switch for main
 
 %Thruster 25 : Main Monoprop
 tdl_thruster25_rising_lookup_time = tdl_main_mono_rising_lookup_time;
@@ -99,7 +101,7 @@ tdl_thruster26_rising_lookup_thrust = tdl_main_biprop_rising_lookup_thrust;
 tdl_thruster26_falling_lookup_time = tdl_main_biprop_falling_lookup_time;
 tdl_thruster26_falling_lookup_thrust = tdl_main_biprop_falling_lookup_thrust;
 
-tdl_thruster26_thrust_noise_mean = tdl_main_biprop_noise_mean;
+tdl_thruster26_thrust_noise_mean = tdl_main_biprop_noise_mean_1;
 tdl_thruster26_thrust_noise_std  = tdl_main_biprop_noise_std;
 tdl_thruster26_thrust_noise_seed = 26;
 tdl_thruster26_thrust_noise_enable = tdl_main_biprop_noise_enable;
@@ -111,7 +113,7 @@ tdl_thruster27_rising_lookup_thrust = tdl_main_biprop_rising_lookup_thrust;
 tdl_thruster27_falling_lookup_time = tdl_main_biprop_falling_lookup_time;
 tdl_thruster27_falling_lookup_thrust = tdl_main_biprop_falling_lookup_thrust;
 
-tdl_thruster27_thrust_noise_mean = tdl_main_biprop_noise_mean;
+tdl_thruster27_thrust_noise_mean = tdl_main_biprop_noise_mean_2;
 tdl_thruster27_thrust_noise_std  = tdl_main_biprop_noise_std;
 tdl_thruster27_thrust_noise_seed = 27;
 tdl_thruster27_thrust_noise_enable = tdl_main_biprop_noise_enable;
@@ -123,7 +125,7 @@ tdl_thruster28_rising_lookup_thrust = tdl_main_biprop_rising_lookup_thrust;
 tdl_thruster28_falling_lookup_time = tdl_main_biprop_falling_lookup_time;
 tdl_thruster28_falling_lookup_thrust = tdl_main_biprop_falling_lookup_thrust;
 
-tdl_thruster28_thrust_noise_mean = tdl_main_biprop_noise_mean;
+tdl_thruster28_thrust_noise_mean = tdl_main_biprop_noise_mean_3;
 tdl_thruster28_thrust_noise_std  = tdl_main_biprop_noise_std;
 tdl_thruster28_thrust_noise_seed = 28;
 tdl_thruster28_thrust_noise_enable = tdl_main_biprop_noise_enable;

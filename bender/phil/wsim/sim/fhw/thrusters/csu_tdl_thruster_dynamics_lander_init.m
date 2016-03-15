@@ -38,7 +38,8 @@ tdl_main_biprop_thrust = 445;
 
     tdl_main_biprop_noise_mean = 0; %(Newton)
     tdl_main_biprop_noise_std_percent  = 2/3; %(Newton, 1sigma) % 3% total variability, transformed to 1signma. %made it up, escrane 30 April 2014
-    tdl_main_biprop_noise_enable = 0;
+    tdl_main_biprop_noise_std_percent  = 1.5/3; %(Newton, 1sigma) % 1.5% total variability, based on email from Ventura (3/13/2016).  Assumes 0.5% 1 sigma
+    tdl_main_biprop_noise_enable = 1;
 
 % acs thruster data DIY Configuration 10 lbf Coarse
 tdl_coarse_acs_thrust = 44.48; % MX and MTV
@@ -46,14 +47,14 @@ tdl_coarse_acs_thrust = 26.68; % Mx-micro
 
     tdl_coarse_acs_noise_mean = 0; %(Newton)
     tdl_coarse_acs_noise_std_percent  = 10/3; %(percentage, 1sigma) %prop test data from 22 April 2014, 10% total excursion
-    tdl_coarse_acs_noise_enable = 0;
+    tdl_coarse_acs_noise_enable = 1;
 
 % acs thruster data DIY Configuration 0.1 N fine
 tdl_vernier_acs_thrust = 0.1;
 
     tdl_vernier_acs_noise_mean = 0; %(Newton)
     tdl_vernier_acs_noise_std_percent  = 2/3; %(Newton, 1sigma) % 2% total variability, transformed to 1signma. %made it up, escrane 30 April 2014
-    tdl_vernier_acs_noise_enable = 0;
+    tdl_vernier_acs_noise_enable = 1;
     
 % act on commands if more than 1ms has passed
 tdl_active_time = 0.9/1000;
