@@ -12,8 +12,9 @@ end
 
 %% Define powerpoint output file name and properties
 pptFile      = 'MTV EGC Vertical Control Monte Carlo';
+pptFile      = 'MX-Micro 3 X 100 lbf Main Biprop Monte Carlo';
 pptTitle     = sprintf('Monte Carlo Analysis');
-subject      = sprintf('Hop Scenario Monte Carlo\n');
+subject      = sprintf('DOI to Landing Scenario Monte Carlo\n');
 
 templateDir  = cat(2,getenv('NIMBUS_ROOT'),filesep,'telemetry_processing');
 templateFile = 'template';
