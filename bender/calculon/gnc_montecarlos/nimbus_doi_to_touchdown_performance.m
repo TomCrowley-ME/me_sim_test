@@ -59,7 +59,7 @@ mc_prefix_workspace = 'doi_to_touchdown_workspace_mc';
 RandStream.setGlobalStream(RandStream.create('mt19937ar','seed',14))
  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mc_n = 2;  % User set to total number of MC cases
+mc_n = 100;  % User set to total number of MC cases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % percent of range errors
@@ -182,8 +182,8 @@ mid=(monoprop_isp_max+monoprop_isp_min)/2;sigma=(monoprop_isp_max-monoprop_isp_m
 monoprop_isp     =  mid+sigma*randn(mc_n,1);
  
 % set biprop thrust scale factor, nominally set to 1
-biprop_thrust_min = 0.950;
-biprop_thrust_max = 1.050;
+biprop_thrust_min = 0.997;
+biprop_thrust_max = 1.003;
 % biprop_thrust     = biprop_thrust_min + (biprop_thrust_max - biprop_thrust_min)*rand(mc_n,1);
 mid=(biprop_thrust_max+biprop_thrust_min)/2;sigma=(biprop_thrust_max-biprop_thrust_min)/3;
 biprop_thrust     =  mid+sigma*randn(mc_n,1);
@@ -460,6 +460,7 @@ for i2mc = 1 : length(mc_i)
           tpl_rp1_to_htp_ratio   = 1/9;
         elseif strcmp(mission_type,'micro')
           tdl_main_biprop_thrust = 1112.0;
+          tdl_main_biprop_thrust = 445.0;
           tpl_main_biprop_isp    = 310.0;
           tpl_rp1_to_htp_ratio   = 1/7.5;
         end
