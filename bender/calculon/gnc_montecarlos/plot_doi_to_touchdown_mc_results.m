@@ -35,7 +35,7 @@ end
 nsuccess = 0;
 nfail = 0;
 for iter=1:size(mc_all_final,1)
-   total_fuel_used_scalar(iter)  = mc_all_initial(iter,14) - mc_all_final(iter,14) - mpl_mass_dry;
+   total_fuel_used_scalar(iter)  = total_fuel_used(iter,iter);
 end
 mean_fuel_used = mean(total_fuel_used_scalar);
 half_sigma_fuel_dispersion = 0.5*std(total_fuel_used_scalar);
@@ -758,10 +758,10 @@ isuccess = 0;ifail = 0; clear star_tracker_noise_fail star_tracker_noise_success
 for itest =1:size(mc_all_initial,1)
     if Success(itest) == 1
         isuccess = isuccess + 1;
-        star_tracker_noise_success(isuccess) = mc_all_initial(itest,17)*3600;
+        star_tracker_noise_success(isuccess) = mc_all_initial(itest,17)*(180/pi)*3600;
     else
         ifail = ifail + 1;
-        star_tracker_noise_fail(ifail) = mc_all_initial(itest,17)*3600;
+        star_tracker_noise_fail(ifail) = mc_all_initial(itest,17)*(180/pi)*3600;
     end
 end
 if exist('star_tracker_noise_success')==1
@@ -1805,13 +1805,23 @@ for ipos = 1:mc_n
     else
         continue
     end
-    if exist('mc_traj_data','var')
-      if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');hold on,text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
-      else
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');hold on,text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
-      end
-    end
+        if isempty(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'))
+             if exist('mc_traj_data','var')
+                  if(mc_all_final(ipos,39)==0)
+                        plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');
+                  else
+                        plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');
+                  end
+             end
+        else
+            if exist('mc_traj_data','var')
+                  if(mc_all_final(ipos,39)==0)
+                        plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');hold on,text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
+                  else
+                        plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');hold on,text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
+                 end
+            end
+        end
     hold on; grid on;
 end
 title_string = 'Velocity Magnitude vs. Altitude';
@@ -1829,12 +1839,22 @@ for ipos = 1:mc_n
     else
         continue
     end
-    if exist('mc_traj_data','var')
-      if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'b-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 980 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','b');
-      else
-            plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'r-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 980 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','r');
-      end
+    if isempty(find(mc_traj_data.altitude.Data > 980 & mc_traj_data.altitude.Data<1010,1,'first'))
+        if exist('mc_traj_data','var')
+          if(mc_all_final(ipos,39)==0)
+                plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'b-');
+          else
+                plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'r-');
+          end
+        end
+    else
+        if exist('mc_traj_data','var')
+          if(mc_all_final(ipos,39)==0)
+                plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'b-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 980 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','b');
+          else
+                plot(mc_traj_data.altitude.Data,mc_traj_data.sim_vel.Data(:,3),'r-');hold on;text(1000,mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 980 & mc_traj_data.altitude.Data<1010,1,'first'),3),strcat('Case',num2str(ipos)),'Color','r');
+          end
+        end
     end
     hold on; grid on;
 end
@@ -1853,12 +1873,22 @@ for ipos = 1:mc_n
     else
         continue
     end
-    if exist('mc_traj_data','var')
-      if(mc_all_final(ipos,39)==0)
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');hold on;text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
-      else
-            plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');hold on;text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
-      end
+    if isempty(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'))
+                if exist('mc_traj_data','var')
+          if(mc_all_final(ipos,39)==0)
+                plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');
+          else
+                plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');
+          end
+                end
+    else
+        if exist('mc_traj_data','var')
+          if(mc_all_final(ipos,39)==0)
+                plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'b-');hold on;text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','b');
+          else
+                plot(mc_traj_data.altitude.Data,normrows(mc_traj_data.sim_vel.Data(:,1:2)),'r-');hold on;text(6950,normrows(mc_traj_data.sim_vel.Data(find(mc_traj_data.altitude.Data > 6950 & mc_traj_data.altitude.Data<6990,1,'first'),1:2)),strcat('Case',num2str(ipos)),'Color','r');
+          end
+        end
     end
     hold on; grid on;clear t
 end
@@ -2274,6 +2304,7 @@ title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Topocentric Z Velocity (meters/sec)','fontsize',14);
 saveas(gcf,'TrueZVel.png');%saveas(gcf,'TrueZVel.fig')%%
+%%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
