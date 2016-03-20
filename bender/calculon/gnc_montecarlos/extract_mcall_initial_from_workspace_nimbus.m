@@ -21,8 +21,8 @@ mcall(i.mass)                   = truth.sim.mass.Data(1)';
 %-------------------------------------------------------------------------%
 % sim configuration items
 
-mcall(i.ldr_2k_percent_error)   = evalin('base','ldr_2k_percent_error');
-mcall(i.ldr_2k_max_range)       = evalin('base','ldr_2k_range_max');
+mcall(i.flr_15k_percent_error)   = evalin('base','flr_15k_percent_error');
+mcall(i.flr_15k_range_max)       = evalin('base','flr_15k_range_max');
 mcall(i.st_noise)               = evalin('base','sta_angle_std');
 mcall(i.cam_integ_time)         = evalin('base','cam_integ_time');
 mcall(i.cam_focal_length_f)     = evalin('base','cam_focal_length_f');
