@@ -180,7 +180,7 @@ if pref_plot_traj_values
         ymin = floor( min(min( truth.fsw_rate.topo.sim_pos.Data )/1000 )) * 1000;
         ylim([ymin ymax])
     end
-    %saveas(gcf,'Position.png');%saveas(gcf,'Position.fig')
+    %saveas(gcf,'Position.png');saveas(gcf,'Position.fig')
     
     %-------------------------------------------------------------------------%
     %-----                          VEL                                  -----%
@@ -212,7 +212,7 @@ if pref_plot_traj_values
     ylabel('meters/sec','fontsize',14)
     set(gcf,'Name','Velocity')
     bgfill([tTopo tMax], pref_topo_plot_bg_color, pref_topo_plot_bg_alpha)
-    %saveas(gcf,'Velocity.png');%saveas(gcf,'Velocity.fig')
+    %saveas(gcf,'Velocity.png');saveas(gcf,'Velocity.fig')
     
     %-------------------------------------------------------------------------%
     %-----                          ACC                                  -----%
@@ -245,7 +245,7 @@ if pref_plot_traj_values
     ylabel('m/s^2','fontsize',14)
     set(gcf,'Name','Acceleration')
     bgfill([tTopo tMax], pref_topo_plot_bg_color, pref_topo_plot_bg_alpha)
-    %saveas(gcf,'Acceleration.png');%saveas(gcf,'Acceleration.fig')
+    %saveas(gcf,'Acceleration.png');saveas(gcf,'Acceleration.fig')
     
     %-------------------------------------------------------------------------%
     %-----                          RATE                                 -----%
@@ -278,7 +278,7 @@ if pref_plot_traj_values
     ylabel('degrees/sec','fontsize',14)
     set(gcf,'Name','Body Rates')
     bgfill([tTopo tMax], pref_topo_plot_bg_color, pref_topo_plot_bg_alpha)
-    %saveas(gcf,'BodyRate.png');%saveas(gcf,'BodyRate.fig')
+    %saveas(gcf,'BodyRate.png');saveas(gcf,'BodyRate.fig')
     
     %-------------------------------------------------------------------------%
     %-----                          EUL                                  -----%
@@ -312,7 +312,7 @@ if pref_plot_traj_values
     ylabel('degrees','fontsize',14)
     set(gcf,'Name','Euler 321')
     bgfill([tTopo tMax], pref_topo_plot_bg_color, pref_topo_plot_bg_alpha)
-    %saveas(gcf,'EulerAngles.png');%saveas(gcf,'EulerAngles.fig')
+    %saveas(gcf,'EulerAngles.png');saveas(gcf,'EulerAngles.fig')
     
     %-------------------------------------------------------------------------%
     %-----                          ALT                                  -----%
@@ -343,7 +343,7 @@ if pref_plot_traj_values
 
     set(gcf,'Name','Subsat Altitude')
     bgfill([tTopo tMax], pref_topo_plot_bg_color, pref_topo_plot_bg_alpha)
-    %saveas(gcf,'Altitude.png');%saveas(gcf,'Altitude.fig')
+    %saveas(gcf,'Altitude.png');saveas(gcf,'Altitude.fig')
 
 end
 
@@ -449,7 +449,7 @@ end
 %     ylabel('degrees','fontsize',14)
 %     xlabel('time (sec)','fontsize',14)
 % end
-% %saveas(gcf,'EulerErrors.png');%saveas(gcf,'EulerErrors.fig')
+% %saveas(gcf,'EulerErrors.png');saveas(gcf,'EulerErrors.fig')
 %
 %
 % %-------------------------------------------------------------------------%
@@ -469,7 +469,7 @@ end
 %     ylabel('meters/sec','fontsize',14)
 %     xlabel('time (sec)','fontsize',14)
 % end
-% %saveas(gcf,'VelEstErr.png');%saveas(gcf,'VelEstErr.fig')
+% %saveas(gcf,'VelEstErr.png');saveas(gcf,'VelEstErr.fig')
 %
 % %-------------------------------------------------------------------------%
 % %-----                          EUL EST ERR                          -----%
@@ -490,7 +490,7 @@ end
 %     ylabel('degrees','fontsize',14)
 %     xlabel('time (sec)','fontsize',14)
 % end
-% %saveas(gcf,'EulerEstErrors.png');%saveas(gcf,'EulerEstErrors.fig')
+% %saveas(gcf,'EulerEstErrors.png');saveas(gcf,'EulerEstErrors.fig')
 %
 
 

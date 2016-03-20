@@ -5,7 +5,7 @@ load doi_to_touchdown_mcall.mat
 for kk = 1 : mc_n
     
     %percent_bin = [percent_errors(kk-1) percent_errors(kk)];
-    indices{kk} = find(mc_all_initial(:,iin.ldr_2k_percent_error) == percent_errors); % & mc_all_initial(:,iin.ldr_2k_percent_error) < percent_bin(2));
+    indices{kk} = find(mc_all_initial(:,iin.flr_15k_percent_error) == percent_errors); % & mc_all_initial(:,iin.ldr_2k_percent_error) < percent_bin(2));
     
     for pp = 1 : mc_n
 %         by2index{pp} = find(mc_all_initial(indices{kk},iin.ldr_2k_max_range) == max_ranges(kk)); % & mc_all_initial(:,iin.ldr_2k_percent_error) < percent_bin(2));
