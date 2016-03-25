@@ -13,7 +13,7 @@ Parameters_csc_est_state_est.kfl_topocentric_longitude =  60
 Parameters_csc_est_state_est.kfl_alt_wrt_meanrad = 0
 
 ; ;  GUIDANCE PARAMETER TABLE UPDATES ; ;
-Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = 0.00
+Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = -1.00
 Parameters_csc_gdn_guidance.lic_coast_complete_altitude = 5000
 Parameters_csc_gdn_guidance.lpc_pre_coast_time = 1;
 Parameters_csc_gdn_guidance.tlt_off_vertical_limit = 10

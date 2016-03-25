@@ -16,4 +16,8 @@ gdn_targeting_velocity_error_limit = [10.0 10.0 30.0];         % [m/sec]
 gdn_targeting_lateral_accel_limit  = [2.0  2.0];               % [m/sec^2]
 
 gdn_targeting_velocity_error_gain  = [1.4  1.4  2.0];
+gdn_targeting_velocity_error_gain  = [1.8  1.8  2.0];
 gdn_targeting_lateral_accel_gain   = [0.5  0.5];
+gdn_lat_targeting_alt_cutoff = 5000;
+gdn_lat_targeting_vel_cutoff = -6.0;
+gdn_lat_targeting_nom_final_alt = 50;

@@ -1,6 +1,6 @@
 g = -1.624 % lunar gravity
-a = 0.4*(2.5 + g)  % must be calculated from nominal thrust minus ACS off pulse divided by current estimated mass
-ho = 49.8 % measured at the end of Targeting Burn
+a = 0.3*(2.5 + g) - 0.32*0.4% must be calculated from nominal thrust minus ACS off pulse divided by current estimated mass
+ho = 1200.0% measured at the end of Targeting Burn
 tf = (-a/g + sqrt(a^2/g^2 + 2*(a-a^2/g)*(1/(2*g) + ho)))/(a-a^2/g)
 tc = -(a*tf+1)/g
 
