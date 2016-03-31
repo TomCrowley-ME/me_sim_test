@@ -35,6 +35,8 @@ tdl_main_biprop_thrust = 1112.06;
 tdl_main_biprop_thrust = 1334.4;
  % thruster force is from MX-Micro 100 lbf Biprop
 tdl_main_biprop_thrust = 445;
+ % thruster force is from MX-Micro 50 lbf Biprop
+tdl_main_biprop_thrust = 222.5;
 
     tdl_main_biprop_noise_mean = 0; %(Newton)
     tdl_main_biprop_noise_std_percent  = 2/3; %(Newton, 1sigma) % 3% total variability, transformed to 1signma. %made it up, escrane 30 April 2014

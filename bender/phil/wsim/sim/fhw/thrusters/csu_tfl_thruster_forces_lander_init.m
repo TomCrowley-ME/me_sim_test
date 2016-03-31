@@ -137,9 +137,9 @@ tfl_thruster24_orientation =  [0,0,1];
 
 % Thruster 25 Geometry
 tfl_thruster25_position    =  [0,0,0.508];
-tfl_thruster25_position    =  [0,0,-1.5];   % 3rd stage plus micro lander
 tfl_thruster25_position    =  [0,0,-0.508]; % micro lander only - single main
 tfl_thruster25_position    =  [0.6,0,-0.508]; % micro lander only - 3 x 100 lbf mains
+tfl_thruster25_position    =  [0,0,-1.5];   % 3rd stage plus micro lander and single stage lander
 tfl_thruster25_orientation =  [0,0,1.0];
 
 % Thruster 26 Geometry

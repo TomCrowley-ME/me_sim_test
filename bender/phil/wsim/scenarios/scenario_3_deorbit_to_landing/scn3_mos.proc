@@ -1,8 +1,8 @@
 proc scn3_mos
 
 ; ;  ESTIMATOR PARAMETER TABLE UPDATES ; ;
-Parameters_csc_est_state_est.emp_initial_fuel_used = 0. ; 3rd stage plus lander wet
-Parameters_csc_est_state_est.emp_initial_fuel_used = 26. ; assumes 62 kg htp+rp1+gn2 left (must add to 88.4 kg)
+;Parameters_csc_est_state_est.emp_initial_fuel_used = 0. ; 3rd stage plus lander wet
+;Parameters_csc_est_state_est.emp_initial_fuel_used = 26. ; assumes 62 kg htp+rp1+gn2 left (must add to 88.4 kg)
 ;Parameters_csc_est_state_est.emp_mass_fillfrac_100 = 117.4.; lander stage
 ;Parameters_csc_est_state_est.emp_mass_fillfrac_0   = 29.0; lander stage
 ;Parameters_csc_est_state_est.emp_mass_fillfrac_100 = 222.38; 3rd stage/lander
@@ -13,7 +13,7 @@ Parameters_csc_est_state_est.kfl_topocentric_longitude =  60
 Parameters_csc_est_state_est.kfl_alt_wrt_meanrad = 0
 
 ; ;  GUIDANCE PARAMETER TABLE UPDATES ; ;
-Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = 0.00
+Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = -1.00
 Parameters_csc_gdn_guidance.lic_coast_complete_altitude = 5000
 Parameters_csc_gdn_guidance.lpc_pre_coast_time = 1;
 Parameters_csc_gdn_guidance.tlt_off_vertical_limit = 10

@@ -64,7 +64,7 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .default_state = PASSIVE,
             .rts_id = 15,
             .max_fail_before_rts = 1,
-            .rpn_equation = { 10, 3, NOT, AND, 6, NOT, AND },
+            .rpn_equation = { 10, 3, NOT, AND, 6, NOT, AND, 11, NOT, AND, 13, NOT, AND},
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 27,
             .event_text = "Coast in Vernier ACS",        
@@ -73,10 +73,10 @@ LC_ActionpointDefinitionTable_t actionpoint_def_table =
             .default_state = ACTIVE,
             .rts_id = 18,
             .max_fail_before_rts = 1,
-            .rpn_equation = { 3, 9, NOT, AND },
+            .rpn_equation = { 10, 3, AND, 4, OR, 5, OR},
             .event_type = CFE_EVS_INFORMATION,
             .event_id = 28,
-            .event_text = "Terminal, (RTS-18) Coarse Pitch/Yaw, Vernier Roll ACS, Terminal, (RTS-19) all Vernier ACS",   
+            .event_text = "Hold, Targeting or Terminal, (RTS-18) Coarse Pitch/Yaw, Vernier Roll ACS, Terminal, (RTS-19) all Vernier ACS",   
         },{
            /****       AP # 9          ****/
             .default_state = ACTIVE,
