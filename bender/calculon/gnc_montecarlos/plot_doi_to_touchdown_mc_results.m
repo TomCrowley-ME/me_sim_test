@@ -48,14 +48,14 @@ for iter=1:size(mc_all_final,1)
    initial_est_vel_err(iter)     = norm(mc_all_initial(iter,5:7));
    initial_est_ang_err(iter)     = norm(mc_all_initial(iter,8:10));
    initial_est_rate_err(iter)    = norm(mc_all_initial(iter,11:13));
-   monoprop_thrust(iter)         = norm(mc_all_initial(iter,79));
-   monoprop_isp(iter)            = norm(mc_all_initial(iter,80));
-   biprop_thrust(iter)           = norm(mc_all_initial(iter,81));
-   biprop_isp(iter)              = norm(mc_all_initial(iter,82));
-   mass_estimate_bias(iter)      = norm(mc_all_initial(iter,85));
-   initial_htp_mass(iter)        = norm(mc_all_initial(iter,86));
-   initial_gn2_mass(iter)        = norm(mc_all_initial(iter,87));
-   initial_rp1_mass(iter)        = norm(mc_all_initial(iter,88));
+   monoprop_thrust(iter)         = norm(mc_all_initial(iter,83));
+   monoprop_isp(iter)            = norm(mc_all_initial(iter,84));
+   biprop_thrust(iter)           = norm(mc_all_initial(iter,85));
+   biprop_isp(iter)              = norm(mc_all_initial(iter,86));
+   mass_estimate_bias(iter)      = norm(mc_all_initial(iter,89));
+   initial_htp_mass(iter)        = norm(mc_all_initial(iter,90));
+   initial_gn2_mass(iter)        = norm(mc_all_initial(iter,91));
+   initial_rp1_mass(iter)        = norm(mc_all_initial(iter,92));
    lateral_est_vel_scalar(iter)  = norm(mc_all_final(iter,5:6),2);
    vertical_est_vel_scalar(iter) = abs(mc_all_final(iter,7));
    lateral_gnc_pos_scalar(iter)  = norm(mc_all_final(iter,15:16),2);
@@ -79,6 +79,8 @@ for iter=1:size(mc_all_final,1)
    gn2_used(iter) = mc_all_final(iter,44);
    rp1_used(iter) = mc_all_final(iter,45);
    final_mass(iter) = mc_all_final(iter,46);
+   max_misalignment_ang(iter) = max(abs(mc_all_initial(iter,80:82)));
+   max_misalignment_az(iter) = max(abs(mc_all_initial(iter,53:55)));
 
    if mc_all_final(iter,39)==0 %% && total_fuel_used_scalar(iter) > mean_fuel_used - half_sigma_fuel_dispersion
        Success(iter) = 1;
@@ -113,10 +115,11 @@ final_gnc_vert_vel_err_limit_cases  = int2str( find(vertical_gnc_vel_scalar  > f
 vertical_est_vel_scalar_limit_cases = int2str( find(vertical_est_vel_scalar  > vertical_est_vel_scalar_limit ));
 final_gnc_ang_err_limit_cases       = int2str( find(final_gnc_ang_err        > final_gnc_ang_err_limit       ));
 final_gnc_rate_err_limit_cases      = int2str( find(final_gnc_rate_err       > final_gnc_rate_err_limit      ));
-htp_depletion_cases                 = int2str( find(mc_all_final(:,43)'     >= mc_all_initial(:,86)'         ));
-gn2_depletion_cases                 = int2str( find(mc_all_final(:,44)'     >= mc_all_initial(:,87)'         ));
-rp1_depletion_cases                 = int2str( find(mc_all_final(:,45)'     >= mc_all_initial(:,88)'         ));
+htp_depletion_cases                 = int2str( find(mc_all_final(:,43)'     >= mc_all_initial(:,90)'         ));
+gn2_depletion_cases                 = int2str( find(mc_all_final(:,44)'     >= mc_all_initial(:,91)'         ));
+rp1_depletion_cases                 = int2str( find(mc_all_final(:,45)'     >= mc_all_initial(:,92)'         ));
 
+%%
 if (nfail>0)
    fprintf('Cases failed due to:\n')
    fprintf('Horizontal position                 = %3d   ',length(find(lateral_gnc_pos_scalar      >  lateral_gnc_pos_scalar_limit  )) )
@@ -135,11 +138,11 @@ if (nfail>0)
    if size(final_gnc_ang_err_limit_cases,2)>0      ,fprintf('case numbers = %s\n',final_gnc_ang_err_limit_cases(:))      ,else fprintf('\n'),end
    fprintf('Touchdown body rates                = %3d   ',length(find(final_gnc_rate_err          > final_gnc_rate_err_limit )) )
    if size(final_gnc_rate_err_limit_cases,2)>0     ,fprintf('case numbers = %s\n',final_gnc_rate_err_limit_cases(:))     ,else fprintf('\n'),end
-   fprintf('HTP depletion                       = %3d   ',length(find(mc_all_final(:,43)         >= mc_all_initial(:,86))) )
+   fprintf('HTP depletion                       = %3d   ',length(find(mc_all_final(:,43)         >= mc_all_initial(:,90))) )
    if size(htp_depletion_cases,2)>0                ,fprintf('case numbers = %s\n',htp_depletion_cases(:))                ,else fprintf('\n'),end
-   fprintf('GN2 depletion                       = %3d   ',length(find(mc_all_final(:,44)         >= mc_all_initial(:,87))) )
+   fprintf('GN2 depletion                       = %3d   ',length(find(mc_all_final(:,44)         >= mc_all_initial(:,91))) )
    if size(gn2_depletion_cases,2)>0                ,fprintf('case numbers = %s\n',gn2_depletion_cases(:))                ,else fprintf('\n'),end
-   fprintf('RP1 depletion                       = %3d   ',length(find(mc_all_final(:,45)         >= mc_all_initial(:,88))) )
+   fprintf('RP1 depletion                       = %3d   ',length(find(mc_all_final(:,45)         >= mc_all_initial(:,92))) )
    if size(rp1_depletion_cases,2)>0                ,fprintf('case numbers = %s\n',rp1_depletion_cases(:))                ,else fprintf('\n'),end
 end
 
@@ -1558,9 +1561,9 @@ saveas(gcf,'VertVelEstErrandPropUsed.png');%saveas(gcf,'VertVelEstErrandPropUsed
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+     plot(max(abs(mc_all_initial(itest,80:82))),lateral_gnc_pos_scalar(itest),'b*');text(max(abs(mc_all_initial(itest,80:82))),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,78)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+     plot(max(abs(mc_all_initial(itest,80:82))),lateral_gnc_pos_scalar(itest),'r*');text(max(abs(mc_all_initial(itest,80:82))),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Main Engine Misalignment vs Touchdown Lateral Position';
@@ -1569,16 +1572,21 @@ xlabel('Main Engine Misaligment (deg)','fontsize',14)
 ylabel('Touchdown Lateral Position (m)','fontsize',14)
 str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
 annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
+max_misalignment_ang_x = max(max_misalignment_ang);
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
-plot(0.01*[1:100].*max(abs(mc_all_initial(:,78))),ones(1,100).*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*max_misalignment_ang_x,ones(1,100).*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'MainEngMisalignandPosErr.png');%saveas(gcf,'MainEngMisalignandPosErr.fig')%%
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
      plot(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+     plot(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+     plot(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
      plot(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+     plot(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+     plot(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Main Engine Misalignment Azimuth vs Touchdown Lateral Position';
@@ -1587,16 +1595,17 @@ xlabel('Main Engine Misaligment Azimuth (deg)','fontsize',14)
 ylabel('Touchdown Lateral Position (m)','fontsize',14)
 str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
 annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+max_misalignment_az_x = max(max_misalignment_az);
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
-plot(0.01*[1:100]*max(abs(mc_all_initial(:,53))),lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*max_misalignment_az_x,lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'MainEngMisalignAzandPosErr.png');%saveas(gcf,'MainEngMisalignAzandPosErr.fig')%%
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),'b*');text(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+     plot(max(abs(mc_all_initial(itest,80:82))),total_fuel_used_scalar(itest),'b*');text(max(abs(mc_all_initial(itest,80:82))),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),'r*');text(abs(mc_all_initial(itest,78)),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+     plot(max(abs(mc_all_initial(itest,80:82))),total_fuel_used_scalar(itest),'r*');text(max(abs(mc_all_initial(itest,80:82))),total_fuel_used_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Main Engine Misaligment vs Propellant Usage';
@@ -1605,27 +1614,80 @@ xlabel('Main Engine Misaligment (deg)','fontsize',14)
 ylabel('Propellant Usage (kg)','fontsize',14)
 str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
 annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+max_misalignment_ang_x = max(max_misalignment_ang);
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
-plot(0.01*[0:100]*max(abs(mc_all_initial(:,78))),ones(1,101).*(htp_mass_initial+rp1_mass_initial+gn2_mass_initial),'r-','linewidth',2);
+plot(0.01*[1:100].*max_misalignment_ang_x,ones(1,100).*(htp_mass_initial+rp1_mass_initial+gn2_mass_initial),'r-','linewidth',2);
 saveas(gcf,'MainEngMisalignandPropUsed.png');%saveas(gcf,'MainEngMisalignandPropUsed.fig')%%
+
+%%
+figure;grid on;hold on;
+for itest=1:size(mc_all_final,1)
+  azimuth_deg_1 = mc_all_initial(itest,53);azimuth_deg_2 = mc_all_initial(itest,54);azimuth_deg_3 = mc_all_initial(itest,55);
+  misalgn_deg_1 = mc_all_initial(itest,80);misalgn_deg_2 = mc_all_initial(itest,81);misalgn_deg_3 = mc_all_initial(itest,82);
+  biprop_thrust = mc_all_initial(itest,85);
+
+  misalignment_roll_torque(itest,:) = biprop_thrust*(cross([sind(misalgn_deg_1)*[cosd(azimuth_deg_1) sind(azimuth_deg_1)] cosd(misalgn_deg_1)],tfl_thruster25_position) +...
+                                                                                  cross([sind(misalgn_deg_2)*[cosd(azimuth_deg_1) sind(azimuth_deg_2)] cosd(misalgn_deg_2)],tfl_thruster26_position) +...
+                                                                                  cross([sind(misalgn_deg_3)*[cosd(azimuth_deg_1) sind(azimuth_deg_3)] cosd(misalgn_deg_3)],tfl_thruster27_position));
+  if(mc_all_final(itest,39)==0)
+     plot(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80:82))),'b*');text(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80:82))),strcat('   ',num2str(itest)),'Color','b');
+  elseif(mc_all_final(itest,39)==1)
+     plot(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80:82))),'r*');text(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80:82))),strcat('   ',num2str(itest)),'Color','r');
+  end
+end
+title_string = 'Main Engine Misaligment(s) Induced Roll Torque';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+ylabel('Maximum Main Engine Misaligment (deg)','fontsize',14)
+xlabel('Roll Torque Induced By Misalignment(s) (N-m)','fontsize',14)
+str_text_box = {sprintf('Vernier Roll Torque Authority = %9.2f N-m',2*abs(vac_thruster20_trq(3))*psp_vernier_acs_thrust)};
+annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+vernier_roll_trq_authority_x = 2*abs(vac_thruster20_trq(3))*psp_vernier_acs_thrust*ones(1,100);
+max_misalignment_ang_y = max(max_misalignment_ang);
+plot(vernier_roll_trq_authority_x,0.01*[1:100].*max_misalignment_ang_y,'r-','linewidth',2);
+plot(-vernier_roll_trq_authority_x,0.01*[1:100].*max_misalignment_ang_y,'r-','linewidth',2);
+saveas(gcf,'MainEngMisalignandRollTrq.png');%saveas(gcf,'MainEngMisalignandRollTrq.fig')%%
+
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),'b*');text(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),strcat('   ',num2str(itest)),'Color','b');
+     plot(abs(lateral_gnc_vel_scalar(itest)),lateral_est_vel_scalar(itest),'b*');text(abs(lateral_gnc_vel_scalar(itest)),lateral_est_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),'r*');text(abs(lateral_gnc_pos_scalar(itest)),final_est_pos_err(itest),strcat('   ',num2str(itest)),'Color','r');
+     plot(abs(lateral_gnc_vel_scalar(itest)),lateral_est_vel_scalar(itest),'r*');text(abs(lateral_gnc_vel_scalar(itest)),lateral_est_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
-title_string = 'Touchdown True Lateral Position Error vs Lateral Position Estimation Error';
+title_string = 'Touchdown True Lateral Velocity Error vs Lateral Velocity Estimation Error';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('True Lateral Position Error (m)','fontsize',14)
-ylabel('Lateral Position Estimation Error (m)','fontsize',14)
-str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',lateral_gnc_pos_scalar_limit)};
-annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
-lateral_gnc_pos_scalar_limit_x = lateral_gnc_pos_scalar_limit*ones(1,101);
-plot(ones(1,101).*lateral_gnc_pos_scalar_limit_x,0.01*[0:100]*max(abs(final_est_pos_err)),'r-','linewidth',2);
-saveas(gcf,'TrueLatPosErrandPosEstErr.png');%saveas(gcf,'TrueLatPosErrandPosEstErr.fig')%%%%
+xlabel('True Lateral Velocity Error (m/s)','fontsize',14)
+ylabel('Lateral Velocity Estimation Error (m/s)','fontsize',14)
+str_text_box = {sprintf('Touchdown Lateral Velocity Error Spec = %9.2f m',lateral_gnc_vel_scalar_limit),sprintf('Touchdown Lateral Velocity Estimation Error Spec = %9.2f m/s',lateral_est_vel_scalar_limit)};
+annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
+lateral_gnc_vel_scalar_limit_x = lateral_gnc_vel_scalar_limit*ones(1,100);
+lateral_est_vel_scalar_limit_y = lateral_est_vel_scalar_limit*ones(1,100);
+plot(lateral_gnc_vel_scalar_limit_x,0.01*[1:100].*lateral_est_vel_scalar_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*lateral_gnc_vel_scalar_limit_x,lateral_est_vel_scalar_limit_y,'r-','linewidth',2);
+saveas(gcf,'TrueLatVelErrandVelEstErr.png.png');%saveas(gcf,'TrueLatVelErrandVelEstErr.fig')%%%%
+
+%%
+figure;grid on;hold on;
+for itest=1:size(mc_all_final,1)
+ if(mc_all_final(itest,39)==0)
+     plot(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),'b*');text(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+ elseif(mc_all_final(itest,39)==1)
+     plot(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),'r*');text(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+ end
+end
+title_string = 'Touchdown True Vertical Velocity Error vs Vertical Velocity Estimation Error';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('True Vertical Velocity Error (m/s)','fontsize',14)
+ylabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
+str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Touchdown Vertical Velocity Estimation Error Spec = %9.2f m/s',vertical_est_vel_scalar_limit)};
+annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
+final_gnc_vert_vel_err_limit_x = final_gnc_vert_vel_err_limit*ones(1,100);
+vertical_est_vel_scalar_limit_y = vertical_est_vel_scalar_limit*ones(1,100);
+plot(final_gnc_vert_vel_err_limit_x,0.01*[1:100].*vertical_est_vel_scalar_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*final_gnc_vert_vel_err_limit_x,vertical_est_vel_scalar_limit_y,'r-','linewidth',2);
+saveas(gcf,'TrueVertVelErrandVelEstErr.png');%saveas(gcf,'TrueVertVelErrandVelEstErr.fig')%%%%
 
 %%
 figure;

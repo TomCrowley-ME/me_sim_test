@@ -32,7 +32,7 @@ tlt_off_vertical_limit_altitude_enable = 300; % Lower altitude to allow pitchove
 tlt_quadratic_terminal = 1;
 
 % Altitude to switch back to table guidance
-tlt_hdot_control_alt = 30;  
+tlt_hdot_control_alt = 300;  
 
 % Efficiency reduction gain due to ACS off pulsing
 tlt_accel_avail_gain = 0.30;
