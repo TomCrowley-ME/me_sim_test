@@ -170,8 +170,8 @@ elseif strcmp(mission_type,'single_stage_micro')
   mpl_Ixy_fillfrac_100 = 0.01;
   mpl_Iyz_fillfrac_100 = 0.49;
   mpl_Ixz_fillfrac_100 = 0.07;
-  mpl_htp_mass_initial  = 26.0;
-  mpl_rp1_mass_initial  = 3.5;
+  mpl_htp_mass_initial  = 27.0;
+  mpl_rp1_mass_initial  = 4.0;
   mpl_inertia_fillfrac_100 = [mpl_Ixx_fillfrac_100, mpl_Iyy_fillfrac_100, mpl_Izz_fillfrac_100, mpl_Ixy_fillfrac_100, mpl_Iyz_fillfrac_100, mpl_Ixz_fillfrac_100]';
   mpl_inertia_fillfrac_0   = [mpl_Ixx_fillfrac_0,   mpl_Iyy_fillfrac_0,   mpl_Izz_fillfrac_0,   mpl_Ixy_fillfrac_0,   mpl_Iyz_fillfrac_0,   mpl_Ixz_fillfrac_0]';
   mpl_mass_dry    = mpl_mass_fillfrac_0;
@@ -221,7 +221,7 @@ elseif strcmp(mission_type,'3rd_stg_plus_micro')
   tpl_rp1_to_htp_ratio   = 1/7.5;
 elseif strcmp(mission_type,'single_stage_micro')
   tdl_main_biprop_thrust = 222.5;
-  tpl_main_biprop_isp    = 320.0;
+  tpl_main_biprop_isp    = 327.0;
   tpl_rp1_to_htp_ratio   = 1/7.5;
 end
 

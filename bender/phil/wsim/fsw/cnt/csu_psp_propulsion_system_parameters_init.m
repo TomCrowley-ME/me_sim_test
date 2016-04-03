@@ -42,7 +42,7 @@
 
     % thruster force is from 50 lbf MX-Micro single stage lander
     psp_main_biprop_thrust = 222.5;
-    psp_main_biprop_isp   = 320;
+    psp_main_biprop_isp   = 327;
 
     % acs thruster data DIY Configuration 10 lbf Coarse
     psp_coarse_acs_thrust = 44.48;
