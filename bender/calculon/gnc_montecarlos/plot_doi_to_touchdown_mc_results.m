@@ -178,7 +178,7 @@ if exist('final_gnc_ang_err_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final GNC Angle Error (deg)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistAngErrSucc.png');%saveas(gcf,'HistAngErrSucc.fig')
+    saveas(gcf,'HistAngErrSucc.png');saveas(gcf,'HistAngErrSucc.fig')
 end
 if exist('final_gnc_ang_err_fail')==1
     figure;hist(final_gnc_ang_err_fail,20);grid on
@@ -188,7 +188,7 @@ if exist('final_gnc_ang_err_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final GNC Angle Error (deg)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistAngErrFail.png');%saveas(gcf,'HistAngErrFail.fig')
+    saveas(gcf,'HistAngErrFail.png');saveas(gcf,'HistAngErrFail.fig')
 end
 %%
 figure;plot(final_gnc_rate_err,Success,'*');grid on
@@ -213,7 +213,7 @@ if exist('final_gnc_rate_err_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final GNC Rate Error (deg/sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistRateErrSucc.png');%saveas(gcf,'HistRateErrSucc.fig')
+    saveas(gcf,'HistRateErrSucc.png');saveas(gcf,'HistRateErrSucc.fig')
 end
 if exist('final_gnc_rate_err_fail')==1
     figure;hist(final_gnc_rate_err_fail,20);grid on
@@ -223,7 +223,7 @@ if exist('final_gnc_rate_err_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final GNC Rate Error (deg/sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistRateErrFail.png');%saveas(gcf,'HistRateErrFail.fig')
+    saveas(gcf,'HistRateErrFail.png');saveas(gcf,'HistRateErrFail.fig')
 end
 %%
 figure;plot(final_gnc_vel_err,Success,'*');grid on
@@ -248,7 +248,7 @@ if exist('final_gnc_vel_err_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final GNC Velocity Error (m/sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistVelErrSucc.png');%saveas(gcf,'HistVelErrSucc.fig')
+    saveas(gcf,'HistVelErrSucc.png');saveas(gcf,'HistVelErrSucc.fig')
 end
 if exist('final_gnc_vel_err_fail')==1
     figure;hist(final_gnc_vel_err_fail,20);grid on
@@ -258,7 +258,7 @@ if exist('final_gnc_vel_err_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final GNC Velocity Error (m/sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistVelErrFail.png');%saveas(gcf,'HistVelErrFail.fig')
+    saveas(gcf,'HistVelErrFail.png');saveas(gcf,'HistVelErrFail.fig')
 end
 %%
 figure;plot(final_est_vert_pos_err,Success,'*');grid on
@@ -283,7 +283,7 @@ if exist('final_est_vert_pos_err_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final Estimated Vertical Position Error (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistEstVertPosErrSucc.png');%saveas(gcf,'HistEstVertPosErrSucc.fig')
+    saveas(gcf,'HistEstVertPosErrSucc.png');saveas(gcf,'HistEstVertPosErrSucc.fig')
 end
 if exist('final_est_vert_pos_err_fail')==1
     figure;hist(final_est_vert_pos_err_fail,20);grid on
@@ -293,7 +293,7 @@ if exist('final_est_vert_pos_err_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final Estimated Vertical Position Error (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistEstVertPosErrFail.png');%saveas(gcf,'HistEstVertPosErrFail.fig')
+    saveas(gcf,'HistEstVertPosErrFail.png');saveas(gcf,'HistEstVertPosErrFail.fig')
 end
 %%
 figure;plot(final_est_vel_err,Success,'*');grid on
@@ -318,7 +318,7 @@ if exist('final_est_vel_err_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final Estimated Velocity Error (m/sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistEstVelErrSucc.png');%saveas(gcf,'HistEstVelErrSucc.fig')
+    saveas(gcf,'HistEstVelErrSucc.png');saveas(gcf,'HistEstVelErrSucc.fig')
 end
 if exist('final_est_vel_err_fail')==1
     figure;hist(final_est_vel_err_fail,20);grid on
@@ -328,7 +328,7 @@ if exist('final_est_vel_err_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Final Estimated Velocity Error (m/sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistEstVelErrFail.png');%saveas(gcf,'HistEstVelErrFail.fig')
+    saveas(gcf,'HistEstVelErrFail.png');saveas(gcf,'HistEstVelErrFail.fig')
 end
 %%
 figure;plot(lateral_gnc_vel_scalar,Success,'*');grid on
@@ -353,7 +353,7 @@ if exist('lateral_gnc_vel_scalar_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Guidance and Control Lateral Velocity Error (m/s)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistLatVelCtrlErrSucc.png');%saveas(gcf,'HistLatVelCtrlErrSucc.fig')
+    saveas(gcf,'HistLatVelCtrlErrSucc.png');saveas(gcf,'HistLatVelCtrlErrSucc.fig')
 end
 if exist('lateral_gnc_vel_scalar_fail')==1
     figure;hist(lateral_gnc_vel_scalar_fail,20);grid on
@@ -363,7 +363,7 @@ if exist('lateral_gnc_vel_scalar_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Guidance and Control Lateral Velocity Error (m/s)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistLatVelCtrlErrFail.png');%saveas(gcf,'HistLatVelCtrlErrFail.fig')
+    saveas(gcf,'HistLatVelCtrlErrFail.png');saveas(gcf,'HistLatVelCtrlErrFail.fig')
 end
 %%
 figure;plot(vertical_gnc_vel_scalar,Success,'*');grid on
@@ -388,7 +388,7 @@ if exist('vertical_gnc_vel_scalar_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Guidance and Control Vertical Velocity Accuracy (1 m/s Target)','fontsize',14)
     ylabel('Number of Cases')
-    saveas(gcf,'HistVertVelCtrlErrSucc.png');%saveas(gcf,'HistVertVelCtrlErrSucc.fig')
+    saveas(gcf,'HistVertVelCtrlErrSucc.png');saveas(gcf,'HistVertVelCtrlErrSucc.fig')
 end
 if exist('vertical_gnc_vel_scalar_fail')==1
     figure;hist(vertical_gnc_vel_scalar_fail,20);grid on
@@ -398,7 +398,7 @@ if exist('vertical_gnc_vel_scalar_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Guidance and Control Vertical Velocity Accuracy (1 m/s Target)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistVertVelCtrlErrFail.png');%saveas(gcf,'HistVertVelCtrlErrFail.fig')
+    saveas(gcf,'HistVertVelCtrlErrFail.png');saveas(gcf,'HistVertVelCtrlErrFail.fig')
 end
 %%
 figure;plot(vertical_gnc_pos_scalar,Success,'*');grid on
@@ -423,7 +423,7 @@ if exist('vertical_gnc_pos_scalar_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Guidance and Control Vertical Position Error (meters)','fontsize',14)
     ylabel('Number of Cases')
-    saveas(gcf,'HistVertPosCtrlErrSucc.png');%saveas(gcf,'HistVertPosCtrlErrSucc.fig')
+    saveas(gcf,'HistVertPosCtrlErrSucc.png');saveas(gcf,'HistVertPosCtrlErrSucc.fig')
 end
 if exist('vertical_gnc_pos_scalar_fail')==1
     figure;hist(vertical_gnc_pos_scalar_fail,20);grid on
@@ -433,7 +433,7 @@ if exist('vertical_gnc_pos_scalar_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Guidance and Control Vertical Position Error (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistVertPosCtrlErrFail.png');%saveas(gcf,'HistVertPosCtrlErrFail.fig')
+    saveas(gcf,'HistVertPosCtrlErrFail.png');saveas(gcf,'HistVertPosCtrlErrFail.fig')
 end
 %%
 figure;plot(lateral_gnc_pos_scalar,Success,'*');grid on
@@ -458,7 +458,7 @@ if exist('lateral_gnc_pos_scalar_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Guidance and Control Horizontal Position Error (meters)','fontsize',14)
     ylabel('Number of Cases')
-    saveas(gcf,'HistHorzPosCtrlErrSucc.png');%saveas(gcf,'HistHorzPosCtrlErrSucc.fig')
+    saveas(gcf,'HistHorzPosCtrlErrSucc.png');saveas(gcf,'HistHorzPosCtrlErrSucc.fig')
 end
 if exist('lateral_gnc_pos_scalar_fail')==1
     figure;hist(lateral_gnc_pos_scalar_fail,20);grid on
@@ -468,7 +468,7 @@ if exist('lateral_gnc_pos_scalar_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Guidance and Control Horizontal Position Error (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistHorzPosCtrlErrFail.png');%saveas(gcf,'HistHorzPosCtrlErrFail.fig')
+    saveas(gcf,'HistHorzPosCtrlErrFail.png');saveas(gcf,'HistHorzPosCtrlErrFail.fig')
 end
 %%
 figure;plot(lateral_est_vel_scalar,Success,'*');grid on
@@ -493,7 +493,7 @@ if exist('lateral_est_vel_scalar_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Estimated Lateral Velocity Error (m/s)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistLatVelEstErrSucc.png');%saveas(gcf,'HistLatVelEstErrSucc.fig')
+    saveas(gcf,'HistLatVelEstErrSucc.png');saveas(gcf,'HistLatVelEstErrSucc.fig')
 end
 if exist('lateral_est_vel_scalar_fail')==1
     figure;hist(lateral_est_vel_scalar_fail,20);grid on
@@ -503,7 +503,7 @@ if exist('lateral_est_vel_scalar_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Estimated Lateral Velocity Error (m/s)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistLatVelEstErrFail.png');%saveas(gcf,'HistLatVelEstErrFail.fig')
+    saveas(gcf,'HistLatVelEstErrFail.png');saveas(gcf,'HistLatVelEstErrFail.fig')
 end
 %%
 figure;plot(vertical_est_vel_scalar,Success,'*');grid on
@@ -528,7 +528,7 @@ if exist('vertical_est_vel_scalar_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Estimated Vertical Velocity Error (m/s)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistVertVelEstErrSucc.png');%saveas(gcf,'HistVertVelEstErrSucc.fig')
+    saveas(gcf,'HistVertVelEstErrSucc.png');saveas(gcf,'HistVertVelEstErrSucc.fig')
 end
 if exist('vertical_est_vel_scalar_fail')==1
     figure;hist(vertical_est_vel_scalar_fail,20);grid on
@@ -538,7 +538,7 @@ if exist('vertical_est_vel_scalar_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Estimated Vertical Velocity Error (m/s)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistVertVelEstErrFail.png');%saveas(gcf,'HistVertVelEstErrFail.fig')
+    saveas(gcf,'HistVertVelEstErrFail.png');saveas(gcf,'HistVertVelEstErrFail.fig')
 end
 %%
 figure;plot(total_fuel_used_scalar,Success,'*');grid on
@@ -563,7 +563,7 @@ if exist('total_fuel_used_scalar_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Total Fuel Usage (kg)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistFuelUsageSucc.png');%saveas(gcf,'HistFuelUsageSucc.fig')
+    saveas(gcf,'HistFuelUsageSucc.png');saveas(gcf,'HistFuelUsageSucc.fig')
 end
 if exist('total_fuel_used_scalar_fail')==1
     figure;hist(total_fuel_used_scalar_fail,20);grid on
@@ -573,7 +573,7 @@ if exist('total_fuel_used_scalar_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Total Fuel Usage (kg)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistFuelUsageFail.png');%saveas(gcf,'HistFuelUsageFail.fig')
+    saveas(gcf,'HistFuelUsageFail.png');saveas(gcf,'HistFuelUsageFail.fig')
 end
 %%
 figure;plot(initial_est_pos_err,Success,'*');grid on
@@ -598,7 +598,7 @@ if exist('initial_est_pos_err_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial Estimated Position Error (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistInitEstPosErrSucc.png');%saveas(gcf,'HistInitEstPosErrSucc.fig')
+    saveas(gcf,'HistInitEstPosErrSucc.png');saveas(gcf,'HistInitEstPosErrSucc.fig')
 end
 if exist('initial_est_pos_err_fail')==1
     figure;hist(initial_est_pos_err_fail,20);grid on
@@ -608,7 +608,7 @@ if exist('initial_est_pos_err_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial Estimated Position Error (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistInitEstPosErrFail.png');%saveas(gcf,'HistInitEstPosErrFail.fig')
+    saveas(gcf,'HistInitEstPosErrFail.png');saveas(gcf,'HistInitEstPosErrFail.fig')
 end
 %%
 figure;plot(initial_est_vel_err,Success,'*');grid on
@@ -633,7 +633,7 @@ if exist('initial_est_vel_err_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial Estimated Velocity Error (m/s)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistInitEstVelErrSucc.png');%saveas(gcf,'HistInitEstVelErrSucc.fig')
+    saveas(gcf,'HistInitEstVelErrSucc.png');saveas(gcf,'HistInitEstVelErrSucc.fig')
 end
 if exist('initial_est_vel_err_fail')==1
     figure;hist(initial_est_vel_err_fail,20);grid on
@@ -643,7 +643,7 @@ if exist('initial_est_vel_err_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial Estimated Velocity Error (m/s)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistInitEstVelFail.png');%saveas(gcf,'HistInitEstVelFail.fig')
+    saveas(gcf,'HistInitEstVelFail.png');saveas(gcf,'HistInitEstVelFail.fig')
 end
 %%
 figure;plot(initial_est_ang_err,Success,'*');grid on
@@ -668,7 +668,7 @@ if exist('initial_est_ang_err_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial Estimated Attitude Error (deg)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistInitEstAttErrSucc.png');%saveas(gcf,'HistInitEstAttErrSucc.fig')
+    saveas(gcf,'HistInitEstAttErrSucc.png');saveas(gcf,'HistInitEstAttErrSucc.fig')
 end
 if exist('initial_est_ang_err_fail')==1
     figure;hist(initial_est_ang_err_fail,20);grid on
@@ -678,7 +678,7 @@ if exist('initial_est_ang_err_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial Estimated Attitude Error (deg)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistInitEstAttErrFail.png');%saveas(gcf,'HistInitEstAttErrFail.fig')
+    saveas(gcf,'HistInitEstAttErrFail.png');saveas(gcf,'HistInitEstAttErrFail.fig')
 end
 %%
 figure;plot(mc_all_initial(:,15)*100,Success,'*');grid on
@@ -703,7 +703,7 @@ if exist('altimeter_percent_err_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Altimeter Percent Error (%)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistAltErrorSucc.png');%saveas(gcf,'HistAltErrorSucc.fig');
+    saveas(gcf,'HistAltErrorSucc.png');saveas(gcf,'HistAltErrorSucc.fig');
 end
 if exist('altimeter_percent_err_fail')==1
     figure;hist(altimeter_percent_err_fail,20);grid on
@@ -713,7 +713,7 @@ if exist('altimeter_percent_err_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Altimeter Percent Error (%)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistAltErrorFail.png');%saveas(gcf,'HistAltErrorFail.fig')
+    saveas(gcf,'HistAltErrorFail.png');saveas(gcf,'HistAltErrorFail.fig')
 end
 %%
 figure;plot(mc_all_initial(:,16),Success,'*');grid on
@@ -738,7 +738,7 @@ if exist('altimeter_max_range_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Altimeter Maximum Range (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistAltMaxRangeSucc.png');%saveas(gcf,'HistAltMaxRangeSucc.fig')
+    saveas(gcf,'HistAltMaxRangeSucc.png');saveas(gcf,'HistAltMaxRangeSucc.fig')
 end
 if exist('altimeter_max_range_fail')==1
     figure;hist(altimeter_max_range_fail,20);grid on
@@ -748,7 +748,7 @@ if exist('altimeter_max_range_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Altimeter Maximum Range (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistAltMaxRangeFail.png');%saveas(gcf,'HistAltMaxRangeFail.fig')
+    saveas(gcf,'HistAltMaxRangeFail.png');saveas(gcf,'HistAltMaxRangeFail.fig')
 end
 %%
 figure;plot(mc_all_initial(:,17)*3600,Success,'*');grid on
@@ -773,7 +773,7 @@ if exist('star_tracker_noise_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Star Tracker Noise (arc-sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistTrkrNoiseSucc.png');%saveas(gcf,'HistTrkrNoiseSucc.fig')
+    saveas(gcf,'HistTrkrNoiseSucc.png');saveas(gcf,'HistTrkrNoiseSucc.fig')
 end
 if exist('star_tracker_noise_fail')==1
     figure;hist(star_tracker_noise_fail,20);grid on
@@ -783,7 +783,7 @@ if exist('star_tracker_noise_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Star Tracker Noise (arc-sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistTrkrNoiseFail.png');%saveas(gcf,'HistTrkrNoiseFail.fig')
+    saveas(gcf,'HistTrkrNoiseFail.png');saveas(gcf,'HistTrkrNoiseFail.fig')
 end
 %%
 figure;plot(mc_all_initial(:,18),Success,'*');grid on
@@ -808,7 +808,7 @@ if exist('camera_integration_time_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Integration Time (sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistCamDtSucc.png');%saveas(gcf,'HistCamDtSucc.fig')
+    saveas(gcf,'HistCamDtSucc.png');saveas(gcf,'HistCamDtSucc.fig')
 end
 if exist('camera_integration_time_fail')==1
     figure;hist(camera_integration_time_fail,20);grid on
@@ -818,7 +818,7 @@ if exist('camera_integration_time_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Integration Time (sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistCamDtFail.png');%saveas(gcf,'HistCamDtFail.fig')
+    saveas(gcf,'HistCamDtFail.png');saveas(gcf,'HistCamDtFail.fig')
 end
 %%
 figure;plot(mc_all_initial(:,19),Success,'*');grid on
@@ -843,7 +843,7 @@ if exist('camera_focal_length_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Focal Length (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistFocalSucc.png');%saveas(gcf,'HistFocalSucc.fig')
+    saveas(gcf,'HistFocalSucc.png');saveas(gcf,'HistFocalSucc.fig')
 end
 if exist('camera_focal_length_fail')==1
     figure;hist(camera_focal_length_fail,20);grid on
@@ -853,7 +853,7 @@ if exist('camera_focal_length_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Focal Length (meters)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistFocalFail.png');%saveas(gcf,'HistFocalFail.fig')
+    saveas(gcf,'HistFocalFail.png');saveas(gcf,'HistFocalFail.fig')
 end
 %%
 figure;plot(mc_all_initial(:,20)*180/pi,Success,'*');grid on
@@ -878,7 +878,7 @@ if exist('camera_aov_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Angular Field of View (deg)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistCamAOVSucc.png');%saveas(gcf,'HistCamAOVSucc.fig')
+    saveas(gcf,'HistCamAOVSucc.png');saveas(gcf,'HistCamAOVSucc.fig')
 end
 if exist('camera_aov_fail')==1
     figure;hist(camera_aov_fail,20);grid on
@@ -888,7 +888,7 @@ if exist('camera_aov_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Angular Field of View (deg)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistCamAOVFail.png');%saveas(gcf,'HistCamAOVFail.fig')
+    saveas(gcf,'HistCamAOVFail.png');saveas(gcf,'HistCamAOVFail.fig')
 end
 %%
 figure;plot(mc_all_initial(:,21),Success,'*');grid on
@@ -913,7 +913,7 @@ if exist('camera_delta_t_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Delta-T (sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistProcDtSucc.png');%saveas(gcf,'HistProcDtSucc.fig')
+    saveas(gcf,'HistProcDtSucc.png');saveas(gcf,'HistProcDtSucc.fig')
 end
 if exist('camera_delta_t_fail')==1
     figure;hist(camera_delta_t_fail,20);grid on
@@ -923,7 +923,7 @@ if exist('camera_delta_t_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Delta-T (sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistProcDtFail.png');%saveas(gcf,'HistProcDtFail.fig')
+    saveas(gcf,'HistProcDtFail.png');saveas(gcf,'HistProcDtFail.fig')
 end
 %%
 figure;plot(mc_all_initial(:,22)*1e6,Success,'*');grid on
@@ -948,7 +948,7 @@ if exist('camera_processing_delay_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Processing Delay (sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistCamProcDelaySucc.png');%saveas(gcf,'HistCamProcDelaySucc.fig')
+    saveas(gcf,'HistCamProcDelaySucc.png');saveas(gcf,'HistCamProcDelaySucc.fig')
 end
 if exist('camera_processing_delay_fail')==1
     figure;hist(camera_processing_delay_fail,20);grid on
@@ -958,7 +958,7 @@ if exist('camera_processing_delay_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Camera Processing Delay (sec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistCamProcDelayFail.png');%saveas(gcf,'HistCamProcDelayFail.fig')
+    saveas(gcf,'HistCamProcDelayFail.png');saveas(gcf,'HistCamProcDelayFail.fig')
 end
 %%
 figure;plot(htp_mass,Success,'*');grid on
@@ -983,7 +983,7 @@ if exist('htp_mass_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial HTP Mass','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistHtpMassSucc.png');%saveas(gcf,'HistHtpMassSucc.fig')
+    saveas(gcf,'HistHtpMassSucc.png');saveas(gcf,'HistHtpMassSucc.fig')
 end
 if exist('htp_mass_fail')==1
     figure;hist(htp_mass_fail,20);grid on
@@ -993,7 +993,7 @@ if exist('htp_mass_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial HTP Mass','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistHtpMassFail.png');%saveas(gcf,'HistHtpMassFail.fig')
+    saveas(gcf,'HistHtpMassFail.png');saveas(gcf,'HistHtpMassFail.fig')
 end
 %%
 figure;plot(rp1_mass,Success,'*');grid on
@@ -1018,7 +1018,7 @@ if exist('rp1_mass_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial RP1 Mass','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistRp1MassSucc.png');%saveas(gcf,'HistRp1MassSucc.fig')
+    saveas(gcf,'HistRp1MassSucc.png');saveas(gcf,'HistRp1MassSucc.fig')
 end
 if exist('rp1_mass_fail')==1
     figure;hist(rp1_mass_fail,20);grid on
@@ -1028,7 +1028,7 @@ if exist('rp1_mass_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Initial RP1 Mass','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistRp1MassFail.png');%saveas(gcf,'HistRp1MassFail.fig')
+    saveas(gcf,'HistRp1MassFail.png');saveas(gcf,'HistRp1MassFail.fig')
 end
 %%
 figure;plot(lateral_cg_dry_offset*1e3,Success,'*');grid on
@@ -1053,7 +1053,7 @@ if exist('lateral_cg_dry_offset_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Dry Lander CG Offset (mm)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistDryCGOffsetSucc.png');%saveas(gcf,'HistDryCGOffsetSucc.fig')
+    saveas(gcf,'HistDryCGOffsetSucc.png');saveas(gcf,'HistDryCGOffsetSucc.fig')
 end
 if exist('lateral_cg_dry_offset_fail')==1
     figure;hist(lateral_cg_dry_offset_fail*1e3,20);grid on
@@ -1063,7 +1063,7 @@ if exist('lateral_cg_dry_offset_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Dry Lander CG Offset (mm)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistDryCGOffsetFail.png');%saveas(gcf,'HistDryCGOffsetFail.fig')
+    saveas(gcf,'HistDryCGOffsetFail.png');saveas(gcf,'HistDryCGOffsetFail.fig')
 end
 
 %%
@@ -1089,7 +1089,7 @@ if exist('lateral_cg_wet_offset_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Wet Lander CG Offset (mm)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistWetCGOffsetSucc.png');%saveas(gcf,'HistWetCGOffsetSucc.fig')
+    saveas(gcf,'HistWetCGOffsetSucc.png');saveas(gcf,'HistWetCGOffsetSucc.fig')
 end
 if exist('lateral_cg_wet_offset_fail')==1
     figure;hist(lateral_cg_wet_offset_fail*1e3,20);grid on
@@ -1099,7 +1099,7 @@ if exist('lateral_cg_wet_offset_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Wet Lander CG Offset (mm)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistWetCGOffsetFail.png');%saveas(gcf,'HistWetCGOffsetFail.fig')
+    saveas(gcf,'HistWetCGOffsetFail.png');saveas(gcf,'HistWetCGOffsetFail.fig')
 end
 %%
 % figure;plot(monoprop_thrust,Success,'*');grid on
@@ -1125,7 +1125,7 @@ end
 %     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
 %     xlabel('Monoprop Thrust','fontsize',14)
 %     ylabel('Number of Cases','fontsize',14)
-%     saveas(gcf,'HistMonoPropThrustSucc.png');%saveas(gcf,'HistMonoPropThrustSucc.fig')
+%     saveas(gcf,'HistMonoPropThrustSucc.png');saveas(gcf,'HistMonoPropThrustSucc.fig')
 % end
 % if exist('monoprop_thrust_fail')==1
 %     figure;hist(monoprop_thrust_fail,20);grid on
@@ -1135,7 +1135,7 @@ end
 %     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
 %     xlabel('Monoprop Thrust','fontsize',14)
 %     ylabel('Number of Cases','fontsize',14)
-%     saveas(gcf,'HistMonoPropThrustFail.png');%saveas(gcf,'HistMonoPropThrustFail.fig')
+%     saveas(gcf,'HistMonoPropThrustFail.png');saveas(gcf,'HistMonoPropThrustFail.fig')
 % end
 % 
 % %%
@@ -1162,7 +1162,7 @@ end
 %     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
 %     xlabel('Monoprop Isp','fontsize',14)
 %     ylabel('Number of Cases','fontsize',14)
-%     saveas(gcf,'HistMonoPropIspSucc.png');%saveas(gcf,'HistMonoPropIspSucc.fig')
+%     saveas(gcf,'HistMonoPropIspSucc.png');saveas(gcf,'HistMonoPropIspSucc.fig')
 % end
 % if exist('monoprop_isp_fail')==1
 %     figure;hist(monoprop_isp_fail,20);grid on
@@ -1172,7 +1172,7 @@ end
 %     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
 %     xlabel('Monoprop Isp','fontsize',14)
 %     ylabel('Number of Cases','fontsize',14)
-%     saveas(gcf,'HistMonoPropIspFail.png');%saveas(gcf,'HistMonoPropIspFail.fig')
+%     saveas(gcf,'HistMonoPropIspFail.png');saveas(gcf,'HistMonoPropIspFail.fig')
 % end
 %%
 figure;plot(biprop_thrust,Success,'*');grid on
@@ -1198,7 +1198,7 @@ if exist('biprop_thrust_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Biprop Thrust','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistBiPropThrustSucc.png');%saveas(gcf,'HistBiPropThrustSucc.fig')
+    saveas(gcf,'HistBiPropThrustSucc.png');saveas(gcf,'HistBiPropThrustSucc.fig')
 end
 if exist('biprop_thrust_fail')==1
     figure;hist(biprop_thrust_fail,20);grid on
@@ -1208,7 +1208,7 @@ if exist('biprop_thrust_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Biprop Thrust','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistBiPropThrustFail.png');%saveas(gcf,'HistBiPropThrustFail.fig')
+    saveas(gcf,'HistBiPropThrustFail.png');saveas(gcf,'HistBiPropThrustFail.fig')
 end
 
 %%
@@ -1235,7 +1235,7 @@ if exist('biprop_isp_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Biprop Isp','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistBiPropIspSucc.png');%saveas(gcf,'HistBiPropIspSucc.fig')
+    saveas(gcf,'HistBiPropIspSucc.png');saveas(gcf,'HistBiPropIspSucc.fig')
 end
 if exist('biprop_isp_fail')==1
     figure;hist(biprop_isp_fail,20);grid on
@@ -1245,7 +1245,7 @@ if exist('biprop_isp_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Biprop Isp','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistBiPropIspFail.png');%saveas(gcf,'HistBiPropIspFail.fig')
+    saveas(gcf,'HistBiPropIspFail.png');saveas(gcf,'HistBiPropIspFail.fig')
 end
 %%
 figure;plot(biprop_start_delay,Success,'*');grid on
@@ -1271,7 +1271,7 @@ if exist('start_delay_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Main Engine Start Delay (msec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistMainStartDelaySucc.png');%saveas(gcf,'HistMainStartDelaySucc.fig')
+    saveas(gcf,'HistMainStartDelaySucc.png');saveas(gcf,'HistMainStartDelaySucc.fig')
 end
 if exist('start_delay_fail')==1
     figure;hist(start_delay_fail,20);grid on
@@ -1281,7 +1281,7 @@ if exist('start_delay_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Main Engine Start Delay (msec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistMainStartDelayFail.png');%saveas(gcf,'HistMainStartDelayFail.fig')
+    saveas(gcf,'HistMainStartDelayFail.png');saveas(gcf,'HistMainStartDelayFail.fig')
 end
 %%
 figure;plot(biprop_stop_delay,Success,'*');grid on
@@ -1307,7 +1307,7 @@ if exist('stop_delay_success')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Main Engine Fire Time Bias (msec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistMainStopDelaySucc.png');%saveas(gcf,'HistMainStopDelaySucc.fig')
+    saveas(gcf,'HistMainStopDelaySucc.png');saveas(gcf,'HistMainStopDelaySucc.fig')
 end
 if exist('stop_delay_fail')==1
     figure;hist(stop_delay_fail,20);grid on
@@ -1317,7 +1317,7 @@ if exist('stop_delay_fail')==1
     title(title_string,'fontsize',14);set(gcf,'Name',sprintf('Histogram : %s',title_string))
     xlabel('Main Engine Stop Delay (msec)','fontsize',14)
     ylabel('Number of Cases','fontsize',14)
-    saveas(gcf,'HistMainStopDelayFail.png');%saveas(gcf,'HistMainStopDelayFail.fig')
+    saveas(gcf,'HistMainStopDelayFail.png');saveas(gcf,'HistMainStopDelayFail.fig')
 end
 %%
 % figure;grid on;hold on;
@@ -1332,7 +1332,7 @@ end
 % title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 % xlabel('Monoprop Thrust','fontsize',14)
 % ylabel('Topocentric Vertical Velocity (m/s)','fontsize',14)
-% saveas(gcf,'VerticalVelandMonoPropThrust.png');%saveas(gcf,'VerticalVelandMonoPropThrust.fig')
+% saveas(gcf,'VerticalVelandMonoPropThrust.png');saveas(gcf,'VerticalVelandMonoPropThrust.fig')
 
 %%
 % figure;grid on;hold on;
@@ -1347,7 +1347,7 @@ end
 % title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 % xlabel('Monoprop Isp','fontsize',14)
 % ylabel('Topocentric Vertical Velocity (m/s)','fontsize',14)
-% saveas(gcf,'VerticalVelandMonoPropIsp.png');%saveas(gcf,'VerticalVelandMonoPropIsp.fig')
+% saveas(gcf,'VerticalVelandMonoPropIsp.png');saveas(gcf,'VerticalVelandMonoPropIsp.fig')
 
 %%
 figure;grid on;hold on;
@@ -1369,7 +1369,7 @@ lateral_gnc_vel_scalar_limit_x = lateral_gnc_vel_scalar_limit*ones(1,100);
 final_gnc_vert_vel_err_limit_y = final_gnc_vert_vel_err_limit*ones(1,100);
 plot(lateral_gnc_vel_scalar_limit_x,0.01*[1:100].*final_gnc_vert_vel_err_limit_y,'r-','linewidth',2);
 plot(0.01*[1:100].*lateral_gnc_vel_scalar_limit_x,final_gnc_vert_vel_err_limit_y,'r-','linewidth',2);
-saveas(gcf,'LateralVelandVerticalVel.png');%saveas(gcf,'LateralVelandVerticalVel.fig')
+saveas(gcf,'LateralVelandVerticalVel.png');saveas(gcf,'LateralVelandVerticalVel.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1389,7 +1389,7 @@ lateral_gnc_vel_scalar_limit_x = lateral_gnc_vel_scalar_limit*ones(1,100);
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
 plot(lateral_gnc_vel_scalar_limit_x,0.01*[1:100].*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
 plot(0.01*[1:100].*lateral_gnc_vel_scalar_limit_x,lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'LateralVelandPosErr.png');%saveas(gcf,'LateralVelandPosErr.fig')
+saveas(gcf,'LateralVelandPosErr.png');saveas(gcf,'LateralVelandPosErr.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1407,7 +1407,7 @@ str_text_box = {sprintf('Lateral Velocity Error Spec= %9.2f m/s',lateral_gnc_vel
 annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
 lateral_gnc_vel_scalar_limit_y = lateral_gnc_vel_scalar_limit*ones(1,100);
 plot(0.01*[1:100]*max(lateral_cg_wet_offset)*1000,lateral_gnc_vel_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'LateralCMandLateralVel.png');%saveas(gcf,'LateralCMandLateralVel.fig')
+saveas(gcf,'LateralCMandLateralVel.png');saveas(gcf,'LateralCMandLateralVel.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1425,7 +1425,7 @@ str_text_box = {sprintf('Lateral Velocity Error Spec= %9.2f m/s',lateral_gnc_vel
 annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
 lateral_gnc_vel_scalar_limit_y = lateral_gnc_vel_scalar_limit*ones(1,100);
 plot(0.01*[1:100]*max(cm_az_deg),lateral_gnc_vel_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'LateralCMAzimuthandLateralVel.png');%saveas(gcf,'LateralCMAzimuthandLateralVel.fig')
+saveas(gcf,'LateralCMAzimuthandLateralVel.png');saveas(gcf,'LateralCMAzimuthandLateralVel.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1445,7 +1445,7 @@ final_gnc_ang_err_limit_x = final_gnc_ang_err_limit*ones(1,100);
 final_gnc_rate_err_limit_y = final_gnc_rate_err_limit*ones(1,100);
 plot(final_gnc_ang_err_limit_x,0.01*[1:100].*final_gnc_rate_err_limit_y,'r-','linewidth',2);
 plot(0.01*[1:100].*final_gnc_ang_err_limit_x,final_gnc_rate_err_limit_y,'r-','linewidth',2);
-saveas(gcf,'TDAngleVsRate.png');%saveas(gcf,'TDAngleVsRate.fig')
+saveas(gcf,'TDAngleVsRate.png');saveas(gcf,'TDAngleVsRate.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1465,7 +1465,7 @@ final_gnc_ang_err_limit_x = final_gnc_ang_err_limit*ones(1,100);
 lateral_gnc_vel_scalar_limit_y = lateral_gnc_vel_scalar_limit*ones(1,100);
 plot(final_gnc_ang_err_limit_x,0.01*[1:100].*lateral_gnc_vel_scalar_limit_y,'r-','linewidth',2);
 plot(0.01*[1:100].*final_gnc_ang_err_limit_x,lateral_gnc_vel_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'TDAngleandLateralVel.png');%saveas(gcf,'TDAngleandLateralVel.fig')
+saveas(gcf,'TDAngleandLateralVel.png');saveas(gcf,'TDAngleandLateralVel.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1501,7 +1501,7 @@ str_text_box = {sprintf('Touchdown Lateral Position Error Spec = %9.2f m',latera
 annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
 plot(0.01*[1:100].*max(cm_az_deg),ones(1,100).*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'LateralCMAzimuthandPosErr.png');%saveas(gcf,'LateralCMAzimuthandPosErr.fig')
+saveas(gcf,'LateralCMAzimuthandPosErr.png');saveas(gcf,'LateralCMAzimuthandPosErr.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1519,7 +1519,7 @@ str_text_box = {sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp
 annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
 plot(0.01*[0:100].*max(lateral_cg_wet_offset)*1000,ones(1,101).*(htp_mass_initial+rp1_mass_initial+gn2_mass_initial),'r-','linewidth',2);
-saveas(gcf,'LateralCMandPropUsed.png');%saveas(gcf,'LateralCMandPropUsed.fig')
+saveas(gcf,'LateralCMandPropUsed.png');saveas(gcf,'LateralCMandPropUsed.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1536,7 +1536,7 @@ ylabel('Propellant Usage (kg)','fontsize',14)
 str_text_box = {sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp1_mass_initial+gn2_mass_initial))};
 annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
 plot(0.01*[0:100].*max(cm_az_deg),ones(1,101).*(htp_mass_initial+rp1_mass_initial+gn2_mass_initial),'r-','linewidth',2);
-saveas(gcf,'LateralCMAzimuthandPropUsed.png');%saveas(gcf,'LateralCMAzimuthandPropUsed.fig')
+saveas(gcf,'LateralCMAzimuthandPropUsed.png');saveas(gcf,'LateralCMAzimuthandPropUsed.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1556,7 +1556,7 @@ vertical_est_vel_scalar_limit_x = vertical_est_vel_scalar_limit*ones(1,100);
 initial_mass_limit_y = (htp_mass_initial+rp1_mass_initial+gn2_mass_initial)*ones(1,100);
 plot(vertical_est_vel_scalar_limit_x,0.01*[1:100].*initial_mass_limit_y,'r-','linewidth',2);
 plot(0.01*[1:100].*vertical_est_vel_scalar_limit_x,initial_mass_limit_y,'r-','linewidth',2);
-saveas(gcf,'VertVelEstErrandPropUsed.png');%saveas(gcf,'VertVelEstErrandPropUsed.fig')
+saveas(gcf,'VertVelEstErrandPropUsed.png');saveas(gcf,'VertVelEstErrandPropUsed.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1575,7 +1575,7 @@ annotation('textbox',[.15, .8 .70 .10],'string',str_text_box)
 max_misalignment_ang_x = max(max_misalignment_ang);
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
 plot(0.01*[1:100].*max_misalignment_ang_x,ones(1,100).*lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'MainEngMisalignandPosErr.png');%saveas(gcf,'MainEngMisalignandPosErr.fig')%%
+saveas(gcf,'MainEngMisalignandPosErr.png');saveas(gcf,'MainEngMisalignandPosErr.fig')%%
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1598,7 +1598,7 @@ annotation('textbox',[.3 .8 .55 .10],'string',str_text_box)
 max_misalignment_az_x = max(max_misalignment_az);
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
 plot(0.01*[1:100].*max_misalignment_az_x,lateral_gnc_pos_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'MainEngMisalignAzandPosErr.png');%saveas(gcf,'MainEngMisalignAzandPosErr.fig')%%
+saveas(gcf,'MainEngMisalignAzandPosErr.png');saveas(gcf,'MainEngMisalignAzandPosErr.fig')%%
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1617,7 +1617,7 @@ annotation('textbox',[.3 .8 .55 .10],'string',str_text_box)
 max_misalignment_ang_x = max(max_misalignment_ang);
 lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
 plot(0.01*[1:100].*max_misalignment_ang_x,ones(1,100).*(htp_mass_initial+rp1_mass_initial+gn2_mass_initial),'r-','linewidth',2);
-saveas(gcf,'MainEngMisalignandPropUsed.png');%saveas(gcf,'MainEngMisalignandPropUsed.fig')%%
+saveas(gcf,'MainEngMisalignandPropUsed.png');saveas(gcf,'MainEngMisalignandPropUsed.fig')%%
 
 %%
 figure;grid on;hold on;
@@ -1645,7 +1645,7 @@ vernier_roll_trq_authority_x = 2*abs(vac_thruster20_trq(3))*psp_vernier_acs_thru
 max_misalignment_ang_y = max(max_misalignment_ang);
 plot(vernier_roll_trq_authority_x,0.01*[1:100].*max_misalignment_ang_y,'r-','linewidth',2);
 plot(-vernier_roll_trq_authority_x,0.01*[1:100].*max_misalignment_ang_y,'r-','linewidth',2);
-saveas(gcf,'MainEngMisalignandRollTrq.png');%saveas(gcf,'MainEngMisalignandRollTrq.fig')%%
+saveas(gcf,'MainEngMisalignandRollTrq.png');saveas(gcf,'MainEngMisalignandRollTrq.fig')%%
 
 %%
 figure;grid on;hold on;
@@ -1666,7 +1666,7 @@ lateral_gnc_vel_scalar_limit_x = lateral_gnc_vel_scalar_limit*ones(1,100);
 lateral_est_vel_scalar_limit_y = lateral_est_vel_scalar_limit*ones(1,100);
 plot(lateral_gnc_vel_scalar_limit_x,0.01*[1:100].*lateral_est_vel_scalar_limit_y,'r-','linewidth',2);
 plot(0.01*[1:100].*lateral_gnc_vel_scalar_limit_x,lateral_est_vel_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'TrueLatVelErrandVelEstErr.png.png');%saveas(gcf,'TrueLatVelErrandVelEstErr.fig')%%%%
+saveas(gcf,'TrueLatVelErrandVelEstErr.png.png');saveas(gcf,'TrueLatVelErrandVelEstErr.fig')%%%%
 
 %%
 figure;grid on;hold on;
@@ -1687,7 +1687,7 @@ final_gnc_vert_vel_err_limit_x = final_gnc_vert_vel_err_limit*ones(1,100);
 vertical_est_vel_scalar_limit_y = vertical_est_vel_scalar_limit*ones(1,100);
 plot(final_gnc_vert_vel_err_limit_x,0.01*[1:100].*vertical_est_vel_scalar_limit_y,'r-','linewidth',2);
 plot(0.01*[1:100].*final_gnc_vert_vel_err_limit_x,vertical_est_vel_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'TrueVertVelErrandVelEstErr.png');%saveas(gcf,'TrueVertVelErrandVelEstErr.fig')%%%%
+saveas(gcf,'TrueVertVelErrandVelEstErr.png');saveas(gcf,'TrueVertVelErrandVelEstErr.fig')%%%%
 
 %%
 figure;
@@ -1704,7 +1704,7 @@ xlabel('X Position Error (meters)','fontsize',14);
 ylabel('Y Position Error (meters)','fontsize',14);
 zlabel('Z Position Error (meters)','fontsize',14);
 hold on; grid on;
-saveas(gcf,'InitialPosEstError.png');%saveas(gcf,'InitialPosEstError.fig')
+saveas(gcf,'InitialPosEstError.png');saveas(gcf,'InitialPosEstError.fig')
 
 %%
 figure;
@@ -1721,7 +1721,7 @@ xlabel('X Velocity Error (m/s)','fontsize',14);
 ylabel('Y Velocity Error (m/s)','fontsize',14);
 zlabel('Z Velocity Error (m/s)','fontsize',14);
 hold on; grid on;
-saveas(gcf,'InitialVelEstError.png');%saveas(gcf,'InitialVelEstError.fig')
+saveas(gcf,'InitialVelEstError.png');saveas(gcf,'InitialVelEstError.fig')
 
 %%
 figure;
@@ -1749,7 +1749,7 @@ title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Topocentric X Position (meters)','fontsize',14);
 ylabel('Topocentric Y Position (meters)','fontsize',14);
 zlabel('Altitude (meters)','fontsize',14);
-saveas(gcf,'TruePos3D.png');%saveas(gcf,'TruePos3D.fig')
+saveas(gcf,'TruePos3D.png');saveas(gcf,'TruePos3D.fig')
 
 %%
 figure;
@@ -1779,7 +1779,7 @@ title_string = 'Top View - Landing Site Relative Position in Topocentric Frame';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Topocentric X Position (meters)','fontsize',14);
 ylabel('Topocentric Y Position (meters)','fontsize',14);
-saveas(gcf,'TruePosLateral.png');%saveas(gcf,'TruePosLateral.fig')
+saveas(gcf,'TruePosLateral.png');saveas(gcf,'TruePosLateral.fig')
 
 %%
 % figure;grid on;hold on;
@@ -1794,7 +1794,7 @@ saveas(gcf,'TruePosLateral.png');%saveas(gcf,'TruePosLateral.fig')
 % title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 % xlabel('Lateral Center of Mass Offset (mm)','fontsize',14)
 % ylabel('Max Lateral Excursion (m)','fontsize',14)
-% saveas(gcf,'LateralCMandMaxLatExcursion.png');%saveas(gcf,'LateralCMandMaxLatExcursion.fig')
+% saveas(gcf,'LateralCMandMaxLatExcursion.png');saveas(gcf,'LateralCMandMaxLatExcursion.fig')
 %%
 % figure;grid on;hold on;
 % for itest=1:size(mc_all_final,1)
@@ -1808,7 +1808,7 @@ saveas(gcf,'TruePosLateral.png');%saveas(gcf,'TruePosLateral.fig')
 % title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 % xlabel('Lateral Center of Mass Offset Azimuth (deg)','fontsize',14)
 % ylabel('Max Lateral Excursion (m)','fontsize',14)
-% saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.png');%saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.fig')
+% saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.png');saveas(gcf,'LateralCMAzimuthandMaxLatExcursion.fig')
 
 %%
 figure;
@@ -1833,7 +1833,7 @@ title_string = 'Velocity Magnitude';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Velocity Magnitude (m/s)','fontsize',14);
-saveas(gcf,'VelocityMag.png');%saveas(gcf,'VelocityMag.fig')
+saveas(gcf,'VelocityMag.png');saveas(gcf,'VelocityMag.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -1857,7 +1857,7 @@ title_string = 'Altitude';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Altitude (meters)','fontsize',14);
-% saveas(gcf,'Altitude.png');%saveas(gcf,'Altitude.fig')
+% saveas(gcf,'Altitude.png');saveas(gcf,'Altitude.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -1891,7 +1891,7 @@ title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlim([0 1.5e4])
 xlabel('Altitude (meters)','fontsize',14);
 ylabel('Velocity Magnitude (m/s)','fontsize',14);
-saveas(gcf,'VelocityvsAltitude.png');%saveas(gcf,'VelocityvsAltitude.fig')
+saveas(gcf,'VelocityvsAltitude.png');saveas(gcf,'VelocityvsAltitude.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -1925,7 +1925,7 @@ title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlim([0 1.5e4])
 xlabel('Altitude (meters)','fontsize',14);
 ylabel('Velocity (m/s)','fontsize',14);
-saveas(gcf,'VerticalVelvsAltitude.png');%saveas(gcf,'VerticalVelvsAltitude.fig')
+saveas(gcf,'VerticalVelvsAltitude.png');saveas(gcf,'VerticalVelvsAltitude.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -1960,7 +1960,7 @@ xlim([0 1.5e4])
 xlabel('Altitude (meters)','fontsize',14);
 ylabel('Velocity (m/s)','fontsize',14);
 clear t
-saveas(gcf,'LateralVelvsAltitude.png');%saveas(gcf,'LateralVelvsAltitude.fig')
+saveas(gcf,'LateralVelvsAltitude.png');saveas(gcf,'LateralVelvsAltitude.fig')
 
 %%
 % figure;
@@ -1987,7 +1987,7 @@ saveas(gcf,'LateralVelvsAltitude.png');%saveas(gcf,'LateralVelvsAltitude.fig')
 % xlabel({'Landing Site Relative Topocentric','True X Position (meters)'},'fontsize',14);
 % ylabel({'Landing Site Relative Topocentric','True Y Position (meters)'},'fontsize',14);
 % zlabel({'Landing Site Relative Topocentric','True Z Position (meters)'},'fontsize',14);
-% saveas(gcf,'TruePos3D.png');%saveas(gcf,'TruePos3D.fig')
+% saveas(gcf,'TruePos3D.png');saveas(gcf,'TruePos3D.fig')
 %%
 % figure;
 % for ipos = 1:mc_n
@@ -2017,7 +2017,7 @@ saveas(gcf,'LateralVelvsAltitude.png');%saveas(gcf,'LateralVelvsAltitude.fig')
 % xlabel({'Landing Site Relative Topocentric','Estimated X Position (meters)'},'fontsize',14);
 % ylabel({'Landing Site Relative Topocentric','Estimated Y Position (meters)'},'fontsize',14);
 % zlabel({'Landing Site Relative Topocentric','Estimated Z Position (meters)'},'fontsize',14);
-% saveas(gcf,'EstPos3D.png');%saveas(gcf,'EstPos3D.fig')
+% saveas(gcf,'EstPos3D.png');saveas(gcf,'EstPos3D.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2042,7 +2042,7 @@ title_string = 'HTP Mass Used Main';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Mass (kg)','fontsize',14);
-saveas(gcf,'HtpUsedMain.png');%saveas(gcf,'HtpUsedMain.fig')
+saveas(gcf,'HtpUsedMain.png');saveas(gcf,'HtpUsedMain.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2067,7 +2067,7 @@ title_string = 'HTP Mass Used ACS';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Mass (kg)','fontsize',14);
-saveas(gcf,'HtpUsedAcs.png');%saveas(gcf,'HtpUsedAcs.fig')
+saveas(gcf,'HtpUsedAcs.png');saveas(gcf,'HtpUsedAcs.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2092,7 +2092,7 @@ title_string = 'RP1 Mass Used';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Mass (kg)','fontsize',14);
-saveas(gcf,'Rp1Used.png');%saveas(gcf,'Rp1Used.fig')
+saveas(gcf,'Rp1Used.png');saveas(gcf,'Rp1Used.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2116,7 +2116,7 @@ title_string = 'GN2 Mass Used';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Mass (kg)','fontsize',14);
-saveas(gcf,'Gn2Used.png');%saveas(gcf,'Gn2Used.fig')
+saveas(gcf,'Gn2Used.png');saveas(gcf,'Gn2Used.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2141,7 +2141,7 @@ title_string = 'Commanded Z-Velocity Error';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Velocity (meters/sec)','fontsize',14);
-saveas(gcf,'CmdZVelErr.png');%saveas(gcf,'CmdZVelErr.fig')%%
+saveas(gcf,'CmdZVelErr.png');saveas(gcf,'CmdZVelErr.fig')%%
 figure;
 for ipos = 1:mc_n
     name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
@@ -2165,7 +2165,7 @@ xlabel('Time (sec)','fontsize',14);
 ylabel('CG X Position (mm)','fontsize',14);
 title_string = 'CG X Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-saveas(gcf,'CgXPos.png');%saveas(gcf,'CgXPos.fig')
+saveas(gcf,'CgXPos.png');saveas(gcf,'CgXPos.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2190,7 +2190,7 @@ xlabel('Time (sec)','fontsize',14);
 ylabel('CG Y Position (mm)','fontsize',14);
 title_string = 'CG Y Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-saveas(gcf,'CgYPos.png');%saveas(gcf,'CgYPos.fig')
+saveas(gcf,'CgYPos.png');saveas(gcf,'CgYPos.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2215,7 +2215,7 @@ xlabel('Time (sec)','fontsize',14);
 ylabel('CG Z Position (mm)','fontsize',14);
 title_string = 'CG Z Position';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-saveas(gcf,'CgZPos.png');%saveas(gcf,'CgZPos.fig')
+saveas(gcf,'CgZPos.png');saveas(gcf,'CgZPos.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2240,7 +2240,7 @@ title_string = 'Landing Site Relative X-Position in Topocentric Frame';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Topocentric X Position (meters)','fontsize',14);
-saveas(gcf,'TrueXPos.png');%saveas(gcf,'TrueXPos.fig')
+saveas(gcf,'TrueXPos.png');saveas(gcf,'TrueXPos.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2265,7 +2265,7 @@ title_string = 'Landing Site Relative Y-Position in Topocentric Frame';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Topocentric Y Position (meters)','fontsize',14);
-saveas(gcf,'TrueYPos.png');%saveas(gcf,'TrueYPos.fig')
+saveas(gcf,'TrueYPos.png');saveas(gcf,'TrueYPos.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2290,7 +2290,7 @@ title_string = 'Landing Site Relative Z-Position in Topocentric Frame';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Topocentric Z Position (meters)','fontsize',14);
-saveas(gcf,'TrueZPos.png');%saveas(gcf,'TrueZPos.fig')
+saveas(gcf,'TrueZPos.png');saveas(gcf,'TrueZPos.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2315,7 +2315,7 @@ title_string = 'Landing Site Relative X-Velocity in Topocentric Frame';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Topocentric X Velocity (meters/sec)','fontsize',14);
-saveas(gcf,'TrueXVel.png');%saveas(gcf,'TrueXVel.fig')
+saveas(gcf,'TrueXVel.png');saveas(gcf,'TrueXVel.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2340,7 +2340,7 @@ title_string = 'Landing Site Relative Y-Velocity in Topocentric Frame';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Topocentric Y Velocity (meters/sec)','fontsize',14);
-saveas(gcf,'TrueYVel.png');%saveas(gcf,'TrueYVel.fig')
+saveas(gcf,'TrueYVel.png');saveas(gcf,'TrueYVel.fig')
 %%
 figure;
 for ipos = 1:mc_n
@@ -2365,7 +2365,7 @@ title_string = 'Landing Site Relative Z-Velocity in Topocentric Frame';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Time (sec)','fontsize',14);
 ylabel('Topocentric Z Velocity (meters/sec)','fontsize',14);
-saveas(gcf,'TrueZVel.png');%saveas(gcf,'TrueZVel.fig')%%
+saveas(gcf,'TrueZVel.png');saveas(gcf,'TrueZVel.fig')%%
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -2393,7 +2393,7 @@ if size(mc_all_final(:,15:16),1)>1
   pos_landing_spec_y = lateral_gnc_pos_scalar_limit*cos(2*pi*0.01*[0:100]);
   plot(pos_landing_spec_x,pos_landing_spec_y,'r-','linewidth',2);  
 end
-saveas(gcf,'LateralPosErr.png');%saveas(gcf,'LateralPosErr.fig')
+saveas(gcf,'LateralPosErr.png');saveas(gcf,'LateralPosErr.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -2417,4 +2417,4 @@ if size(mc_all_final(:,15:16),1)>1
   ellipse_3_sigma_x = 3*standard_deviation_landing_error(1)*cos(2*pi*0.01*[0:100]);
   plot(ellipse_3_sigma_x,ellipse_3_sigma_y,'g-','linewidth',2);
 end
-saveas(gcf,'LateralPosErrMedian.png');%saveas(gcf,'LateralPosErrMedian.fig')
+saveas(gcf,'LateralPosErrMedian.png');saveas(gcf,'LateralPosErrMedian.fig')
