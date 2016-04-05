@@ -17,11 +17,11 @@ start_idx = 39500;
 start_idx = 3300;
 start_idx = 1;
 start_idx = 40800;
-start_idx = 40900;
+start_idx = 41710;
 end_idx = 185;
 end_idx = size(telem.cnt.quat_err.Time);
 end_idx = 40900;
-end_idx = 40950;
+end_idx = 41718;
 
 if isempty(truth) == 0 && exist('cac_coarse_thruster_trq_x','var') > 0
     
