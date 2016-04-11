@@ -101,19 +101,21 @@ mhn_dt = sim_time_step_size;
 
  % ESC: reducing noise on gyro since differential accel model is not in there yet
     mhn_gyro_noise_spec = 0.03; %deg/sqrt(sec), SDI500
-    mhn_gyro_noise_spec = 0.15; %deg/sqrt(sec), STIM-300
     mhn_gyro_noise_spec = 0.5*(30e-3); %deg/sqrt(sec), MIRU 
+    mhn_gyro_noise_spec = 0.15/60; %deg/sqrt(sec), STIM-300 0.15 deg/sqrt(hr)
 
     mhn_gyro_bias_spec =  10; %deg/hr SDI500
-    mhn_gyro_bias_spec =  250; %deg/hr STIM-300
     mhn_gyro_bias_spec =  4; %deg/hr MIRU
+    mhn_gyro_bias_spec =  0.5; %deg/hr STIM-300
 
-    mhn_gyro_SF = 100/1e6;  % don't know this for MIRU
+    mhn_gyro_SF = 500/1e6;  % STIM-300 +/-500 ppm
 
     % mhn_gyro_g_sensitive = 0.05; % arsec/sec/g
     % mhn_gyro_vibe_sensitive = 0.1; %arcsecond/second/g^2
 
     % DO NOT HAVE MIRU NUMBERS FOR THIS
+    mhn_gyro_g_sensitive = 1*(pi/180)*(1/9.8) * [1 1 1]'; % STIM-300 (1 deg/g) rad/sec / (m/s^2)
+    mhn_gyro_vibe_sensitive = 0.12*(pi/180) * [1 1 1]'; % STIM-300 (0.12 deg/hr/ g^2rms at 2000 hz) rad/sec / (m/s^2)^2
     mhn_gyro_g_sensitive = 2.471e-08 * [1 1 1]'; % rad/sec / (m/s^2)
     mhn_gyro_vibe_sensitive = 5.04e-09 * [1 1 1]'; % rad/sec / (m/s^2)
     
@@ -125,13 +127,13 @@ mhn_dt = sim_time_step_size;
 %-------------------------------------------------------------------------%
 % accel
 
-    mhn_accel_noise_spec = 200e-6;  % 30 microG/sqrt(hz) SDI500
-    mhn_accel_noise_spec = 6100e-6;  % 30 microG/sqrt(hz) STIM-300
-    mhn_accel_noise_spec = 30e-6;  % 30 microG/sqrt(hz) MIRU
+    mhn_accel_noise_spec = 200e-6;  % g/sqrt(hz) SDI500
+    mhn_accel_noise_spec = 30e-6;  % g/sqrt(hz) MIRU
+    mhn_accel_noise_spec = (0.07/3600)/9.8;  % g/sqrt(hz) STIM-300
 
     mhn_accel_bias_spec =  0.36/9.8; % 0.36 m/s/hour SDI500
-    mhn_accel_bias_spec =  0.18/9.8; % 0.49 m/s/hour STIM-300
     mhn_accel_bias_spec =  0.7/9.8; % 0.7 m/s/hour MIRU
+    mhn_accel_bias_spec =  0.05e-3*9.8; % 0.05 (mg over hour)  m/s/hour STIM-300
 
     mhn_accel_SF = 300/1e6; % don't know this for MIRU
     
