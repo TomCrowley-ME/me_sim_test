@@ -42,7 +42,7 @@ else
   mpl_Ixy_fillfrac_100 = 0.01;
   mpl_Iyz_fillfrac_100 = 0.49;
   mpl_Ixz_fillfrac_100 = 0.07;
-  mpl_htp_mass_initial  = 27.0;
+  mpl_htp_mass_initial  = 29.0;
   mpl_rp1_mass_initial  = 4.0;
   mpl_gn2_mass_initial = 1.0;
   mpl_inertia_fillfrac_100 = [mpl_Ixx_fillfrac_100, mpl_Iyy_fillfrac_100, mpl_Izz_fillfrac_100, mpl_Ixy_fillfrac_100, mpl_Iyz_fillfrac_100, mpl_Ixz_fillfrac_100]';
@@ -117,9 +117,10 @@ mc_n = 100;  % User set to total number of MC cases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  
 % percent of range errors
-percent_mean = 1/100; % Set mean to 0%
+percent_mean = 0; % Set mean to 0%
 percent_variation = (0.1)/100; % Range above and below mean (FLIR MLR 2K 0.1% at 1 km == 1 meter at 1 km)
-percent_errors = percent_mean + percent_variation*rand(mc_n,1);
+sigma = percent_variation/3;
+percent_error = percent_mean + sigma*randn(mc_n,1);
  
 % % hardcode
 % percent_errors = 0.001*ones(mc_n,1);
@@ -128,7 +129,7 @@ percent_errors = percent_mean + percent_variation*rand(mc_n,1);
 max_range_mean = 1.0*15000; % Set mean to 15 km
 max_range_variation = 500; % Range above and below mean
 sigma = max_range_variation/3;
-max_ranges = abs(max_range_mean + sigma*randn(mc_n,1));
+range_max = abs(max_range_mean + sigma*randn(mc_n,1));
 % max_ranges = abs(2*max_range_mean)*randn(mc_n,1);
  
 % hardcode
@@ -188,28 +189,28 @@ longitudinal_cm_z_dry_max =  0.005;
 lateral_cm_x_dry_min = -0.005;
 lateral_cm_y_dry_min = -0.005;
 longitudinal_cm_z_dry_min = -0.005;
-lateral_cm_x_dry = (lateral_cm_x_dry_max - lateral_cm_x_dry_min)/3*randn(mc_n,1);
-lateral_cm_y_dry = (lateral_cm_y_dry_max - lateral_cm_y_dry_min)/3*randn(mc_n,1);
-longitudinal_cm_z_dry = (longitudinal_cm_z_dry_max - longitudinal_cm_z_dry_min)/3*randn(mc_n,1);
+lateral_cm_x_dry = (lateral_cm_x_dry_max - lateral_cm_x_dry_min)/6*randn(mc_n,1);
+lateral_cm_y_dry = (lateral_cm_y_dry_max - lateral_cm_y_dry_min)/6*randn(mc_n,1);
+longitudinal_cm_z_dry = (longitudinal_cm_z_dry_max - longitudinal_cm_z_dry_min)/6*randn(mc_n,1);
  
 % set initial HTP mass
 htp_mass_min = htp_mass_nominal-0.1;
 htp_mass_max = htp_mass_nominal+0.1;
-mid=(htp_mass_max+htp_mass_min)/2;sigma=(htp_mass_max-htp_mass_min)/3;
+mid=(htp_mass_max+htp_mass_min)/2;sigma=(htp_mass_max-htp_mass_min)/6;
 htp_mass     =  mid+sigma*randn(mc_n,1);                                     % normal  distribution
 % htp_mass     = htp_mass_min + (htp_mass_max - htp_mass_min)*rand(mc_n,1);  % uniform distribution
  
 % set initial RP1 mass
 rp1_mass_min = rp1_mass_nominal-0.1;
 rp1_mass_max = rp1_mass_nominal+0.1;
-mid=(rp1_mass_max+rp1_mass_min)/2;sigma=(rp1_mass_max-rp1_mass_min)/3;
+mid=(rp1_mass_max+rp1_mass_min)/2;sigma=(rp1_mass_max-rp1_mass_min)/6;
 rp1_mass     =  mid+sigma*randn(mc_n,1);                                     % normal  distribution
 % rp1_mass     = rp1_mass_min + (rp1_mass_max - rp1_mass_min)*rand(mc_n,1);  % uniform distribution
  
 % set initial GN2 mass
 gn2_mass_min = gn2_mass_nominal-0.01;
 gn2_mass_max = gn2_mass_nominal+0.01;
-mid=(gn2_mass_max+gn2_mass_min)/2;sigma=(gn2_mass_max-gn2_mass_min)/3;
+mid=(gn2_mass_max+gn2_mass_min)/2;sigma=(gn2_mass_max-gn2_mass_min)/6;
 gn2_mass     =  mid+sigma*randn(mc_n,1);                                     % normal  distribution
 % gn2_mass     = gn2_mass_min + (gn2_mass_max - gn2_mass_min)*rand(mc_n,1);  % uniform distribution
  
@@ -225,47 +226,47 @@ end
 monoprop_thrust_min = 0.997;
 monoprop_thrust_max = 1.003;
 % monoprop_thrust     = monoprop_thrust_min + (monoprop_thrust_max - monoprop_thrust_min)*rand(mc_n,1);
-mid=(monoprop_thrust_max+monoprop_thrust_min)/2;sigma=(monoprop_thrust_max-monoprop_thrust_min)/3;
+mid=(monoprop_thrust_max+monoprop_thrust_min)/2;sigma=(monoprop_thrust_max-monoprop_thrust_min)/6;
 monoprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set monoprop Isp scale factor, nominally set to 1
 monoprop_isp_min = 0.997;
 monoprop_isp_max = 1.003;
 % monoprop_isp     = monoprop_isp_min + (monoprop_isp_max - monoprop_isp_min)*rand(mc_n,1);
-mid=(monoprop_isp_max+monoprop_isp_min)/2;sigma=(monoprop_isp_max-monoprop_isp_min)/3;
+mid=(monoprop_isp_max+monoprop_isp_min)/2;sigma=(monoprop_isp_max-monoprop_isp_min)/6;
 monoprop_isp     =  mid+sigma*randn(mc_n,1);
  
 % set biprop thrust scale factor, nominally set to 1
 biprop_thrust_min = 0.997;
 biprop_thrust_max = 1.003;
 % biprop_thrust     = biprop_thrust_min + (biprop_thrust_max - biprop_thrust_min)*rand(mc_n,1);
-mid=(biprop_thrust_max+biprop_thrust_min)/2;sigma=(biprop_thrust_max-biprop_thrust_min)/3;
+mid=(biprop_thrust_max+biprop_thrust_min)/2;sigma=(biprop_thrust_max-biprop_thrust_min)/6;
 biprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set biprop Isp scale factor, nominally set to 1
 biprop_isp_min = 0.950;
 biprop_isp_max = 1.000;
 % biprop_isp     = biprop_isp_min + (biprop_isp_max - biprop_isp_min)*rand(mc_n,1);
-mid=(biprop_isp_max+biprop_isp_min)/2;sigma=(biprop_isp_max-biprop_isp_min)/3;
-biprop_isp     =  mid+sigma*randn(mc_n,1);
+mid=(biprop_isp_max+biprop_isp_min)/2;sigma=(biprop_isp_max-biprop_isp_min)/6;
+biprop_isp     =  mid+sigma*rand(mc_n,1);
  
 % set mass estimate bias, nominally set to 0
 mass_estimate_bias_min = -0.001;
 mass_estimate_bias_max =  0.001;
 % mass_estimate_bias     = mass_estimate_bias_min + (mass_estimate_bias_max - mass_estimate_bias_min)*rand(mc_n,1);
-mid=(mass_estimate_bias_max+mass_estimate_bias_min)/2;sigma=(mass_estimate_bias_max-mass_estimate_bias_min)/3;
+mid=(mass_estimate_bias_max+mass_estimate_bias_min)/2;sigma=(mass_estimate_bias_max-mass_estimate_bias_min)/6;
 mass_estimate_bias     =  mid+sigma*randn(mc_n,1);
  
 % set biprop burn start delay, scale factor, nominally set to 0
 biprop_start_delay_min = 0.950;
 biprop_start_delay_max = 1.050;
-sigma=(biprop_start_delay_max-biprop_start_delay_min)/3;
+sigma=(biprop_start_delay_max-biprop_start_delay_min)/6;
 biprop_start_delay     = abs(sigma*randn(mc_n,1));
  
 % set biprop stop delay, msec, nominally set to 0
 biprop_stop_delay_min = 0.950;
 biprop_stop_delay_max = 1.050;
-sigma=(biprop_stop_delay_max-biprop_stop_delay_min)/3;
+sigma=(biprop_stop_delay_max-biprop_stop_delay_min)/6;
 biprop_stop_delay     = abs(sigma*randn(mc_n,1));
 
 % set position estimation errors in radial, velocity and orbit normal directions, meters
@@ -294,8 +295,8 @@ else
 end
 
 % define Monte Carlo initialization structure
-mc_6dof_variables=cat(2,percent_errors,...
-                                        max_ranges, ...
+mc_6dof_variables=cat(2,percent_error,...
+                                        range_max, ...
                                         pos_est_err, ...
                                         vel_est_err, ...
                                         st_noise_vec, ...
@@ -495,8 +496,6 @@ for i2mc = 1 : length(mc_i)
           mpl_Ixy_fillfrac_100 = 0.01;
           mpl_Iyz_fillfrac_100 = 0.49;
           mpl_Ixz_fillfrac_100 = 0.07;
-          mpl_htp_mass_initial  = 27.0;
-          mpl_rp1_mass_initial  = 4.0;
           mpl_inertia_fillfrac_100 = [mpl_Ixx_fillfrac_100, mpl_Iyy_fillfrac_100, mpl_Izz_fillfrac_100, mpl_Ixy_fillfrac_100, mpl_Iyz_fillfrac_100, mpl_Ixz_fillfrac_100]';
           mpl_inertia_fillfrac_0   = [mpl_Ixx_fillfrac_0,   mpl_Iyy_fillfrac_0,   mpl_Izz_fillfrac_0,   mpl_Ixy_fillfrac_0,   mpl_Iyz_fillfrac_0,   mpl_Ixz_fillfrac_0]';
           mpl_mass_dry    = mpl_mass_fillfrac_0;
@@ -527,9 +526,6 @@ for i2mc = 1 : length(mc_i)
           emp_initial_fuel_load = emp_mass_fillfrac_100 - emp_mass_fillfrac_0;
           emp_initial_fuel_used = emp_initial_fuel_load - mpl_htp_mass_initial - mpl_rp1_mass_initial - mpl_gn2_mass_initial;
           emp_max_fuel_used = emp_mass_fillfrac_100 - emp_mass_fillfrac_0;
-          htp_mass_nominal =mpl_htp_mass_initial;
-          rp1_mass_nominal =mpl_rp1_mass_initial ;
-          gn2_mass_nominal = mpl_gn2_mass_initial;
         end
 
         csu_mpl_mass_properties_lander_prep
