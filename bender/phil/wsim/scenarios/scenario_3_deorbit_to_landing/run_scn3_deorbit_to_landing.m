@@ -170,7 +170,7 @@ elseif strcmp(mission_type,'single_stage_micro')
   mpl_Ixy_fillfrac_100 = 0.01;
   mpl_Iyz_fillfrac_100 = 0.49;
   mpl_Ixz_fillfrac_100 = 0.07;
-  mpl_htp_mass_initial  = 27.0;
+  mpl_htp_mass_initial  = 29.0;
   mpl_rp1_mass_initial  = 4.0;
   mpl_inertia_fillfrac_100 = [mpl_Ixx_fillfrac_100, mpl_Iyy_fillfrac_100, mpl_Izz_fillfrac_100, mpl_Ixy_fillfrac_100, mpl_Iyz_fillfrac_100, mpl_Ixz_fillfrac_100]';
   mpl_inertia_fillfrac_0   = [mpl_Ixx_fillfrac_0,   mpl_Iyy_fillfrac_0,   mpl_Izz_fillfrac_0,   mpl_Ixy_fillfrac_0,   mpl_Iyz_fillfrac_0,   mpl_Ixz_fillfrac_0]';

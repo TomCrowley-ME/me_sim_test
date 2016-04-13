@@ -36,6 +36,8 @@ Parameters_csc_cnt_attitude_control.cac_alpha_gain_coarse_only = 0.5; works for 
 Parameters_csc_cnt_attitude_control.cac_acs_minimum_coarse_thruster_ontime = 30;
 Parameters_csc_cnt_attitude_control.cac_coarse_desired_thrust_gain = 1.3; works for 5 ms minimum
 Parameters_csc_cnt_attitude_control.cac_coarse_desired_thrust_gain = 1.4; works for 30 ms minimum
+Parameters_csc_cnt_attitude_control.cac_coarse_desired_thrust_gain = 1.5; test to improve MC cases that transition to Terminal higher up
+Parameters_csc_cnt_attitude_control.cac_coarse_desired_thrust_gain = 1.6; test to improve MC cases that transition to Terminal higher up
 Parameters_csc_cnt_attitude_control.cac_phase_plane_att_limit  = 180*pi/180;
 Parameters_csc_cnt_attitude_control.cac_phase_plane_rate_limit = 180*pi/180;
 
