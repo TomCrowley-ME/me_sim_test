@@ -54,6 +54,7 @@ cam_integ_time = 0.010;
 
 % time delay between image taken and presentation to the filter (image processing delay)
 cam_processing_delay = 0.25; % in seconds
+cam_processing_delay = 0.00; % in seconds
 
 % degrades perfect pixel matches: gaussian RV added to pixel matches (pixels)
 cam_pixel_std = 0.001;
@@ -62,4 +63,8 @@ cam_pixel_bias = 0;
 % degrades estimate of what point in eci (on the surface) a pixel correspnds to (m, eci)
 cam_ground_point_std = 0;
 cam_ground_point_bias = 0;
+
+% make the rate factor tunable with a gain
+cam_rate_factor_gain = 10;
+cam_rate_factor_gain = 0;
 
