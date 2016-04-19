@@ -1486,8 +1486,9 @@ xlabel('HTP Initial (kg)','fontsize',14)
 ylabel('HTP Consumed (kg)','fontsize',14)
 %str_text_box = {sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp1_mass_initial+gn2_mass_initial))};
 %annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
-%lateral_gnc_pos_scalar_limit_y = lateral_gnc_pos_scalar_limit*ones(1,100);
-%plot(0.01*[0:100].*max(lateral_cg_wet_offset)*1000,ones(1,101).*(htp_mass_initial+rp1_mass_initial+gn2_mass_initial),'r-','linewidth',2);
+% initial_htp_mass_limit_x = min(initial_htp_mass)+(max(initial_htp_mass)-min(initial_htp_mass));
+% htp_used_limit_y = min(htp_used)+(max(htp_used)-min(htp_used));
+plot([min(htp_used) max(htp_used)],[min(htp_used)  max(htp_used)],'r-','linewidth',2);
 saveas(gcf,'HTPInitiaUsed.png');saveas(gcf,'HTPInitialUsed.fig')
 
 %%
@@ -1757,6 +1758,47 @@ plot(final_gnc_vert_vel_err_limit_x(1)*ones(1,100),[0.02*[1:50].*vertical_est_ve
 plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(1)*ones(1,100),'r-','linewidth',2);
 plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(end)*ones(1,100),'r-','linewidth',2);
 saveas(gcf,'TrueVertVelErrandVelEstErr.png');saveas(gcf,'TrueVertVelErrandVelEstErr.fig')
+
+%%
+figure;grid on;hold on;
+for ipos = 1:mc_n
+    name_mc_pos=[ mc_prefix_s_pos num2str(ipos) ];
+    if exist(strcat(name_mc_pos,'.mat'),'file')
+        load( name_mc_pos );
+    else
+        continue
+    end
+%     if isempty(find(mc_traj_data.altitude.Data > 980 & mc_traj_data.altitude.Data<1010,1,'first'))
+        if exist('mc_traj_data','var')
+          if(mc_all_final(ipos,39)==0)
+                touchdown = find( all( abs(mc_traj_data.sim_vel.Data) < 1e-6, 2),1)-1;
+                if isempty(touchdown)
+                    touchdown = size(mc_traj_data.sim_vel.Data,1);
+                end
+                plot(mc_traj_data.sim_vel.Data(touchdown-1,3),vertical_est_vel(ipos),'b*');text(mc_traj_data.sim_vel.Data(touchdown-1,3),vertical_est_vel(ipos),strcat('   ',num2str(ipos)),'Color','b');
+          else
+                touchdown = find( all( abs(mc_traj_data.sim_vel.Data) < 1e-6, 2),1)-1;
+                if isempty(touchdown)
+                    touchdown = size(mc_traj_data.sim_vel.Data,1);
+                end
+               plot(mc_traj_data.sim_vel.Data(touchdown-1,3),vertical_est_vel(ipos),'r*');text(mc_traj_data.sim_vel.Data(touchdown-1,3),vertical_est_vel(ipos),strcat('   ',num2str(ipos)),'Color','r');
+          end
+        end
+    hold on; grid on;
+end
+title_string = 'Touchdown True Vertical Velocity vs Vertical Velocity Estimation Error';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+xlabel('True Vertical Velocity (m/s)','fontsize',14)
+ylabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
+str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Touchdown Vertical Velocity Estimation Error Spec = %9.2f m/s',vertical_est_vel_scalar_limit)};
+annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
+final_gnc_vert_vel_err_limit_x = [min(-final_gnc_vert_vel_err_limit)*ones(1,50) max(final_gnc_vert_vel_err_limit)*ones(1,50)];
+vertical_est_vel_scalar_limit_y = [min(-vertical_est_vel_scalar_limit)*ones(1,50) max(vertical_est_vel_scalar_limit)*ones(1,50)];
+% plot(final_gnc_vert_vel_err_limit_x(end)*ones(1,100),[0.02*[1:50].*vertical_est_vel_scalar_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_scalar_limit_y(51:100)] ,'r-','linewidth',2);
+plot(final_gnc_vert_vel_err_limit_x(1)*ones(1,100),[0.02*[1:50].*vertical_est_vel_scalar_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_scalar_limit_y(51:100)] ,'r-','linewidth',2);
+plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(1)*ones(1,100),'r-','linewidth',2);
+plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(end)*ones(1,100),'r-','linewidth',2);
+saveas(gcf,'TrueVertVelandVelEstErr.png');saveas(gcf,'TrueVertVelandVelEstErr.fig')
 
 %%
 figure;grid on;hold on;

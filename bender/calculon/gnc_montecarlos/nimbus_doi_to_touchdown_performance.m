@@ -118,7 +118,7 @@ mc_n = 100;  % User set to total number of MC cases
  
 % percent of range errors
 percent_mean = 0; % Set mean to 0%
-percent_variation = (0.1)/100; % Range above and below mean (FLIR MLR 2K 0.1% at 1 km == 1 meter at 1 km)
+percent_variation = (0.1)/100; % Range above and below mean (FLIR MLR 10K 0.1% at 1 km == 1 meter at 1 km)
 sigma = percent_variation/3;
 percent_error = percent_mean + sigma*randn(mc_n,1);
  
@@ -182,16 +182,16 @@ delay_t_vec = abs(min_delay_t + (max_delay_t-min_delay_t)*rand(mc_n,1));
 % lateral_cm_y_dry = 1.0*sqrt(0.5*lateral_cm_dry_sigma^2)*randn(mc_n,1);
 % lateral_cm_z_dry = 1.0*(0.01/3)*randn(mc_n,1);
  
-% total lateral cm dry - uniform distribution
-lateral_cm_x_dry_max =  0.005;
-lateral_cm_y_dry_max =  0.005;
-longitudinal_cm_z_dry_max =  0.005;
-lateral_cm_x_dry_min = -0.005;
-lateral_cm_y_dry_min = -0.005;
-longitudinal_cm_z_dry_min = -0.005;
-lateral_cm_x_dry = (lateral_cm_x_dry_max - lateral_cm_x_dry_min)/6*randn(mc_n,1);
-lateral_cm_y_dry = (lateral_cm_y_dry_max - lateral_cm_y_dry_min)/6*randn(mc_n,1);
-longitudinal_cm_z_dry = (longitudinal_cm_z_dry_max - longitudinal_cm_z_dry_min)/6*randn(mc_n,1);
+% total lateral cm dry - gaussian distribution
+lateral_cm_x_dry_max =  0.015;
+lateral_cm_y_dry_max =  0.015;
+longitudinal_cm_z_dry_max =  0.015;
+lateral_cm_x_dry_min = -0.015;
+lateral_cm_y_dry_min = -0.015;
+longitudinal_cm_z_dry_min = -0.015;
+lateral_cm_x_dry = (lateral_cm_x_dry_max - lateral_cm_x_dry_min)/2*rand(mc_n,1);
+lateral_cm_y_dry = (lateral_cm_y_dry_max - lateral_cm_y_dry_min)/2*rand(mc_n,1);
+longitudinal_cm_z_dry = (longitudinal_cm_z_dry_max - longitudinal_cm_z_dry_min)/2*rand(mc_n,1);
  
 % set initial HTP mass
 htp_mass_min = htp_mass_nominal-0.1;
@@ -215,7 +215,7 @@ gn2_mass     =  mid+sigma*randn(mc_n,1);                                     % n
 % gn2_mass     = gn2_mass_min + (gn2_mass_max - gn2_mass_min)*rand(mc_n,1);  % uniform distribution
  
 % set random misalignment angles and azimuth angles for 25 thrusters
-misalignment_ang_deg_3sigma = 0.01;
+misalignment_ang_deg_3sigma = 0.5;
  
 for i=1:27
     azimuth_ang(1:mc_n,i) = 360*rand(mc_n,1);
@@ -244,7 +244,7 @@ mid=(biprop_thrust_max+biprop_thrust_min)/2;sigma=(biprop_thrust_max-biprop_thru
 biprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set biprop Isp scale factor, nominally set to 1
-biprop_isp_min = 0.950;
+biprop_isp_min = 0.975;
 biprop_isp_max = 1.000;
 % biprop_isp     = biprop_isp_min + (biprop_isp_max - biprop_isp_min)*rand(mc_n,1);
 mid=(biprop_isp_max+biprop_isp_min)/2;sigma=(biprop_isp_max-biprop_isp_min)/6;
@@ -559,7 +559,7 @@ for i2mc = 1 : length(mc_i)
           tpl_rp1_to_htp_ratio   = 1/9;
         elseif strcmp(mission_type,'micro')
           tdl_main_biprop_thrust = 222.5;
-          tpl_main_biprop_isp    = 327.0;
+          tpl_main_biprop_isp    = 320.0;
           tpl_rp1_to_htp_ratio   = 1/7.5;
         end
         % main engine thrust and Isp performance
