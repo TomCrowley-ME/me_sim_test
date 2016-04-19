@@ -8,12 +8,12 @@ proc scn3_mos
 ;Parameters_csc_est_state_est.emp_mass_fillfrac_100 = 222.38; 3rd stage/lander
 ;Parameters_csc_est_state_est.emp_mass_fillfrac_0   = 134.38; 3rd stage/lander
 
-Parameters_csc_est_state_est.kfl_topocentric_latitude =  -60
-Parameters_csc_est_state_est.kfl_topocentric_longitude =  60
-Parameters_csc_est_state_est.kfl_alt_wrt_meanrad = 0
+Parameters_csc_est_state_est.kfl_topocentric_latitude  =   3.79834332722745
+Parameters_csc_est_state_est.kfl_topocentric_longitude =  -2.94201881227372
+Parameters_csc_est_state_est.kfl_alt_wrt_meanrad = 0.0
 
 ; ;  GUIDANCE PARAMETER TABLE UPDATES ; ;
-Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = 0.5
+Parameters_csc_gdn_guidance.tlt_terminal_vertical_vel_zero_mean_bias = 0.0
 Parameters_csc_gdn_guidance.lic_coast_complete_altitude = 5000
 Parameters_csc_gdn_guidance.lpc_pre_coast_time = 1
 Parameters_csc_gdn_guidance.tlt_off_vertical_limit = 10

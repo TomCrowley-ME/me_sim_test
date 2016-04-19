@@ -25,6 +25,7 @@
 
     % error as a percentage of true range (given as a fractional value)
     ldr_2k_percent_error = 1.0 / 100;
+    ldr_2k_percent_error = 0.0 / 100;
 
     % range resolution (implemented as uniform RV beetween [-res/2 : +res/2])
     ldr_2k_bin_minimum = -0.5;
@@ -43,6 +44,7 @@
 
     % degrades perfect pixel matches: gaussian RV added to pixel matches (pixels)
     cam_pixel_std = 0.1;
+    cam_pixel_std = 0.0;
     cam_pixel_bias = 0;
 
     % degrades estimate of what point in eci (on the surface) a pixel correspnds to (m, eci)
@@ -54,6 +56,7 @@
 
     % time delay between image taken and presentation to the filter (image processing delay)
     cam_processing_delay = 0.25; % in seconds
+    cam_processing_delay = 0.00; % in seconds
     
     % spacecraft angular rate norm (in rad/sec) limit at which pixel noise (cam_pixel_std) is increased by max factor (3 max, 1 min)
     cam_max_rate = (pi/180) * 50;
