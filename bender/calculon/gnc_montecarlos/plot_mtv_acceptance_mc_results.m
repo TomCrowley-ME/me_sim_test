@@ -81,14 +81,7 @@ end
 fprintf(sprintf('Number of Successful Landings: %d\n',nsuccess))
 fprintf(sprintf('Number of Failed Landings: %d\n',nfail))
 
-lateral_gnc_pos_scalar_limit  = 3.0;
-lateral_gnc_vel_scalar_limit  = 0.75;
-lateral_est_vel_scalar_limit  = 1.0;
-final_est_vert_pos_err_limit  = 0.2;
-final_gnc_vert_vel_err_limit  = 2.0;
-vertical_est_vel_scalar_limit = 2.0;
-final_gnc_ang_err_limit       = 25.0;
-final_gnc_rate_err_limit      = 45.0;
+success_fail_limits
 
 lateral_gnc_pos_scalar_limit_cases  = int2str( find(lateral_gnc_pos_scalar   > lateral_gnc_pos_scalar_limit  ));
 lateral_gnc_vel_scalar_limit_cases  = int2str( find(lateral_gnc_vel_scalar   > lateral_gnc_vel_scalar_limit  ));

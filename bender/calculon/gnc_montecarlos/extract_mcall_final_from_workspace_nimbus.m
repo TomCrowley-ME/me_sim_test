@@ -103,11 +103,12 @@ mcall(i.cgz_final ) = truth.sim.cg.Data(touchdown,3);
 mcall(i.htp_used  ) = truth.sim.htp_used_main.Data(touchdown) + truth.sim.htp_used_acs.Data(touchdown);
 mcall(i.rp1_used  ) = truth.sim.rp1_used_main.Data(touchdown);
 mcall(i.gn2_used  ) = truth.sim.gn2_used_acs.Data(touchdown);
+mcall(i.vert_vel_touchdown ) = truth.sim.vel_topo.Data(touchdown,3);
 
 horz_vel            = norm(mcall(i.gnc_vel_err(1:2)));
 horz_vel_est_err    = norm(mcall(i.est_vel_err(1:2)));
 vert_vel            = norm(mcall(i.gnc_vel_err(3)));
-vert_vel_est_err    = abs(mcall(i.est_vel_err(3)));
+vert_vel_est_err    = mcall(i.est_vel_err(3));
 alt_knowledge       = norm(mcall(i.est_alt_err));
 horz_pos            = norm(mcall(i.gnc_pos_err(1:2)),2);
 body_rates          = norm(mcall(i.gnc_rates_dps_err));
@@ -118,22 +119,18 @@ gn2_mass_used       = mcall(i.gn2_used);
 htp_mass_initial    = evalin('base','mpl_htp_mass_initial');
 rp1_mass_initial    = evalin('base','mpl_rp1_mass_initial');
 gn2_mass_initial    = evalin('base','mpl_gn2_mass_initial');
+vert_vel_touchdown = mcall(i.vert_vel_touchdown);
 
-lateral_gnc_pos_scalar_limit  = 15000.0;
-lateral_gnc_vel_scalar_limit  = 5.0;
-lateral_est_vel_scalar_limit  = 5.0;
-final_est_vert_pos_err_limit  = 10.0;
-final_gnc_vert_vel_err_limit  = 4.0;
-vertical_est_vel_scalar_limit = 1.5;
-final_gnc_ang_err_limit       = 15.0;
-final_gnc_rate_err_limit      = 25.0;
+success_fail_limits
 
 % MX application
 mcall(i.fail ) = (horz_vel > 10) | (vert_vel > 10) | (alt_knowledge > 9);
 mcall(i.fail_strict ) = (horz_pos > lateral_gnc_pos_scalar_limit) || (horz_vel > lateral_gnc_vel_scalar_limit) || (horz_vel_est_err > lateral_est_vel_scalar_limit)...
-     || (alt_knowledge > final_est_vert_pos_err_limit) || (vert_vel > final_gnc_vert_vel_err_limit) || (vert_vel_est_err > vertical_est_vel_scalar_limit) ...
+     || (alt_knowledge > final_est_vert_pos_err_limit) || (vert_vel > final_gnc_vert_vel_err_limit)...
+     || (vert_vel_est_err < vertical_est_vel_neg_limit) || (vert_vel_est_err > vertical_est_vel_pos_limit) ...
+     || (vert_vel_touchdown < final_landed_vert_vel_limit)...
      || (final_gnc_ang_err > final_gnc_ang_err_limit) || (body_rates > final_gnc_rate_err_limit) ...
-     || (htp_mass_used >= htp_mass_initial) || (rp1_mass_used >= rp1_mass_initial) || (gn2_mass_used >= gn2_mass_initial); 
+     || (htp_mass_used >= htp_mass_initial) || (rp1_mass_used >= rp1_mass_initial) || (gn2_mass_used >= gn2_mass_initial);
 
 if mcall(i.fail_strict) == 1 || mcall(i.fail) == 1
     horz_pos
@@ -142,6 +139,7 @@ if mcall(i.fail_strict) == 1 || mcall(i.fail) == 1
     alt_knowledge
     vert_vel
     vert_vel_est_err
+    vert_vel_touchdown
     final_gnc_ang_err
     body_rates
     htp_mass_used

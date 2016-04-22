@@ -22,4 +22,7 @@ lac_monoprop_coarse_transition_alt = 1e6; %meters
 % initial value for acceleration available, but value needs scrubbing
 lac_accel_available_init = 1;
 
+% perfect topocentric velocity navigation
+lac_perfect_vel_nav = 0;
+
 

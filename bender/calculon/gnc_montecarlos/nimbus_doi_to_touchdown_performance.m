@@ -1,84 +1,14 @@
 % clear all
  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+mc_n = 100;  % User set to total number of MC cases
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
 load_model nimbus;
 
 %-------------------------------------------------------------------------%
 % define mission type: "micro", "1", "2"
 mission_type='micro';
-if strcmp(mission_type,'1')
-  htp_mass_nominal = 176.05;
-  rp1_mass_nominal = 19.0;
-  gn2_mass_nominal = 0.5;
-else
-  mpl_mass_dry          = 26;
-  mpl_mass_fillfrac_0   = mpl_mass_dry;
-  mpl_mass_fillfrac_100 = 202;
-  mpl_mass_wet_dry = [mpl_mass_fillfrac_0, mpl_mass_fillfrac_100];
-  mpl_cgx_location_fillfrac_0 = 0.0;
-  mpl_cgx_location_fillfrac_100 = 0.0;
-  mpl_cgy_location_fillfrac_0 = 0.0;
-  mpl_cgy_location_fillfrac_100 = 0.0;
-  mpl_cgz_location_fillfrac_0   = 0.87;
-  mpl_cgz_location_fillfrac_100 = 0.54;
-  mpl_cg_wet_dry = [mpl_cgx_location_fillfrac_0, mpl_cgx_location_fillfrac_100; ...
-                    mpl_cgy_location_fillfrac_0, mpl_cgy_location_fillfrac_100; ...
-                    mpl_cgz_location_fillfrac_0, mpl_cgz_location_fillfrac_100];
-
-  mpl_Ixx_fillfrac_0 = 122.29;
-  mpl_Iyy_fillfrac_0 = 122.33;
-  mpl_Izz_fillfrac_0 = 5.70;
-  mpl_Ixy_fillfrac_0 = 0.01;
-  mpl_Iyz_fillfrac_0 = 0.07;
-  mpl_Ixz_fillfrac_0 = 0.49;
-  mpl_Ixx_fillfrac_0 = 88; % Bud with current prop numbers factored in model.  Needs to be modified for our tank config instead of MTV
-  mpl_Iyy_fillfrac_0 = 88;
-  mpl_Izz_fillfrac_0 = 1.0;
-  mpl_Ixy_fillfrac_0 = 0.01;
-  mpl_Iyz_fillfrac_0 = 0.07;
-  mpl_Ixz_fillfrac_0 = 0.49;
-  mpl_Ixx_fillfrac_100 = 125.79;  %From Bud 02/03/2016
-  mpl_Iyy_fillfrac_100 = 125.82;
-  mpl_Izz_fillfrac_100 = 8.71;
-  mpl_Ixy_fillfrac_100 = 0.01;
-  mpl_Iyz_fillfrac_100 = 0.49;
-  mpl_Ixz_fillfrac_100 = 0.07;
-  mpl_htp_mass_initial  = 29.0;
-  mpl_rp1_mass_initial  = 4.0;
-  mpl_gn2_mass_initial = 1.0;
-  mpl_inertia_fillfrac_100 = [mpl_Ixx_fillfrac_100, mpl_Iyy_fillfrac_100, mpl_Izz_fillfrac_100, mpl_Ixy_fillfrac_100, mpl_Iyz_fillfrac_100, mpl_Ixz_fillfrac_100]';
-  mpl_inertia_fillfrac_0   = [mpl_Ixx_fillfrac_0,   mpl_Iyy_fillfrac_0,   mpl_Izz_fillfrac_0,   mpl_Ixy_fillfrac_0,   mpl_Iyz_fillfrac_0,   mpl_Ixz_fillfrac_0]';
-  mpl_mass_dry    = mpl_mass_fillfrac_0;
-  mpl_cg_dry      = [mpl_cgx_location_fillfrac_0 mpl_cgy_location_fillfrac_0 mpl_cgz_location_fillfrac_0];
-  mpl_inertia_dry = buildInertiaMatrix(mpl_inertia_fillfrac_0([1 2 3 4 6 5]));
-  mpl_inertia_wet_dry = [mpl_inertia_fillfrac_0, mpl_inertia_fillfrac_100];
-  emp_mass_fillfrac_0   = mpl_mass_fillfrac_0;
-  emp_mass_fillfrac_100 = mpl_mass_fillfrac_100;
-  emp_mass_wet_dry = [emp_mass_fillfrac_0, emp_mass_fillfrac_100];
-  emp_cgz_location_fillfrac_0   = mpl_cgz_location_fillfrac_0;
-  emp_cgz_location_fillfrac_100 = mpl_cgz_location_fillfrac_100;
-  emp_cg_wet_dry_z = [emp_cgz_location_fillfrac_0, emp_cgz_location_fillfrac_100];
-  emp_Ixx_fillfrac_0 = mpl_Ixx_fillfrac_0;
-  emp_Iyy_fillfrac_0 = mpl_Iyy_fillfrac_0;
-  emp_Izz_fillfrac_0 = mpl_Izz_fillfrac_0;
-  emp_Ixy_fillfrac_0 = mpl_Ixy_fillfrac_0;
-  emp_Iyz_fillfrac_0 = mpl_Iyz_fillfrac_0;
-  emp_Ixz_fillfrac_0 = mpl_Ixz_fillfrac_0;
-  emp_Ixx_fillfrac_100 = mpl_Ixx_fillfrac_100;
-  emp_Iyy_fillfrac_100 = mpl_Iyy_fillfrac_100;
-  emp_Izz_fillfrac_100 = mpl_Izz_fillfrac_100;
-  emp_Ixy_fillfrac_100 = mpl_Ixy_fillfrac_100;
-  emp_Iyz_fillfrac_100 = mpl_Iyz_fillfrac_100;
-  emp_Ixz_fillfrac_100 = mpl_Ixz_fillfrac_100;
-  emp_inertia_fillfrac_100 = [emp_Ixx_fillfrac_100, emp_Iyy_fillfrac_100, emp_Izz_fillfrac_100, -emp_Ixy_fillfrac_100, -emp_Iyz_fillfrac_100, -emp_Ixz_fillfrac_100]';
-  emp_inertia_fillfrac_0   = [emp_Ixx_fillfrac_0,   emp_Iyy_fillfrac_0,   emp_Izz_fillfrac_0,   -emp_Ixy_fillfrac_0,   -emp_Iyz_fillfrac_0,   -emp_Ixz_fillfrac_0]';
-  emp_inertia_wet_dry = [emp_inertia_fillfrac_0, emp_inertia_fillfrac_100];
-  emp_initial_fuel_load = emp_mass_fillfrac_100 - emp_mass_fillfrac_0;
-  emp_initial_fuel_used = emp_initial_fuel_load - mpl_htp_mass_initial - mpl_rp1_mass_initial - mpl_gn2_mass_initial;
-  emp_max_fuel_used = emp_mass_fillfrac_100 - emp_mass_fillfrac_0;
-  htp_mass_nominal =mpl_htp_mass_initial;
-  rp1_mass_nominal =mpl_rp1_mass_initial ;
-  gn2_mass_nominal = mpl_gn2_mass_initial;
-end
 
 %-------------------------------------------------------------------------%
 % define reference frame for estimation error dispersions: "VNC", "LVLH", "RVN"
@@ -112,10 +42,6 @@ mc_prefix_workspace = 'doi_to_touchdown_workspace_mc';
 % set seed!
 RandStream.setGlobalStream(RandStream.create('mt19937ar','seed',14))
  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-mc_n = 100;  % User set to total number of MC cases
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- 
 % percent of range errors
 percent_mean = 0; % Set mean to 0%
 percent_variation = (0.1)/100; % Range above and below mean (FLIR MLR 10K 0.1% at 1 km == 1 meter at 1 km)
@@ -123,7 +49,7 @@ sigma = percent_variation/3;
 percent_error = percent_mean + sigma*randn(mc_n,1);
  
 % % hardcode
-% percent_errors = 0.001*ones(mc_n,1);
+percent_errors = 0.001*ones(mc_n,1);
  
 % max acquisition range
 max_range_mean = 1.0*15000; % Set mean to 15 km
@@ -138,7 +64,7 @@ range_max = abs(max_range_mean + sigma*randn(mc_n,1));
 % star tracker transverse noise (in arcsecond)
 min_st_noise = 0;
 max_st_noise = 50;
-st_noise_vec = abs(min_st_noise + (max_st_noise-min_st_noise)*rand(mc_n,1));
+st_noise_vec = abs(min_st_noise + (max_st_noise-min_st_noise)*(0.5-rand(mc_n,1)));
  
 % % hardcode
 % st_noise_vec = 9*ones(mc_n,1);
@@ -146,15 +72,15 @@ st_noise_vec = abs(min_st_noise + (max_st_noise-min_st_noise)*rand(mc_n,1));
 % camera integration time (used in blur noise factor)
 min_integ_time =  5/ 1000;
 max_integ_time = 15/ 1000;
-integ_time_vec = abs(min_integ_time + (max_integ_time-min_integ_time)*rand(mc_n,1));
+integ_time_vec = abs(min_integ_time + (max_integ_time-min_integ_time)*(0.5-rand(mc_n,1)));
  
 % % hardcode
-% integ_time_vec = 0.010*ones(mc_n,1);
+integ_time_vec = 0.010*ones(mc_n,1);
  
 % camera angular field of view
 min_aov = 30 * pi/180;
 max_aov = 50 * pi/180;
-aov_vec = abs(min_aov + (max_aov-min_aov)*rand(mc_n,1));
+aov_vec = abs(min_aov + (max_aov-min_aov)*(0.5-rand(mc_n,1)));
  
 % hardcode
 aov_vec = (26.2254*pi/180)*ones(mc_n,1);
@@ -162,18 +88,18 @@ aov_vec = (26.2254*pi/180)*ones(mc_n,1);
 % time between camera updates
 min_delta_t = 0;
 max_delta_t = 2;
-delta_t_vec = abs(min_delta_t + (max_delta_t-min_delta_t)*rand(mc_n,1));
+delta_t_vec = abs(min_delta_t + (max_delta_t-min_delta_t)*(0.5-rand(mc_n,1)));
  
 %hardcode
-% delta_t_vec = 0.1*ones(mc_n,1);
+delta_t_vec = 0.1*ones(mc_n,1);
  
 % image processing delay time
 min_delay_t = 0.1;
 max_delay_t = 0.2;
-delay_t_vec = abs(min_delay_t + (max_delay_t-min_delay_t)*rand(mc_n,1));
+delay_t_vec = abs(min_delay_t + (max_delay_t-min_delay_t)*(0.5-rand(mc_n,1)));
  
 % % hardcode
-%delay_t_vec = 0.25*ones(mc_n,1);
+delay_t_vec = 0.25*ones(mc_n,1);
  
 % total lateral cm dry - normal distribution
 % lateral_cm_dry_sigma = 0.000;
@@ -189,30 +115,44 @@ longitudinal_cm_z_dry_max =  0.015;
 lateral_cm_x_dry_min = -0.015;
 lateral_cm_y_dry_min = -0.015;
 longitudinal_cm_z_dry_min = -0.015;
-lateral_cm_x_dry = (lateral_cm_x_dry_max - lateral_cm_x_dry_min)/2*rand(mc_n,1);
-lateral_cm_y_dry = (lateral_cm_y_dry_max - lateral_cm_y_dry_min)/2*rand(mc_n,1);
-longitudinal_cm_z_dry = (longitudinal_cm_z_dry_max - longitudinal_cm_z_dry_min)/2*rand(mc_n,1);
- 
+lateral_cm_x_dry = (lateral_cm_x_dry_max - lateral_cm_x_dry_min)/2*(0.5-rand(mc_n,1));
+lateral_cm_y_dry = (lateral_cm_y_dry_max - lateral_cm_y_dry_min)/2*(0.5-rand(mc_n,1));
+longitudinal_cm_z_dry = (longitudinal_cm_z_dry_max - longitudinal_cm_z_dry_min)/2*(0.5-rand(mc_n,1));
+
+if strcmp(mission_type,'1')
+  mpl_htp_mass_initial = 176.05;
+  mpl_rp1_mass_initial = 19.0;
+  mpl_gn2_mass_initial = 0.5;
+else
+  mpl_htp_mass_initial  = 29.0;
+  mpl_rp1_mass_initial  = 4.0;
+  mpl_gn2_mass_initial = 1.0;
+end
+
+ htp_mass_nominal =mpl_htp_mass_initial;
+ rp1_mass_nominal =mpl_rp1_mass_initial;
+ gn2_mass_nominal = mpl_gn2_mass_initial;
+  
 % set initial HTP mass
 htp_mass_min = htp_mass_nominal-0.1;
 htp_mass_max = htp_mass_nominal+0.1;
 mid=(htp_mass_max+htp_mass_min)/2;sigma=(htp_mass_max-htp_mass_min)/6;
 htp_mass     =  mid+sigma*randn(mc_n,1);                                     % normal  distribution
-% htp_mass     = htp_mass_min + (htp_mass_max - htp_mass_min)*rand(mc_n,1);  % uniform distribution
+% htp_mass     = htp_mass_min + (htp_mass_max - htp_mass_min)*(0.5-rand(mc_n,1));  % uniform distribution
  
 % set initial RP1 mass
 rp1_mass_min = rp1_mass_nominal-0.1;
 rp1_mass_max = rp1_mass_nominal+0.1;
 mid=(rp1_mass_max+rp1_mass_min)/2;sigma=(rp1_mass_max-rp1_mass_min)/6;
 rp1_mass     =  mid+sigma*randn(mc_n,1);                                     % normal  distribution
-% rp1_mass     = rp1_mass_min + (rp1_mass_max - rp1_mass_min)*rand(mc_n,1);  % uniform distribution
+% rp1_mass     = rp1_mass_min + (rp1_mass_max - rp1_mass_min)*(0.5-rand(mc_n,1));  % uniform distribution
  
 % set initial GN2 mass
 gn2_mass_min = gn2_mass_nominal-0.01;
 gn2_mass_max = gn2_mass_nominal+0.01;
 mid=(gn2_mass_max+gn2_mass_min)/2;sigma=(gn2_mass_max-gn2_mass_min)/6;
 gn2_mass     =  mid+sigma*randn(mc_n,1);                                     % normal  distribution
-% gn2_mass     = gn2_mass_min + (gn2_mass_max - gn2_mass_min)*rand(mc_n,1);  % uniform distribution
+% gn2_mass     = gn2_mass_min + (gn2_mass_max - gn2_mass_min)*(0.5-rand(mc_n,1));  % uniform distribution
  
 % set random misalignment angles and azimuth angles for 25 thrusters
 misalignment_ang_deg_3sigma = 0.5;
@@ -225,35 +165,35 @@ end
 % set monoprop thrust scale factor, nominally set to 1
 monoprop_thrust_min = 0.997;
 monoprop_thrust_max = 1.003;
-% monoprop_thrust     = monoprop_thrust_min + (monoprop_thrust_max - monoprop_thrust_min)*rand(mc_n,1);
+% monoprop_thrust     = monoprop_thrust_min + (monoprop_thrust_max - monoprop_thrust_min)*(0.5-rand(mc_n,1));
 mid=(monoprop_thrust_max+monoprop_thrust_min)/2;sigma=(monoprop_thrust_max-monoprop_thrust_min)/6;
 monoprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set monoprop Isp scale factor, nominally set to 1
 monoprop_isp_min = 0.997;
 monoprop_isp_max = 1.003;
-% monoprop_isp     = monoprop_isp_min + (monoprop_isp_max - monoprop_isp_min)*rand(mc_n,1);
+% monoprop_isp     = monoprop_isp_min + (monoprop_isp_max - monoprop_isp_min)*(0.5-rand(mc_n,1));
 mid=(monoprop_isp_max+monoprop_isp_min)/2;sigma=(monoprop_isp_max-monoprop_isp_min)/6;
 monoprop_isp     =  mid+sigma*randn(mc_n,1);
  
 % set biprop thrust scale factor, nominally set to 1
 biprop_thrust_min = 0.997;
 biprop_thrust_max = 1.003;
-% biprop_thrust     = biprop_thrust_min + (biprop_thrust_max - biprop_thrust_min)*rand(mc_n,1);
+% biprop_thrust     = biprop_thrust_min + (biprop_thrust_max - biprop_thrust_min)*(0.5-rand(mc_n,1));
 mid=(biprop_thrust_max+biprop_thrust_min)/2;sigma=(biprop_thrust_max-biprop_thrust_min)/6;
 biprop_thrust     =  mid+sigma*randn(mc_n,1);
  
 % set biprop Isp scale factor, nominally set to 1
 biprop_isp_min = 0.975;
 biprop_isp_max = 1.000;
-% biprop_isp     = biprop_isp_min + (biprop_isp_max - biprop_isp_min)*rand(mc_n,1);
+% biprop_isp     = biprop_isp_min + (biprop_isp_max - biprop_isp_min)*(0.5-rand(mc_n,1));
 mid=(biprop_isp_max+biprop_isp_min)/2;sigma=(biprop_isp_max-biprop_isp_min)/6;
-biprop_isp     =  mid+sigma*rand(mc_n,1);
+biprop_isp     =  mid+3*sigma*(0.5-rand(mc_n,1));
  
 % set mass estimate bias, nominally set to 0
 mass_estimate_bias_min = -0.001;
 mass_estimate_bias_max =  0.001;
-% mass_estimate_bias     = mass_estimate_bias_min + (mass_estimate_bias_max - mass_estimate_bias_min)*rand(mc_n,1);
+% mass_estimate_bias     = mass_estimate_bias_min + (mass_estimate_bias_max - mass_estimate_bias_min)*(0.5-rand(mc_n,1));
 mid=(mass_estimate_bias_max+mass_estimate_bias_min)/2;sigma=(mass_estimate_bias_max-mass_estimate_bias_min)/6;
 mass_estimate_bias     =  mid+sigma*randn(mc_n,1);
  
@@ -351,9 +291,9 @@ for i2mc = 1 : length(mc_i)
     name_mc = [ mc_prefix_s num2str(imc) ];
     name_mc_pos = [ mc_prefix_s_pos num2str(imc) ];
     name_mc_ws = [ mc_prefix_workspace num2str(imc) ];
-    
+
     nimbus_sim_init;
- 
+
     % Load the scenario
     fprintf('Scenario 3 loaded, for MX-%s\n',mission_type)
     load_scenario('scenario_3','nimbus');
@@ -364,7 +304,7 @@ for i2mc = 1 : length(mc_i)
     %----------------------------------------------------------------------%
     % simulation prep (acts on scenario speecific initial conditions )
     nimbus_sim_prep;
-    
+ 
     %- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -- - - - -%
     % set error state on Kalman filter state wrt true position, in inertial frame
     sim_set_kfl_error_state_init
@@ -478,12 +418,6 @@ for i2mc = 1 : length(mc_i)
                             mpl_cgy_location_fillfrac_0, mpl_cgy_location_fillfrac_100; ...
                             mpl_cgz_location_fillfrac_0, mpl_cgz_location_fillfrac_100];
 
-          mpl_Ixx_fillfrac_0 = 122.29;
-          mpl_Iyy_fillfrac_0 = 122.33;
-          mpl_Izz_fillfrac_0 = 5.70;
-          mpl_Ixy_fillfrac_0 = 0.01;
-          mpl_Iyz_fillfrac_0 = 0.07;
-          mpl_Ixz_fillfrac_0 = 0.49;
           mpl_Ixx_fillfrac_0 = 88; % Bud with current prop numbers factored in model.  Needs to be modified for our tank config instead of MTV
           mpl_Iyy_fillfrac_0 = 88;
           mpl_Izz_fillfrac_0 = 1.0;
@@ -558,7 +492,7 @@ for i2mc = 1 : length(mc_i)
           tpl_main_biprop_isp    = 310.0;
           tpl_rp1_to_htp_ratio   = 1/9;
         elseif strcmp(mission_type,'micro')
-          tdl_main_biprop_thrust = 222.5;
+          tdl_main_biprop_thrust = 222.4;
           tpl_main_biprop_isp    = 320.0;
           tpl_rp1_to_htp_ratio   = 1/7.5;
         end

@@ -31,7 +31,7 @@ flr_100m_update_time = 0.2;
 % 15K MODEL
 flr_15k_percent_error = 1/1000; % from flir spec sheet, 1meter (3sig) at 1km, jim requesting more info on degradation w/ alt
 flr_15k_percent_error = 0/1000; % from flir spec sheet, 1meter (3sig) at 1km, jim requesting more info on degradation w/ alt
-flr_15k_1sig_noise = 0*1/3; 
+flr_15k_1sig_noise = 1; % Boomer 4/15/2016
 flr_15k_resolution = 0.2;
 
 flr_15k_range_min = 25;
@@ -41,8 +41,8 @@ flr_15k_range_max = 15000;
 % 100M MODEL
 flr_100m_percent_error = 1/1000;
 flr_100m_percent_error = 0/1000;
-flr_100m_1sig_noise = 0;               % 100m spec sheet lists no accuracy
-flr_100m_resolution = 0.2;
+flr_100m_1sig_noise = 0.02;               % 100m Boomer 4/15/2016
+flr_100m_resolution = 0.01;
 
 flr_100m_range_min = 0;
 flr_100m_range_max = 100;

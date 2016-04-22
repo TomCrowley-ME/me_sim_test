@@ -72,13 +72,14 @@ for iter=1:size(mc_all_final,1)
    final_est_ang_err(iter)       = norm(mc_all_final(iter,8:10));
    final_est_rate_err(iter)      = norm(mc_all_final(iter,11:13));
    final_gnc_vel_err(iter)       = norm(mc_all_final(iter,18:20));
+   final_landed_vert_vel(iter) = mc_all_final(iter,47);
    final_gnc_ang_err(iter)       = norm(mc_all_final(iter,21:22),2);
    final_gnc_rate_err(iter)      = norm(mc_all_final(iter,24:26));
    lateral_cg_dry_offset(iter)   = norm(mc_all_initial(iter,23:24));
    lateral_cg_wet_offset(iter)   = norm(mc_all_final(iter,40:41));
    cm_x_unit(iter) = mc_all_initial(iter,26)/norm([mc_all_initial(iter,26),mc_all_initial(iter,27)]);
    cm_y_unit(iter) = mc_all_initial(iter,27)/norm([mc_all_initial(iter,26),mc_all_initial(iter,27)]);
-   cm_az_deg(iter) = atan2(cm_y_unit(iter),cm_x_unit(iter))*180/pi;
+   cm_az_deg(iter) = mc_all_initial(iter,53);
    htp_used(iter) = mc_all_final(iter,43);
    gn2_used(iter) = mc_all_final(iter,44);
    rp1_used(iter) = mc_all_final(iter,45);
@@ -99,14 +100,9 @@ end
 fprintf(sprintf('Number of Successful Landings: %d\n',nsuccess))
 fprintf(sprintf('Number of Failed Landings: %d\n',nfail))
 
-lateral_gnc_pos_scalar_limit  = 15000.0;
-lateral_gnc_vel_scalar_limit  = 5.0;
-lateral_est_vel_scalar_limit  = 5.0;
-final_est_vert_pos_err_limit  = 10.0;
-final_gnc_vert_vel_err_limit  = 4.0;
-vertical_est_vel_scalar_limit = 1.5;
-final_gnc_ang_err_limit       = 15.0;
-final_gnc_rate_err_limit      = 25.0;
+success_fail_limits
+pass_fail_table_out
+
 htp_mass_initial = evalin('base','mpl_htp_mass_initial');
 rp1_mass_initial = evalin('base','mpl_rp1_mass_initial');
 gn2_mass_initial = evalin('base','mpl_gn2_mass_initial');
@@ -116,7 +112,9 @@ lateral_gnc_vel_scalar_limit_cases  = int2str( find(lateral_gnc_vel_scalar   > l
 lateral_est_vel_scalar_limit_cases  = int2str( find(lateral_est_vel_scalar   > lateral_est_vel_scalar_limit  ));
 final_est_vert_pos_err_limit_cases  = int2str( find(final_est_vert_pos_err   > final_est_vert_pos_err_limit  ));
 final_gnc_vert_vel_err_limit_cases  = int2str( find(vertical_gnc_vel_scalar  > final_gnc_vert_vel_err_limit  ));
-vertical_est_vel_scalar_limit_cases = int2str( find(vertical_est_vel_scalar  > vertical_est_vel_scalar_limit ));
+vertical_est_vel_neg_limit_cases = int2str( find(vertical_est_vel  < vertical_est_vel_neg_limit ));
+vertical_est_vel_pos_limit_cases = int2str( find(vertical_est_vel  > vertical_est_vel_pos_limit ));
+final_landed_vert_vel_limit_cases   = int2str(find(final_landed_vert_vel   <  final_landed_vert_vel_limit ));
 final_gnc_ang_err_limit_cases       = int2str( find(final_gnc_ang_err        > final_gnc_ang_err_limit       ));
 final_gnc_rate_err_limit_cases      = int2str( find(final_gnc_rate_err       > final_gnc_rate_err_limit      ));
 htp_depletion_cases                 = int2str( find(mc_all_final(:,43)'     >= mc_all_initial(:,90)'         ));
@@ -126,28 +124,32 @@ rp1_depletion_cases                 = int2str( find(mc_all_final(:,45)'     >= m
 %%
 if (nfail>0)
    fprintf('Cases failed due to:\n')
-   fprintf('Horizontal position                 = %3d   ',length(find(lateral_gnc_pos_scalar      >  lateral_gnc_pos_scalar_limit  )) )
-   if size(lateral_gnc_pos_scalar_limit_cases,2)>0,fprintf('case numbers = %s\n',lateral_gnc_pos_scalar_limit_cases(:))  ,else fprintf('\n'),end
-   fprintf('Horizontal velocity                 = %3d   ',length(find(lateral_gnc_vel_scalar      > lateral_gnc_vel_scalar_limit  )) )
-   if size(lateral_gnc_vel_scalar_limit_cases,2)>0,fprintf('case numbers = %s\n',lateral_gnc_vel_scalar_limit_cases)     ,else fprintf('\n'),end
-   fprintf('Horizontal velocity estimate error  = %3d   ',length(find(lateral_est_vel_scalar      > lateral_est_vel_scalar_limit  )) )
-   if size(lateral_est_vel_scalar_limit_cases,2)>0,fprintf('case numbers = %s\n',lateral_est_vel_scalar_limit_cases(:))  ,else fprintf('\n'),end
-   fprintf('Altitude estimate error             = %3d   ',length(find(final_est_vert_pos_err      > final_est_vert_pos_err_limit  )) )
-   if size(final_est_vert_pos_err_limit_cases,2)>0,fprintf('case numbers = %s\n',final_est_vert_pos_err_limit_cases(:))  ,else fprintf('\n'),end
-   fprintf('Vertical velocity                   = %3d   ',length(find(vertical_gnc_vel_scalar     > final_gnc_vert_vel_err_limit  )) )
-   if size(final_gnc_vert_vel_err_limit_cases,2)>0,fprintf('case numbers = %s\n',final_gnc_vert_vel_err_limit_cases(:))  ,else fprintf('\n'),end
-   fprintf('Vertical velocity estimate error    = %3d   ',length(find(vertical_est_vel_scalar     > vertical_est_vel_scalar_limit  )) )
-   if size(vertical_est_vel_scalar_limit_cases,2)>0,fprintf('case numbers = %s\n',vertical_est_vel_scalar_limit_cases(:)),else fprintf('\n'),end
-   fprintf('Touchdown angle from vertical       = %3d   ',length(find(final_gnc_ang_err           > final_gnc_ang_err_limit )) )
-   if size(final_gnc_ang_err_limit_cases,2)>0      ,fprintf('case numbers = %s\n',final_gnc_ang_err_limit_cases(:))      ,else fprintf('\n'),end
-   fprintf('Touchdown body rates                = %3d   ',length(find(final_gnc_rate_err          > final_gnc_rate_err_limit )) )
-   if size(final_gnc_rate_err_limit_cases,2)>0     ,fprintf('case numbers = %s\n',final_gnc_rate_err_limit_cases(:))     ,else fprintf('\n'),end
-   fprintf('HTP depletion                       = %3d   ',length(find(mc_all_final(:,43)         >= mc_all_initial(:,90))) )
-   if size(htp_depletion_cases,2)>0                ,fprintf('case numbers = %s\n',htp_depletion_cases(:))                ,else fprintf('\n'),end
-   fprintf('GN2 depletion                       = %3d   ',length(find(mc_all_final(:,44)         >= mc_all_initial(:,91))) )
-   if size(gn2_depletion_cases,2)>0                ,fprintf('case numbers = %s\n',gn2_depletion_cases(:))                ,else fprintf('\n'),end
-   fprintf('RP1 depletion                       = %3d   ',length(find(mc_all_final(:,45)         >= mc_all_initial(:,92))) )
-   if size(rp1_depletion_cases,2)>0                ,fprintf('case numbers = %s\n',rp1_depletion_cases(:))                ,else fprintf('\n'),end
+   fprintf('Horizontal position > %3d',lateral_gnc_pos_scalar_limit); fprintf(' meters                           = %3d   ',length(find(lateral_gnc_pos_scalar      >  lateral_gnc_pos_scalar_limit  )) )
+   if size(lateral_gnc_pos_scalar_limit_cases,2)>0,fprintf('  case numbers = %s\n',lateral_gnc_pos_scalar_limit_cases(:))  ,else fprintf('\n'),end
+   fprintf('Horizontal velocity > %3d   ',lateral_gnc_vel_scalar_limit); fprintf(' m/s                                   = %3d  ',length(find(lateral_gnc_vel_scalar      > lateral_gnc_vel_scalar_limit  )) )
+   if size(lateral_gnc_vel_scalar_limit_cases,2)>0,fprintf('  case numbers = %s\n',lateral_gnc_vel_scalar_limit_cases(:))     ,else fprintf('\n'),end
+   fprintf('Horizontal velocity estimate error > %2.1f   ',lateral_est_vel_scalar_limit); fprintf(' m/s            = %3d  ',length(find(lateral_est_vel_scalar      > lateral_est_vel_scalar_limit  )) )
+   if size(lateral_est_vel_scalar_limit_cases,2)>0,fprintf('  case numbers = %s\n',lateral_est_vel_scalar_limit_cases(:))  ,else fprintf('\n'),end
+   fprintf('Altitude estimate error > %3d   ',final_est_vert_pos_err_limit); fprintf(' meters                        = %3d ',length(find(final_est_vert_pos_err      > final_est_vert_pos_err_limit  )) )
+   if size(final_est_vert_pos_err_limit_cases,2)>0,fprintf('  case numbers = %s\n',final_est_vert_pos_err_limit_cases(:))  ,else fprintf('\n'),end
+   fprintf('Vertical velocity error > %3d   ',final_gnc_vert_vel_err_limit); fprintf(' m/s                                       = %3d ',length(find(vertical_gnc_vel_scalar     > final_gnc_vert_vel_err_limit  )) )
+   if size(final_gnc_vert_vel_err_limit_cases,2)>0,fprintf('  case numbers = %s\n',final_gnc_vert_vel_err_limit_cases(:))  ,else fprintf('\n'),end
+   fprintf('Vertical velocity estimate negative error <  %2.1f   ',vertical_est_vel_neg_limit); fprintf(' m/s              = %3d ',length(find(vertical_est_vel     < vertical_est_vel_neg_limit  )) )
+   if size(vertical_est_vel_neg_limit_cases,2)>0,fprintf('  case numbers = %s\n',vertical_est_vel_neg_limit_cases(:))  ,else fprintf('\n'),end
+   fprintf('Vertical velocity estimate positive error >  %2.1f   ',vertical_est_vel_pos_limit); fprintf(' m/s              = %3d ',length(find(vertical_est_vel     > vertical_est_vel_pos_limit  )) )
+   if size(vertical_est_vel_pos_limit_cases,2)>0,fprintf('  case numbers = %s\n',vertical_est_vel_pos_limit_cases(:))  ,else fprintf('\n'),end
+   fprintf('Touchdown vertical velocity  <  %2.1f   ',final_landed_vert_vel_limit); fprintf(' m/s              = %3d ',length(find(final_landed_vert_vel     < final_landed_vert_vel_limit  )) )
+   if size(final_landed_vert_vel_limit_cases,2)>0,fprintf('  case numbers = %s\n',final_landed_vert_vel_limit_cases(:))  ,else fprintf('\n'),end
+   fprintf('Touchdown angle from vertical > %3d   ',final_gnc_ang_err_limit); fprintf('degrees          = %3d ',length(find(final_gnc_ang_err           > final_gnc_ang_err_limit )) )
+   if size(final_gnc_ang_err_limit_cases,2)>0      ,fprintf('  case numbers = %s\n',final_gnc_ang_err_limit_cases(:))      ,else fprintf('\n'),end
+   fprintf('Touchdown body rates > %3d   ',final_gnc_rate_err_limit); fprintf(' deg/sec                      = %3d ',length(find(final_gnc_rate_err          > final_gnc_rate_err_limit )) )
+   if size(final_gnc_rate_err_limit_cases,2)>0     ,fprintf('  case numbers = %s\n',final_gnc_rate_err_limit_cases(:))     ,else fprintf('\n'),end
+   fprintf('HTP depletion                                                              = %3d   ',length(find(mc_all_final(:,43)         >= mc_all_initial(:,90))) )
+   if size(htp_depletion_cases,2)>0                ,fprintf('  case numbers = %s\n',htp_depletion_cases(:))                ,else fprintf('\n'),end
+   fprintf('RP1 depletion                                                               = %3d   ',length(find(mc_all_final(:,45)         >= mc_all_initial(:,92))) )
+   if size(rp1_depletion_cases,2)>0                ,fprintf('  case numbers = %s\n',rp1_depletion_cases(:))                ,else fprintf('\n'),end
+   fprintf('GN2 depletion                                                              = %3d   ',length(find(mc_all_final(:,44)         >= mc_all_initial(:,91))) )
+   if size(gn2_depletion_cases,2)>0                ,fprintf('  case numbers = %s\n',gn2_depletion_cases(:))                ,else fprintf('\n'),end
 end
 
 
@@ -1575,33 +1577,34 @@ title_string = 'Vertical Velocity Estimation Error vs Propellant Usage';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
 ylabel('Propellant Usage (kg)','fontsize',14)
-str_text_box = {sprintf('Vertical Velocity Estimation Error Spec= %9.2f deg',vertical_est_vel_scalar_limit),sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp1_mass_initial+gn2_mass_initial))};
+str_text_box = {sprintf('Vertical Velocity Estimation Positive Error Spec= %9.2f deg',vertical_est_vel_pos_limit),sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp1_mass_initial+gn2_mass_initial))};
 annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
-vertical_est_vel_scalar_limit_x = vertical_est_vel_scalar_limit*ones(1,100);
+vertical_est_vel_pos_limit_x = vertical_est_vel_pos_limit*ones(1,100);
 initial_mass_limit_y = (htp_mass_initial+rp1_mass_initial+gn2_mass_initial)*ones(1,100);
-plot(vertical_est_vel_scalar_limit_x,0.01*[1:100].*initial_mass_limit_y,'r-','linewidth',2);
-plot(0.01*[1:100].*vertical_est_vel_scalar_limit_x,initial_mass_limit_y,'r-','linewidth',2);
+plot(vertical_est_vel_pos_limit_x,0.01*[1:100].*initial_mass_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*vertical_est_vel_pos_limit_x,initial_mass_limit_y,'r-','linewidth',2);
 saveas(gcf,'VertVelEstErrandPropUsed.png');saveas(gcf,'VertVelEstErrandPropUsed.fig')
 
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(vertical_est_vel_scalar(itest),altimeter_percent_err(itest)*max_range_mean,'b*');text(vertical_est_vel_scalar(itest),altimeter_percent_err(itest)*max_range_mean,strcat('   ',num2str(itest)),'Color','b');
+     plot(vertical_est_vel(itest),altimeter_percent_err(itest)*max_range_mean,'b*');text(vertical_est_vel(itest),altimeter_percent_err(itest)*max_range_mean,strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(vertical_est_vel_scalar(itest),altimeter_percent_err(itest)*max_range_mean,'r*');text(vertical_est_vel_scalar(itest),altimeter_percent_err(itest)*max_range_mean,strcat('   ',num2str(itest)),'Color','r');
+     plot(vertical_est_vel(itest),altimeter_percent_err(itest)*max_range_mean,'r*');text(vertical_est_vel(itest),altimeter_percent_err(itest)*max_range_mean,strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Vertical Velocity Estimation Error vs Altimeter Range Error';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
 ylabel('Altimeter Range Error (m)','fontsize',14)
-str_text_box = {sprintf('Vertical Velocity Estimation Error Spec= %9.2f deg',vertical_est_vel_scalar_limit)};
+str_text_box = {sprintf('Vertical Velocity Estimation Negative Error Spec= %9.2f deg',vertical_est_vel_neg_limit),sprintf('Vertical Velocity Estimation Positive Error Spec= %9.2f deg',vertical_est_vel_pos_limit)};
 annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
-vertical_est_vel_scalar_limit_x = vertical_est_vel_scalar_limit*ones(1,100);
+vertical_est_vel_neg_limit_x = vertical_est_vel_neg_limit*ones(1,100);
+vertical_est_vel_pos_limit_x = vertical_est_vel_pos_limit*ones(1,100);
 altimeter_range_err_y = max(altimeter_percent_err)*max_range_mean;
-plot(vertical_est_vel_scalar_limit_x,0.01*[1:100].*altimeter_range_err_y,'r-','linewidth',2);
-% plot(0.01*[1:100].*vertical_est_vel_scalar_limit_x,altimeter_percent_err_y,'r-','linewidth',2);
+plot(vertical_est_vel_neg_limit_x,0.01*[1:100].*altimeter_range_err_y,'r-','linewidth',2);
+plot(vertical_est_vel_pos_limit_x,0.01*[1:100].*altimeter_range_err_y,'r-','linewidth',2);
 saveas(gcf,'VertVelEstErrandAltRangeErr.png');saveas(gcf,'VertVelEstErrandAltRangeErr.fig')
 
 %%
@@ -1628,12 +1631,12 @@ figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
      plot(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
-     plot(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
-     plot(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+%      plot(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+%      plot(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),'b*');text(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
      plot(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,53)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
-     plot(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
-     plot(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+%      plot(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,54)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+%      plot(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),'r*');text(abs(mc_all_initial(itest,55)),lateral_gnc_pos_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
  end
 end
 title_string = 'Main Engine Misalignment Azimuth vs Touchdown Lateral Position';
@@ -1673,16 +1676,16 @@ for itest=1:size(mc_all_final,1)
   misalgn_deg_1 = mc_all_initial(itest,80);misalgn_deg_2 = mc_all_initial(itest,81);misalgn_deg_3 = mc_all_initial(itest,82);
   biprop_thrust = mc_all_initial(itest,85);
 
-  misalignment_roll_torque(itest,:) = biprop_thrust*(cross([sind(misalgn_deg_1)*[cosd(azimuth_deg_1) sind(azimuth_deg_1)] cosd(misalgn_deg_1)],tfl_thruster25_position) +...
-                                                                                  cross([sind(misalgn_deg_2)*[cosd(azimuth_deg_1) sind(azimuth_deg_2)] cosd(misalgn_deg_2)],tfl_thruster26_position) +...
-                                                                                  cross([sind(misalgn_deg_3)*[cosd(azimuth_deg_1) sind(azimuth_deg_3)] cosd(misalgn_deg_3)],tfl_thruster27_position));
+  misalignment_roll_torque(itest,:) = biprop_thrust*(cross([sind(misalgn_deg_1)*[cosd(azimuth_deg_1) sind(azimuth_deg_1)] cosd(misalgn_deg_1)],tfl_thruster25_position-mc_all_initial(iter,23:25)));% +...
+%                                                                                   cross([sind(misalgn_deg_2)*[cosd(azimuth_deg_1) sind(azimuth_deg_2)] cosd(misalgn_deg_2)],tfl_thruster26_position) +...
+%                                                                                   cross([sind(misalgn_deg_3)*[cosd(azimuth_deg_1) sind(azimuth_deg_3)] cosd(misalgn_deg_3)],tfl_thruster27_position));
   if(mc_all_final(itest,39)==0)
      plot(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80))),'b*');text(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80))),strcat('   ',num2str(itest)),'Color','b');
   elseif(mc_all_final(itest,39)==1)
      plot(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80))),'r*');text(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80))),strcat('   ',num2str(itest)),'Color','r');
   end
 end
-title_string = 'Main Engine Misaligment(s) Induced Roll Torque';
+title_string = 'Main Engine Misaligment(s) Induced Roll Torque - Dry CM';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 ylabel('Maximum Main Engine Misaligment (deg)','fontsize',14)
 xlabel('Roll Torque Induced By Misalignment(s) (N-m)','fontsize',14)
@@ -1692,8 +1695,35 @@ vernier_roll_trq_authority_x = 2*abs(vac_thruster20_trq(3))*psp_vernier_acs_thru
 max_misalignment_ang_y = max(max_misalignment_ang);
 plot(vernier_roll_trq_authority_x,0.01*[1:100].*max_misalignment_ang_y,'r-','linewidth',2);
 plot(-vernier_roll_trq_authority_x,0.01*[1:100].*max_misalignment_ang_y,'r-','linewidth',2);
-saveas(gcf,'MainEngMisalignandRollTrq.png');saveas(gcf,'MainEngMisalignandRollTrq.fig')
+saveas(gcf,'MainEngMisalignandRollTrqDryCM.png');saveas(gcf,'MainEngMisalignandRollTrqDryCM.fig')
 
+%%
+figure;grid on;hold on;
+for itest=1:size(mc_all_final,1)
+  azimuth_deg_1 = mc_all_initial(itest,53);azimuth_deg_2 = mc_all_initial(itest,54);azimuth_deg_3 = mc_all_initial(itest,55);
+  misalgn_deg_1 = mc_all_initial(itest,80);misalgn_deg_2 = mc_all_initial(itest,81);misalgn_deg_3 = mc_all_initial(itest,82);
+  biprop_thrust = mc_all_initial(itest,85);
+
+  misalignment_roll_torque(itest,:) = biprop_thrust*(cross([sind(misalgn_deg_1)*[cosd(azimuth_deg_1) sind(azimuth_deg_1)] cosd(misalgn_deg_1)],tfl_thruster25_position-mc_all_initial(iter,26:28)));% +...
+%                                                                                   cross([sind(misalgn_deg_2)*[cosd(azimuth_deg_1) sind(azimuth_deg_2)] cosd(misalgn_deg_2)],tfl_thruster26_position) +...
+%                                                                                   cross([sind(misalgn_deg_3)*[cosd(azimuth_deg_1) sind(azimuth_deg_3)] cosd(misalgn_deg_3)],tfl_thruster27_position));
+  if(mc_all_final(itest,39)==0)
+     plot(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80))),'b*');text(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80))),strcat('   ',num2str(itest)),'Color','b');
+  elseif(mc_all_final(itest,39)==1)
+     plot(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80))),'r*');text(misalignment_roll_torque(itest,3),max(abs(mc_all_initial(itest,80))),strcat('   ',num2str(itest)),'Color','r');
+  end
+end
+title_string = 'Main Engine Misaligment(s) Induced Roll Torque - Wet CM';
+title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+ylabel('Maximum Main Engine Misaligment (deg)','fontsize',14)
+xlabel('Roll Torque Induced By Misalignment(s) (N-m)','fontsize',14)
+str_text_box = {sprintf('Vernier Roll Torque Authority = %9.2f N-m',2*abs(vac_thruster20_trq(3))*psp_vernier_acs_thrust)};
+annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
+vernier_roll_trq_authority_x = 2*abs(vac_thruster20_trq(3))*psp_vernier_acs_thrust*ones(1,100);
+max_misalignment_ang_y = max(max_misalignment_ang);
+plot(vernier_roll_trq_authority_x,0.01*[1:100].*max_misalignment_ang_y,'r-','linewidth',2);
+plot(-vernier_roll_trq_authority_x,0.01*[1:100].*max_misalignment_ang_y,'r-','linewidth',2);
+saveas(gcf,'MainEngMisalignandRollTrqWetCM.png');saveas(gcf,'MainEngMisalignandRollTrqWetCM.fig')
 %%
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
@@ -1715,26 +1745,26 @@ plot(lateral_gnc_vel_scalar_limit_x,0.01*[1:100].*lateral_est_vel_scalar_limit_y
 plot(0.01*[1:100].*lateral_gnc_vel_scalar_limit_x,lateral_est_vel_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'TrueLatVelErrandVelEstErr.png');saveas(gcf,'TrueLatVelErrandVelEstErr.fig')
 
-%%
-figure;grid on;hold on;
-for itest=1:size(mc_all_final,1)
- if(mc_all_final(itest,39)==0)
-     plot(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),'b*');text(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
- elseif(mc_all_final(itest,39)==1)
-     plot(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),'r*');text(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
- end
-end
-title_string = 'Touchdown Magnitude True Vertical Velocity Error vs Magnitude Vertical Velocity Estimation Error';
-title(title_string,'fontsize',14);set(gcf,'Name',title_string)
-xlabel('True Vertical Velocity Error (m/s)','fontsize',14)
-ylabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
-str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Touchdown Vertical Velocity Estimation Error Spec = %9.2f m/s',vertical_est_vel_scalar_limit)};
-annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
-final_gnc_vert_vel_err_limit_x = final_gnc_vert_vel_err_limit*ones(1,100);
-vertical_est_vel_scalar_limit_y = vertical_est_vel_scalar_limit*ones(1,100);
-plot(final_gnc_vert_vel_err_limit_x,0.01*[1:100].*vertical_est_vel_scalar_limit_y,'r-','linewidth',2);
-plot(0.01*[1:100].*final_gnc_vert_vel_err_limit_x,vertical_est_vel_scalar_limit_y,'r-','linewidth',2);
-saveas(gcf,'AbsTrueVertVelErrandVelEstErr.png');saveas(gcf,'AbsTrueVertVelErrandVelEstErr.fig')
+% %%
+% figure;grid on;hold on;
+% for itest=1:size(mc_all_final,1)
+%  if(mc_all_final(itest,39)==0)
+%      plot(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),'b*');text(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','b');
+%  elseif(mc_all_final(itest,39)==1)
+%      plot(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),'r*');text(abs(vertical_gnc_vel_scalar(itest)),vertical_est_vel_scalar(itest),strcat('   ',num2str(itest)),'Color','r');
+%  end
+% end
+% title_string = 'Touchdown Magnitude True Vertical Velocity Error vs Magnitude Vertical Velocity Estimation Error';
+% title(title_string,'fontsize',14);set(gcf,'Name',title_string)
+% xlabel('True Vertical Velocity Error (m/s)','fontsize',14)
+% ylabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
+% str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Touchdown Vertical Velocity Estimation Negative Error Spec = %9.2f m/s',vertical_est_vel_neg_limit)};
+% annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
+% final_gnc_vert_vel_err_limit_x = final_gnc_vert_vel_err_limit*ones(1,100);
+% vertical_est_vel_neg_limit_y = vertical_est_vel_neg_limit*ones(1,100);
+% plot(final_gnc_vert_vel_err_limit_x,0.01*[1:100].*vertical_est_vel_neg_limit_y,'r-','linewidth',2);
+% plot(0.01*[1:100].*final_gnc_vert_vel_err_limit_x,vertical_est_vel_neg_limit_y,'r-','linewidth',2);
+% saveas(gcf,'AbsTrueVertVelErrandVelEstErr.png');saveas(gcf,'AbsTrueVertVelErrandVelEstErr.fig')
 
 %%
 figure;grid on;hold on;
@@ -1749,14 +1779,15 @@ title_string = 'Touchdown True Vertical Velocity Error vs Vertical Velocity Esti
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('True Vertical Velocity Error (m/s)','fontsize',14)
 ylabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
-str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Touchdown Vertical Velocity Estimation Error Spec = %9.2f m/s',vertical_est_vel_scalar_limit)};
+str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Vertical Velocity Estimation Negative Error Spec= %9.2f deg',vertical_est_vel_neg_limit),...
+                                                                                                                                                                       sprintf('Vertical Velocity Estimation Positive Error Spec= %9.2f deg',vertical_est_vel_pos_limit)};
 annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
 final_gnc_vert_vel_err_limit_x = [min(-final_gnc_vert_vel_err_limit)*ones(1,50) max(final_gnc_vert_vel_err_limit)*ones(1,50)];
-vertical_est_vel_scalar_limit_y = [min(-vertical_est_vel_scalar_limit)*ones(1,50) max(vertical_est_vel_scalar_limit)*ones(1,50)];
-plot(final_gnc_vert_vel_err_limit_x(end)*ones(1,100),[0.02*[1:50].*vertical_est_vel_scalar_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_scalar_limit_y(51:100)] ,'r-','linewidth',2);
-plot(final_gnc_vert_vel_err_limit_x(1)*ones(1,100),[0.02*[1:50].*vertical_est_vel_scalar_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_scalar_limit_y(51:100)] ,'r-','linewidth',2);
-plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(1)*ones(1,100),'r-','linewidth',2);
-plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(end)*ones(1,100),'r-','linewidth',2);
+vertical_est_vel_limit_y = [min(vertical_est_vel_neg_limit)*ones(1,50) max(vertical_est_vel_pos_limit)*ones(1,50)];
+plot(final_gnc_vert_vel_err_limit_x(end)*ones(1,100),[0.02*[1:50].*vertical_est_vel_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_limit_y(51:100)] ,'r-','linewidth',2);
+plot(final_gnc_vert_vel_err_limit_x(1)*ones(1,100),[0.02*[1:50].*vertical_est_vel_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_limit_y(51:100)] ,'r-','linewidth',2);
+plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_limit_y(1)*ones(1,100),'r-','linewidth',2);
+plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_limit_y(end)*ones(1,100),'r-','linewidth',2);
 saveas(gcf,'TrueVertVelErrandVelEstErr.png');saveas(gcf,'TrueVertVelErrandVelEstErr.fig')
 
 %%
@@ -1790,14 +1821,15 @@ title_string = 'Touchdown True Vertical Velocity vs Vertical Velocity Estimation
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('True Vertical Velocity (m/s)','fontsize',14)
 ylabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
-str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Touchdown Vertical Velocity Estimation Error Spec = %9.2f m/s',vertical_est_vel_scalar_limit)};
+str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Vertical Velocity Estimation Negative Error Spec= %9.2f deg',vertical_est_vel_neg_limit),...
+                                                                                                                                                                       sprintf('Vertical Velocity Estimation Positive Error Spec= %9.2f deg',vertical_est_vel_pos_limit)};
 annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
-final_gnc_vert_vel_err_limit_x = [min(-final_gnc_vert_vel_err_limit)*ones(1,50) max(final_gnc_vert_vel_err_limit)*ones(1,50)];
-vertical_est_vel_scalar_limit_y = [min(-vertical_est_vel_scalar_limit)*ones(1,50) max(vertical_est_vel_scalar_limit)*ones(1,50)];
-% plot(final_gnc_vert_vel_err_limit_x(end)*ones(1,100),[0.02*[1:50].*vertical_est_vel_scalar_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_scalar_limit_y(51:100)] ,'r-','linewidth',2);
-plot(final_gnc_vert_vel_err_limit_x(1)*ones(1,100),[0.02*[1:50].*vertical_est_vel_scalar_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_scalar_limit_y(51:100)] ,'r-','linewidth',2);
-plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(1)*ones(1,100),'r-','linewidth',2);
-plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(end)*ones(1,100),'r-','linewidth',2);
+final_landed_vert_vel_limit_x = [min(-final_landed_vert_vel_limit)*ones(1,50) max(final_landed_vert_vel_limit)*ones(1,50)];
+vertical_est_vel_limit_y = [min(vertical_est_vel_neg_limit)*ones(1,50) max(vertical_est_vel_pos_limit)*ones(1,50)];
+plot(final_landed_vert_vel_limit_x(end)*ones(1,100),[0.02*[1:50].*vertical_est_vel_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_limit_y(51:100)] ,'r-','linewidth',2);
+plot(final_landed_vert_vel_limit_x(1)*ones(1,100),[0.02*[1:50].*vertical_est_vel_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_limit_y(51:100)] ,'r-','linewidth',2);
+plot([0.02*[1:50].*final_landed_vert_vel_limit_x(1:50) 0.02*[1:50].*final_landed_vert_vel_limit_x(51:100)] ,vertical_est_vel_limit_y(1)*ones(1,100),'r-','linewidth',2);
+plot([0.02*[1:50].*final_landed_vert_vel_limit_x(1:50) 0.02*[1:50].*final_landed_vert_vel_limit_x(51:100)] ,vertical_est_vel_limit_y(end)*ones(1,100),'r-','linewidth',2);
 saveas(gcf,'TrueVertVelandVelEstErr.png');saveas(gcf,'TrueVertVelandVelEstErr.fig')
 
 %%
@@ -1815,12 +1847,6 @@ xlabel('True Vertical Velocity Error (m/s)','fontsize',14)
 ylabel('Initial Prop Mass (kg)','fontsize',14)
 str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit)};
 annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
-% final_gnc_vert_vel_err_limit_x = [min(-final_gnc_vert_vel_err_limit)*ones(1,50) max(final_gnc_vert_vel_err_limit)*ones(1,50)];
-% initial_prop_mass_limit_y = [min(-vertical_est_vel_scalar_limit)*ones(1,50) max(vertical_est_vel_scalar_limit)*ones(1,50)];
-% plot(final_gnc_vert_vel_err_limit_x(end)*ones(1,100),[0.02*[1:50].*vertical_est_vel_scalar_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_scalar_limit_y(51:100)] ,'r-','linewidth',2);
-% plot(final_gnc_vert_vel_err_limit_x(1)*ones(1,100),[0.02*[1:50].*vertical_est_vel_scalar_limit_y(1:50) 0.02*[1:50].*vertical_est_vel_scalar_limit_y(51:100)] ,'r-','linewidth',2);
-% plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(1)*ones(1,100),'r-','linewidth',2);
-% plot([0.02*[1:50].*final_gnc_vert_vel_err_limit_x(1:50) 0.02*[1:50].*final_gnc_vert_vel_err_limit_x(51:100)] ,vertical_est_vel_scalar_limit_y(end)*ones(1,100),'r-','linewidth',2);
 saveas(gcf,'TrueVertVelErrandInitPropMass.png');saveas(gcf,'TrueVertVelErrandInitPropMass.fig')
 
 %%
@@ -1842,7 +1868,6 @@ final_gnc_vert_vel_err_limit_x = final_gnc_vert_vel_err_limit*ones(1,100);
 pos_mass_estimate_bias_y = max(mass_estimate_bias)*ones(1,50);
 neg_mass_estimate_bias_y = min(mass_estimate_bias)*ones(1,50);
 plot(final_gnc_vert_vel_err_limit_x,[0.02*[1:50].*pos_mass_estimate_bias_y 0.02*[1:50].*neg_mass_estimate_bias_y],'r-','linewidth',2);
-% plot(0.01*[1:100].*final_gnc_vert_vel_err_limit_x,vertical_est_vel_scalar_limit_y,'r-','linewidth',2);
 saveas(gcf,'TrueVertVelErrandMassBias.png');saveas(gcf,'TrueVertVelErrandMassBias.fig')
 
 %%

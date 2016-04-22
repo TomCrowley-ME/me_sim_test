@@ -33,9 +33,9 @@ mcall(i.cam_processing_delay)   = evalin('base','cam_processing_delay');
 mcall(i.cgx_dry)                = evalin('base','mpl_cgx_location_fillfrac_0');
 mcall(i.cgy_dry)                = evalin('base','mpl_cgy_location_fillfrac_0');
 mcall(i.cgz_dry)                = evalin('base','mpl_cgz_location_fillfrac_0');
-mcall(i.cgx_wet)                = evalin('base','truth.sim.cg.Data(1,1)');
-mcall(i.cgy_wet)                = evalin('base','truth.sim.cg.Data(1,2)');
-mcall(i.cgz_wet)                = evalin('base','truth.sim.cg.Data(1,3)');
+mcall(i.cgx_wet)                = evalin('base','truth.sim.cg.Data(2,1)');
+mcall(i.cgy_wet)                = evalin('base','truth.sim.cg.Data(2,2)');
+mcall(i.cgz_wet)                = evalin('base','truth.sim.cg.Data(2,3)');
 mcall(i.azimuth)                = evalin('base','az_ang_per_case');
 mcall(i.misalignment)           = evalin('base','misalignments_per_case');
 

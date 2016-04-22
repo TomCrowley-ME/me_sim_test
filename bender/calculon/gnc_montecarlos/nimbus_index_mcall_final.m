@@ -25,4 +25,5 @@ i.htp_used              = 43;
 i.gn2_used              = 44;
 i.rp1_used              = 45;
 i.mass                  = 46;
-i.n                     = 46;
+i.vert_vel_touchdown = 47;
+i.n                     = 47;
