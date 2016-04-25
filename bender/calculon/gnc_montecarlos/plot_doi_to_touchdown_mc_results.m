@@ -57,6 +57,7 @@ for iter=1:size(mc_all_final,1)
    initial_htp_mass(iter)        = norm(mc_all_initial(iter,90));
    initial_gn2_mass(iter)        = norm(mc_all_initial(iter,91));
    initial_rp1_mass(iter)        = norm(mc_all_initial(iter,92));
+   vertical_vel_bias_perfect(iter)   = mc_all_initial(iter,93);
    initial_prop_mass(iter)        = initial_htp_mass(iter) + initial_rp1_mass(iter)  + initial_gn2_mass(iter) ;
    lateral_est_vel_scalar(iter)  = norm(mc_all_final(iter,5:6),2);
    vertical_est_vel_scalar(iter) = abs(mc_all_final(iter,7));
@@ -68,7 +69,11 @@ for iter=1:size(mc_all_final,1)
    vertical_gnc_vel(iter)          = mc_all_final(iter,20);
    final_est_vert_pos_err(iter)  = abs(mc_all_final(iter,14));
    final_est_pos_err(iter)       = norm(mc_all_final(iter,2:3));
-   final_est_vel_err(iter)       = norm(mc_all_final(iter,5:7));
+  if lac_perfect_vel_nav == 1
+       final_est_vel_err(iter)            = -mc_all_initial(iter,95);
+  else
+       final_est_vel_err(iter)       = norm(mc_all_final(iter,7));
+  end
    final_est_ang_err(iter)       = norm(mc_all_final(iter,8:10));
    final_est_rate_err(iter)      = norm(mc_all_final(iter,11:13));
    final_gnc_vel_err(iter)       = norm(mc_all_final(iter,18:20));
@@ -1359,9 +1364,9 @@ end
 figure;grid on;hold on;
 for itest=1:size(mc_all_final,1)
  if(mc_all_final(itest,39)==0)
-     plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),'b*');text(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),strcat('   ',num2str(itest)),'Color','b');
+     plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,47)),'b*');text(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,47)),strcat('   ',num2str(itest)),'Color','b');
  elseif(mc_all_final(itest,39)==1)
-     plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),'r*');text(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,20)),strcat('   ',num2str(itest)),'Color','r');
+     plot(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,47)),'r*');text(lateral_gnc_vel_scalar(itest),abs(mc_all_final(itest,47)),strcat('   ',num2str(itest)),'Color','r');
  end
 end
  hold on;
@@ -1369,12 +1374,12 @@ title_string = 'Touchdown Lateral Velocity vs Vertical Velocity';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Topocentric Lateral Velocity (m/s)','fontsize',14)
 ylabel('Topocentric Vertical Velocity (m/s)','fontsize',14)
-str_text_box = {sprintf('Lateral Velocity Error Spec= %9.2f m/s',lateral_gnc_vel_scalar_limit),sprintf('Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit)};
+str_text_box = {sprintf('Lateral Velocity Error Spec= %9.2f m/s',lateral_gnc_vel_scalar_limit),sprintf('Landed Vertical Velocity Spec = %9.2f m/s',final_landed_vert_vel_limit)};
 annotation('textbox',[.3 .8 .55 .10],'string',str_text_box) 
 lateral_gnc_vel_scalar_limit_x = lateral_gnc_vel_scalar_limit*ones(1,100);
-final_gnc_vert_vel_err_limit_y = final_gnc_vert_vel_err_limit*ones(1,100);
-plot(lateral_gnc_vel_scalar_limit_x,0.01*[1:100].*final_gnc_vert_vel_err_limit_y,'r-','linewidth',2);
-plot(0.01*[1:100].*lateral_gnc_vel_scalar_limit_x,final_gnc_vert_vel_err_limit_y,'r-','linewidth',2);
+final_landed_vert_vel_limit_y = abs(final_landed_vert_vel_limit)*ones(1,100);
+plot(lateral_gnc_vel_scalar_limit_x,0.01*[1:100].*final_landed_vert_vel_limit_y,'r-','linewidth',2);
+plot(0.01*[1:100].*lateral_gnc_vel_scalar_limit_x,final_landed_vert_vel_limit_y,'r-','linewidth',2);
 saveas(gcf,'LateralVelandVerticalVel.png');saveas(gcf,'LateralVelandVerticalVel.fig')
 %%
 figure;grid on;hold on;
@@ -1577,11 +1582,11 @@ title_string = 'Vertical Velocity Estimation Error vs Propellant Usage';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
 ylabel('Propellant Usage (kg)','fontsize',14)
-str_text_box = {sprintf('Vertical Velocity Estimation Positive Error Spec= %9.2f deg',vertical_est_vel_pos_limit),sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp1_mass_initial+gn2_mass_initial))};
+str_text_box = {sprintf('Vertical Velocity Estimation Positive Error Limit= %9.2f deg',vertical_est_vel_pos_limit),sprintf('Maximum Prop Available = %9.2f kg',(htp_mass_initial+rp1_mass_initial+gn2_mass_initial))};
 annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
-vertical_est_vel_pos_limit_x = vertical_est_vel_pos_limit*ones(1,100);
+vertical_est_vel_pos_limit_x = abs(vertical_est_vel_neg_limit)*ones(1,100);
 initial_mass_limit_y = (htp_mass_initial+rp1_mass_initial+gn2_mass_initial)*ones(1,100);
-plot(vertical_est_vel_pos_limit_x,0.01*[1:100].*initial_mass_limit_y,'r-','linewidth',2);
+% plot(vertical_est_vel_pos_limit_x,0.01*[1:100].*initial_mass_limit_y,'r-','linewidth',2);
 plot(0.01*[1:100].*vertical_est_vel_pos_limit_x,initial_mass_limit_y,'r-','linewidth',2);
 saveas(gcf,'VertVelEstErrandPropUsed.png');saveas(gcf,'VertVelEstErrandPropUsed.fig')
 
@@ -1598,7 +1603,7 @@ title_string = 'Vertical Velocity Estimation Error vs Altimeter Range Error';
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
 ylabel('Altimeter Range Error (m)','fontsize',14)
-str_text_box = {sprintf('Vertical Velocity Estimation Negative Error Spec= %9.2f deg',vertical_est_vel_neg_limit),sprintf('Vertical Velocity Estimation Positive Error Spec= %9.2f deg',vertical_est_vel_pos_limit)};
+str_text_box = {sprintf('Vertical Velocity Estimation Negative Error Limit= %9.2f deg',vertical_est_vel_neg_limit),sprintf('Vertical Velocity Estimation Positive Error Limit= %9.2f deg',vertical_est_vel_pos_limit)};
 annotation('textbox',[.15, .8 .70 .10],'string',str_text_box) 
 vertical_est_vel_neg_limit_x = vertical_est_vel_neg_limit*ones(1,100);
 vertical_est_vel_pos_limit_x = vertical_est_vel_pos_limit*ones(1,100);
@@ -1758,7 +1763,7 @@ saveas(gcf,'TrueLatVelErrandVelEstErr.png');saveas(gcf,'TrueLatVelErrandVelEstEr
 % title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 % xlabel('True Vertical Velocity Error (m/s)','fontsize',14)
 % ylabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
-% str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Touchdown Vertical Velocity Estimation Negative Error Spec = %9.2f m/s',vertical_est_vel_neg_limit)};
+% str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Touchdown Vertical Velocity Estimation Negative Error Limit = %9.2f m/s',vertical_est_vel_neg_limit)};
 % annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
 % final_gnc_vert_vel_err_limit_x = final_gnc_vert_vel_err_limit*ones(1,100);
 % vertical_est_vel_neg_limit_y = vertical_est_vel_neg_limit*ones(1,100);
@@ -1779,8 +1784,8 @@ title_string = 'Touchdown True Vertical Velocity Error vs Vertical Velocity Esti
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('True Vertical Velocity Error (m/s)','fontsize',14)
 ylabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
-str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Vertical Velocity Estimation Negative Error Spec= %9.2f deg',vertical_est_vel_neg_limit),...
-                                                                                                                                                                       sprintf('Vertical Velocity Estimation Positive Error Spec= %9.2f deg',vertical_est_vel_pos_limit)};
+str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Vertical Velocity Estimation Negative Error Limit= %9.2f m/s',vertical_est_vel_neg_limit),...
+                                                                                                                                                                       sprintf('Vertical Velocity Estimation Positive Error Limit= %9.2f m/s',vertical_est_vel_pos_limit)};
 annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
 final_gnc_vert_vel_err_limit_x = [min(-final_gnc_vert_vel_err_limit)*ones(1,50) max(final_gnc_vert_vel_err_limit)*ones(1,50)];
 vertical_est_vel_limit_y = [min(vertical_est_vel_neg_limit)*ones(1,50) max(vertical_est_vel_pos_limit)*ones(1,50)];
@@ -1821,8 +1826,8 @@ title_string = 'Touchdown True Vertical Velocity vs Vertical Velocity Estimation
 title(title_string,'fontsize',14);set(gcf,'Name',title_string)
 xlabel('True Vertical Velocity (m/s)','fontsize',14)
 ylabel('Vertical Velocity Estimation Error (m/s)','fontsize',14)
-str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Vertical Velocity Estimation Negative Error Spec= %9.2f deg',vertical_est_vel_neg_limit),...
-                                                                                                                                                                       sprintf('Vertical Velocity Estimation Positive Error Spec= %9.2f deg',vertical_est_vel_pos_limit)};
+str_text_box = {sprintf('Touchdown Vertical Velocity Error Spec = %9.2f m/s',final_gnc_vert_vel_err_limit),sprintf('Vertical Velocity Estimation Negative Error Limit= %9.2f m/s',vertical_est_vel_neg_limit),...
+                                                                                                                                                                       sprintf('Vertical Velocity Estimation Positive Error Limit= %9.2f m/s',vertical_est_vel_pos_limit)};
 annotation('textbox',[.15, .8 .80 .10],'string',str_text_box) 
 final_landed_vert_vel_limit_x = [min(-final_landed_vert_vel_limit)*ones(1,50) max(final_landed_vert_vel_limit)*ones(1,50)];
 vertical_est_vel_limit_y = [min(vertical_est_vel_neg_limit)*ones(1,50) max(vertical_est_vel_pos_limit)*ones(1,50)];

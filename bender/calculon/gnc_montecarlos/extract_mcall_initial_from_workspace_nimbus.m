@@ -51,6 +51,10 @@ mcall(i.htp_mass)               = evalin('base','mpl_htp_mass_initial');
 mcall(i.rp1_mass)               = evalin('base','mpl_rp1_mass_initial');
 mcall(i.gn2_mass)               = evalin('base','mpl_gn2_mass_initial');
 
+mcall(i.lateral_x_vel_bias_perfect)               = evalin('base','lac_bias_on_perfect(1)');
+mcall(i.lateral_y_vel_bias_perfect)               = evalin('base','lac_bias_on_perfect(2)');
+mcall(i.vertical_vel_bias_perfect)                 = evalin('base','lac_bias_on_perfect(3)');
+
 
 
 

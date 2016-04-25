@@ -209,6 +209,22 @@ biprop_stop_delay_max = 1.050;
 sigma=(biprop_stop_delay_max-biprop_stop_delay_min)/6;
 biprop_stop_delay     = abs(sigma*randn(mc_n,1));
 
+% error injection for use with perfect velocimetry option
+lateral_x_velocity_bias_perfect_min = -1.0;
+lateral_x_velocity_bias_perfect_max =  1.0;
+mid = (lateral_x_velocity_bias_perfect_max + lateral_x_velocity_bias_perfect_min)/2; 
+lateral_x_vel_bias_perfect = mid + (0.5-rand(mc_n,1));
+
+lateral_y_velocity_bias_perfect_min = -1.0;
+lateral_y_velocity_bias_perfect_max =  1.0;
+mid = (lateral_y_velocity_bias_perfect_max + lateral_y_velocity_bias_perfect_min)/2; 
+lateral_y_vel_bias_perfect = mid + (0.5-rand(mc_n,1));
+
+vertical_velocity_bias_perfect_min = -1.0;
+vertical_velocity_bias_perfect_max =  1.0;
+mid = (vertical_velocity_bias_perfect_max + vertical_velocity_bias_perfect_min)/2; 
+vertical_vel_bias_perfect = mid +(0.5-rand(mc_n,1));
+
 % set position estimation errors in radial, velocity and orbit normal directions, meters
 pos_est_err_3sigma_rhat = 10.0;
 pos_est_err_3sigma_vhat = 1000.0;
@@ -258,7 +274,10 @@ mc_6dof_variables=cat(2,percent_error,...
                                         biprop_isp, ...
                                         biprop_start_delay, ...
                                         biprop_stop_delay, ...
-                                        mass_estimate_bias ...
+                                        mass_estimate_bias,...
+                                        lateral_x_vel_bias_perfect,...
+                                        lateral_y_vel_bias_perfect,...
+                                        vertical_vel_bias_perfect ...
                                         );
 
 % define indexes to Monte Carlo initialization variables
@@ -279,7 +298,10 @@ ivars = struct( 'percent_error',1,...
                         'biprop_thrust',76,'biprop_isp',77,...
                         'biprop_start_delay',78,'biprop_stop_delay',79,...
                         'mass_estimate_bias',80,...
-                        'n',80);
+                        'lateral_x_vel_bias_perfect',81,...
+                        'lateral_y_vel_bias_perfect',82,...
+                        'vertical_vel_bias_perfect',83,...
+                        'n',83);
             
 mc_i = 1 : size(mc_6dof_variables,1);
  
@@ -523,7 +545,12 @@ for i2mc = 1 : length(mc_i)
         if ~isnan( mc_6dof_variables(imc,ivars.biprop_stop_delay) )
             tdl_main_engine_stop_delay = mc_6dof_variables(imc,ivars.biprop_stop_delay)*tdl_main_engine_stop_delay;
         end
-         
+        
+        % bias on perfect velocimetry
+        if ~isnan( mc_6dof_variables(imc,ivars.vertical_vel_bias_perfect) )
+            lac_bias_on_perfect = [mc_6dof_variables(imc,ivars.lateral_x_vel_bias_perfect) mc_6dof_variables(imc,ivars.lateral_y_vel_bias_perfect) mc_6dof_variables(imc,ivars.vertical_vel_bias_perfect)];
+        end
+                 
         kfl_state_init = [ kfl_position_init ; kfl_velocity_init ; kfl_acc_bias_init ;  kfl_gibbs_init ;  kfl_gyro_bias_init];
                               
     sim_set_kfl_error_state_prep

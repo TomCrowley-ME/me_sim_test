@@ -23,6 +23,7 @@ lac_monoprop_coarse_transition_alt = 1e6; %meters
 lac_accel_available_init = 1;
 
 % perfect topocentric velocity navigation
-lac_perfect_vel_nav = 0;
-
+lac_perfect_vel_nav = 1;
+lac_noise_on_perfect = 0.1;
+lac_bias_on_perfect = -1.0; 
 

@@ -59,15 +59,13 @@ if touchdown <= 0 || touchdown_est <= 0
 end
 
 while abs(truth.fsw_rate.topo.sim_vel.Data(touchdown_est,3)) < 1e-6 || abs(telem.est.vel.Data(touchdown_est,3) )< 1e-6,
-    touchdown = touchdown - 10;
+    touchdown = touchdown - 1;
     touchdown_est = touchdown_est - 1;
 end
-
 if  isempty(touchdown_est)
     fprintf('No touchdown detected. Exiting.\n')
     return
 end
-
 
 %-------------------------------------------------------------------------%
 % mcall values
@@ -75,14 +73,20 @@ end
 mcall=zeros(1,i.n);
 
 mcall(i.file_index)             = file_index;
+lac_perfect_vel_nav    = evalin('base','lac_perfect_vel_nav');
 mcall(i.est_pos_err)            = error.knowledge.total.pos.Data(touchdown_est,:);   
-mcall(i.est_vel_err)            = error.knowledge.total.vel.Data(touchdown_est,:); 
+if lac_perfect_vel_nav == 1
+    mc_all_initial =  evalin('base','mc_all_initial');
+    mcall(i.est_vel_err)    = -mc_all_initial(file_index,93:95);
+else
+     mcall(i.est_vel_err)            = error.knowledge.total.vel.Data(touchdown_est,:);
+end
 mcall(i.est_angles_xyz_err)     = error.knowledge.total.euler.Data(touchdown_est,:); 
 mcall(i.est_rates_dps_err)      = error.knowledge.total.rate.Data(touchdown_est,:)* 180/pi;
 mcall(i.est_alt_err)            = truth.sim.altitude.Data(touchdown) - telem.est.altitude.Data(touchdown_est);
 
 mcall(i.gnc_pos_err)            = truth.fsw_rate.total.sim_pos.Data(touchdown_est,:);
-mcall(i.gnc_vel_err)            = truth.fsw_rate.total.sim_vel.Data(touchdown_est,:);
+mcall(i.gnc_vel_err)            = truth.fsw_rate.total.sim_vel.Data(touchdown_est-10,:);
 mcall(i.gnc_angles_zyx_err)     = truth.fsw_rate.total.sim_euler.Data(touchdown_est,:);
 mcall(i.gnc_rates_dps_err)      = truth.fsw_rate.total.sim_rate.Data(touchdown_est,:) * 180/pi;
 
